@@ -1,0 +1,44 @@
+** About
+
+Ask =fsbot= on [[http://www.freenode.net/][freenode]] about hell, and he will answer you that =hell is
+other people's .emacs=.  This repo is my own hell and I like it very
+much.
+
+It is not some elisp code that is pretended to be used by other people
+(like [[http://batsov.com/prelude/][prelude]], [[https://github.com/technomancy/emacs-starter-kit/tree/master][emacs-starter-kit]] or even [[https://github.com/kovan/dopemacs][dopemacs]]).  It is *my own*
+Emacs config and it is intended to be used only by me.
+
+Anyway here is what makes this hell so warm and comfortable for me.
+
+** Features
+
+- No [[http://orgmode.org/worg/org-contrib/babel/intro.html#literate-programming][Org-mode for emacs config]] because good old =.el= files are much
+  more convenient for me.
+
+- Unusable key bindings: I use hundreds and hundreds of non-standard key
+  bindings that are suitable for me.  Besides I use dvorak layout, so my
+  bindings may look really weird for other people.  I use [[https://github.com/jwiegley/use-package/blob/master/bind-key.el][bind-key]]
+  package and some my code (from [[https://github.com/alezost/emacs-config/blob/master/keys.el][keys.el]]) to manage those tons of keys.
+
+- I use [[https://github.com/quelpa/quelpa][quelpa]] to install/upgrade Emacs packages.  For the initial start
+  of Emacs with my config (if no packages are installed), quelpa is
+  bootstrapped and installs everything, so I can easily deploy my config
+  on a fresh system: I just clone the repo and make [[~/.emacs.d/init.el]]
+  file a symlink to my [[https://github.com/alezost/emacs-config/blob/master/init.el][init.el]].
+
+- I use [[https://github.com/jwiegley/use-package/][use-package]] hardly (currently I have over 150 of "use-package"
+  clauses in my config), even for the built-in Emacs packages that
+  are being loaded anyway (isn't it strange?)
+
+- I prefer to split my config into several files than to keep everything
+  in a single one.  And it is really easy to search them using [[https://github.com/alezost/imenus.el][imenus]].
+  I just press =s-s= (which is bound to =utl-imenus-search-elisp-dir=
+  from [[https://github.com/alezost/emacs-utils/blob/master/utl-imenus.el][utl-imenus.el]]) and jump to a "use-package" clause or perform
+  =isearch= or =occur= if I need to search for something.
+
+- Although "use-package" (+ "bind-key") is the only package that is
+  required for my emacs config to be loaded successfully, there is
+  another repo that may be counted as the second part of my config –
+  [[https://github.com/alezost/emacs-utils/][emacs-utils]].  It has a form of many small packages that are loaded
+  only when they are needed (for example when I press some key that is
+  bound to an autoloaded function from some "utl-…" package).
