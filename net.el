@@ -506,10 +506,10 @@
   (al/add-hook-maybe 'erc-join-hook 'al/erc-channel-config)
 
   (when (require 'utl-erc nil t)
+    (setq-default erc-enable-logging 'utl-erc-log-all-but-some-buffers)
     (setq
      erc-insert-timestamp-function 'utl-erc-insert-timestamp
      erc-view-log-timestamp-position 'left
-     erc-enable-logging 'utl-erc-log-all-but-some-buffers
      erc-generate-log-file-name-function
      'utl-erc-log-file-name-network-channel)
     (setq
