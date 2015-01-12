@@ -224,9 +224,10 @@
    dired-omit-files "^\\..*"
    dired-omit-extensions nil
    dired-guess-shell-alist-user
-   '(("\\.jpg\\'" "sxiv")
-     ("\\.png\\'" "sxiv")
-     ("\\.tiff?\\'" "sxiv")
+   '(("\\.jpg\\'" "sxiv" "eog")
+     ("\\.png\\'" "sxiv" "eog")
+     ("\\.gif\\'" "sxiv" "eog")
+     ("\\.tiff?\\'" "sxiv" "eog")
      ("\\.pdf\\'" "zathura" "mupdf")
      ("\\.wav\\'" "play -q" "aplay" "mplayer -really-quiet" "mpv --really-quiet")
      ("\\.og[ag]\\'" "play -q" "mplayer -really-quiet" "mpv --really-quiet")
