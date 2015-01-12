@@ -143,8 +143,8 @@
   "Alist of auxiliary keys for lazy-moving.")
 
 (defconst al/text-editing-keys
-  '(("C-a" . utl-beginning-of-line-or-code)
-    ("C-п" . utl-end-of-line-or-code))
+  '(("C-a" . mwim-beginning-of-line-or-code)
+    ("C-п" . mwim-end-of-line-or-code))
   "Alist of auxiliary keys for editing in text modes.")
 
 (defconst al/button-keys

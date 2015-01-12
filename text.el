@@ -49,12 +49,12 @@
  ("H-M-e" . scroll-other-window)
  ("s-e"   . utl-next-link)
 
- ("C-a"   . utl-beginning-of-code-or-line)
+ ("C-a"   . mwim-beginning-of-code-or-line)
  ("C-M-a" . beginning-of-defun)
  ("M-A"   . utl-beginning-of-line)
  ("H-a"   . beginning-of-buffer)
 
- ("C-п"   . utl-end-of-code-or-line)
+ ("C-п"   . mwim-end-of-code-or-line)
  ("C-M-i" . end-of-defun)
  ("M-I"   . utl-end-of-line)
  ("H-i"   . end-of-buffer)

@@ -220,6 +220,7 @@ Also it (default syntax) breaks `indent-guide-mode'."
     (utils              :fetcher git :url ,(al/gitorious-repo "utils"))
     (dvorak-layouts     :fetcher git :url ,(al/gitorious-repo "dvorak-layouts"))
     (alect-themes       :fetcher git :url ,(al/gitorious-repo "alect-themes"))
+    (mwim               :fetcher git :url ,(al/gitorious-repo "mwim"))
     (imenus             :fetcher git :url ,(al/gitorious-repo "imenus"))
     smex
     paredit
