@@ -264,10 +264,7 @@ Also it (default syntax) breaks `indent-guide-mode'."
     hl-todo))
 
 (defvar al/additional-packages
-  '(company
-    flycheck
-    slime
-    sicp
+  '(slime
     (rainbow-mode       :fetcher url :url "http://git.savannah.gnu.org/cgit/emacs/elpa.git/plain/packages/rainbow-mode/rainbow-mode.el")
     (typing-practice    :fetcher url :url "https://raw.github.com/mebubo/dotfiles/master/.emacs.d/site-lisp/typing-practice.el")
     (sokoban            :fetcher github :repo "leoliu/sokoban"
