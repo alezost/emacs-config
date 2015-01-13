@@ -158,17 +158,16 @@
 (bind-keys
  ("C->"   . (lambda () (interactive) (insert "->")))
  ("H-4"   . insert-parentheses)
- ("H-5"   . utl-insert-square-brackets)
- ("H-6"   . utl-insert-curly-brackets)
- ("H-,"   . utl-insert-angle-brackets)
- ("H-;"   . utl-insert-single-quotation)
- ("C-H-;" . utl-insert-left-right-single-quotation)
- ("H-'"   . utl-insert-double-quotation)
- ("C-H-'" . utl-insert-left-right-double-quotation)
- ("H-`"   . utl-insert-grave-quotation)
- ("C-H-`" . utl-insert-graves)
- ("H-<"   . utl-insert-angle-quotation)
- ("H-C"   . utl-insert-top-corners))
+ ("H-5"   . insert-pair-square-brackets)
+ ("H-6"   . insert-pair-curly-brackets)
+ ("H-,"   . insert-pair-angle-brackets)
+ ("H-;"   . insert-pair-single-quotations)
+ ("H-'"   . insert-pair-double-quotations)
+ ("C-H-," . insert-pair-angle-quotations)
+ ("C-H-;" . insert-pair-left-right-single-quotations)
+ ("C-H-'" . insert-pair-left-right-double-quotations)
+ ("H-`"   . insert-pair-grave-accent-quotation)
+ ("C-H-`" . insert-pair-grave-accents))
 
 (bind-keys
  :prefix-map al/insert-map
@@ -178,7 +177,9 @@
  ("M-a" . (lambda () (interactive) (insert ";;;###autoload\n")))
  ("t"   . (lambda () (interactive) (insert "TODO ")))
  ("f"   . (lambda () (interactive) (insert "FIXME ")))
- ("d"   . utl-insert-date))
+ ("d"   . utl-insert-date)
+ ("M-'" . insert-pair-top-corners)
+ ("M-;" . insert-pair-bottom-corners))
 
 
 ;;; Searching, finding and replacing
