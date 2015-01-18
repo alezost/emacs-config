@@ -423,15 +423,14 @@
    ("C-M-v" . sql-send-paragraph)
    ("M-s-v" . sql-send-buffer))
   (bind-key "<tab>" 'complete-symbol sql-interactive-mode-map)
+
   (when (require 'utl-sql nil t)
     (defalias 'sql-highlight-product 'utl-sql-highlight-product)
     (al/add-hook-maybe 'sql-interactive-mode-hook
-      '(utl-sql-save-history utl-sql-highlight-product)))
-  (when (require 'sql-completion nil t)
-    (add-hook 'sql-interactive-mode-hook
-              (lambda ()
-                (and (eq sql-product 'mysql)
-                     (sql-mysql-completion-init)))))
+      '(utl-sql-save-history
+        utl-sql-highlight-product
+        utl-sql-completion-setup)))
+
   ;; Fix bug with mariadb prompt:
   ;; <http://debbugs.gnu.org/cgi/bugreport.cgi?bug=17426>.
   (sql-set-product-feature 'mysql :prompt-regexp
@@ -440,7 +439,9 @@
 (use-package mysql
   :defer t
   :config
-  (setq mysql-user sql-user))
+  (setq mysql-user sql-user)
+  (when (require 'utl-mysql nil t)
+    (defalias 'mysql-shell-query 'utl-mysql-shell-query)))
 
 (use-package sql-completion
   :defer t
@@ -448,7 +449,8 @@
   (setq
    sql-mysql-database sql-database
    sql-mysql-exclude-databases
-   '("mysql" "information_schema" "performance_schema")))
+   '("mysql" "information_schema" "performance_schema"))
+  (require 'cl nil t))
 
 (use-package utl-sql
   :defer t
