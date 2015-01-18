@@ -266,6 +266,8 @@ Also it (default syntax) breaks `indent-guide-mode'."
 
 (defvar al/additional-packages
   '(slime
+    (mysql              :fetcher github :repo "haxney/mysql")
+    (sql-completion     :fetcher github :repo "emacsmirror/sql-completion")
     (rainbow-mode       :fetcher url :url "http://git.savannah.gnu.org/cgit/emacs/elpa.git/plain/packages/rainbow-mode/rainbow-mode.el")
     (typing-practice    :fetcher url :url "https://raw.github.com/mebubo/dotfiles/master/.emacs.d/site-lisp/typing-practice.el")
     (sokoban            :fetcher github :repo "leoliu/sokoban"
