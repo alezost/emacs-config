@@ -342,9 +342,6 @@ update also the packages from `al/additional-packages'."
 
 (al/add-my-package-to-load-path-maybe "utils")
 
-;; TODO Get rid of this eventually:
-(al/add-to-load-path-maybe (al/emacs-dir-file "packages"))
-
 (al/init-load "keys")
 (al/init-load "text")
 (al/init-load "files")
