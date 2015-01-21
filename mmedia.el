@@ -32,6 +32,7 @@
    ("SPC" . emms-pause)
    ("M-SPC" . emms-stop)
    ("s" . emms-show)
+   ("n" . utl-emms-notification-mode)
    ("b" . emms-browser)
    ("l" . emms)
    ("r" . emms-streams)
@@ -85,7 +86,6 @@
   (require 'emms-history)
   (require 'emms-i18n)
   (require 'emms-cache)
-  (require 'utl-emms nil t)
 
   (setq
    emms-playlist-buffer-name "*EMMS Playlist*"
@@ -109,7 +109,14 @@
 
   (push 'emms-info-initialize-track emms-track-initialize-functions)
   (al/add-hook-maybe 'emms-player-started-hook
-    'emms-last-played-update-current))
+    'emms-last-played-update-current)
+
+  (when (require 'utl-emms nil t)
+    (setq
+     emms-mode-line-mode-line-function 'utl-emms-mode-line-song-string
+     emms-track-description-function 'utl-emms-full-track-description)
+    (utl-emms-mode-line 1)
+    (defalias 'emms-source-play 'utl-emms-source-add-and-play)))
 
 (use-package emms-playlist-mode
   :defer t
@@ -152,12 +159,12 @@
 
 (use-package utl-emms
   :defer t
+  :diminish (utl-emms-notification-mode . " 🎧")
   :config
   (setq
-   emms-mode-line-mode-line-function 'utl-emms-mode-line-song-string
-   emms-track-description-function 'utl-emms-full-track-description)
-  (utl-emms-mode-line 1)
-  (defalias 'emms-source-play 'utl-emms-source-add-and-play))
+   utl-emms-notification-artist-format "<big>%s</big>"
+   utl-emms-notification-title-format "<span foreground=\"yellow\">%s</span>"
+   utl-emms-notification-year-format "<span foreground=\"#84ebeb\">%s</span>"))
 
 
 ;;; Misc settings and packages
