@@ -534,6 +534,7 @@
   :defer t
   :diminish (erc-notifications-mode . " 🗩")
   :config
+  (setq erc-notifications-icon "erc")
   (defun al/play-erc-sound (&rest _)
     (utl-play-sound (al/sound-dir-file "chimes.wav")))
   (al/with-check
