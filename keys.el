@@ -140,7 +140,12 @@
     ("u" . forward-char)
     ("." . previous-line)
     ("e" . next-line))
-  "Alist of auxiliary keys for lazy-moving.")
+  "Alist of auxiliary keys for lazy moving.")
+
+(defconst al/lazy-scrolling-keys
+  '(("SPC" . scroll-up-command)
+    ("DEL" . scroll-down-command))
+  "Alist of auxiliary keys for lazy scrolling.")
 
 (defconst al/text-editing-keys
   '(("C-a" . mwim-beginning-of-line-or-code)
