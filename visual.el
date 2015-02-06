@@ -184,8 +184,7 @@
  mode-line-format
  `("%e" mode-line-front-space
    mode-line-mule-info mode-line-client mode-line-modified mode-line-remote
-   " " mode-line-buffer-identification " "
-   (-3 ,(propertize "%P" 'face 'font-lock-builtin-face))
+   " " mode-line-buffer-identification " " mode-line-position
    " %l,%c"
    (vc-mode vc-mode)
    " " mode-line-modes mode-line-misc-info
@@ -216,6 +215,9 @@
    (:eval (mode-line-eol-desc))))
 
 (setq
+ mode-line-position
+ `((-3 ,(propertize "%P" 'face 'font-lock-builtin-face)))
+
  mode-line-modes
  (let ((recursive-edit-help-echo "Recursive edit: C-M-c to get out")
        (mode-help-echo (concat "Mode actions:\n"
