@@ -645,7 +645,7 @@
   :config
   (setq
    debpaste-user-name "alezost"
-   debpaste-expire-time 111111)
+   debpaste-expire-time (* 3 24 60 60))
   (add-to-list 'debpaste-domains "debpaste" t))
 
 (use-package web-search
