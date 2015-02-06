@@ -418,7 +418,7 @@
    ("d"   . utl-erc-quit-server)
    ("j"   . utl-erc-join-channel)
    ("a"   . utl-erc-away)
-   ("t"   . erc-track-mode)
+   ("m"   . erc-track-mode)
    ("n"   . erc-notifications-mode)
    ("p"   . (lambda () (interactive) (erc-part-from-channel "")))
    ("e"   . (lambda () (interactive) (switch-to-buffer "#emacs")))
