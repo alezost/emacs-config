@@ -166,14 +166,4 @@
    utl-emms-notification-title-format "<span foreground=\"yellow\">%s</span>"
    utl-emms-notification-year-format "<span foreground=\"#84ebeb\">%s</span>"))
 
-
-;;; Misc settings and packages
-
-(use-package doc-view
-  :defer t
-  :config
-  (setq doc-view-cache-directory "~/.cache/docview")
-  (push "-r200" doc-view-ghostscript-options) ; picture resolution
-  )
-
 ;;; mmedia.el ends here

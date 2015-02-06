@@ -150,6 +150,13 @@
 (add-to-list 'auto-mode-alist '(".*rc\\'" . conf-unix-mode) t)
 (add-to-list 'auto-mode-alist '("/etc/.*\\'" . conf-unix-mode) t)
 
+(use-package doc-view
+  :defer t
+  :config
+  (setq doc-view-cache-directory "~/.cache/docview")
+  (push "-r200" doc-view-ghostscript-options) ; picture resolution
+  )
+
 (use-package markdown-mode
   :defer t
   :mode "\\.mdown\\'"
