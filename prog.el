@@ -177,7 +177,9 @@
   (put 'and-let* 'scheme-indent-function 1)
   (al/modify-page-break-syntax 'scheme-mode-syntax-table)
   (al/add-hook-maybe 'scheme-mode-hook
-    '(utl-imenu-add-sections paredit-mode)))
+    '(utl-imenu-add-sections paredit-mode))
+  (when (require 'utl-scheme nil t)
+    (defalias 'scheme-indent-function 'utl-scheme-indent-function)))
 
 (use-package geiser-mode
   :defer t
