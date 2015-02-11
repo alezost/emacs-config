@@ -144,6 +144,8 @@
      (Info-mode                  . "🄸")
      (help-mode                  . "🄷")
      (doc-view-mode              . "Doc")
+     (pdf-view-mode              . "pdfView")
+     (pdf-outline-buffer-mode    . "pdf🖹")
      (sql-interactive-mode       . "SQL>")
      (ibuffer-mode               . "IB")
      (gnus-server-mode           . "𝗚Srv")

@@ -227,6 +227,7 @@ Also it (default syntax) breaks `indent-guide-mode'."
     paredit
     elisp-slime-nav
     diminish
+    pdf-tools
     (yasnippet          :fetcher github :repo "capitaomorte/yasnippet"
                         :files ("yasnippet.el"))
     (magit              :fetcher github :repo "magit/magit"

@@ -55,9 +55,9 @@
    org-file-apps
    '(("\\.mm\\'" . default)
      ("\\.x?html?\\'" utl-choose-browser file)
-     ("\\.pdf\\'" . "zathura %s")
+     ;; ("\\.pdf\\'" . "zathura %s")
      ("\\.djvu\\'" . "zathura %s")
-     ("\\.pdf::\\([0-9]+\\)\\'" . "zathura --page %1 %s")
+     ;; ("\\.pdf::\\([0-9]+\\)\\'" . "zathura --page %1 %s")
      ("\\.djvu::\\([0-9]+\\)\\'" . "zathura --page %1 %s")
      (auto-mode . emacs)))
 
@@ -95,7 +95,13 @@
     '(al/org-keys al/text-editing-keys))
 
   (when (require 'utl-ido nil t)
-    (advice-add 'org-set-tags :around #'utl-ido-disable)))
+    (advice-add 'org-set-tags :around #'utl-ido-disable))
+
+  (defun al/pdf-goto-page (_path &optional _in-emacs line _search)
+    (and line
+         (eq major-mode 'pdf-view-mode)
+         (pdf-view-goto-page line)))
+  (advice-add 'org-open-file :after #'al/pdf-goto-page))
 
 (use-package org-src
   :defer t
@@ -123,6 +129,59 @@
   (org-add-link-type "emms" 'utl-org-emms-open)
   (al/add-hook-maybe 'org-store-link-functions
     'utl-org-emms-store-link))
+
+
+;;; Pdf tools
+
+(use-package pdf-view
+  :defer t
+  :mode ("\\.[pP][dD][fF]\\'" . pdf-view-mode)
+  :config
+  (bind-keys
+   :map pdf-view-mode-map
+   ("h" . pdf-view-previous-page-command))
+  (add-hook 'pdf-view-mode-hook 'pdf-tools-enable-minor-modes))
+
+(use-package pdf-outline
+  :defer t
+  :config
+  (al/clean-map 'pdf-outline-minor-mode-map)
+  (bind-keys
+   :map pdf-outline-minor-mode-map
+   ("c" . pdf-outline))
+
+  (defconst al/pdf-outline-buffer-keys
+    '(("c" . pdf-outline-select-pdf-window)
+      ("u" . pdf-outline-follow-link)
+      ("d" . pdf-outline-display-link)
+      ("q" . quit-window))
+    "Alist of auxiliary keys for `pdf-outline-buffer-mode-map'.")
+  (al/bind-keys-from-vars 'pdf-outline-buffer-mode-map
+    '(al/lazy-moving-keys
+      al/lazy-scrolling-keys
+      al/pdf-outline-buffer-keys))
+
+  (add-hook 'pdf-outline-buffer-mode-hook 'hl-line-mode))
+
+(use-package pdf-links
+  :defer t
+  :config
+  (setq pdf-links-convert-pointsize-scale 0.02)
+
+  (al/clean-map 'pdf-links-minor-mode-map)
+  (bind-keys
+   :map pdf-links-minor-mode-map
+   ("u" . pdf-links-action-perform)
+   ("U" . pdf-links-isearch-link)))
+
+(use-package pdf-misc
+  :defer t
+  :config
+  (al/clean-map 'pdf-misc-minor-mode-map)
+  (bind-keys
+   :map pdf-misc-minor-mode-map
+   ("f" . pdf-misc-display-metadata)
+   ("F" . pdf-misc-display-metadata)))
 
 
 ;;; Misc settings and packages
