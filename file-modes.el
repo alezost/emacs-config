@@ -151,7 +151,8 @@
    ("c" . pdf-outline))
 
   (defconst al/pdf-outline-buffer-keys
-    '(("c" . pdf-outline-select-pdf-window)
+    '(("TAB" . outline-cycle)
+      ("c" . pdf-outline-select-pdf-window)
       ("u" . pdf-outline-follow-link)
       ("d" . pdf-outline-display-link)
       ("q" . quit-window))

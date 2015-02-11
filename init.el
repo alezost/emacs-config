@@ -254,6 +254,7 @@ Also it (default syntax) breaks `indent-guide-mode'."
     emms
     (emms-player-mpv    :fetcher github :repo "dochang/emms-player-mpv")
     browse-kill-ring
+    outline-magic
     markdown-mode
     syslog-mode
     mentor
