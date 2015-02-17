@@ -128,6 +128,8 @@
 
 ;;; Pdf tools
 
+(setq pdf-tools-handle-upgrades nil)
+
 (use-package pdf-view
   :defer t
   :mode ("\\.[pP][dD][fF]\\'" . pdf-view-mode)
