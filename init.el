@@ -227,7 +227,6 @@ Also it (default syntax) breaks `indent-guide-mode'."
     paredit
     elisp-slime-nav
     diminish
-    pdf-tools
     (yasnippet          :fetcher github :repo "capitaomorte/yasnippet"
                         :files ("yasnippet.el"))
     (magit              :fetcher github :repo "magit/magit"
@@ -248,6 +247,8 @@ Also it (default syntax) breaks `indent-guide-mode'."
     (mana               :fetcher git :url ,(al/gitorious-repo "mana"))
     (ducpel             :fetcher git :url ,(al/gitorious-repo "ducpel")
                         :files ("*.el"))
+    pdf-tools
+    org-pdfview
     (dictem             :fetcher github :repo "cheusov/dictem")
     google-translate
     geiser

@@ -96,12 +96,7 @@
 
   (when (require 'utl-ido nil t)
     (advice-add 'org-set-tags :around #'utl-ido-disable))
-
-  (defun al/pdf-goto-page (_path &optional _in-emacs line _search)
-    (and line
-         (eq major-mode 'pdf-view-mode)
-         (pdf-view-goto-page line)))
-  (advice-add 'org-open-file :after #'al/pdf-goto-page))
+  (require 'org-pdfview nil t))
 
 (use-package org-src
   :defer t
