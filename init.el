@@ -321,6 +321,17 @@ update also the packages from `al/additional-packages'."
          (t (list (al/package-recipe (al/read-package-name))))))
   (mapc #'quelpa recipes))
 
+(defun al/package-installed-p (fun package &rest args)
+  "Do not check the version of a built-in package.
+Some built-in packages (e.g., `org', `erc') do not have 'Version'
+header field.  This may break things if a third-party package
+relies on a particular version of a built-in package (e.g.,
+'org-6.1' or 'erc-5.3').  So just ignore the version."
+  (or (package-built-in-p package)
+      (apply fun package args)))
+
+(advice-add 'package-installed-p :around #'al/package-installed-p)
+
 
 ;;; Loading the rest config and required packages
 
