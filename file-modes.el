@@ -175,6 +175,15 @@
    ("u" . pdf-links-action-perform)
    ("U" . pdf-links-isearch-link)))
 
+(use-package pdf-history
+  :defer t
+  :config
+  (al/clean-map 'pdf-history-minor-mode-map)
+  (bind-keys
+   :map pdf-history-minor-mode-map
+   ("," . pdf-history-backward)
+   ("p" . pdf-history-forward)))
+
 (use-package pdf-misc
   :defer t
   :config
