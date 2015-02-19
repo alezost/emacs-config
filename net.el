@@ -424,12 +424,13 @@
    ("p"   . (lambda () (interactive) (erc-part-from-channel "")))
    ("e"   . (lambda () (interactive) (switch-to-buffer "#emacs")))
    ("x"   . (lambda () (interactive) (switch-to-buffer "#guix")))
-   ("s"   . (lambda () (interactive) (switch-to-buffer "#stumpwm"))))
+   ("s"   . (lambda () (interactive) (switch-to-buffer "#stumpwm")))
+   ("M-z" . (lambda () (interactive) (switch-to-buffer "*status"))))
 
   :config
   (setq
-   erc-server "irc.freenode.net"
-   erc-port 7000                        ; for TLS
+   erc-server "chat.freenode.net"
+   erc-port 7000
    erc-nick "alezost"
    erc-user-full-name user-full-name
    erc-server-reconnect-timeout 60
@@ -507,6 +508,9 @@
   (al/add-hook-maybe 'erc-join-hook 'al/erc-channel-config)
 
   (when (require 'utl-erc nil t)
+    (when (utl-znc-running-p)
+      (setq erc-server "localhost"
+            erc-port 32456))
     (setq-default erc-enable-logging 'utl-erc-log-all-but-some-buffers)
     (setq
      erc-insert-timestamp-function 'utl-erc-insert-timestamp
