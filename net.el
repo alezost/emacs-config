@@ -42,7 +42,8 @@
  ("a"   . web-search-archwiki)
  ("A"   . web-search-arch-package)
  ("e"   . web-search-emacswiki)
- ("i"   . web-search-ip)
+ ("i"   . web-search-ipduh)
+ ("I"   . web-search-ip-address)
  ("b"   . web-search-debbugs)
  ("`"   . web-search-ej)
  ("t"   . (lambda () (interactive)
@@ -653,13 +654,18 @@
   :pre-load (al/add-my-package-to-load-path-maybe "web-search")
   :commands
   (web-search-yandex
+   web-search-ipduh
+   web-search-ip-address
    web-search-wikipedia-ru
    web-search-arch-package
    web-search-ej)
   :config
   (web-search-add-engine
-   'ip "IPduh"
+   'ipduh "IPduh"
    "http://ipduh.com/apropos/?%s")
+  (web-search-add-engine
+   'ip-address "IP address"
+   "http://www.ip-address.org/lookup/ip-locator.php?track=%s")
   (web-search-add-engine
    'yandex "Yandex"
    "http://yandex.ru/yandsearch?text=%s")
