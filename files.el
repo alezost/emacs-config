@@ -133,6 +133,7 @@
   (defconst al/dired-keys
     '(("SPC"   . utl-dired-get-size)
       ("N"     . dired-create-directory)
+      ("M"     . utl-dired-man-or-chmod)
       ("f"     . dired-show-file-type)
       ("F"     . utl-dired-stat)
       ("o"     . dired-up-directory)
