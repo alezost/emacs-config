@@ -350,7 +350,7 @@
   :defer t
   :config
   (define-abbrev-table 'global-abbrev-table
-    '(("gos"  "GuixOS")
+    '(("gos"  "GuixSD")
       ("hhg"  "GNU/Linux")
       ("hhpr" "programming")
       ("hhy"  "yesterday")
