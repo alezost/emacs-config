@@ -37,6 +37,8 @@
 (al/file-accessors "gnus"          (al/emacs-data-dir-file "gnus"))
 (al/file-accessors "gnus-news"     (al/gnus-dir-file "news"))
 (al/file-accessors "gnus-mail"     (al/gnus-dir-file "mail"))
+
+(al/file-accessors "config"        "~/config")
 (al/file-accessors "notes"         "~/notes")
 (al/file-accessors "progs"         "~/progs")
 (al/file-accessors "journal"       (al/notes-dir-file  "journal"))

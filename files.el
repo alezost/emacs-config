@@ -68,6 +68,8 @@
               (utl-ido-find-file al/download-dir)))
  ("e"     . (lambda () (interactive)
               (find-file al/echo-download-dir)))
+ ("M-c"   . (lambda () (interactive)
+              (utl-ido-find-file al/config-dir)))
  ("M-n"   . (lambda () (interactive)
               (utl-ido-find-file al/notes-dir)))
  ("t"     . (lambda () (interactive)
