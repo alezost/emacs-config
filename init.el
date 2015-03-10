@@ -267,6 +267,7 @@ Also it (default syntax) breaks `indent-guide-mode'."
     outline-magic
     markdown-mode
     syslog-mode
+    pkgbuild-mode
     mentor
     sauron
     (sunrise-commander  :fetcher github :repo "escherdragon/sunrise-commander")
