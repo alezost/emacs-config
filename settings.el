@@ -133,6 +133,7 @@
  ("n" . info)
  ("b" . utl-buffer-name-to-kill-ring)
  ("f" . utl-file-name-to-kill-ring)
+ ("g" . (lambda () (interactive) (switch-to-buffer "*grep*")))
  ("o" . (lambda () (interactive) (switch-to-buffer "*Occur*")))
  ("h" . (lambda () (interactive) (switch-to-buffer "*Help*")))
  ("s" . (lambda () (interactive) (switch-to-buffer "*scratch*")))
