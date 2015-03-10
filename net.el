@@ -574,7 +574,8 @@
   :defer t
   :config
   (setq
-   utl-erc-log-excluded-regexps '("\\`#archlinux\\'" "\\`#emacs\\'")
+   utl-erc-log-excluded-regexps
+   '("\\`#archlinux\\'" "\\`#emacs\\'" "\\`#freenode\\'" "\\`#znc\\'")
    utl-erc-away-msg-list
    '("just away" "watching athletics" "watching darts"
      "eating" "i'm not ready to chat" "time to sleep")
