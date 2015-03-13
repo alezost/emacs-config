@@ -97,12 +97,9 @@
    emms-source-file-default-directory al/music-dir)
 
   (setq emms-player-list '(emms-player-mplayer))
-  ;; Use mpv as the main EMMS player.  The only exception: mpv has
-  ;; issues with seeking during playing URLs, so use mplayer there.
   (when (and (executable-find "mpv")
              (require 'emms-player-mpv nil t))
-    (setq emms-player-list '(emms-player-mplayer emms-player-mpv))
-    (emms-player-set 'emms-player-mplayer 'regex "\\`\\(http\\|mms\\)://"))
+    (push 'emms-player-mpv emms-player-list))
 
   ;; Do not add `emms-cache-save' to `kill-emacs-hook'.
   (let ((noninteractive t)) (emms-cache 1))
