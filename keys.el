@@ -55,7 +55,7 @@
  ("s-9"         . dvorak-qwerty)
  ("s-0"         . (lambda () (interactive) (set-input-method "greek")))
  ("s-M-7"       . (lambda () (interactive) (ispell-change-dictionary "en")))
- ("s-M-8"       . (lambda () (interactive) (ispell-change-dictionary "ru")))
+ ("s-M-8"       . (lambda () (interactive) (ispell-change-dictionary "ru-yeyo")))
 
  ("<f4>"        . kmacro-end-or-call-macro)
  ("<XF86New>"   . kmacro-end-or-call-macro)
