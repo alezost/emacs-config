@@ -370,9 +370,9 @@ relies on a particular version of a built-in package (e.g.,
 
 (al/init-load "keys")
 (al/init-load "text")
+(al/init-load "settings")
 (al/init-load "files")
 (al/init-load "prog")
-(al/init-load "settings")
 (al/init-load "time")
 (al/init-load "file-modes")
 (al/init-load "mmedia")
