@@ -218,20 +218,20 @@ Also it (default syntax) breaks `indent-guide-mode'."
 (defvar al/fresh-init (not (fboundp 'quelpa))
   "Non-nil, if this is the first time my config is loaded by Emacs.")
 
-(defun al/gitorious-repo (name)
-  "Return git url of my gitorious repository NAME."
-  (concat "git://gitorious.org/alezost-emacs/" name ".git"))
+(defun al/emacs-repo (name)
+  "Return git url of a repository with my package NAME."
+  (concat "https://gitlab.com/alezost-emacs/" name ".git"))
 
 (defvar al/main-packages
   `((use+bind           :fetcher github :repo "jwiegley/use-package"
                         :files ("bind-key.el" "use-package.el"))
     (quelpa             :fetcher github :repo "quelpa/quelpa")
-    (utils              :fetcher git :url ,(al/gitorious-repo "utils"))
-    (dvorak-layouts     :fetcher git :url ,(al/gitorious-repo "dvorak-layouts"))
-    (alect-themes       :fetcher git :url ,(al/gitorious-repo "alect-themes"))
-    (mwim               :fetcher git :url ,(al/gitorious-repo "mwim"))
-    (insert-pair        :fetcher git :url ,(al/gitorious-repo "insert-pair"))
-    (imenus             :fetcher git :url ,(al/gitorious-repo "imenus"))
+    (utils              :fetcher git :url ,(al/emacs-repo "utils"))
+    (dvorak-layouts     :fetcher git :url ,(al/emacs-repo "dvorak-layouts"))
+    (alect-themes       :fetcher git :url ,(al/emacs-repo "alect-themes"))
+    (mwim               :fetcher git :url ,(al/emacs-repo "mwim"))
+    (insert-pair        :fetcher git :url ,(al/emacs-repo "insert-pair"))
+    (imenus             :fetcher git :url ,(al/emacs-repo "imenus"))
     smex
     paredit
     elisp-slime-nav
@@ -242,19 +242,19 @@ Also it (default syntax) breaks `indent-guide-mode'."
                         :files ("*.el" "*.texi"))
     github-browse-file
     (xml-rpc            :fetcher github :repo "emacsmirror/xml-rpc")
-    (point-pos          :fetcher git :url ,(al/gitorious-repo "point-pos"))
-    (web-search         :fetcher git :url ,(al/gitorious-repo "web-search"))
-    (text-search        :fetcher git :url ,(al/gitorious-repo "text-search"))
-    (echo-msk           :fetcher git :url ,(al/gitorious-repo "echo-msk"))
-    (darts-value        :fetcher git :url ,(al/gitorious-repo "darts-value"))
-    (debpaste           :fetcher git :url ,(al/gitorious-repo "debpaste"))
-    (aurel              :fetcher git :url ,(al/gitorious-repo "aurel"))
-    (make-color         :fetcher git :url ,(al/gitorious-repo "make-color"))
-    (pretty-sha-path    :fetcher git :url ,(al/gitorious-repo "pretty-sha-path"))
-    (date-at-point      :fetcher git :url ,(al/gitorious-repo "date-at-point"))
-    (journal            :fetcher git :url ,(al/gitorious-repo "journal"))
-    (mana               :fetcher git :url ,(al/gitorious-repo "mana"))
-    (ducpel             :fetcher git :url ,(al/gitorious-repo "ducpel")
+    (point-pos          :fetcher git :url ,(al/emacs-repo "point-pos"))
+    (web-search         :fetcher git :url ,(al/emacs-repo "web-search"))
+    (text-search        :fetcher git :url ,(al/emacs-repo "text-search"))
+    (echo-msk           :fetcher git :url ,(al/emacs-repo "echo-msk"))
+    (darts-value        :fetcher git :url ,(al/emacs-repo "darts-value"))
+    (debpaste           :fetcher git :url ,(al/emacs-repo "debpaste"))
+    (aurel              :fetcher git :url ,(al/emacs-repo "aurel"))
+    (make-color         :fetcher git :url ,(al/emacs-repo "make-color"))
+    (pretty-sha-path    :fetcher git :url ,(al/emacs-repo "pretty-sha-path"))
+    (date-at-point      :fetcher git :url ,(al/emacs-repo "date-at-point"))
+    (journal            :fetcher git :url ,(al/emacs-repo "journal"))
+    (mana               :fetcher git :url ,(al/emacs-repo "mana"))
+    (ducpel             :fetcher git :url ,(al/emacs-repo "ducpel")
                         :files ("*.el"))
     pdf-tools
     org-pdfview
