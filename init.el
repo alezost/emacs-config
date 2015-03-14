@@ -262,6 +262,7 @@ Also it (default syntax) breaks `indent-guide-mode'."
     google-translate
     geiser
     emms
+    (emms-status        :fetcher git :url ,(al/emacs-repo "emms-status"))
     (emms-player-mpv    :fetcher github :repo "dochang/emms-player-mpv")
     browse-kill-ring
     outline-magic
