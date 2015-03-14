@@ -327,6 +327,11 @@
    '(face spaces tabs trailing lines space-before-tab newline
           indentation space-after-tab tab-mark newline-mark)))
 
+(use-package ruler-mode
+  :defer t
+  :config
+  (setq ruler-mode-show-tab-stops t))
+
 (use-package paren
   :pre-load (setq show-paren-delay 0.1)
   :init (show-paren-mode)
