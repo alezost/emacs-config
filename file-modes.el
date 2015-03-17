@@ -250,6 +250,13 @@
 (use-package nxml-mode
   :defer t
   :config
+  (defconst al/nxml-keys
+    '(("C-M-." . nxml-backward-up-element)
+      ("C-M-e" . nxml-down-element)
+      ("C-M-o" . nxml-backward-element)
+      ("C-M-u" . nxml-forward-element))
+    "Alist of auxiliary keys for `nxml-mode-map'.")
+  (al/bind-keys-from-vars 'nxml-mode-map 'al/nxml-keys)
   (add-hook 'nxml-mode-hook
             (lambda () (rng-validate-mode 0))))
 
