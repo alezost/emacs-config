@@ -98,7 +98,7 @@
  ("M-k"   . utl-save-whole-line)
  ("C-M-k" . utl-backward-save-sexp)
  ("M-K"   . utl-backward-save-line)
- ("H-k"   . utl-duplicate-line)
+ ("H-k"   . utl-duplicate-dwim)
 
  ("C-'"   . transpose-chars)
  ("M-'"   . (lambda () (interactive) (transpose-words -1)))
