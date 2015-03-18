@@ -84,6 +84,7 @@
    ("M-e"   . ido-next-work-directory)
    ("C-M-." . ido-prev-match-dir)
    ("C-M-e" . ido-next-match-dir)
+   ("M-m"   . ido-enter-magit-status)
    ("M-h"   . utl-ido-home-work-directory))
   (bind-keys
    :map ido-buffer-completion-map

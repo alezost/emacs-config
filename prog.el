@@ -244,7 +244,7 @@
   (al/bind-keys-from-vars 'geiser-doc-mode-map
     '(al/button-keys al/geiser-keys al/geiser-doc-keys)))
 
-
+
 ;;; Compilation, Makefile
 
 (use-package make-mode
@@ -282,71 +282,218 @@
  :prefix-map al/magit-map
  :prefix-docstring "Map for magit and git stuff."
  :prefix "M-m"
+ ("M-m" . utl-magit-ido-switch-buffer)
+ ("b" . utl-magit-ido-switch-buffer)
  ("s" . magit-status)
- ("l" . magit-log)
+ ("l" . magit-log-current)
  ("k" . (lambda () (interactive)
           (let (github-browse-file-visit-url)
             (github-browse-file))))
- ("b" . github-browse-file))
+ ("g" . github-browse-file))
 
 (use-package magit
   :defer t
+  :commands ido-enter-magit-status
   :pre-load
-  (setq magit-emacsclient-executable
-        (if (al/emacs-trunk-p) "~/usr/bin/emacsclient" "emacsclient"))
+  (when (utl-server-running-p)
+     (message "XXX Using magit next branch.")
+     (al/add-to-load-path-maybe (al/src-dir-file "emacs/magit")))
   :config
-  (setq magit-log-margin-spec '(30 nil magit-duration-spec))
-  (bind-keys
-   :map magit-mode-map
-   ("."   . magit-goto-previous-section)
-   ("e"   . magit-goto-next-section)
-   ("M-." . magit-goto-previous-sibling-section)
-   ("M-e" . magit-goto-next-sibling-section)
-   ("w"   . magit-copy-item-as-kill)
-   ("v"   . magit-git-command)
-   ("="   . magit-diff)
-   ("E"   . magit-ediff)
-   ("D"   . magit-discard-item)
-   ("R"   . magit-rename-item)
-   ("r"   . magit-rebase-step)
-   ("I"   . magit-interactive-rebase)
-   ("m"   . magit-mark-item)
-   ("M"   . magit-key-mode-popup-merging)
-   ("W"   . magit-key-mode-popup-remoting))
-  (bind-keys
-   :map magit-status-mode-map
-   ("."   . magit-goto-previous-section)
-   ("I"   . magit-interactive-rebase))
-  (bind-keys
-   :map magit-branch-manager-mode-map
-   ("N"   . magit-create-branch)
-   ("u"   . magit-checkout))
-  (bind-keys
-   :map magit-log-mode-map
-   ("N"   . magit-log-show-more-entries)
-   ("."   . previous-line)
-   ("e"   . next-line)
-   (">"   . magit-goto-previous-section)
-   ("E"   . magit-goto-next-section)
-   ("u"   . magit-visit-item))
+  (setq
+   magit-status-buffer-name-format   "*magit: %b*"
+   magit-process-buffer-name-format  "*magit-process: %b*"
+   magit-log-buffer-name-format      "*magit-log: %b*"
+   magit-reflog-buffer-name-format   "*magit-reflog: %b*"
+   magit-refs-buffer-name-format     "*magit-refs: %b*"
+   magit-diff-buffer-name-format     "*magit-diff: %b*"
+   magit-revision-buffer-name-format "*magit-revision: %b*"
+   magit-cherry-buffer-name-format   "*magit-cherry: %b*"
+   magit-stash-buffer-name-format    "*magit-stash: %b*"
+   magit-stashes-buffer-name-format  "*magit-stashes: %b*")
   (magit-auto-revert-mode 0)
-  (al/add-hook-maybe
-      '(magit-status-mode-hook
-        magit-log-mode-hook
-        magit-branch-manager-mode-hook)
-    'hl-line-mode)
+  (if (utl-server-running-p)        ; TODO del after switching to 'next'
+      (when (require 'utl-magit nil t)
+        (utl-magit-popup-substitute-key
+         'magit-branch-popup :actions ?u ?U)) ; set upstream
+    (bind-keys
+     :map magit-mode-map
+     ("."   . magit-goto-previous-section)
+     ("e"   . magit-goto-next-section)
+     ("M-." . magit-goto-previous-sibling-section)
+     ("M-e" . magit-goto-next-sibling-section)
+     ("w"   . magit-copy-item-as-kill)
+     ("v"   . magit-git-command)
+     ("="   . magit-diff)
+     ("E"   . magit-ediff)
+     ("D"   . magit-discard-item)
+     ("R"   . magit-rename-item)
+     ("r"   . magit-rebase-step)
+     ("I"   . magit-interactive-rebase)
+     ("m"   . magit-mark-item)
+     ("M"   . magit-key-mode-popup-merging)
+     ("W"   . magit-key-mode-popup-remoting))
+    (bind-keys
+     :map magit-status-mode-map
+     ("."   . magit-goto-previous-section)
+     ("I"   . magit-interactive-rebase))
+    (bind-keys
+     :map magit-branch-manager-mode-map
+     ("N"   . magit-create-branch)
+     ("u"   . magit-checkout))
+    (bind-keys
+     :map magit-log-mode-map
+     ("N"   . magit-log-show-more-entries)
+     ("."   . previous-line)
+     ("e"   . next-line)
+     (">"   . magit-goto-previous-section)
+     ("E"   . magit-goto-next-section)
+     ("u"   . magit-visit-item))
 
-  (when (require 'utl-mode-line nil t)
-    ;; `magit-key-mode' is not a proper mode (made by
-    ;; `define-derived-mode'), so a normal hook has no effect.
-    (advice-add 'magit-key-mode-redraw :after #'utl-mode-name)))
+    ;; TODO del (not needed for magit next)
+    (al/add-hook-maybe
+        '(magit-status-mode-hook
+          magit-log-mode-hook
+          magit-branch-manager-mode-hook)
+      'hl-line-mode)
+    (when (require 'utl-mode-line nil t)
+      ;; `magit-key-mode' is not a proper mode (made by
+      ;; `define-derived-mode'), so a normal hook has no effect.
+      (advice-add 'magit-key-mode-redraw :after #'utl-mode-name))))
 
+;; TODO del (old)
 (use-package git-commit-mode
   :defer t
   :config
   (al/bind-keys-from-vars 'git-commit-mode-map))
 
+;; TODO del (old)
 (use-package git-rebase-mode
+  :defer t
+  :config
+  (defconst al/git-rebase-keys
+    '(("p"   . git-rebase-pick)
+      ("C-k" . git-rebase-kill-line)
+      ("M-." . git-rebase-move-line-up)
+      ("M-e" . git-rebase-move-line-down))
+    "Alist of auxiliary keys for `git-rebase-mode-map'.")
+  (al/bind-keys-from-vars 'git-rebase-mode-map 'al/git-rebase-keys))
+
+(use-package magit-mode
+  :defer t
+  :config
+  (setq magit-save-repository-buffers nil)
+  (defconst al/magit-common-keys
+    '(("v"   . magit-git-command)
+      "M-m")
+    "Alist of auxiliary keys that should be bound in any magit mode.")
+  (defconst al/magit-history-keys
+    '((","   . magit-go-backward)
+      ("p"   . magit-go-forward))
+    "Alist of auxiliary keys for moving by magit history.")
+  (defconst al/magit-scroll-diff-keys
+    '(("SPC" . magit-diff-show-or-scroll-up)
+      ("DEL" . magit-diff-show-or-scroll-down))
+    "Alist of auxiliary keys for scrolling magit diff in other window.")
+  (defconst al/magit-moving-keys
+    '(("."   . magit-section-backward)
+      ("e"   . magit-section-forward)
+      ("M-." . magit-section-backward-sibling)
+      ("M-e" . magit-section-forward-sibling))
+    "Alist of auxiliary keys for moving by magit sections.")
+  (defconst al/magit-keys
+    '(("<backtab>" . magit-section-cycle-global)
+      ("H-SPC" . magit-diff-show-or-scroll-up)
+      ("M-k" . magit-copy-as-kill)
+      ("u" . magit-show-commit)
+      ("U" . magit-unstage-file)
+      ("E" . magit-ediff-dwim)
+      ("1" . magit-show-level-1-all)
+      ("2" . magit-show-level-2-all)
+      ("3" . magit-show-level-3-all)
+      ("4" . magit-show-level-4-all)
+      "M-1" "M-2" "M-3" "M-4")
+    "Alist of auxiliary keys for `magit-mode-map'.")
+  (al/bind-keys-from-vars 'magit-mode-map
+    '(al/lazy-scrolling-keys
+      al/magit-common-keys
+      al/magit-moving-keys
+      al/magit-keys)))
+
+(use-package magit-popup
+  :defer t
+  :config
+  (setq
+   magit-popup-show-help-section nil
+   magit-popup-use-prefix-argument 'default)
+
+  (defconst al/magit-popup-keys
+    '(("M-h" . magit-popup-toggle-show-popup-commands))
+    "Alist of auxiliary keys for `magit-popup-mode-map'.")
+  (al/bind-keys-from-vars 'magit-popup-mode-map
+    '(al/button-keys al/magit-popup-keys)))
+
+(use-package magit-log
+  :defer t
+  :config
+  (setq magit-log-margin-spec '(25 1 magit-duration-spec))
+  (when (require 'utl-magit nil t)
+    (utl-magit-popup-substitute-key
+     'magit-log-popup :options ?m ?g)) ; grep
+
+  (defconst al/magit-log-select-keys
+    '(("m" . magit-log-select-pick))
+    "Alist of auxiliary keys for `magit-log-select-mode-map'.")
+  (al/bind-keys-from-vars 'magit-log-mode-map
+    '(al/magit-history-keys al/magit-scroll-diff-keys))
+  (al/bind-keys-from-vars 'magit-log-select-mode-map
+    '(al/magit-moving-keys al/magit-log-select-keys))
+  (al/bind-keys-from-vars 'magit-commit-section-map
+    'al/magit-common-keys))
+
+(use-package magit-diff
+  :defer t
+  :config
+  (al/bind-keys-from-vars 'magit-diff-mode-map 'al/magit-history-keys)
+  (al/bind-keys-from-vars 'magit-file-section-map 'al/magit-common-keys)
+  (al/bind-keys-from-vars 'magit-hunk-section-map 'al/magit-common-keys)
+  (al/bind-keys-from-vars 'magit-staged-section-map 'al/magit-common-keys))
+
+(use-package magit-remote
+  :defer t
+  :config
+  (when (require 'utl-magit nil t)
+    (utl-magit-popup-substitute-key
+     'magit-remote-popup :actions ?u ?s) ; set url
+    (utl-magit-popup-substitute-key
+     'magit-push-popup :actions ?e ?E) ; elsewhere
+    ))
+
+(use-package magit-sequence
+  :defer t
+  :config
+  (when (require 'utl-magit nil t)
+    (utl-magit-popup-substitute-key
+     'magit-rebase-popup :actions ?e ?i) ; interactive
+    ))
+
+(use-package magit-bisect
+  :defer t
+  :config
+  (when (require 'utl-magit nil t)
+    (utl-magit-popup-substitute-key
+     'magit-bisect-popup :actions ?u ?!) ; run
+    ))
+
+(use-package git-commit
+  :defer t
+  :config
+  (defconst al/git-commit-keys
+    '(("M-." . git-commit-prev-message)
+      ("M-e" . git-commit-next-message))
+    "Alist of auxiliary keys for `git-commit-mode-map'.")
+  (al/bind-keys-from-vars 'git-commit-mode-map 'al/git-commit-keys))
+
+(use-package git-rebase
   :defer t
   :config
   (defconst al/git-rebase-keys
