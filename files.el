@@ -62,6 +62,8 @@
  ("k"     . bookmark-delete)
  ("l"     . bookmark-bmenu-list)
  ("S"     . utl-sr-toggle)
+ ("h"     . (lambda () (interactive)
+              (utl-ido-find-file "~")))
  ("d"     . (lambda () (interactive)
               (utl-ido-find-file al/journal-dir)))
  ("w"     . (lambda () (interactive)
