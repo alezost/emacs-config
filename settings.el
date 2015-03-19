@@ -131,6 +131,7 @@
  :prefix-docstring "Map for managing/switching to buffers."
  :prefix "C-b"
  ("C-b" . ido-switch-buffer)
+ ("r" . rename-buffer)
  ("n" . info)
  ("b" . utl-buffer-name-to-kill-ring)
  ("f" . utl-file-name-to-kill-ring)
