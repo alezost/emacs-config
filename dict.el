@@ -48,6 +48,10 @@
 (use-package ispell
   :defer t
   :config
+  (let ((dir (al/guix-user-profile-dir-file "lib/aspell")))
+    (when (file-exists-p dir)
+      (setq ispell-aspell-data-dir dir
+            ispell-aspell-dict-dir dir)))
   (ispell-change-dictionary "en" 'global))
 
 (use-package flyspell
