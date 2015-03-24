@@ -85,9 +85,9 @@
  ("g"     . (lambda () (interactive)
               (utl-ido-find-file (al/progs-dir-file "guile"))))
  ("c"     . (lambda () (interactive)
-              (utl-ido-find-file (al/progs-dir-file "js/conkeror"))))
+              (utl-ido-find-file (al/config-dir-file "conkeror"))))
  ("s"     . (lambda () (interactive)
-              (utl-ido-find-file (al/progs-dir-file "lisp/stumpwm")))))
+              (utl-ido-find-file (al/config-dir-file "stumpwm")))))
 
 (bind-keys
  :prefix-map al/grep-find-map
