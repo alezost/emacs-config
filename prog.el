@@ -273,7 +273,18 @@
   (al/bind-keys-from-vars
       '(compilation-mode-map compilation-minor-mode-map)
     'al/compilation-keys)
-  (add-hook 'compilation-mode-hook 'hl-line-mode))
+  (add-hook 'compilation-mode-hook 'hl-line-mode)
+
+  (when (require 'utl-compilation nil t)
+    (al/add-hook-maybe 'compilation-finish-functions
+      'utl-compilation-notify)))
+
+(use-package utl-compilation
+  :defer t
+  :config
+  (setq
+   utl-compilation-sound-success (al/sound-dir-file "bell.oga")
+   utl-compilation-sound-error (al/sound-dir-file "splat.wav")))
 
 
 ;;; Version control
