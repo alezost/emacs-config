@@ -295,6 +295,7 @@
       ("z"     . gnus-summary-clear-mark-forward)
       ("u"     . gnus-summary-scroll-up)
       ("C-t"   . gnus-summary-mark-region-as-read)
+      ("b"     . gnus-summary-display-buttonized)
       ("v"     . gnus-article-view-part)
       ("s"     . gnus-article-save-part)
       ("i"     . gnus-article-show-images)
@@ -321,15 +322,27 @@
 (use-package gnus-art
   :defer t
   :config
-  (al/bind-keys-from-vars
-      '(gnus-article-mode-map gnus-url-button-map)
-    'al/widget-button-keys)
-  (bind-keys
-   :map gnus-article-mode-map
-   ("C-d"))
-  (bind-keys
-   :map gnus-url-button-map
-   ("c" . gnus-article-copy-string))
+  (setq gnus-unbuttonized-mime-types '("text/plain"))
+
+  (defconst al/gnus-article-keys
+    '("C-d")
+    "Alist of auxiliary keys for `gnus-article-mode-map'.")
+  (defconst al/gnus-url-button-keys
+    '(("c" . gnus-article-copy-string))
+    "Alist of auxiliary keys for `gnus-url-button-map'.")
+  (defconst al/gnus-mime-button-keys
+    '(("u" . gnus-mime-action-on-part)
+      ("s" . gnus-mime-save-part)
+      ("v" . gnus-mime-view-part-internally)
+      ("V" . gnus-mime-view-part))
+    "Alist of auxiliary keys for `gnus-mime-button-map'.")
+  (al/bind-keys-from-vars 'gnus-article-mode-map
+    '(al/widget-button-keys al/gnus-article-keys))
+  (al/bind-keys-from-vars 'gnus-url-button-map
+    '(al/widget-button-keys al/gnus-url-button-keys))
+  (al/bind-keys-from-vars 'gnus-mime-button-map
+    '(al/widget-button-keys al/gnus-mime-button-keys))
+
   (add-hook 'gnus-article-mode-hook
             (lambda () (setq-local widget-button-face nil))))
 
