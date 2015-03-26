@@ -37,6 +37,11 @@
 
 (al/bind-keys-from-vars 'minibuffer-local-map 'al/minibuffer-keys)
 
+(use-package minibuffer
+  :config
+  (when (require 'utl-ido nil t)
+    (advice-add 'read-file-name-default :around #'utl-ido-disable)))
+
 (use-package ido
   :init (ido-mode t)
   :config

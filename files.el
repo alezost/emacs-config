@@ -207,10 +207,7 @@
               (w3m-browse-url
                (browse-url-file-url (dired-get-filename))))))
 
-  (al/add-hook-maybe 'dired-mode-hook
-    (list 'hl-line-mode
-          (lambda ()
-            (setq-local utl-ido-enable-replace-completing-read nil))))
+  (al/add-hook-maybe 'dired-mode-hook 'hl-line-mode)
 
   (when (require 'utl-mode-line nil t)
     (utl-mode-line-default-buffer-identification 'dired-mode))
