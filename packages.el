@@ -69,16 +69,11 @@
    guix-generations
    guix-generations-by-time)
   :pre-load
-  ;; (and (file-exists-p "/run/current-system")
-  ;;      (al/add-to-load-path-maybe
-  ;;       "/run/current-system/profile/share/emacs/site-lisp/"))
-  (al/add-to-load-path-maybe (al/src-dir-file "guix-git/emacs/"))
-  (setq guix-default-profile (concat "/var/guix/profiles/per-user/"
-                                     user-login-name "/guix-profile"))
+  (let ((dir (al/src-dir-file "guix-git/emacs")))
+    (al/add-to-load-path-maybe dir)
+    (setq guix-load-path dir))
   :idle
-  (when (require 'guix-emacs nil t)
-    (al/add-to-load-path-maybe (guix-emacs-directory))
-    (guix-emacs-load-autoloads 'all))
+  (require 'guix-init nil t)
   :init
   (bind-keys
    :prefix-map al/guix-map
