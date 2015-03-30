@@ -91,7 +91,9 @@
  ("c"     . (lambda () (interactive)
               (utl-ido-find-file (al/config-dir-file "conkeror"))))
  ("s"     . (lambda () (interactive)
-              (utl-ido-find-file (al/config-dir-file "stumpwm")))))
+              (utl-ido-find-file (al/config-dir-file "stumpwm"))))
+ ("v"     . (lambda () (interactive)
+              (utl-ido-find-file "/var/log"))))
 
 (bind-keys
  :prefix-map al/grep-find-map
