@@ -476,7 +476,6 @@
  ("d" . darts-day-template)
  ("s" . darts-day-select)
  ("e" . darts-day-export)
- ("o" . darts-kill-buffers)
  ("M-S M-D" . journal-search-by-date)
  ("M-S M-S" . journal-grep)
  ("j" . journal-create-entry)
