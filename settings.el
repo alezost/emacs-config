@@ -84,6 +84,7 @@
     '(al/minibuffer-keys al/ido-common-keys))
   (bind-keys
    :map ido-file-dir-completion-map
+   ("H-j"   . ido-enter-dired)
    ("C-d"   . ido-fallback-command)
    ("M-."   . ido-prev-work-directory)
    ("M-e"   . ido-next-work-directory)
