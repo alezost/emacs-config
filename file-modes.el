@@ -42,6 +42,7 @@
   :config
   (require 'utl-org nil t)
   (setq
+   org-imenu-depth 6
    org-completion-use-ido t
    org-confirm-elisp-link-function nil
    ;; org-src-fontify-natively t
