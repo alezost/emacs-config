@@ -52,6 +52,10 @@
 (al/file-accessors "guix-user-profile" "~/.guix-profile")
 (al/file-accessors "guix-system-profile" "/run/current-system/profile")
 
+(defvar al/guix-system-p
+  (file-exists-p al/guix-system-profile-dir)
+  "Non-nil, if current OS is GuixSD.")
+
 
 ;;; Auxiliary functions and macros
 
@@ -189,10 +193,6 @@ Also it (default syntax) breaks `indent-guide-mode'."
 (defsubst al/emacs-trunk-p ()
   "Return non-nil, if current Emacs is the latest development build."
   (not (version< emacs-version "24.4.50")))
-
-(defun al/guix-system-p ()
-  "Return non-nil, if current OS is GuixSD."
-  (file-exists-p al/guix-system-profile-dir))
 
 (defun al/show-trailing-whitespace ()
   (setq-local show-trailing-whitespace t))
