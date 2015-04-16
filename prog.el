@@ -455,11 +455,14 @@
     '(("m" . magit-log-select-pick))
     "Alist of auxiliary keys for `magit-log-select-mode-map'.")
   (al/bind-keys-from-vars 'magit-log-mode-map
-    '(al/magit-history-keys al/magit-scroll-diff-keys))
+    '(al/magit-history-keys al/magit-scroll-diff-keys)
+    t)
   (al/bind-keys-from-vars 'magit-log-select-mode-map
-    '(al/magit-moving-keys al/magit-log-select-keys))
+    '(al/magit-moving-keys al/magit-log-select-keys)
+    t)
   (al/bind-keys-from-vars 'magit-commit-section-map
-    'al/magit-common-keys))
+    'al/magit-common-keys
+    t))
 
 (use-package magit-diff
   :defer t
