@@ -624,7 +624,8 @@
    wget-download-directory-filter 'wget-download-dir-filter-regexp
    wget-download-log-file (al/emacs-data-dir-file "emacs-wget.log")
    wget-download-directory
-   `(("beatles" . ,(al/echo-download-dir-file "beatles"))
+   `(("onlinetv" . ,(al/download-dir-file "onlinetv"))
+     ("beatles" . ,(al/echo-download-dir-file "beatles"))
      ("classicrock" . ,(al/echo-download-dir-file "classicrock"))
      (,(regexp-quote "echo.msk.ru") . ,al/echo-download-dir)
      ("." . ,al/download-dir))))
