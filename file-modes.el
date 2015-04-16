@@ -246,7 +246,9 @@
    :map tar-mode-map
    ("." . tar-previous-line)
    ("e" . tar-next-line)
-   ("u" . tar-extract)))
+   ("u" . tar-extract))
+
+  (add-hook 'tar-mode-hook 'hl-line-mode))
 
 (use-package nxml-mode
   :defer t
