@@ -18,7 +18,7 @@
 
 ;;; Global keys
 
-(bind-keys*
+(bind-keys
  :prefix-map al/net-map
  :prefix-docstring "Map for net utils."
  :prefix "C-w"

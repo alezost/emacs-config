@@ -132,6 +132,7 @@
 (defconst al/free-misc-keys
   '("M-_" "M-+"
     "M-/" "C-M-/" "M-?"
+    "C-w"
     "C-M-t" "<C-tab>" "<M-tab>" "<C-M-tab>")
   "Alist of miscellaneous keys that should be unbound.")
 
