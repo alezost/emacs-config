@@ -263,7 +263,7 @@ Also it (default syntax) breaks `indent-guide-mode'."
     geiser
     emms
     (emms-status        :fetcher git :url ,(al/emacs-repo "emms-status"))
-    (emms-player-mpv    :fetcher github :repo "dochang/emms-player-mpv")
+    emms-player-mpv
     browse-kill-ring
     outline-magic
     markdown-mode
