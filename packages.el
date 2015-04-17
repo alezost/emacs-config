@@ -103,10 +103,6 @@
               (switch-to-buffer guix-generation-list-buffer-name))))
 
   :config
-  (al/with-check
-    :file "/run/current-system"
-    (setq guix-helper-file "~/temp/guix-temp/guix-helper.scm"))
-
   (setq
    guix-dry-run t
    guix-package-list-type 'package
