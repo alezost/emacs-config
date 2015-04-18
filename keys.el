@@ -67,6 +67,7 @@
  ("<f5>"        . compile)
  ("C-="         . (lambda () (interactive) (describe-char (point))))
  ("C-c r"       . revert-buffer)
+ ("C-c p"       . list-processes)
  ("C-c k"       . utl-kill-process))
 
 (defalias 'ctl-x-r-prefix ctl-x-r-map)
