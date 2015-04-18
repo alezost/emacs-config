@@ -207,6 +207,7 @@
     "Alist of auxiliary keys for geiser modes.")
 
   :config
+  (setq-default geiser-scheme-implementation 'guile)
   (setq
    geiser-autodoc-delay 0.5
    geiser-guile-binary '("guile" "--no-auto-compile"))
