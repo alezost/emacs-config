@@ -187,6 +187,7 @@
   :defer t
   :config
   (put 'and-let* 'scheme-indent-function 1)
+  (put 'plist-new 'scheme-indent-function 1)
   (al/modify-page-break-syntax 'scheme-mode-syntax-table)
   (al/add-hook-maybe 'scheme-mode-hook
     '(utl-imenu-add-sections paredit-mode))
