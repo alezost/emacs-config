@@ -180,6 +180,15 @@
    ("M-r" . slime-repl-previous-matching-input))
   (al/add-hook-maybe 'slime-repl-mode-hook 'paredit-mode))
 
+(use-package slime-autodoc
+  :defer t
+  :config
+  ;; `slime-autodoc-mode' binds some useless keys into "C-c C-d" prefix.
+  (al/clean-map 'slime-autodoc-mode-map)
+  (bind-keys
+   :map slime-autodoc-mode-map
+   ("SPC" slime-autodoc-space)))
+
 
 ;;; Scheme, geiser
 
