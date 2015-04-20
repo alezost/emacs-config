@@ -284,7 +284,7 @@
  select-active-regions nil)
 
 ;; Use PRIMARY instead of CLIPBOARD.
-(if (version< emacs-version "24.4.50")
+(if (version< emacs-version "25")
     (setq x-select-enable-primary t
           x-select-enable-clipboard nil)
   (setq select-enable-primary t

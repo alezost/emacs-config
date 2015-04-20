@@ -70,8 +70,8 @@
      (">" . (org-speed-move-safe 'org-backward-heading-same-level))
      ("E" . (org-speed-move-safe 'org-forward-heading-same-level))))
 
-  ;; XXX Something in org fontifying is broken in emacs >24.4.50.
-  (when (version< emacs-version "24.4.50")
+  ;; XXX Something in org fontifying is broken in emacs > 25.0
+  (when (version< emacs-version "25")
     (setq org-src-fontify-natively t))
 
   (defconst al/org-keys

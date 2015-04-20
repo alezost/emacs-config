@@ -78,7 +78,7 @@
    ("i d" . utl-diary-insert-entry))
 
   ;; Do not ruin the mode-line.
-  (if (version< emacs-version "24.4.50")
+  (if (version< emacs-version "25")
       (defalias 'calendar-update-mode-line 'ignore)
     (setq calendar-mode-line-format nil))
 

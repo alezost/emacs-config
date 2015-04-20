@@ -60,7 +60,7 @@
         lisp-interaction-mode-hook)
     '(utl-imenu-add-use-package utl-imenu-add-sections paredit-mode))
 
-  (if (version< emacs-version "24.4.50")
+  (if (version< emacs-version "25")
       (progn
         (al/modify-page-break-syntax 'emacs-lisp-mode-syntax-table)
         (al/modify-page-break-syntax 'lisp-mode-syntax-table))
@@ -79,14 +79,14 @@
   :diminish ""
   :init
   ;; XXX delete (In 25.1 there is `global-eldoc-mode' enabled by default).
-  (when (version< emacs-version "24.4.50")
+  (when (version< emacs-version "25")
     (al/add-hook-maybe
         '(emacs-lisp-mode-hook
           lisp-interaction-mode-hook
           ielm-mode-hook)
       'eldoc-mode))
   :config
-  (when (version< emacs-version "24.4.50")
+  (when (version< emacs-version "25")
     (setq eldoc-argument-case 'utl-eldoc-argument-list))
   (setq eldoc-idle-delay 0.3))
 
