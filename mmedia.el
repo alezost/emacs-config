@@ -99,7 +99,8 @@
 
   (setq emms-player-list '(emms-player-mplayer))
   (when (and (executable-find "mpv")
-             (require 'emms-player-mpv nil t))
+             (require 'emms-player-simple-mpv nil t)
+             (boundp 'emms-player-mpv))
     (push 'emms-player-mpv emms-player-list))
 
   ;; Do not add `emms-cache-save' to `kill-emacs-hook'.
@@ -154,6 +155,25 @@
 (use-package emms-info-libtag
   :defer t
   :commands emms-info-libtag)
+
+(use-package emms-player-simple-mpv
+  :defer t
+  :config
+  (define-emms-simple-player-mpv mpv
+    '(file url streamlist playlist)
+    (concat "\\`\\(http\\|mms\\)://\\|"
+            (emms-player-simple-regexp
+             "ogg" "mp3" "wav" "mpg" "mpeg" "wmv" "wma"
+             "mov" "avi" "divx" "ogm" "ogv" "asf" "mkv"
+             "rm" "rmvb" "mp4" "flac" "vob" "m4a" "ape"
+             "flv" "webm"))
+    "mpv" "--no-terminal")
+  (emms-player-simple-mpv-add-to-converters
+   'emms-player-mpv "." '(playlist)
+   (lambda (track-name)
+     (format "--playlist=%s" track-name)))
+
+  (require 'utl-emms-mpv nil t))
 
 (use-package utl-emms
   :defer t
