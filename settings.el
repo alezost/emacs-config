@@ -381,7 +381,8 @@
 (use-package info
   :defer t
   :config
-  (setq Info-additional-directory-list '("~/.guix-profile/share/info/"))
+  (setq Info-additional-directory-list
+        (list (al/guix-user-profile-dir-file "share/info/")))
   (bind-keys
    :map Info-mode-map
    ("." . Info-prev-reference)
