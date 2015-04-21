@@ -96,7 +96,7 @@
     :around #'al/fix-custom-variables-bug))
 
 (use-package alect-themes
-  :pre-load
+  :init
   (al/add-my-package-to-load-path-maybe "alect-themes")
   (setq
    alect-display-class '((class color) (min-colors 256))
@@ -108,7 +108,6 @@
     (push '(fringe ((((class color) (min-colors 256))
                      :foreground gray :background bg+2)))
           alect-overriding-faces))
-  :init
   (when (require 'utl-color nil t)
     (utl-load-theme 'alect-light)))
 
@@ -301,25 +300,15 @@
 ;; (mouse-avoidance-mode 'banish)
 
 (use-package scroll-bar
-  :defer t
-  :pre-load (setq scroll-bar-mode 'right)
-  :init (scroll-bar-mode 0))
+  :init
+  (setq scroll-bar-mode 'right)
+  (scroll-bar-mode 0))
 
 (use-package tooltip
   :defer t
   ;; :init (tooltip-mode 0)
   :config
   (setq tooltip-delay 0.2))
-
-(use-package diminish
-  :config
-  (defun al/add-minor-mode-name (mode &rest _)
-    "Add MODE to `minor-mode-alist' if it is bound but is not there."
-    (when (and (boundp mode)
-               (null (assq mode minor-mode-alist)))
-      (push (list mode "") minor-mode-alist)
-      (message "%S has been added to `minor-mode-alist'." mode)))
-  (advice-add 'diminish :before #'al/add-minor-mode-name))
 
 (use-package simple
   :diminish
@@ -347,8 +336,9 @@
   (setq ruler-mode-show-tab-stops t))
 
 (use-package paren
-  :pre-load (setq show-paren-delay 0.1)
-  :init (show-paren-mode)
+  :init
+  (setq show-paren-delay 0.1)
+  (show-paren-mode)
   :config
   (setq show-paren-when-point-inside-paren t
         show-paren-when-point-in-periphery t))
@@ -384,19 +374,20 @@
 
 (use-package hl-todo
   :defer t
-  :pre-load
+  :init
   (setq hl-todo-keyword-faces
         (mapcar (lambda (word)
                   (cons word 'hl-todo))
                 '("TODO" "FIXME" "XXX" "WARNING"))))
 
 (use-package pretty-sha-path
-  :defer t
-  :pre-load
+  :defer 7
+  :init
   (al/add-my-package-to-load-path-maybe "pretty-sha-path")
   (setq
    pretty-sha-path-regexp "\\(?:store\\|nar\\)/\\([[:alnum:]]\\{32\\}\\)"
    pretty-sha-path-regexp-group 1)
-  :idle (global-pretty-sha-path-mode))
+  :config
+  (global-pretty-sha-path-mode))
 
 ;;; visual.el ends here

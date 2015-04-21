@@ -46,7 +46,7 @@
 
 (use-package calendar
   :defer t
-  :pre-load
+  :init
   (setq calendar-date-style 'iso)
   :config
   (setq
@@ -112,10 +112,8 @@
   (add-hook 'diary-list-entries-hook 'diary-sort-entries t))
 
 (use-package appt
-  :defer t
-  :idle
-  (and (utl-server-running-p)
-       (appt-activate))
+  :defer 5
+  :if (utl-server-running-p)
   :config
   (setq
    appt-audible nil
@@ -125,7 +123,8 @@
   (when (require 'sauron nil t)
     (add-to-list 'sauron-modules 'sauron-org))
   (when (require 'utl-appt nil t)
-    (defalias 'appt-display-message 'utl-appt-display-message)))
+    (defalias 'appt-display-message 'utl-appt-display-message))
+  (appt-activate))
 
 (use-package utl-appt
   :defer t

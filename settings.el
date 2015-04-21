@@ -26,7 +26,7 @@
    server-temp-file-regexp "^/tmp/Re\\|/draft$\\|COMMIT_EDITMSG\\|git-rebase-todo"))
 
 (use-package utl-server
-  :config
+  :init
   (utl-server-named-start '("server-emms" "server")))
 
 
@@ -104,9 +104,8 @@
 
 (use-package smex
   :defer t
-  :pre-load
-  (setq smex-save-file (al/emacs-data-dir-file "smex-items"))
   :init
+  (setq smex-save-file (al/emacs-data-dir-file "smex-items"))
   (bind-key "M-t" 'execute-extended-command ctl-x-map)
   (bind-key "C-M-t" 'smex-major-mode-commands)
   (bind-key* "M-t" 'smex)
@@ -207,15 +206,15 @@
 
 (use-package winner
   :disabled t
-  :pre-load
+  :defer 5
+  :init
   (setq winner-dont-bind-my-keys t)
-  :idle
-  (winner-mode)
   (bind-keys
    ("<C-left>"  . winner-undo)
    ("<C-right>" . winner-redo))
   :config
-  (setq winner-ring-size 40))
+  (setq winner-ring-size 40)
+  (winner-mode))
 
 
 ;;; comint, shell, eshell
@@ -258,9 +257,8 @@
 
 (use-package eshell
   :defer t
-  :pre-load
-  (setq eshell-directory-name (al/emacs-data-dir-file "eshell"))
   :init
+  (setq eshell-directory-name (al/emacs-data-dir-file "eshell"))
   (bind-keys
    ("C-z"   . eshell)
    ("C-M-z" . utl-eshell-cd))
@@ -492,7 +490,7 @@
 
 (use-package journal
   :defer t
-  :pre-load (al/add-my-package-to-load-path-maybe "journal")
+  :init (al/add-my-package-to-load-path-maybe "journal")
   :config
   (setq
    org-id-files (al/with-check
@@ -516,13 +514,13 @@
 
 (use-package darts-value
   :defer t
-  :pre-load (al/add-my-package-to-load-path-maybe "darts-value")
-  :commands (darts-throw-string-to-points darts-throw-string-to-code))
+  :commands (darts-throw-string-to-points darts-throw-string-to-code)
+  :init (al/add-my-package-to-load-path-maybe "darts-value"))
 
 (use-package darts-daydata
   :defer t
   :commands (darts-day-template darts-day-select)
-  :pre-load (al/add-my-package-to-load-path-maybe "darts-daydata")
+  :init (al/add-my-package-to-load-path-maybe "darts-daydata")
   :config
   (setq
    darts-database "darts"

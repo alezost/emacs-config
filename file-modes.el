@@ -35,9 +35,9 @@
 
 (use-package org
   :defer t
-  :idle
-  (and (utl-server-running-p)
-       (require 'org-protocol nil t))
+  :init
+  (when (utl-server-running-p)
+    (require 'org-protocol nil t))
 
   :config
   (require 'utl-org nil t)

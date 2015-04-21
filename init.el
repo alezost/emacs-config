@@ -364,8 +364,19 @@ relies on a particular version of a built-in package (e.g.,
 (require 'bind-key)
 (setq bind-key-describe-special-forms t)
 
-(require 'use-package)
+(eval-when-compile
+  (require 'use-package))
 (setq use-package-verbose t)
+
+(use-package diminish
+  :config
+  (defun al/add-minor-mode-name (mode &rest _)
+    "Add MODE to `minor-mode-alist' if it is bound but is not there."
+    (when (and (boundp mode)
+               (null (assq mode minor-mode-alist)))
+      (push (list mode "") minor-mode-alist)
+      (message "%S has been added to `minor-mode-alist'." mode)))
+  (advice-add 'diminish :before #'al/add-minor-mode-name))
 
 (al/add-my-package-to-load-path-maybe "utils")
 

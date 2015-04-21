@@ -228,8 +228,8 @@
 
 (use-package point-pos
   :defer t
-  :pre-load (al/add-my-package-to-load-path-maybe "point-pos")
   :init
+  (al/add-my-package-to-load-path-maybe "point-pos")
   (bind-keys
    :prefix-map al/point-pos-map
    :prefix-docstring "Map for point-pos."
@@ -253,12 +253,11 @@
 
 (use-package imenus
   :defer t
-  :pre-load (al/add-my-package-to-load-path-maybe "imenus")
   :init
+  (al/add-my-package-to-load-path-maybe "imenus")
   (bind-key* "C-M-m" 'imenus)
   :config
   (setq imenus-delimiter " ⇨ ")
-
   (bind-keys
    :map imenus-minibuffer-map
    ("C-r" . imenus-rescan)
@@ -291,8 +290,7 @@
         select-enable-clipboard nil))
 
 (use-package browse-kill-ring
-  :defer t
-  :idle (browse-kill-ring-default-keybindings)
+  :defer 5
   :config
   (setq
    browse-kill-ring-separator (make-string 64 ?—)
@@ -309,7 +307,8 @@
     (al/bind-keys-from-vars 'browse-kill-ring-mode-map
       'al/browse-kill-ring-keys t))
   (al/add-hook-maybe 'browse-kill-ring-mode-hook
-    'al/browse-kill-ring-bind-keys))
+    'al/browse-kill-ring-bind-keys)
+  (browse-kill-ring-default-keybindings))
 
 
 ;;; Misc settings and packages
@@ -346,8 +345,8 @@
   (al/bind-keys-from-vars 'text-mode-map 'al/text-editing-keys))
 
 (use-package abbrev
-  :diminish " Ab"
   :defer t
+  :diminish " Ab"
   :config
   (define-abbrev-table 'global-abbrev-table
     '(("gos"  "GuixSD")

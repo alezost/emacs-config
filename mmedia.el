@@ -20,11 +20,11 @@
 
 (use-package emms
   :defer t
-  :pre-load
+  :init
   (setq
    emms-directory (al/emacs-data-dir-file "emms")
    emms-playlist-sort-prefix "s")
-  :init
+
   (bind-keys
    :prefix-map al/emms-map
    :prefix-docstring "Map for EMMS."

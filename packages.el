@@ -68,13 +68,12 @@
    guix-newest-available-packages
    guix-generations
    guix-generations-by-time)
-  :pre-load
+  :init
   (let ((dir (al/src-dir-file "guix-git/emacs")))
     (al/add-to-load-path-maybe dir)
     (setq guix-load-path dir))
-  :idle
   (require 'guix-init nil t)
-  :init
+
   (bind-keys
    :prefix-map al/guix-map
    :prefix-docstring "Map for guix."
@@ -153,8 +152,8 @@
 
 (use-package aurel
   :defer t
-  :pre-load (al/add-my-package-to-load-path-maybe "aurel")
   :init
+  (al/add-my-package-to-load-path-maybe "aurel")
   (bind-keys
    :prefix-map al/aurel-map
    :prefix-docstring "Map for aurel."

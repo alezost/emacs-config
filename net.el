@@ -411,13 +411,13 @@
 
 (use-package erc
   :defer t
-  :pre-load
+  :init
   (setq erc-modules
         '(truncate keep-place log pcomplete netsplit button match
           notifications track completion readonly networks ring autojoin
           noncommands irccontrols move-to-prompt stamp menu list))
   (setq erc-log-channels-directory (al/emacs-data-dir-file "erc-log"))
-  :init
+
   (bind-keys*
    :prefix-map al/erc-map
    :prefix-docstring "Map for ERC."
@@ -650,8 +650,8 @@
 
 (use-package debpaste
   :defer t
-  :pre-load (al/add-my-package-to-load-path-maybe "debpaste")
   :init
+  (al/add-my-package-to-load-path-maybe "debpaste")
   (bind-keys
    :prefix-map al/debpaste-map
    :prefix-docstring "Map for debpaste."
@@ -662,6 +662,7 @@
    ("R" . debpaste-display-received-info-in-buffer)
    ("q" . debpaste-quit-buffers)
    ("K" . debpaste-kill-all-buffers))
+
   :config
   (setq
    debpaste-user-name "alezost"
@@ -670,7 +671,6 @@
 
 (use-package web-search
   :defer t
-  :pre-load (al/add-my-package-to-load-path-maybe "web-search")
   :commands
   (web-search-yandex
    web-search-ipduh
@@ -678,6 +678,7 @@
    web-search-wikipedia-ru
    web-search-arch-package
    web-search-ej)
+  :init (al/add-my-package-to-load-path-maybe "web-search")
   :config
   (web-search-add-engine
    'ipduh "IPduh"
@@ -706,8 +707,8 @@
 
 (use-package echo-msk
   :defer t
-  :pre-load (al/add-my-package-to-load-path-maybe "echo-msk")
   :init
+  (al/add-my-package-to-load-path-maybe "echo-msk")
   (bind-keys
    :prefix-map al/echo-msk-map
    :prefix-docstring "Map for echo-msk."

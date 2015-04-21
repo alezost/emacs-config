@@ -116,7 +116,7 @@
 
 (use-package slime
   :defer t
-  :pre-load
+  :init
   ;; Use SLIME from quicklisp.
   (let* ((quicklisp-dir  (expand-file-name "~/.quicklisp"))
          (swank.txt-file (expand-file-name
@@ -132,7 +132,7 @@
         (al/add-to-load-path-maybe slime-dir)
         (require 'slime-autoloads nil t))))
   (setq slime-contribs '(slime-fancy))
-  :init
+
   ;; `al/slime-keys' is required for `al/erc-channel-config'
   (defconst al/slime-keys
     '(("C-v"     . utl-slime-eval-dwim)
@@ -328,7 +328,7 @@
 (use-package magit
   :defer t
   :commands ido-enter-magit-status
-  :pre-load
+  :init
   (when (utl-server-running-p)
      (message "XXX Using magit next branch.")
      (al/add-to-load-path-maybe (al/src-dir-file "emacs/magit")))

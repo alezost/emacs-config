@@ -71,7 +71,7 @@
 
 (use-package tetris
   :defer t
-  :pre-load
+  :init
   (setq
    tetris-width 16
    tetris-height 32
@@ -127,7 +127,7 @@
 
 (use-package mana
   :defer t
-  :pre-load (al/add-my-package-to-load-path-maybe "mana")
+  :init (al/add-my-package-to-load-path-maybe "mana")
   :config
   (setq mana-character (rot13 "wbuanguna")))
 

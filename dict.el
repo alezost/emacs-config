@@ -57,7 +57,7 @@
 (use-package flyspell
   :defer t
   :diminish "fly"
-  :pre-load
+  :init
   (setq flyspell-use-meta-tab nil)
   :config
   (defconst al/flyspell-keys
