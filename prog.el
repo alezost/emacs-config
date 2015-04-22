@@ -452,7 +452,9 @@
   :config
   (when (require 'utl-magit nil t)
     (utl-magit-popup-substitute-key
-     'magit-bisect-popup :actions ?u ?!) ; run
+     'magit-bisect-popup :actions ?a ?!) ; run
+    (utl-magit-popup-substitute-key
+     'magit-bisect-popup :actions ?B ?s) ; start
     ))
 
 (use-package git-commit
