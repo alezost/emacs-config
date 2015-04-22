@@ -174,12 +174,6 @@
      (magit-popup-sequence-mode  . "µPopupSeq")
      (git-rebase-mode            . "gitRebase")
 
-     ;; TODO del (old)
-     (magit-key-mode             . "µKey")
-     (magit-branch-manager-mode  . "µBranch")
-     (magit-commit-mode          . "µCommit")
-     (git-commit-mode            . "gitCommit")
-
      (calendar-mode              . "📆")
      (w3m-form-input-select-mode . "w3m🗹")
      (package-menu-mode          . "Pkg🗋")

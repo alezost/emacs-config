@@ -328,10 +328,6 @@
 (use-package magit
   :defer t
   :commands ido-enter-magit-status
-  :init
-  (when (utl-server-running-p)
-     (message "XXX Using magit next branch.")
-     (al/add-to-load-path-maybe (al/src-dir-file "emacs/magit")))
   :config
   (setq
    magit-status-buffer-name-format   "*magit: %b*"
@@ -345,72 +341,10 @@
    magit-stash-buffer-name-format    "*magit-stash: %b*"
    magit-stashes-buffer-name-format  "*magit-stashes: %b*")
   (magit-auto-revert-mode 0)
-  (if (utl-server-running-p)        ; TODO del after switching to 'next'
-      (when (require 'utl-magit nil t)
-        (utl-magit-popup-substitute-key
-         'magit-branch-popup :actions ?u ?U)) ; set upstream
-    (bind-keys
-     :map magit-mode-map
-     ("."   . magit-goto-previous-section)
-     ("e"   . magit-goto-next-section)
-     ("M-." . magit-goto-previous-sibling-section)
-     ("M-e" . magit-goto-next-sibling-section)
-     ("w"   . magit-copy-item-as-kill)
-     ("v"   . magit-git-command)
-     ("="   . magit-diff)
-     ("E"   . magit-ediff)
-     ("D"   . magit-discard-item)
-     ("R"   . magit-rename-item)
-     ("r"   . magit-rebase-step)
-     ("I"   . magit-interactive-rebase)
-     ("m"   . magit-mark-item)
-     ("M"   . magit-key-mode-popup-merging)
-     ("W"   . magit-key-mode-popup-remoting))
-    (bind-keys
-     :map magit-status-mode-map
-     ("."   . magit-goto-previous-section)
-     ("I"   . magit-interactive-rebase))
-    (bind-keys
-     :map magit-branch-manager-mode-map
-     ("N"   . magit-create-branch)
-     ("u"   . magit-checkout))
-    (bind-keys
-     :map magit-log-mode-map
-     ("N"   . magit-log-show-more-entries)
-     ("."   . previous-line)
-     ("e"   . next-line)
-     (">"   . magit-goto-previous-section)
-     ("E"   . magit-goto-next-section)
-     ("u"   . magit-visit-item))
-
-    ;; TODO del (not needed for magit next)
-    (al/add-hook-maybe
-        '(magit-status-mode-hook
-          magit-log-mode-hook
-          magit-branch-manager-mode-hook)
-      'hl-line-mode)
-    (when (require 'utl-mode-line nil t)
-      ;; `magit-key-mode' is not a proper mode (made by
-      ;; `define-derived-mode'), so a normal hook has no effect.
-      (advice-add 'magit-key-mode-redraw :after #'utl-mode-name))))
-
-;; TODO del (old)
-(use-package git-commit-mode
-  :defer t
-  :config
-  (al/bind-keys-from-vars 'git-commit-mode-map))
-
-;; TODO del (old)
-(use-package git-rebase-mode
-  :defer t
-  :config
-  (defconst al/git-rebase-keys
-    '(("p"   . git-rebase-pick)
-      ("C-k" . git-rebase-kill-line)
-      ("M-." . git-rebase-move-line-up)
-      ("M-e" . git-rebase-move-line-down))
-    "Alist of auxiliary keys for `git-rebase-mode-map'.")
-  (al/bind-keys-from-vars 'git-rebase-mode-map 'al/git-rebase-keys))
+  (when (require 'utl-magit nil t)
+    (utl-magit-popup-substitute-key
+     'magit-branch-popup :actions ?u ?U) ; set upstream
+    ))
 
 (use-package magit-mode
   :defer t
