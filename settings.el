@@ -615,6 +615,25 @@
    ("H-a" . hexl-beginning-of-buffer)
    ("H-i" . hexl-end-of-buffer)))
 
+(use-package diff-mode
+  :defer t
+  :config
+  (defconst al/diff-shared-keys
+    '(("." . diff-hunk-prev)
+      (">" . diff-file-prev)
+      ("e" . diff-hunk-next)
+      ("E" . diff-file-next))
+    "Alist of auxiliary keys for `diff-mode-shared-map'.")
+  (defconst al/diff-keys
+    '(("H-u" . diff-undo)
+      ("M-." . diff-hunk-prev)
+      ("M->" . diff-file-prev)
+      ("M-e" . diff-hunk-next)
+      ("M-E" . diff-file-next))
+    "Alist of auxiliary keys for `diff-mode-map'.")
+  (al/bind-keys-from-vars 'diff-mode-shared-map 'al/diff-shared-keys t)
+  (al/bind-keys-from-vars 'diff-mode-map 'al/diff-keys))
+
 (use-package ediff
   :defer t
   :config
