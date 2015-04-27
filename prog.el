@@ -403,7 +403,9 @@
 (use-package magit-log
   :defer t
   :config
-  (setq magit-log-margin-spec '(25 1 magit-duration-spec))
+  (setq
+   magit-log-margin-spec '(25 1 magit-duration-spec)
+   magit-log-arguments '("--decorate"))
   (when (require 'utl-magit nil t)
     (utl-magit-popup-substitute-key
      'magit-log-popup :options ?m ?g)) ; grep
