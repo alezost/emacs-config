@@ -108,8 +108,8 @@
   (al/bind-keys-from-vars 'w3m-mode-map 'al/w3m-keys)
 
   (when (require 'utl-w3m nil t)
-    (utl-w3m-bind-number-keys utl-w3m-switch-to-buffer)
-    (utl-w3m-bind-number-keys utl-w3m-kill-buffer "k")))
+    (utl-w3m-bind-number-keys 'utl-w3m-switch-to-buffer)
+    (utl-w3m-bind-number-keys 'utl-w3m-kill-buffer "k")))
 
 (use-package w3m-form
   :defer t
