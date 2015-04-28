@@ -251,7 +251,9 @@
 (use-package geiser-repl
   :defer t
   :config
-  (setq geiser-repl-use-other-window t)
+  (setq
+   geiser-repl-use-other-window t
+   geiser-repl-history-filename (al/emacs-data-dir-file ".geiser_history"))
   (al/add-hook-maybe 'geiser-repl-mode-hook
     '(paredit-mode al/inhibit-field-motion)))
 
