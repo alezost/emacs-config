@@ -185,8 +185,14 @@
      (guix-generation-list-mode  . "∵🗋g")
      (emms-playlist-mode         . "🎝")
      (emms-stream-mode           . "🎝 Streams")
-     (sauron-mode                . "👁")))
+     (sauron-mode                . "👁"))
 
+   utl-minor-mode-names-alist
+   '((visual-line-mode           . "↩")
+     (auto-fill-function         . "↵")
+     (isearch-mode               . "🔎")))
+
+  (utl-diminish utl-minor-mode-names-alist)
   (al/add-hook-maybe 'after-change-major-mode-hook 'utl-mode-name))
 
 (setq-default
@@ -303,11 +309,6 @@
   ;; :init (tooltip-mode 0)
   :config
   (setq tooltip-delay 0.2))
-
-(use-package simple
-  :diminish
-  ((visual-line-mode   . " ↩")
-   (auto-fill-function . " ↵")))
 
 (use-package whitespace
   :defer t
