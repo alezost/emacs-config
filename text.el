@@ -191,40 +191,33 @@
  ("r"   . query-replace-regexp)
  ("R"   . replace-regexp))
 
-(use-package "isearch"
-  :defer t
-  :diminish " 🔎"
-  :config
-  (setq isearch-allow-scroll t)
-  (bind-keys
-   :map isearch-mode-map
-   ("M-s" . isearch-query-replace)
-   ("M-d" . isearch-edit-string)
-   ("M-o" . isearch-occur)
-   ("s-7" . (lambda () (interactive)
-              (utl-set-isearch-input-method nil)))
-   ("s-8" . (lambda () (interactive)
-              (utl-set-isearch-input-method "dvorak-russian-computer")))))
+(setq isearch-allow-scroll t)
+(bind-keys
+ :map isearch-mode-map
+ ("M-s" . isearch-query-replace)
+ ("M-d" . isearch-edit-string)
+ ("M-o" . isearch-occur)
+ ("s-7" . (lambda () (interactive)
+            (utl-set-isearch-input-method nil)))
+ ("s-8" . (lambda () (interactive)
+            (utl-set-isearch-input-method "dvorak-russian-computer"))))
+
+(defconst al/occur-keys
+  '(("." . occur-prev)
+    ("e" . occur-next)
+    ("u" . occur-mode-goto-occurrence))
+  "Alist of auxiliary keys for `occur-mode-map'.")
+(al/bind-keys-from-vars 'occur-mode-map 'al/occur-keys)
+
+(defun al/occur-set-paragraph ()
+  "Set paragraph to be started from any non-space symbol."
+  (setq-local paragraph-start "[^ ]"))
+(al/add-hook-maybe 'occur-mode-hook 'al/occur-set-paragraph)
 
 (use-package misearch
   :defer t
   :config
   (setq multi-isearch-pause nil))
-
-(use-package "replace"
-  :defer t
-  :config
-  (defconst al/occur-keys
-    '(("." . occur-prev)
-      ("e" . occur-next)
-      ("u" . occur-mode-goto-occurrence))
-    "Alist of auxiliary keys for `occur-mode-map'.")
-  (al/bind-keys-from-vars 'occur-mode-map 'al/occur-keys)
-
-  (defun al/occur-set-paragraph ()
-    "Set paragraph to be started from any non-space symbol."
-    (setq-local paragraph-start "[^ ]"))
-  (al/add-hook-maybe 'occur-mode-hook 'al/occur-set-paragraph))
 
 (use-package point-pos
   :defer t
@@ -335,14 +328,11 @@
 (prefer-coding-system 'utf-8)
 (al/add-hook-maybe 'after-save-hook 'utl-check-parens)
 
-(use-package "text-mode"
-  :defer t
-  :config
-  (al/add-hook-maybe 'text-mode-hook
-    '(visual-line-mode
-      abbrev-mode
-      al/show-trailing-whitespace))
-  (al/bind-keys-from-vars 'text-mode-map 'al/text-editing-keys))
+(al/add-hook-maybe 'text-mode-hook
+  '(visual-line-mode
+    abbrev-mode
+    al/show-trailing-whitespace))
+(al/bind-keys-from-vars 'text-mode-map 'al/text-editing-keys)
 
 (use-package abbrev
   :defer t
