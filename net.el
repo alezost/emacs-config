@@ -24,7 +24,8 @@
  :prefix "C-w"
  ("p" . utl-ping)
  ("t" . utl-traceroute)
- ("w" . wget))
+ ("w" . wget)
+ ("m" . utl-url-wget-mp3))
 
 (bind-keys*
  :prefix-map al/web-search-map
@@ -102,6 +103,8 @@
       ("c RET"     . w3m-print-this-url)
       ("s"         . utl-w3m-wget)
       ("w"         . utl-w3m-wget)
+      ("C-w w"     . utl-w3m-wget)
+      ("C-w m"       (utl-url-wget-mp3 (w3m-anchor)))
       ("C-c C-f"   . w3m-next-buffer)
       ("C-c C-b"   . w3m-previous-buffer))
     "Alist of auxiliary keys for `w3m-mode-map'.")
