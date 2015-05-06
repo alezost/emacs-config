@@ -38,7 +38,7 @@
    ("l" . emms)
    ("r" . emms-streams)
    ("g" . utl-emms-seek-to)
-   ("y" . emms-cache-sync)
+   ("y" . utl-emms-mpv-sync-playing-time)
    ("S" . emms-cache-save)
    ("u" . (lambda () (interactive) (emms-playlist-simple-uniq))))
 
