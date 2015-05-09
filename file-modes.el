@@ -197,6 +197,8 @@
 (setq auto-mode-alist
       (append
        '(("/var/log.*\\'" . syslog-mode)
+         ("/etc/profile\\'" . sh-mode)
+         ("bashrc\\'"     . sh-mode)
          ("\\.Xmodmap\\'" . conf-xdefaults-mode)
          ("\\.rules\\'"   . conf-unix-mode)
          ("\\.hwdb\\'"    . conf-unix-mode)
