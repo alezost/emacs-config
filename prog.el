@@ -187,7 +187,7 @@
   (al/clean-map 'slime-autodoc-mode-map)
   (bind-keys
    :map slime-autodoc-mode-map
-   ("SPC" slime-autodoc-space)))
+   ("SPC" . slime-autodoc-space)))
 
 
 ;;; Scheme, geiser
