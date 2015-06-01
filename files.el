@@ -158,6 +158,7 @@
       ("H-a"   . utl-dired-beginning-of-buffer)
       ("H-i"   . utl-dired-end-of-buffer)
       ("M-d"   . dired-toggle-read-only)
+      ("p"     . pathify-dired)
       ("t"     . image-dired-display-thumbs)
       ("T"     . dired-do-touch)
       ("z"     . dired-unmark)
