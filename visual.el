@@ -373,7 +373,13 @@
   (setq hl-todo-keyword-faces
         (mapcar (lambda (word)
                   (cons word 'hl-todo))
-                '("TODO" "FIXME" "XXX" "WARNING"))))
+                '("TODO" "FIXME" "XXX" "WARNING")))
+  :config
+  (setq hl-todo-keywords
+        `(((lambda (_)
+             (let (case-fold-search)
+               (re-search-forward hl-todo-regexp nil t)))
+           (1 (hl-todo-get-face) t t)))))
 
 (use-package pretty-sha-path
   :defer 7
