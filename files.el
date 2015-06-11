@@ -309,6 +309,7 @@
   :config
   (setq
    recentf-keep nil
+   recentf-auto-cleanup 'never
    recentf-max-saved-items 99
    recentf-save-file (al/emacs-data-dir-file "recentf")))
 
