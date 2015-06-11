@@ -565,6 +565,10 @@
  disabled-command-function nil
  inhibit-startup-screen t)
 
+;; Do not pop up the *Warnings* buffer when something long is executed
+;; in *shell*.
+(setq warning-suppress-types '((undo discard-info)))
+
 (electric-indent-mode 0)
 
 (defalias 'yes-or-no-p 'y-or-n-p)
