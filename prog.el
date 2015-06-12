@@ -320,6 +320,7 @@
  :prefix "M-m"
  ("M-m" . utl-magit-ido-switch-buffer)
  ("b" . utl-magit-ido-switch-buffer)
+ ("c" . magit-show-commit)
  ("s" . magit-status)
  ("l" . magit-log-current)
  ("k" . (lambda () (interactive)
