@@ -406,7 +406,17 @@
   ;; Although `pcomplete-suffix-list' is marked as obsolete, it is used
   ;; by `pcomplete-insert-entry', and its default value prevents
   ;; inserting space after ":" (while completing ERC nicks).
-  (setq pcomplete-suffix-list nil))
+  (setq pcomplete-suffix-list nil)
+  (when (require 'utl-pcomplete nil t)
+    (al/add-hook-maybe '(shell-mode-hook eshell-mode-hook)
+      'utl-pcomplete-no-space)
+    (advice-add 'pcomplete-parse-arguments
+      :after #'utl-pcomplete-reduce-args-maybe)))
+
+(use-package utl-pcomplete
+  :defer t
+  :config
+  (setq utl-pcomplete-skipped-commands '("sudo" "pre-inst-env")))
 
 (use-package company
   :defer t
