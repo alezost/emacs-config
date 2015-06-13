@@ -255,6 +255,15 @@
     "Alist of auxiliary keys for comint modes.")
   (al/bind-keys-from-vars 'comint-mode-map 'al/comint-keys))
 
+(use-package shell
+  :defer t
+  :config
+  (defconst al/shell-keys
+    '(("M-O" . shell-backward-command)
+      ("M-U" . shell-forward-command))
+    "Alist of auxiliary keys for `shell-mode-map'.")
+  (al/bind-keys-from-vars 'shell-mode-map 'al/shell-keys))
+
 (use-package eshell
   :defer t
   :init
