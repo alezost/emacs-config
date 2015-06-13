@@ -46,6 +46,7 @@
 (al/file-accessors "sound"         "~/docs/audio/small")
 (al/file-accessors "tmp"           "~/temp")
 (al/file-accessors "src"           "~/src")
+(al/file-accessors "devel"         "~/devel")
 (al/file-accessors "download"      "~/downloads")
 (al/file-accessors "echo-download" (al/download-dir-file "echo"))
 
