@@ -69,9 +69,13 @@
    guix-generations
    guix-generations-by-time)
   :init
-  (let ((dir (al/src-dir-file "guix-git/emacs")))
+  (let ((dir (al/devel-dir-file "guix/emacs")))
     (al/add-to-load-path-maybe dir)
     (setq guix-load-path dir))
+  ;; (al/add-to-load-path-maybe (al/src-dir-file "guix/emacs"))
+  (setq guix-default-profile
+        (concat "/var/guix/profiles/per-user/"
+                user-login-name "/guix-profile"))
   (require 'guix-init nil t)
 
   (bind-keys
