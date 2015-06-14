@@ -416,7 +416,7 @@
 (use-package utl-pcomplete
   :defer t
   :config
-  (setq utl-pcomplete-skipped-commands '("sudo" "pre-inst-env")))
+  (add-to-list 'utl-pcomplete-skipped-commands "pre-inst-env"))
 
 (use-package company
   :defer t
