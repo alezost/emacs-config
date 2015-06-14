@@ -262,7 +262,7 @@
     '(("M-O" . shell-backward-command)
       ("M-U" . shell-forward-command))
     "Alist of auxiliary keys for `shell-mode-map'.")
-  (al/bind-keys-from-vars 'shell-mode-map 'al/shell-keys)
+  (al/bind-keys-from-vars 'shell-mode-map 'al/shell-keys t)
 
   (when (require 'utl-shell nil t)
     (defun al/shell-set-completion ()
