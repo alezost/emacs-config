@@ -262,7 +262,14 @@
     '(("M-O" . shell-backward-command)
       ("M-U" . shell-forward-command))
     "Alist of auxiliary keys for `shell-mode-map'.")
-  (al/bind-keys-from-vars 'shell-mode-map 'al/shell-keys))
+  (al/bind-keys-from-vars 'shell-mode-map 'al/shell-keys)
+
+  (when (require 'utl-shell nil t)
+    (defun al/shell-set-completion ()
+      (setq-local pcomplete-command-completion-function
+                  'utl-shell-command-completion))
+    (al/add-hook-maybe 'shell-mode-hook
+      'al/shell-set-completion)))
 
 (use-package eshell
   :defer t
