@@ -242,7 +242,6 @@ Also it (default syntax) breaks `indent-guide-mode'."
     (magit              :fetcher github :repo "magit/magit"
                         :files ("*.el" "*.texi"))
     github-browse-file
-    (xml-rpc            :fetcher github :repo "emacsmirror/xml-rpc")
     (pathify            :fetcher git :url ,(al/emacs-repo "pathify"))
     (point-pos          :fetcher git :url ,(al/emacs-repo "point-pos"))
     (web-search         :fetcher git :url ,(al/emacs-repo "web-search"))
