@@ -243,7 +243,7 @@
   (setq tar-mode-show-date t)
   (defun al/tar-time-string (time)
     (format-time-string "  %d-%b-%Y" time))
-  (defalias 'tar-clip-time-string 'al/tar-time-string)
+  (advice-add 'tar-clip-time-string :override 'al/tar-time-string)
 
   (bind-keys
    :map tar-mode-map

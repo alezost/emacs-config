@@ -62,7 +62,7 @@
   ;; Generate ido keymaps only once: `ido-init-completion-maps' is
   ;; called every time an ido command is invoked.  (XXX fixed in 25.1)
   (ido-init-completion-maps)
-  (defalias 'ido-init-completion-maps 'ignore)
+  (advice-add 'ido-init-completion-maps :override 'ignore)
 
   (defconst al/ido-common-keys
     '(("C-l"    . ido-toggle-ignore)
@@ -122,7 +122,8 @@
       (define-key map (kbd "C-h w") 'smex-where-is)
       (define-key map (kbd "M-d")   'smex-find-function)
       (define-key map (kbd "C-d")   'smex-describe-function)))
-  (defalias 'smex-prepare-ido-bindings 'al/smex-prepare-ido-bindings))
+  (advice-add 'smex-prepare-ido-bindings
+    :override 'al/smex-prepare-ido-bindings))
 
 
 ;;; Working with buffers: ibuffer, uniquify, …
@@ -318,7 +319,7 @@
     (setq
      eshell-prompt-function 'utl-eshell-prompt
      eshell-prompt-regexp utl-eshell-prompt-regexp)
-    (defalias 'eshell/info 'utl-eshell/info)))
+    (advice-add 'eshell/info :override 'utl-eshell/info)))
 
 
 ;;; Button, custom, widget
@@ -449,7 +450,8 @@
   (bind-key "<tab>" 'complete-symbol sql-interactive-mode-map)
 
   (when (require 'utl-sql nil t)
-    (defalias 'sql-highlight-product 'utl-sql-highlight-product)
+    (advice-add 'sql-highlight-product
+      :override 'utl-sql-highlight-product)
     (al/add-hook-maybe 'sql-interactive-mode-hook
       '(utl-sql-save-history
         utl-sql-highlight-product
@@ -465,7 +467,8 @@
   :config
   (setq mysql-user sql-user)
   (when (require 'utl-mysql nil t)
-    (defalias 'mysql-shell-query 'utl-mysql-shell-query)))
+    (advice-add 'mysql-shell-query
+      :override 'utl-mysql-shell-query)))
 
 (use-package sql-completion
   :defer t
@@ -587,7 +590,7 @@
 
 (electric-indent-mode 0)
 
-(defalias 'yes-or-no-p 'y-or-n-p)
+(advice-add 'yes-or-no-p :override 'y-or-n-p)
 
 (al/bind-keys-from-vars 'special-mode-map 'al/lazy-moving-keys t)
 

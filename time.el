@@ -79,7 +79,7 @@
 
   ;; Do not ruin the mode-line.
   (if (version< emacs-version "25")
-      (defalias 'calendar-update-mode-line 'ignore)
+      (advice-add 'calendar-update-mode-line :override 'ignore)
     (setq calendar-mode-line-format nil))
 
   (add-hook 'calendar-mode-hook
@@ -123,7 +123,8 @@
   (when (require 'sauron nil t)
     (add-to-list 'sauron-modules 'sauron-org))
   (when (require 'utl-appt nil t)
-    (defalias 'appt-display-message 'utl-appt-display-message))
+    (advice-add 'appt-display-message
+      :override 'utl-appt-display-message))
   (appt-activate))
 
 (use-package utl-appt

@@ -351,8 +351,8 @@
         (indent-guide-show)
       (run-with-idle-timer indent-guide-delay nil
                            #'indent-guide-show)))
-  (defalias 'indent-guide-post-command-hook
-    'al/indent-guide-post-command-hook))
+  (advice-add 'indent-guide-post-command-hook
+    :override 'al/indent-guide-post-command-hook))
 
 (use-package make-color
   :defer t

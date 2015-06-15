@@ -135,7 +135,8 @@
   :config
   (when (require 'utl-browse-url nil t)
     (setq browse-url-browser-function 'utl-choose-browser)
-    (defalias 'browse-url-default-browser 'utl-browse-url-conkeror)))
+    (advice-add 'browse-url-default-browser
+      :override 'utl-browse-url-conkeror)))
 
 (use-package utl-browse-url
   :defer t

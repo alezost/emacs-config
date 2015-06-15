@@ -71,8 +71,9 @@
   :config
   (when (require 'utl-dictem nil t)
     (dictem-initialize)
-    (defalias 'dictem 'utl-dictem)
-    (defalias 'dictem-define-on-press 'utl-dictem-define-on-press))
+    (advice-add 'dictem :override 'utl-dictem)
+    (advice-add 'dictem-define-on-press
+      :override 'utl-dictem-define-on-press))
   (setq dictem-use-existing-buffer nil)
   (bind-keys
    :map dictem-mode-map

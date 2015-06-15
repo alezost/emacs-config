@@ -483,7 +483,8 @@
 $0")
 
   ;; Allow any editing during working with a snippet.
-  (defalias 'yas--on-protection-overlay-modification 'ignore)
+  (advice-add 'yas--on-protection-overlay-modification
+    :override 'ignore)
 
   (bind-key "C-g" (lambda () (interactive)
                     (yas-exit-all-snippets) (keyboard-quit)))

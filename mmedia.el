@@ -115,7 +115,8 @@
     (setq
      emms-mode-line-mode-line-function 'utl-emms-mode-line-song-string
      emms-track-description-function 'utl-emms-full-track-description)
-    (defalias 'emms-source-play 'utl-emms-source-add-and-play)))
+    (advice-add 'emms-source-play
+      :override 'utl-emms-source-add-and-play)))
 
 (use-package emms-playlist-mode
   :defer t

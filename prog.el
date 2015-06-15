@@ -201,7 +201,8 @@
   (al/add-hook-maybe 'scheme-mode-hook
     '(utl-imenu-add-sections paredit-mode))
   (when (require 'utl-scheme nil t)
-    (defalias 'scheme-indent-function 'utl-scheme-indent-function)))
+    (advice-add 'scheme-indent-function
+      :override 'utl-scheme-indent-function)))
 
 (use-package geiser-mode
   :defer t

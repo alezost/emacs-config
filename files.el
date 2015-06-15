@@ -124,7 +124,8 @@
 
 (when (require 'utl-file nil t)
   (setq backup-enable-predicate 'utl-backup-enable-predicate)
-  (defalias 'make-backup-file-name-1 'utl-make-backup-file-name-1))
+  (advice-add 'make-backup-file-name-1
+    :override 'utl-make-backup-file-name-1))
 
 
 ;;; Dired
@@ -217,7 +218,8 @@
 
   (require 'dired-x nil t)
   (when (require 'utl-dired nil t)
-    (defalias 'dired-sort-set-mode-line 'utl-dired-sort-set-mode-line)))
+    (advice-add 'dired-sort-set-mode-line
+      :override 'utl-dired-sort-set-mode-line)))
 
 (use-package dired-x
   :defer t
@@ -248,8 +250,8 @@
   :defer t
   :config
   (when (require 'utl-dired nil t)
-    (defalias 'dired-mark-read-file-name
-      'utl-dired-mark-read-file-name)))
+    (advice-add 'dired-mark-read-file-name
+      :override 'utl-dired-mark-read-file-name)))
 
 (use-package wdired
   :defer t
