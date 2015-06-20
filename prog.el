@@ -344,7 +344,7 @@
    magit-cherry-buffer-name-format   "*magit-cherry: %b*"
    magit-stash-buffer-name-format    "*magit-stash: %b*"
    magit-stashes-buffer-name-format  "*magit-stashes: %b*")
-  (magit-auto-revert-mode 0)
+  (setq magit-revert-buffers nil)
   (when (require 'utl-magit nil t)
     (utl-magit-popup-substitute-key
      'magit-branch-popup :actions ?u ?U) ; set upstream
