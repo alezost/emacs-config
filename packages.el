@@ -129,30 +129,47 @@
             (output 9 t)
             (installed 12 t)
             (synopsis 30 t)))
-  (bind-keys
-   :map guix-list-mode-map
-   ("u" . guix-list-describe)
-   ("," . guix-history-back)
-   ("P" . (lambda () (interactive) (message "%s" guix-profile)))
-   ("p" . guix-history-forward)
-   ("z" . guix-list-unmark)
-   ("Z" . guix-list-unmark-all))
-  (bind-keys
-   :map guix-generation-list-mode-map
-   ("e" . next-line)
-   ("u" . guix-generation-list-show-packages)
-   ("c" . guix-generation-list-switch)
-   ("s" . guix-list-sort)
-   ("D" . guix-generation-list-diff)
-   ("E" . guix-generation-list-ediff))
-  (bind-keys
-   :map guix-output-list-mode-map
-   ("u" . guix-output-list-describe))
-  (bind-keys
-   :map guix-info-mode-map
-   ("," . guix-history-back)
-   ("p" . guix-history-forward)
-   ("P" . al/guix-show-profile)))
+
+  (defconst al/guix-common-keys
+    '(("," . guix-history-back)
+      ("p" . guix-history-forward)
+      ("P"   (message "%s" guix-profile)))
+    "Alist of auxiliary keys that should be bound in any guix mode.")
+  (defconst al/guix-list-keys
+    '(("u" . guix-list-describe)
+      ("z" . guix-list-unmark)
+      ("Z" . guix-list-unmark-all))
+    "Alist of auxiliary keys for `guix-list-mode-map'.")
+  (defconst al/guix-package-or-output-list-keys
+    '(("M-d" . guix-list-edit-package))
+    "Alist of auxiliary keys for `guix-package-list-mode-map' and
+    `guix-output-list-mode-map'.")
+  (defconst al/guix-output-list-keys
+    '(("u" . guix-output-list-describe))
+    "Alist of auxiliary keys for `guix-output-list-mode-map'.")
+  (defconst al/guix-generation-list-keys
+    '(("u" . guix-generation-list-show-packages)
+      ("c" . guix-generation-list-switch)
+      ("E" . guix-generation-list-ediff))
+    "Alist of auxiliary keys for `guix-generation-list-mode-map'.")
+
+  (al/bind-keys-from-vars 'guix-root-map 'al/guix-common-keys t)
+  (al/bind-keys-from-vars 'guix-list-mode-map 'al/guix-list-keys t)
+
+  (let ((list-vars '(al/lazy-moving-keys
+                     al/tabulated-list-keys
+                     al/guix-common-keys
+                     al/guix-list-keys)))
+    (al/bind-keys-from-vars 'guix-generation-list-mode-map
+      (append list-vars '(al/guix-generation-list-keys))
+      t)
+    (al/bind-keys-from-vars 'guix-package-list-mode-map
+      (append list-vars '(al/guix-package-or-output-list-keys))
+      t)
+    (al/bind-keys-from-vars 'guix-output-list-mode-map
+      (append list-vars '(al/guix-package-or-output-list-keys
+                          al/guix-output-list-keys))
+      t)))
 
 (use-package aurel
   :defer t
