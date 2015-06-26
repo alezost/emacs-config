@@ -20,6 +20,7 @@
 
 (bind-keys
  :prefix-map al/translation-map
+ :prefix-docstring "Map for dictionaries, translating and friends."
  :prefix "<XF86Spell>"
  ("<XF86Spell>" . utl-dictem-run-word)
  ("s" . dictem-run-search)
