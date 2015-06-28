@@ -57,9 +57,9 @@
    org-file-apps
    '(("\\.mm\\'" . default)
      ("\\.x?html?\\'" utl-choose-browser file)
-     ;; ("\\.pdf\\'" . "zathura %s")
+     ("\\.pdf\\'" . "zathura %s")
      ("\\.djvu\\'" . "zathura %s")
-     ;; ("\\.pdf::\\([0-9]+\\)\\'" . "zathura --page %1 %s")
+     ("\\.pdf::\\([0-9]+\\)\\'" . "zathura --page %1 %s")
      ("\\.djvu::\\([0-9]+\\)\\'" . "zathura --page %1 %s")
      (auto-mode . emacs)))
 
