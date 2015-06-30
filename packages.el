@@ -59,15 +59,6 @@
 
 (use-package guix
   :defer t
-  :commands
-  (guix-search-by-name
-   guix-search-by-regexp
-   guix-installed-packages
-   guix-obsolete-packages
-   guix-all-available-packages
-   guix-newest-available-packages
-   guix-generations
-   guix-generations-by-time)
   :init
   (let ((dir (al/devel-dir-file "guix/emacs")))
     (al/add-to-load-path-maybe dir)
