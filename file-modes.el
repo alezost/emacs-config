@@ -211,6 +211,7 @@
          ("\\.socket\\'"  . conf-unix-mode)
          ("\\.timer\\'"   . conf-unix-mode)
          ("\\.mount\\'"   . conf-unix-mode)
+         ("\\.mailmap\\'" . conf-space-mode)
          ("PKGBUILD\\'"   . pkgbuild-mode)
          (".*tmwa-server-data/world/map/npc/.*txt\\'" . java-mode)
          ("\\.typ\\'"     . gtypist-mode)
