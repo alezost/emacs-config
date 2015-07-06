@@ -239,8 +239,16 @@ Also it (default syntax) breaks `indent-guide-mode'."
     diminish
     (yasnippet          :fetcher github :repo "capitaomorte/yasnippet"
                         :files ("yasnippet.el"))
-    (magit              :fetcher github :repo "magit/magit"
-                        :files ("*.el" "*.texi"))
+
+    ;; With the MELPA magit recipe, magit repo will be downloaded 4
+    ;; times to build the magit package itself and its dependencies
+    ;; (git-commit, magit-popup and with-editor).  So use a pseudo
+    ;; 'magit-all' package with all elisp files and no dependencies
+    ;; (so install dash explicitly).
+    dash
+    (magit-all          :fetcher github :repo "magit/magit"
+                        :files ("lisp/*.el" "Documentation/*.texi"))
+
     github-browse-file
     (pathify            :fetcher git :url ,(al/emacs-repo "pathify"))
     (point-pos          :fetcher git :url ,(al/emacs-repo "point-pos"))
