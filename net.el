@@ -686,10 +686,12 @@
   :config
   (web-search-add-engine
    'ipduh "IPduh"
-   "http://ipduh.com/apropos/?%s")
+   "http://ipduh.com/apropos/?%s"
+   'web-search-clean-ip)
   (web-search-add-engine
    'ip-address "IP address"
-   "http://www.ip-address.org/lookup/ip-locator.php?track=%s")
+   "http://www.ip-address.org/lookup/ip-locator.php?track=%s"
+   'web-search-clean-ip)
   (web-search-add-engine
    'yandex "Yandex"
    "http://yandex.ru/yandsearch?text=%s")
