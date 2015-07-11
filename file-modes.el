@@ -221,6 +221,18 @@
 (add-to-list 'auto-mode-alist '(".*rc\\'" . conf-unix-mode) t)
 (add-to-list 'auto-mode-alist '("/etc/.*\\'" . conf-unix-mode) t)
 
+(use-package image-mode
+  :defer t
+  :config
+  (defconst al/image-keys
+    '(("C-a" . image-bol)
+      ("C-п" . image-eol)
+      ("h"   . image-previous-file)
+      ("H"   . image-previous-frame)
+      ("N"   . image-next-frame))
+    "Alist of auxiliary keys for `image-mode-map'.")
+  (al/bind-keys-from-vars 'image-mode-map 'al/image-keys))
+
 (use-package doc-view
   :defer t
   :config
