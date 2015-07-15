@@ -223,14 +223,17 @@ Also it (default syntax) breaks `indent-guide-mode'."
   "Return git url of a repository with my package NAME."
   (concat "https://gitlab.com/alezost-emacs/" name ".git"))
 
-(defvar al/main-packages
-  `((use+bind           :fetcher github :repo "jwiegley/use-package"
+(defvar al/core-packages
+  `((quelpa             :fetcher github :repo "quelpa/quelpa")
+    (use+bind           :fetcher github :repo "jwiegley/use-package"
                         :files ("bind-key.el" "use-package.el"))
-    (quelpa             :fetcher github :repo "quelpa/quelpa")
-    (utils              :fetcher git :url ,(al/emacs-repo "utils"))
-    (dvorak-layouts     :fetcher git :url ,(al/emacs-repo "dvorak-layouts"))
-    (alect-themes       :fetcher git :url ,(al/emacs-repo "alect-themes"))
     (mwim               :fetcher git :url ,(al/emacs-repo "mwim"))
+    (utils              :fetcher git :url ,(al/emacs-repo "utils")))
+  "Packages essential for my workflow.")
+
+(defvar al/main-packages
+  `((alect-themes       :fetcher git :url ,(al/emacs-repo "alect-themes"))
+    (dvorak-layouts     :fetcher git :url ,(al/emacs-repo "dvorak-layouts"))
     (insert-pair        :fetcher git :url ,(al/emacs-repo "insert-pair"))
     (imenus             :fetcher git :url ,(al/emacs-repo "imenus"))
     smex
@@ -262,9 +265,6 @@ Also it (default syntax) breaks `indent-guide-mode'."
     (pretty-sha-path    :fetcher git :url ,(al/emacs-repo "pretty-sha-path"))
     (date-at-point      :fetcher git :url ,(al/emacs-repo "date-at-point"))
     (journal            :fetcher git :url ,(al/emacs-repo "journal"))
-    (mana               :fetcher git :url ,(al/emacs-repo "mana"))
-    (ducpel             :fetcher git :url ,(al/emacs-repo "ducpel")
-                        :files ("*.el"))
     pdf-tools
     org-pdfview
     (dictem             :fetcher github :repo "cheusov/dictem")
@@ -277,28 +277,34 @@ Also it (default syntax) breaks `indent-guide-mode'."
     outline-magic
     markdown-mode
     syslog-mode
-    pkgbuild-mode
-    mentor
+    (mysql              :fetcher github :repo "haxney/mysql")
+    (sql-completion     :fetcher github :repo "emacsmirror/sql-completion")
     sauron
-    (sunrise-commander  :fetcher github :repo "escherdragon/sunrise-commander")
     erc-hl-nicks
     (erc-view-log       :fetcher github :repo "alezost/erc-view-log"
                         :branch "general-regexps")
-    indent-guide
-    hl-todo))
+    hl-todo)
+  "Main packages that should be installed in a common way.")
 
-(defvar al/additional-packages
-  '(slime
-    (mysql              :fetcher github :repo "haxney/mysql")
-    (sql-completion     :fetcher github :repo "emacsmirror/sql-completion")
+(defvar al/extra-packages
+  `(indent-guide
+    mentor
+    pkgbuild-mode
     (rainbow-mode       :fetcher url :url "http://git.savannah.gnu.org/cgit/emacs/elpa.git/plain/packages/rainbow-mode/rainbow-mode.el")
+    (sunrise-commander  :fetcher github :repo "escherdragon/sunrise-commander")
     (typing-practice    :fetcher url :url "https://raw.github.com/mebubo/dotfiles/master/.emacs.d/site-lisp/typing-practice.el")
+    (mana               :fetcher git :url ,(al/emacs-repo "mana"))
+    (ducpel             :fetcher git :url ,(al/emacs-repo "ducpel")
+                        :files ("*.el"))
     (sokoban            :fetcher github :repo "leoliu/sokoban"
-                        :files ("*.el" "sokoban.levels"))))
+                        :files ("*.el" "sokoban.levels")))
+  "Packages that I use from rarely to never.")
 
 (defun al/all-packages ()
   "Return all package recipes I use."
-  (append al/main-packages al/additional-packages))
+  (append al/core-packages
+          al/main-packages
+          al/extra-packages))
 
 (defun al/package-name (name-or-recipe)
   "Return package name (symbol) by NAME-OR-RECIPE."
@@ -329,13 +335,12 @@ name (symbol) or a full recipe (list).
 
 Interactively, prompt for a package to update/install.
 
-With \\[universal-argument], update all packages from `al/main-packages'.
-
-With \\[universal-argument] \\[universal-argument], \
-update also the packages from `al/additional-packages'."
+With \\[universal-argument], update all packages except `al/extra-packages'.
+With \\[universal-argument] \\[universal-argument], update all packages."
   (interactive
    (cond ((equal current-prefix-arg '(4))
-          al/main-packages)
+          (append al/core-packages
+                  al/main-packages))
          ((equal current-prefix-arg '(16))
           (al/all-packages))
          (t (list (al/package-recipe (al/read-package-name))))))
@@ -355,20 +360,14 @@ relies on a particular version of a built-in package (e.g.,
 
 ;;; Loading the rest config and required packages
 
-;; If this is the first start of emacs, bootstrap quelpa and install all
-;; the packages.
+;; If this is the first start of emacs, bootstrap quelpa and install
+;; core packages.
 (when al/fresh-init
   (with-temp-buffer
     (url-insert-file-contents
      "https://raw.github.com/quelpa/quelpa/master/bootstrap.el")
     (eval-buffer))
-  ;; My 'utils' package requires everything, so it should be compiled
-  ;; (i.e. installed) after all.
-  (apply #'al/quelpa
-         (append (cl-remove-if (lambda (recipe)
-                                 (eq 'utils (al/package-name recipe)))
-                               (al/all-packages))
-                 (list (al/package-recipe 'utils)))))
+  (apply #'al/quelpa al/core-packages))
 
 (require 'bind-key)
 (setq bind-key-describe-special-forms t)
