@@ -170,12 +170,13 @@
    :prefix-map al/aurel-map
    :prefix-docstring "Map for aurel."
    :prefix "C-H-a"
-   ("i"     . aurel-package-info)
-   ("C-H-i" . utl-switch-to-aurel-info)
+   ("i"     . utl-switch-to-aurel-info)
+   ("l"     . utl-switch-to-aurel-list)
+   ("C-n"   . aurel-package-info)
    ("p"     . aurel-package-search)
-   ("C-H-p" . utl-switch-to-aurel-list)
+   ("n"     . aurel-package-search)
    ("m"     . aurel-maintainer-search)
-   ("f"     . aurel-installed-packages))
+   ("I"     . aurel-installed-packages))
 
   :config
   (setq
