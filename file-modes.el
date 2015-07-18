@@ -98,7 +98,8 @@
 
   (when (require 'utl-ido nil t)
     (advice-add 'org-set-tags :around #'utl-ido-disable))
-  (require 'org-pdfview nil t))
+
+  (org-add-link-type "pdfview" 'org-pdfview-open 'org-pdfview-export))
 
 (use-package org-src
   :defer t
@@ -127,6 +128,10 @@
   (al/add-hook-maybe 'org-store-link-functions
     'utl-org-emms-store-link))
 
+(use-package org-pdfview
+  :defer t
+  :commands (org-pdfview-open org-pdfview-export))
+
 
 ;;; Pdf tools
 
@@ -139,7 +144,8 @@
   (bind-keys
    :map pdf-view-mode-map
    ("h" . pdf-view-previous-page-command))
-  (add-hook 'pdf-view-mode-hook 'pdf-tools-enable-minor-modes))
+  (add-hook 'pdf-view-mode-hook 'pdf-tools-enable-minor-modes)
+  (require 'org-pdfview nil t))
 
 (use-package pdf-outline
   :defer t
