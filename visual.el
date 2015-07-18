@@ -315,6 +315,7 @@
   :diminish " _"
   :config
   (setq
+   whitespace-line-column 78
    whitespace-display-mappings
    `((space-mark   ?\s  [?·])
      (space-mark   ?    [?○])
