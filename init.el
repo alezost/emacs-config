@@ -463,19 +463,20 @@ relies on a particular version of a built-in package (e.g.,
 
 (al/add-my-package-to-load-path-maybe "utils")
 
-(al/init-load "keys")
-(al/init-load "text")
-(al/init-load "settings")
-(al/init-load "files")
-(al/init-load "prog")
-(al/init-load "time")
-(al/init-load "file-modes")
-(al/init-load "mmedia")
-(al/init-load "packages")
-(al/init-load "net")
-(al/init-load "dict")
-(al/init-load "visual")
-(al/init-load "games")
+(mapc #'al/init-load
+      '("keys"
+        "text"
+        "settings"
+        "files"
+        "prog"
+        "time"
+        "file-modes"
+        "mmedia"
+        "packages"
+        "net"
+        "dict"
+        "visual"
+        "games"))
 
 ;; (setq custom-file "/tmp/custom.el")
 (setq custom-file (al/emacs-init-dir-file "custom.el"))
