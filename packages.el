@@ -98,9 +98,11 @@
 
   :config
   (setq
+   guix-directory (al/src-dir-file "guix")
    guix-dry-run t
    guix-package-list-type 'package
    guix-package-info-heading-params '(synopsis)
+   guix-package-info-fill-heading nil
    guix-generation-packages-update-buffer nil
    guix-buffer-name-function #'guix-buffer-name-simple
    guix-operation-option-separator "  │  ")
