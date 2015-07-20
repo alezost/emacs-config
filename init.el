@@ -424,13 +424,15 @@ relies on a particular version of a built-in package (e.g.,
 (advice-add 'package-generate-description-file
   :around #'al/package-generate-description-file)
 
-(defun al/pb/write-pkg-file (fun pkg-file pkg-info &rest args)
+(defun al/package-build--write-pkg-file (fun pkg-file pkg-info
+                                             &rest args)
   "Reduce requirements from PKG-INFO."
   (let ((new-reqs (al/remove-ignored-packages (aref pkg-info 1))))
     (aset pkg-info 1 new-reqs)
     (apply fun pkg-file pkg-info args)))
 
-(advice-add 'pb/write-pkg-file :around #'al/pb/write-pkg-file)
+(advice-add 'package-build--write-pkg-file
+  :around #'al/package-build--write-pkg-file)
 
 
 ;;; Loading the rest config and required packages
