@@ -326,7 +326,13 @@
 (use-package gnus-art
   :defer t
   :config
-  (setq gnus-unbuttonized-mime-types '("text/plain"))
+  (setq
+   gnus-unbuttonized-mime-types '("text/plain")
+   gnus-prompt-before-saving t
+   gnus-default-article-saver 'gnus-summary-save-in-mail
+   ;; `gnus-article-save-directory' is placed in "gnus.el" actually, but
+   ;; I don't care.
+   gnus-article-save-directory al/gnus-saved-dir)
 
   (defconst al/gnus-article-keys
     '("C-d")
