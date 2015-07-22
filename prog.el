@@ -466,8 +466,8 @@
   :defer t
   :config
   (defconst al/git-commit-keys
-    '(("M-." . git-commit-prev-message)
-      ("M-e" . git-commit-next-message))
+    '(("M->" . git-commit-prev-message)
+      ("M-E" . git-commit-next-message))
     "Alist of auxiliary keys for `git-commit-mode-map'.")
   (al/bind-keys-from-vars 'git-commit-mode-map 'al/git-commit-keys))
 
