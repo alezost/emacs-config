@@ -465,6 +465,10 @@
 (use-package git-commit
   :defer t
   :config
+  (al/add-hook-maybe 'git-commit-setup-hook
+    ;; Not `git-commit-turn-on-flyspell' because it calls
+    ;; `flyspell-buffer'.
+    'flyspell-mode)
   (defconst al/git-commit-keys
     '(("M->" . git-commit-prev-message)
       ("M-E" . git-commit-next-message))
