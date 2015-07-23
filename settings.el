@@ -71,30 +71,29 @@
       ("C-e"    . ido-next-match)
       ("<up>"   . ido-prev-match)
       ("<down>" . ido-next-match)
+      ("C-d"    . ido-fallback-command)
       ("M-d"    . ido-edit-input)
       ("M-k"    . utl-ido-copy-current-item)
       ("M-s"    . ido-select-text)
       "SPC")
     "Alist of auxiliary keys for `ido-common-completion-map'.")
+  (defconst al/ido-file-dir-keys
+    '(("H-j"   . ido-enter-dired)
+      ("M-."   . ido-prev-work-directory)
+      ("M-e"   . ido-next-work-directory)
+      ("C-M-." . ido-prev-match-dir)
+      ("C-M-e" . ido-next-match-dir)
+      ("M-m"   . ido-enter-magit-status)
+      ("M-h"   . utl-ido-home-work-directory))
+    "Alist of auxiliary keys for `ido-file-dir-completion-map'.")
   (al/bind-keys-from-vars
       '(ido-common-completion-map
-        ido-file-dir-completion-map
-        ido-file-completion-map
         ido-buffer-completion-map)
     '(al/minibuffer-keys al/ido-common-keys))
-  (bind-keys
-   :map ido-file-dir-completion-map
-   ("H-j"   . ido-enter-dired)
-   ("C-d"   . ido-fallback-command)
-   ("M-."   . ido-prev-work-directory)
-   ("M-e"   . ido-next-work-directory)
-   ("C-M-." . ido-prev-match-dir)
-   ("C-M-e" . ido-next-match-dir)
-   ("M-m"   . ido-enter-magit-status)
-   ("M-h"   . utl-ido-home-work-directory))
-  (bind-keys
-   :map ido-buffer-completion-map
-   ("C-d"   . ido-fallback-command))
+  (al/bind-keys-from-vars
+      '(ido-file-dir-completion-map
+        ido-file-completion-map)
+    '(al/ido-file-dir-keys al/ido-common-keys))
 
   (al/add-hook-maybe 'ido-minibuffer-setup-hook 'al/no-truncate-lines)
   (when (require 'utl-ido nil t)
@@ -113,8 +112,8 @@
   (setq
    smex-history-length 32
    smex-prompt-string
-        (concat (key-description (where-is-internal 'smex nil t))
-                " (smex): "))
+   (concat (key-description (where-is-internal 'smex nil t))
+           " (smex): "))
   (defun al/smex-prepare-ido-bindings ()
     "Add my bindings to the pseudo smex map."
     (let ((map ido-completion-map))
