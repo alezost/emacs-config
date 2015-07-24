@@ -264,6 +264,7 @@ Also it (default syntax) breaks `indent-guide-mode'."
     (pretty-sha-path    :fetcher git :url ,(al/emacs-repo "pretty-sha-path"))
     (date-at-point      :fetcher git :url ,(al/emacs-repo "date-at-point"))
     (journal            :fetcher git :url ,(al/emacs-repo "journal"))
+    pcmpl-args
     org-pdfview
     (dictem             :fetcher github :repo "cheusov/dictem")
     google-translate

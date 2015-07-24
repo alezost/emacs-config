@@ -408,16 +408,18 @@
   ;; by `pcomplete-insert-entry', and its default value prevents
   ;; inserting space after ":" (while completing ERC nicks).
   (setq pcomplete-suffix-list nil)
+
   (when (require 'utl-pcomplete nil t)
     (al/add-hook-maybe '(shell-mode-hook eshell-mode-hook)
-      'utl-pcomplete-no-space)
-    (advice-add 'pcomplete-parse-arguments
-      :after #'utl-pcomplete-reduce-args-maybe)))
+      'utl-pcomplete-no-space)))
 
-(use-package utl-pcomplete
+(use-package pcmpl-args
   :defer t
   :config
-  (add-to-list 'utl-pcomplete-skipped-commands "pre-inst-env"))
+  (setq
+   pcmpl-args-debug-parse-help t
+   pcmpl-args-cache-default-duration 999999
+   pcmpl-args-cache-max-duration pcmpl-args-cache-default-duration))
 
 (use-package company
   :defer t
