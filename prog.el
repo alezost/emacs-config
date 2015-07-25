@@ -200,6 +200,8 @@
   (al/add-hook-maybe 'scheme-mode-hook
     '(utl-imenu-add-sections paredit-mode))
   (when (require 'utl-scheme nil t)
+    (setq scheme-imenu-generic-expression
+          utl-scheme-imenu-generic-expression)
     (advice-add 'scheme-indent-function
       :override 'utl-scheme-indent-function)))
 
