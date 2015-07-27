@@ -590,7 +590,8 @@
 (use-package tramp-sh
   :defer t
   :config
-  (push "/run/current-system/profile/bin" tramp-remote-path)
+  (when al/guix-system-p
+    (push "/run/current-system/profile/bin" tramp-remote-path))
   (push "LC_ALL=en_US.UTF-8" tramp-remote-process-environment)
   (push "DISPLAY=:0" tramp-remote-process-environment))
 
