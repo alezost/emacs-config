@@ -69,7 +69,8 @@
    '(("." . (org-speed-move-safe 'outline-previous-visible-heading))
      ("e" . (org-speed-move-safe 'outline-next-visible-heading))
      (">" . (org-speed-move-safe 'org-backward-heading-same-level))
-     ("E" . (org-speed-move-safe 'org-forward-heading-same-level))))
+     ("E" . (org-speed-move-safe 'org-forward-heading-same-level))
+     ("n" . org-narrow-to-subtree)))
 
   ;; XXX Something in org fontifying is broken in emacs > 25.0
   (when (version< emacs-version "25")
