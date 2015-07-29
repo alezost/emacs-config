@@ -30,6 +30,25 @@
   (utl-server-named-start '("server-emms" "server")))
 
 
+;;; External processes
+
+(use-package utl-process
+  :defer 3
+  :config
+  (defun al/set-zathura-theme (name)
+    (make-symbolic-link name (al/config-dir-file "zathura/theme") t))
+
+  (defun al/sync-zathura-theme (&rest args)
+    "Synchronize zathura theme with the current emacs theme."
+    (when (utl-process-is-program args "zathura")
+      (al/set-zathura-theme
+       (format "%S-theme" (frame-parameter nil 'background-mode)))))
+
+  (al/add-hook-maybe 'utl-before-process-functions
+    'al/sync-zathura-theme)
+  (utl-enable-process-hooks))
+
+
 ;;; Minibuffer, ido, smex
 
 (add-hook 'minibuffer-setup-hook
