@@ -594,7 +594,8 @@
  line-number-display-limit-width 9999
  echo-keystrokes 0.2
  disabled-command-function nil
- inhibit-startup-screen t)
+ inhibit-startup-screen t
+ find-function-C-source-directory (al/src-dir-file "emacs-git/src"))
 
 ;; Do not pop up the *Warnings* buffer when something long is executed
 ;; in *shell*.
