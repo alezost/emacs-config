@@ -54,6 +54,7 @@
    org-default-notes-file (al/notes-dir-file "notes.org")
    org-url-hexify-p nil
    org-link-escape-chars '(?\[ ?\] ?\; ?\= ?\+)
+   org-ellipsis " […]"
    org-file-apps
    '(("\\.mm\\'" . default)
      ("\\.x?html?\\'" utl-choose-browser file)
