@@ -358,8 +358,7 @@
 (use-package make-color
   :defer t
   :config
-  (add-hook 'make-color-mode-hook
-            (lambda () (setq-local cursor-type 'bar))))
+  (al/add-hook-maybe 'make-color-mode-hook 'al/bar-cursor-type))
 
 (use-package rainbow-mode
   :defer t

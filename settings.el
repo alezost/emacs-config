@@ -51,8 +51,7 @@
 
 ;;; Minibuffer, ido, smex
 
-(add-hook 'minibuffer-setup-hook
-          (lambda () (setq-local cursor-type 'hbar)))
+(al/add-hook-maybe 'minibuffer-setup-hook 'al/hbar-cursor-type)
 
 (al/bind-keys-from-vars 'minibuffer-local-map 'al/minibuffer-keys)
 

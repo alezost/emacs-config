@@ -205,6 +205,12 @@ Also it (default syntax) breaks `indent-guide-mode'."
 (defun al/inhibit-field-motion ()
   (setq-local inhibit-field-text-motion t))
 
+(defun al/bar-cursor-type ()
+  (setq-local cursor-type 'bar))
+
+(defun al/hbar-cursor-type ()
+  (setq-local cursor-type 'hbar))
+
 
 ;;; External packages
 

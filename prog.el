@@ -403,7 +403,9 @@
     '(("M-h" . magit-popup-toggle-show-common-commands))
     "Alist of auxiliary keys for `magit-popup-mode-map'.")
   (al/bind-keys-from-vars 'magit-popup-mode-map
-    '(al/button-keys al/magit-popup-keys)))
+    'al/magit-popup-keys)
+
+  (al/add-hook-maybe 'magit-popup-mode-hook 'al/bar-cursor-type))
 
 (use-package magit-log
   :defer t

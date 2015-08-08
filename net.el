@@ -315,8 +315,7 @@
   (al/bind-keys-from-vars 'gnus-summary-mode-map 'al/gnus-summary-keys)
 
   (al/add-hook-maybe 'gnus-summary-mode-hook
-    (list 'hl-line-mode
-          (lambda () (setq-local cursor-type 'hbar)))))
+    '(hl-line-mode al/hbar-cursor-type)))
 
 (use-package gnus-draft
   :defer t

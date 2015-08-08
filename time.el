@@ -82,8 +82,7 @@
       (advice-add 'calendar-update-mode-line :override 'ignore)
     (setq calendar-mode-line-format nil))
 
-  (add-hook 'calendar-mode-hook
-            (lambda () (setq-local cursor-type 'bar)))
+  (al/add-hook-maybe 'calendar-mode-hook 'al/bar-cursor-type)
   (add-hook 'calendar-today-visible-hook 'calendar-mark-today))
 
 (use-package utl-calendar
