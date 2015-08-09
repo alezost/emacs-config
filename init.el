@@ -196,6 +196,9 @@ Also it (default syntax) breaks `indent-guide-mode'."
   "Return non-nil, if current Emacs is the latest development build."
   (not (version< emacs-version "25.0.50")))
 
+(defun al/beginning-of-buffer ()
+  (goto-char (point-min)))
+
 (defun al/show-trailing-whitespace ()
   (setq-local show-trailing-whitespace t))
 
