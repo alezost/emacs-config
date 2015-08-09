@@ -321,7 +321,7 @@
  :prefix-docstring "Map for magit and git stuff."
  :prefix "M-m"
  ("M-m" . utl-magit-ido-switch-buffer)
- ("b" . magit-blame-mode)
+ ("b" . magit-blame-popup)
  ("c" . magit-show-commit)
  ("s" . magit-status)
  ("l" . magit-log-current)
