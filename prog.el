@@ -407,7 +407,13 @@
   (al/bind-keys-from-vars 'magit-popup-mode-map
     'al/magit-popup-keys)
 
-  (al/add-hook-maybe 'magit-popup-mode-hook 'al/bar-cursor-type))
+  (al/add-hook-maybe 'magit-popup-mode-hook 'al/bar-cursor-type)
+
+  ;; Move away from buttons.  Adding `al/beginning-of-buffer' to
+  ;; `magit-popup-mode-hook' wouldn't work because
+  ;; `magit-refresh-popup-buffer' is called after the mode is set.
+  (advice-add 'magit-refresh-popup-buffer
+    :after #'al/beginning-of-buffer))
 
 (use-package magit-log
   :defer t
