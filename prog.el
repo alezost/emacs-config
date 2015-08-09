@@ -400,7 +400,9 @@
    magit-popup-use-prefix-argument 'default)
 
   (defconst al/magit-popup-keys
-    '(("M-h" . magit-popup-toggle-show-common-commands))
+    '(("M-." . backward-button)
+      ("M-e" . forward-button)
+      ("M-h" . magit-popup-toggle-show-common-commands))
     "Alist of auxiliary keys for `magit-popup-mode-map'.")
   (al/bind-keys-from-vars 'magit-popup-mode-map
     'al/magit-popup-keys)
