@@ -301,6 +301,7 @@
       ("C-t"   . gnus-summary-mark-region-as-read)
       ("b"     . gnus-summary-display-buttonized)
       ("v"     . gnus-article-view-part)
+      ("V"     . gnus-mime-view-all-parts)
       ("s"     . gnus-article-save-part)
       ("i"     . gnus-article-show-images)
       ("U"     . utl-gnus-summary-browse-link-url)
