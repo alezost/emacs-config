@@ -258,7 +258,8 @@
  ("P"   . run-python)
  ("p"   . python-shell-switch-to-shell)
  ("L"   . lua-start-process)
- ("m"   . maxima))
+ ("m"   . maxima)
+ ("x"   . guix-switch-to-repl))
 
 (use-package comint
   :defer t

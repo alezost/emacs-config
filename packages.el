@@ -73,7 +73,8 @@
    :prefix-map al/guix-map
    :prefix-docstring "Map for guix."
    :prefix "H-x"
-   ("H-x" . guix-switch-to-repl)
+   ("H-x" . guix)
+   ("z"   . guix-switch-to-repl)
    ("C-n" . guix-search-by-name)
    ("n"   . (lambda (regexp)
               (interactive
