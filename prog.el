@@ -335,16 +335,16 @@
   :commands ido-enter-magit-status
   :config
   (setq
-   magit-status-buffer-name-format   "*magit: %b*"
-   magit-process-buffer-name-format  "*magit-process: %b*"
-   magit-log-buffer-name-format      "*magit-log: %b*"
-   magit-reflog-buffer-name-format   "*magit-reflog: %b*"
-   magit-refs-buffer-name-format     "*magit-refs: %b*"
-   magit-diff-buffer-name-format     "*magit-diff: %b*"
-   magit-revision-buffer-name-format "*magit-revision: %b*"
-   magit-cherry-buffer-name-format   "*magit-cherry: %b*"
-   magit-stash-buffer-name-format    "*magit-stash: %b*"
-   magit-stashes-buffer-name-format  "*magit-stashes: %b*")
+   magit-status-buffer-name-format   "*magit: %a*"
+   magit-process-buffer-name-format  "*magit-process: %a*"
+   magit-log-buffer-name-format      "*magit-log: %a*"
+   magit-reflog-buffer-name-format   "*magit-reflog: %a*"
+   magit-refs-buffer-name-format     "*magit-refs: %a*"
+   magit-diff-buffer-name-format     "*magit-diff: %a*"
+   magit-revision-buffer-name-format "*magit-revision: %a*"
+   magit-cherry-buffer-name-format   "*magit-cherry: %a*"
+   magit-stash-buffer-name-format    "*magit-stash: %a*"
+   magit-stashes-buffer-name-format  "*magit-stashes: %a*")
   (setq magit-revert-buffers nil)
   (when (require 'utl-magit nil t)
     (utl-magit-popup-substitute-key
