@@ -316,6 +316,8 @@
 
 ;;; Version control
 
+(setq vc-handled-backends nil)
+
 (bind-keys
  :prefix-map al/magit-map
  :prefix-docstring "Map for magit and git stuff."
