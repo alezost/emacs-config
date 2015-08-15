@@ -416,6 +416,14 @@
   (advice-add 'gnus-agent-make-mode-line-string
     :around #'utl-gnus-agent-mode-line-string))
 
+(use-package mu4e
+  :defer t
+  :commands mu4e
+  :config
+  (setq
+   mu4e-maildir (expand-file-name "~/mail")
+   mu4e~main-buffer-name "*mu4e-main*"))
+
 
 ;;; ERC
 
