@@ -347,11 +347,7 @@
    magit-cherry-buffer-name-format   "*magit-cherry: %a*"
    magit-stash-buffer-name-format    "*magit-stash: %a*"
    magit-stashes-buffer-name-format  "*magit-stashes: %a*")
-  (setq magit-revert-buffers nil)
-  (when (require 'utl-magit nil t)
-    (utl-magit-popup-substitute-key
-     'magit-branch-popup :actions ?u ?U) ; set upstream
-    ))
+  (setq magit-revert-buffers nil))
 
 (use-package magit-mode
   :defer t
@@ -423,9 +419,7 @@
   (setq
    magit-log-margin-spec '(25 1 magit-duration-spec)
    magit-log-arguments '("--decorate"))
-  (when (require 'utl-magit nil t)
-    (utl-magit-popup-substitute-key
-     'magit-log-popup :options ?m ?g)) ; grep
+  (magit-change-popup-key 'magit-log-popup :option ?m ?g) ; grep
 
   (defconst al/magit-log-select-keys
     '(("m" . magit-log-select-pick))
@@ -448,33 +442,19 @@
   (al/bind-keys-from-vars 'magit-hunk-section-map 'al/magit-common-keys)
   (al/bind-keys-from-vars 'magit-staged-section-map 'al/magit-common-keys))
 
-(use-package magit-remote
-  :defer t
-  :config
-  (when (require 'utl-magit nil t)
-    (utl-magit-popup-substitute-key
-     'magit-remote-popup :actions ?u ?s) ; set url
-    (utl-magit-popup-substitute-key
-     'magit-push-popup :actions ?e ?E) ; elsewhere
-    ))
-
 (use-package magit-sequence
   :defer t
   :config
-  (when (require 'utl-magit nil t)
-    (utl-magit-popup-substitute-key
-     'magit-rebase-popup :actions ?e ?i) ; interactive
-    ))
+  (magit-change-popup-key 'magit-rebase-popup :action ?e ?i) ; interactive
+  (magit-change-popup-key 'magit-rebase-popup :action ?s ?e) ; edit
+  )
 
 (use-package magit-bisect
   :defer t
   :config
-  (when (require 'utl-magit nil t)
-    (utl-magit-popup-substitute-key
-     'magit-bisect-popup :actions ?a ?!) ; run
-    (utl-magit-popup-substitute-key
-     'magit-bisect-popup :actions ?B ?s) ; start
-    ))
+  (magit-change-popup-key 'magit-bisect-popup :action ?a ?!)   ; run
+  (magit-change-popup-key 'magit-bisect-popup :action ?B ?s)   ; start
+  )
 
 (use-package git-commit
   :defer t
