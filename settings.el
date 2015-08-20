@@ -205,7 +205,8 @@
 (setq same-window-buffer-names
       '("*Colors*" "*Faces*" "*Character List*" "*Character Set List*"
         "*Proced*" "*Google Translate*" "*Help*" "*Apropos" "*Messages*"
-        "*Personal Keybindings*" "*YASnippet tables*" "*Occur*"))
+        "*Personal Keybindings*" "*YASnippet tables*" "*Occur*"
+        "*Process List*"))
 (push ".*\\.el\\.gz$" same-window-regexps)
 
 (bind-keys
