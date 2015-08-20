@@ -132,7 +132,7 @@
       ("H-u" . emms-playlist-mode-undo))
     "Alist of auxiliary keys for `emms-playlist-mode-map'.")
   (al/bind-keys-from-vars 'emms-playlist-mode-map
-    '(al/lazy-moving-keys al/emms-playlist-keys)
+    '(al/free-misc-keys al/lazy-moving-keys al/emms-playlist-keys)
     t)
   (al/add-hook-maybe 'emms-playlist-mode-hook
     '(utl-mode-name hl-line-mode)))
