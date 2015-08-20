@@ -474,6 +474,7 @@
   :config
   (defconst al/git-rebase-keys
     '(("p"   . git-rebase-pick)
+      ("w"   . git-rebase-reword)
       ("C-k" . git-rebase-kill-line)
       ("M-." . git-rebase-move-line-up)
       ("M-e" . git-rebase-move-line-down))
