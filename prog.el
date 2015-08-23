@@ -347,7 +347,9 @@
    magit-cherry-buffer-name-format   "*magit-cherry: %a*"
    magit-stash-buffer-name-format    "*magit-stash: %a*"
    magit-stashes-buffer-name-format  "*magit-stashes: %a*")
-  (setq magit-revert-buffers nil))
+  (setq
+   magit-revert-buffers nil
+   magit-branch-read-upstream-first nil))
 
 (use-package magit-mode
   :defer t
@@ -455,6 +457,11 @@
   (magit-change-popup-key 'magit-bisect-popup :action ?a ?!)   ; run
   (magit-change-popup-key 'magit-bisect-popup :action ?B ?s)   ; start
   )
+
+(use-package magit-git
+  :defer t
+  :config
+  (setq magit-git-executable "git"))
 
 (use-package git-commit
   :defer t
