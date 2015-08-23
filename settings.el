@@ -26,7 +26,7 @@
    server-temp-file-regexp "^/tmp/Re\\|/draft$\\|COMMIT_EDITMSG\\|git-rebase-todo"))
 
 (use-package utl-server
-  :init
+  :config
   (utl-server-named-start '("server-emms" "server")))
 
 
