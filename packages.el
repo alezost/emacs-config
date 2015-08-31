@@ -46,17 +46,6 @@
 
 ;;; Misc settings and packages
 
-(use-package tabulated-list
-  :defer t
-  :config
-  (defconst al/tabulated-list-keys
-    '(("s" . tabulated-list-sort))
-    "Alist of auxiliary keys for `tabulated-list-mode-map'.")
-  (al/bind-keys-from-vars 'tabulated-list-mode-map
-    '(al/lazy-moving-keys al/tabulated-list-keys)
-    t)
-  (add-hook 'tabulated-list-mode-hook 'hl-line-mode))
-
 (use-package guix
   :defer t
   :init
