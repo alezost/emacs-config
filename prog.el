@@ -335,6 +335,26 @@
 (use-package magit
   :defer t
   :commands ido-enter-magit-status
+  :init
+  (defconst al/magit-common-keys
+    '(("v"   . magit-git-command)
+      "M-m")
+    "Alist of auxiliary keys that should be bound in any magit mode.")
+  (defconst al/magit-history-keys
+    '((","   . magit-go-backward)
+      ("p"   . magit-go-forward))
+    "Alist of auxiliary keys for moving by magit history.")
+  (defconst al/magit-scroll-diff-keys
+    '(("SPC" . magit-diff-show-or-scroll-up)
+      ("DEL" . magit-diff-show-or-scroll-down))
+    "Alist of auxiliary keys for scrolling magit diff in other window.")
+  (defconst al/magit-moving-keys
+    '(("."   . magit-section-backward)
+      ("e"   . magit-section-forward)
+      ("M-." . magit-section-backward-sibling)
+      ("M-e" . magit-section-forward-sibling))
+    "Alist of auxiliary keys for moving by magit sections.")
+
   :config
   (setq
    magit-status-buffer-name-format   "*magit: %a*"
@@ -355,24 +375,7 @@
   :defer t
   :config
   (setq magit-save-repository-buffers nil)
-  (defconst al/magit-common-keys
-    '(("v"   . magit-git-command)
-      "M-m")
-    "Alist of auxiliary keys that should be bound in any magit mode.")
-  (defconst al/magit-history-keys
-    '((","   . magit-go-backward)
-      ("p"   . magit-go-forward))
-    "Alist of auxiliary keys for moving by magit history.")
-  (defconst al/magit-scroll-diff-keys
-    '(("SPC" . magit-diff-show-or-scroll-up)
-      ("DEL" . magit-diff-show-or-scroll-down))
-    "Alist of auxiliary keys for scrolling magit diff in other window.")
-  (defconst al/magit-moving-keys
-    '(("."   . magit-section-backward)
-      ("e"   . magit-section-forward)
-      ("M-." . magit-section-backward-sibling)
-      ("M-e" . magit-section-forward-sibling))
-    "Alist of auxiliary keys for moving by magit sections.")
+
   (defconst al/magit-keys
     '(("<backtab>" . magit-section-cycle-global)
       ("H-SPC" . magit-diff-show-or-scroll-up)
@@ -454,8 +457,8 @@
 (use-package magit-bisect
   :defer t
   :config
-  (magit-change-popup-key 'magit-bisect-popup :action ?a ?!)   ; run
-  (magit-change-popup-key 'magit-bisect-popup :action ?B ?s)   ; start
+  (magit-change-popup-key 'magit-bisect-popup :action ?a ?!) ; run
+  (magit-change-popup-key 'magit-bisect-popup :action ?B ?s) ; start
   )
 
 (use-package magit-git
