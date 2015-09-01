@@ -35,7 +35,7 @@
 
 (use-package org
   :defer t
-  :commands org-read-date
+  :commands (org-read-date org-open-file)
   :init
   (when (utl-server-running-p)
     (require 'org-protocol nil t))
