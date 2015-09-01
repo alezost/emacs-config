@@ -58,6 +58,7 @@
    org-file-apps
    '(("\\.mm\\'" . default)
      ("\\.x?html?\\'" utl-choose-browser file)
+     ("\\.png\\'" . "sxiv %s")
      ("\\.pdf\\'" . "zathura %s")
      ("\\.djvu\\'" . "zathura %s")
      ("\\.pdf::\\([0-9]+\\)\\'" . "zathura --page %1 %s")
