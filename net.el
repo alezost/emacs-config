@@ -492,7 +492,8 @@
       "#geiser" "#conkeror" "#stumpwm" "#org-mode")))
 
   (defun al/erc-quit-part-reason (&rest _)
-    "I use GNU Guix <http://www.gnu.org/software/guix/>")
+    (concat "I live in GuixSD <http://www.gnu.org/s/guix>"
+            " and Emacs <http://www.gnu.org/s/emacs>"))
   (setq
    erc-quit-reason 'al/erc-quit-part-reason
    erc-part-reason 'al/erc-quit-part-reason)
