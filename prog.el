@@ -211,11 +211,13 @@
   ;; `al/geiser-keys' is required for `al/erc-channel-config'
   (defconst al/geiser-keys
     '(("C-v"   . utl-geiser-eval-dwim)
+      ("C-S-v" . geiser-expand-last-sexp)
       ("C-M-v" . geiser-eval-definition)
       ("M-s-v" . geiser-eval-buffer)
       ("C-d"   . geiser-doc-symbol-at-point)
       ("M-d"   . geiser-edit-symbol-at-point)
-      ("C-M-d" . al/geiser-doc-map))
+      ("C-M-d" . al/geiser-doc-map)
+      ("C-c j" . switch-to-geiser-module))
     "Alist of auxiliary keys for geiser modes.")
 
   :config
