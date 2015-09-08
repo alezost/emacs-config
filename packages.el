@@ -46,6 +46,35 @@
 
 ;;; Misc settings and packages
 
+(bind-keys
+ :prefix-map al/guix-map
+ :prefix-docstring "Map for guix."
+ :prefix "H-x"
+ ("H-x" . guix)
+ ("e"   . guix-edit)
+ ("z"   . guix-switch-to-repl)
+ ("C-n" . guix-search-by-name)
+ ("n"   . (lambda (regexp)
+            (interactive
+             (list (read-string "Package name by regexp: "
+                                nil 'guix-search-history)))
+            (guix-search-by-regexp regexp '(name))))
+ ("r"   . guix-search-by-regexp)
+ ("A"   . guix-all-available-packages)
+ ("N"   . guix-newest-available-packages)
+ ("I"   . guix-installed-packages)
+ ("O"   . guix-obsolete-packages)
+ ("G"   . guix-generations)
+ ("p"   . guix-set-current-profile)
+ ("i"   . (lambda () (interactive)
+            (switch-to-buffer guix-package-info-buffer-name)))
+ ("C-п" . (lambda () (interactive)
+            (switch-to-buffer guix-generation-info-buffer-name)))
+ ("l"   . (lambda () (interactive)
+            (switch-to-buffer guix-package-list-buffer-name)))
+ ("C-l" . (lambda () (interactive)
+            (switch-to-buffer guix-generation-list-buffer-name))))
+
 (use-package guix
   :defer t
   :init
@@ -56,35 +85,7 @@
   (setq guix-default-profile
         (concat "/var/guix/profiles/per-user/"
                 user-login-name "/guix-profile"))
-  (require 'guix-init nil t)
-
-  (bind-keys
-   :prefix-map al/guix-map
-   :prefix-docstring "Map for guix."
-   :prefix "H-x"
-   ("H-x" . guix)
-   ("z"   . guix-switch-to-repl)
-   ("C-n" . guix-search-by-name)
-   ("n"   . (lambda (regexp)
-              (interactive
-               (list (read-string "Package name by regexp: "
-                                  nil 'guix-search-history)))
-              (guix-search-by-regexp regexp '(name))))
-   ("r"   . guix-search-by-regexp)
-   ("A"   . guix-all-available-packages)
-   ("N"   . guix-newest-available-packages)
-   ("I"   . guix-installed-packages)
-   ("O"   . guix-obsolete-packages)
-   ("G"   . guix-generations)
-   ("p"   . guix-set-current-profile)
-   ("i"   . (lambda () (interactive)
-              (switch-to-buffer guix-package-info-buffer-name)))
-   ("C-п" . (lambda () (interactive)
-              (switch-to-buffer guix-generation-info-buffer-name)))
-   ("l"   . (lambda () (interactive)
-              (switch-to-buffer guix-package-list-buffer-name)))
-   ("C-l" . (lambda () (interactive)
-              (switch-to-buffer guix-generation-list-buffer-name))))
+  (require 'guix-init nil t))
 
   :config
   (setq
