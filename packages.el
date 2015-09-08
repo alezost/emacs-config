@@ -44,7 +44,7 @@
    ("z" . package-menu-mark-unmark)))
 
 
-;;; Misc settings and packages
+;;; Guix
 
 (bind-keys
  :prefix-map al/guix-map
@@ -78,6 +78,12 @@
 (use-package guix
   :defer t
   :init
+  (defconst al/guix-common-keys
+    '(("," . guix-history-back)
+      ("p" . guix-history-forward)
+      ("P"   (message "%s" guix-profile)))
+    "Alist of auxiliary keys that should be bound in any guix mode.")
+
   (let ((dir (al/devel-dir-file "guix/emacs")))
     (al/add-to-load-path-maybe dir)
     (setq guix-load-path dir))
@@ -87,13 +93,12 @@
                 user-login-name "/guix-profile"))
   (require 'guix-init nil t))
 
+(use-package guix-base
+  :defer t
   :config
   (setq
    guix-directory (al/src-dir-file "guix")
-   guix-dry-run t
    guix-package-list-type 'package
-   guix-package-info-heading-params '(synopsis)
-   guix-package-info-fill-heading nil
    guix-generation-packages-update-buffer nil
    guix-buffer-name-function #'guix-buffer-name-simple
    guix-operation-option-separator "  │  ")
@@ -101,6 +106,25 @@
     (setq
      guix-operation-option-false-string "☐"
      guix-operation-option-true-string  "☑"))
+
+  (al/bind-keys-from-vars 'guix-root-map 'al/guix-common-keys t))
+
+(use-package guix-utils
+  :defer t
+  :config
+  (setq
+   guix-find-file-function #'org-open-file))
+
+(use-package guix-info
+  :defer t
+  :config
+  (setq
+   guix-package-info-heading-params '(synopsis)
+   guix-package-info-fill-heading nil))
+
+(use-package guix-list
+  :defer t
+  :config
   (setcdr (assq 'package guix-list-column-format)
           '((name 20 t)
             (version 10 t)
@@ -114,11 +138,6 @@
             (installed 12 t)
             (synopsis 30 t)))
 
-  (defconst al/guix-common-keys
-    '(("," . guix-history-back)
-      ("p" . guix-history-forward)
-      ("P"   (message "%s" guix-profile)))
-    "Alist of auxiliary keys that should be bound in any guix mode.")
   (defconst al/guix-list-keys
     '(("u" . guix-list-describe)
       ("z" . guix-list-unmark)
@@ -137,9 +156,7 @@
       ("E" . guix-generation-list-ediff))
     "Alist of auxiliary keys for `guix-generation-list-mode-map'.")
 
-  (al/bind-keys-from-vars 'guix-root-map 'al/guix-common-keys t)
   (al/bind-keys-from-vars 'guix-list-mode-map 'al/guix-list-keys t)
-
   (let ((list-vars '(al/lazy-moving-keys
                      al/tabulated-list-keys
                      al/guix-common-keys
@@ -154,6 +171,9 @@
       (append list-vars '(al/guix-package-or-output-list-keys
                           al/guix-output-list-keys))
       t)))
+
+
+;;; Aurel
 
 (use-package aurel
   :defer t
