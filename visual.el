@@ -381,14 +381,4 @@
                (re-search-forward hl-todo-regexp nil t)))
            (1 (hl-todo-get-face) t t)))))
 
-(use-package pretty-sha-path
-  :defer 7
-  :init
-  (al/add-my-package-to-load-path-maybe "pretty-sha-path")
-  (setq
-   pretty-sha-path-regexp "\\(?:store\\|nar\\)/\\([[:alnum:]]\\{32\\}\\)"
-   pretty-sha-path-regexp-group 1)
-  :config
-  (global-pretty-sha-path-mode))
-
 ;;; visual.el ends here
