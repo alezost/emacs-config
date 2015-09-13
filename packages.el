@@ -33,9 +33,7 @@
 (use-package package
   :defer t
   :config
-  (setq
-   package-archives nil
-   package-enable-at-startup nil)
+  (setq package-archives nil)
   (bind-keys
    :map package-menu-mode-map
    ("u" . package-menu-describe-package)

@@ -225,6 +225,7 @@ Also it (default syntax) breaks `indent-guide-mode'."
  quelpa-build-dir (expand-file-name "build" quelpa-dir))
 
 (package-initialize)
+(setq package-enable-at-startup nil)
 
 (defvar al/fresh-init (not (fboundp 'quelpa))
   "Non-nil, if this is the first time my config is loaded by Emacs.")
