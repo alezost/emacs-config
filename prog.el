@@ -208,7 +208,6 @@
 (use-package geiser-mode
   :defer t
   :init
-  ;; `al/geiser-keys' is required for `al/erc-channel-config'
   (defconst al/geiser-keys
     '(("C-v"   . utl-geiser-eval-dwim)
       ("C-S-v" . geiser-expand-last-sexp)
@@ -236,12 +235,15 @@
    ("m" . geiser-doc-module)
    ("s" . geiser-autodoc-show)
    ("t" . geiser-autodoc-mode))
-  (al/bind-keys-from-vars 'geiser-mode-map 'al/geiser-keys)
+  (al/bind-keys-from-vars 'geiser-mode-map 'al/geiser-keys))
 
-  ;; Do not put the code below into “(use-package geiser-repl …)”
-  ;; because Geiser applies its bindings after providing `geiser-repl'
-  ;; feature somehow, and an error telling about non-prefix key happens
-  ;; (as it tries to bind "C-c C-d <smth>" over my "C-c C-d").
+(use-package geiser-repl
+  :defer t
+  :config
+  (setq
+   geiser-repl-use-other-window t
+   geiser-repl-history-filename (al/emacs-data-dir-file ".geiser_history"))
+
   (defconst al/geiser-repl-keys
     '(("<return>" . utl-geiser-repl-enter-dwim)
       ("C-k"      . utl-geiser-repl-kill-whole-line)
@@ -250,14 +252,8 @@
       "C-c k")
     "Alist of auxiliary keys for `geiser-repl-mode'.")
   (al/bind-keys-from-vars 'geiser-repl-mode-map
-    '(al/comint-keys al/geiser-keys al/geiser-repl-keys)))
+    '(al/comint-keys al/geiser-keys al/geiser-repl-keys))
 
-(use-package geiser-repl
-  :defer t
-  :config
-  (setq
-   geiser-repl-use-other-window t
-   geiser-repl-history-filename (al/emacs-data-dir-file ".geiser_history"))
   (al/add-hook-maybe 'geiser-repl-mode-hook
     '(paredit-mode al/inhibit-field-motion)))
 
