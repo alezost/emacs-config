@@ -242,7 +242,7 @@
   :config
   (setq
    geiser-repl-use-other-window t
-   geiser-repl-history-filename (al/emacs-data-dir-file ".geiser_history"))
+   geiser-repl-history-filename (al/emacs-data-dir-file "geiser-history"))
 
   (defconst al/geiser-repl-keys
     '(("<return>" . utl-geiser-repl-enter-dwim)
