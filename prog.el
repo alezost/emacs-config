@@ -375,6 +375,7 @@
    magit-stash-buffer-name-format    "*magit-stash: %a*"
    magit-stashes-buffer-name-format  "*magit-stashes: %a*")
   (setq
+   magit-merge-arguments '("--ff-only")
    magit-revert-buffers nil
    magit-branch-read-upstream-first nil))
 
