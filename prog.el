@@ -297,16 +297,29 @@
    ;; Don't ask, don't save.
    compilation-ask-about-save nil
    compilation-save-buffers-predicate 'ignore)
+
+  (defconst al/compilation-common-keys
+    '(("C-M-h" . compilation-previous-error)
+      ("C-M-n" . compilation-next-error)
+      ("C-M-." . compilation-previous-error)
+      ("C-M-e" . compilation-next-error))
+    "Alist of auxiliary keys that should be bound in any compilation mode.")
   (defconst al/compilation-keys
     '(("."   . compilation-previous-error)
       ("e"   . compilation-next-error)
-      ("u"   . compile-goto-error)
       ("M-." . previous-error-no-select)
       ("M-e" . next-error-no-select))
     "Alist of auxiliary keys for compilation modes.")
+  (defconst al/compilation-button-keys
+    '(("u"   . compile-goto-error))
+    "Alist of auxiliary keys for `compilation-button-map'.")
+  (al/bind-keys-from-vars 'compilation-button-map
+    'al/compilation-button-keys)
+  (al/bind-keys-from-vars 'compilation-shell-minor-mode-map
+    'al/compilation-common-keys)
   (al/bind-keys-from-vars
       '(compilation-mode-map compilation-minor-mode-map)
-    'al/compilation-keys)
+    '(al/compilation-common-keys al/compilation-keys))
   (add-hook 'compilation-mode-hook 'hl-line-mode)
 
   (when (require 'utl-compilation nil t)
