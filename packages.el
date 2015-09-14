@@ -179,6 +179,17 @@
    guix-prettify-regexp-group 1)
   (global-guix-prettify-mode))
 
+(use-package guix-build-log
+  :defer t
+  :diminish (guix-build-log-minor-mode . " γ🄻")
+  :config
+  (defconst al/guix-build-log-keys
+    '(("M-." . guix-build-log-previous-phase)
+      ("M-e" . guix-build-log-next-phase))
+    "Alist of auxiliary keys for `guix-build-log-mode-map'.")
+  (al/bind-keys-from-vars 'guix-build-log-mode-map
+    'al/guix-build-log-keys))
+
 
 ;;; Aurel
 

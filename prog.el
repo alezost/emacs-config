@@ -251,7 +251,9 @@
     '(al/comint-keys al/geiser-keys al/geiser-repl-keys))
 
   (al/add-hook-maybe 'geiser-repl-mode-hook
-    '(paredit-mode al/inhibit-field-motion)))
+    '(paredit-mode
+      al/inhibit-field-motion
+      guix-build-log-minor-mode)))
 
 (use-package geiser-impl
   :defer t
