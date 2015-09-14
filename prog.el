@@ -220,10 +220,6 @@
     "Alist of auxiliary keys for geiser modes.")
 
   :config
-  (setq-default geiser-scheme-implementation 'guile)
-  (setq
-   geiser-autodoc-delay 0.5
-   geiser-guile-binary '("guile" "--no-auto-compile"))
   (defvar al/geiser-doc-map)
   (put 'al/geiser-doc-map 'variable-documentation
        "Map for geiser documentation.")
@@ -256,6 +252,17 @@
 
   (al/add-hook-maybe 'geiser-repl-mode-hook
     '(paredit-mode al/inhibit-field-motion)))
+
+(use-package geiser-impl
+  :defer t
+  :config
+  (setq-default geiser-scheme-implementation 'guile)
+  (setq geiser-active-implementations '(guile)))
+
+(use-package geiser-guile
+  :defer t
+  :config
+  (setq geiser-guile-binary '("guile" "--no-auto-compile")))
 
 (use-package geiser-doc
   :defer t
