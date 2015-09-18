@@ -253,7 +253,11 @@
   (al/add-hook-maybe 'geiser-repl-mode-hook
     '(paredit-mode
       al/inhibit-field-motion
-      guix-build-log-minor-mode)))
+      guix-build-log-minor-mode))
+
+  (when (require 'utl-geiser nil t)
+    (setq geiser-repl-buffer-name-function
+          #'utl-geiser-repl-buffer-name)))
 
 (use-package geiser-impl
   :defer t
