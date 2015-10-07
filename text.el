@@ -303,6 +303,17 @@
     'al/browse-kill-ring-bind-keys)
   (browse-kill-ring-default-keybindings))
 
+(use-package register
+  :defer t
+  :config
+  (setq register-preview-delay 0.3)
+
+  (defun al/insert-register-reverse-arg (fun register &optional arg)
+    "Reverse the meaning of ARG for `insert-register'."
+    (funcall fun register (not arg)))
+  (advice-add 'insert-register
+    :around #'al/insert-register-reverse-arg))
+
 
 ;;; Misc settings and packages
 
