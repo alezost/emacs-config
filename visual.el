@@ -98,6 +98,7 @@
 (use-package alect-themes
   :init
   (al/add-my-package-to-load-path-maybe "alect-themes")
+  :config
   (setq
    alect-display-class '((class color) (min-colors 256))
    alect-overriding-faces
