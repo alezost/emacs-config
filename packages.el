@@ -21,8 +21,8 @@
 (bind-keys
  :prefix-map al/package-map
  :prefix-docstring "Map for Emacs packages commands."
- :prefix "H-p"
- ("H-p" . al/quelpa)
+ :prefix "H-q"
+ ("H-q" . al/quelpa)
  ("q"   . (lambda () (interactive)
             (let (quelpa-update-melpa-p)
               (call-interactively #'quelpa))))
