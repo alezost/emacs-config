@@ -408,6 +408,7 @@
       ("u" . magit-show-commit)
       ("U" . magit-unstage-file)
       ("E" . magit-ediff-dwim)
+      ("C" . magit-cherry-pick-popup)
       ("1" . magit-section-show-level-1-all)
       ("2" . magit-section-show-level-2-all)
       ("3" . magit-section-show-level-3-all)
@@ -477,6 +478,7 @@
   :config
   (magit-change-popup-key 'magit-rebase-popup :action ?e ?i) ; interactive
   (magit-change-popup-key 'magit-rebase-popup :action ?s ?e) ; edit
+  (magit-change-popup-key 'magit-cherry-pick-popup :action ?A ?C) ; pick
   )
 
 (use-package magit-bisect
