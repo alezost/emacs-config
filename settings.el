@@ -51,6 +51,8 @@
 
 ;;; Minibuffer, ido, smex
 
+(setq enable-recursive-minibuffers t)
+
 (al/add-hook-maybe 'minibuffer-setup-hook 'al/hbar-cursor-type)
 
 (al/bind-keys-from-vars 'minibuffer-local-map 'al/minibuffer-keys)
