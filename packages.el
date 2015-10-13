@@ -50,6 +50,9 @@
  :prefix "H-x"
  ("H-x" . guix)
  ("e"   . guix-edit)
+ ("b"   . guix-build-log-minor-mode)
+ ("B"   . guix-build-log-mode)
+ ("P"   . guix-prettify-mode)
  ("z"   . guix-switch-to-repl)
  ("C-n" . guix-search-by-name)
  ("n"   . (lambda (regexp)
