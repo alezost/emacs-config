@@ -86,9 +86,10 @@
     (al/add-to-load-path-maybe dir)
     (setq guix-load-path dir))
   ;; (al/add-to-load-path-maybe (al/src-dir-file "guix/emacs"))
-  (setq guix-default-profile
-        (concat "/var/guix/profiles/per-user/"
-                user-login-name "/guix-profile"))
+  (setq
+   guix-guile-program "guile"
+   guix-default-profile (concat "/var/guix/profiles/per-user/"
+                                user-login-name "/guix-profile"))
   (require 'guix-init nil t))
 
 (use-package guix-base
