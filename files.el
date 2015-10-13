@@ -235,14 +235,12 @@
    dired-omit-files "^\\..*"
    dired-omit-extensions nil
    dired-guess-shell-alist-user
-   '(("\\.jpg\\'" "sxiv" "eog")
-     ("\\.png\\'" "sxiv" "eog")
-     ("\\.gif\\'" "sxiv" "eog")
-     ("\\.tiff?\\'" "sxiv" "eog")
-     ("\\.pdf\\'" "zathura" "mupdf")
-     ("\\.wav\\'" "play -q" "aplay" "mplayer -really-quiet" "mpv --really-quiet")
-     ("\\.og[ag]\\'" "play -q" "mplayer -really-quiet" "mpv --really-quiet")
-     ("\\.odt\\'" "lowriter")))
+   `((,(al/file-regexp "jpg" "png" "gif" "tif" "tiff") "sxiv" "eog")
+     (,(al/file-regexp "pdf") "zathura" "mupdf")
+     (,(al/file-regexp "djvu" "djv") "zathura")
+     (,(al/file-regexp "wav" "oga" "ogg")
+      "play -q" "aplay" "mplayer -really-quiet" "mpv --really-quiet")
+     (,(al/file-regexp "odt" "doc") "lowriter")))
   ;; Do not rebind my keys!!
   (al/bind-keys-from-vars 'dired-mode-map 'al/dired-keys t))
 
