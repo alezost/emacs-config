@@ -174,7 +174,7 @@
   :defer 7
   :config
   (setq
-   guix-prettify-regexp (rx (or "store" "nar" "log")
+   guix-prettify-regexp (rx "/" (or "store" "nar" "log")
                             "/" (group (= 32 alnum)))
    guix-prettify-regexp-group 1)
   (global-guix-prettify-mode))
