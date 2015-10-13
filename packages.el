@@ -85,10 +85,14 @@
       ("P"   (message "%s" guix-profile)))
     "Alist of auxiliary keys that should be bound in any guix mode.")
 
-  (let ((dir (al/devel-dir-file "guix/emacs")))
-    (al/add-to-load-path-maybe dir)
-    (setq guix-load-path dir))
-  ;; (al/add-to-load-path-maybe (al/src-dir-file "guix/emacs"))
+  (defun al/guix-set-load-path (dir)
+    (al/with-check
+      :dir dir
+      (al/add-to-load-path-maybe dir)
+      (setq guix-load-path dir)))
+  (al/guix-set-load-path (al/devel-dir-file "guix/emacs"))
+  (al/guix-set-load-path (al/src-dir-file "guix/emacs"))
+
   (setq
    guix-guile-program "guile"
    guix-default-profile (concat "/var/guix/profiles/per-user/"
