@@ -200,6 +200,17 @@
   (al/bind-keys-from-vars 'guix-build-log-mode-map
     'al/guix-build-log-keys))
 
+(use-package guix-devel
+  :defer t
+  :diminish " γ"
+  :config
+  ;; Indents for 'modify-phases' syntax:
+  (guix-devel-scheme-indent
+   (add-after 2)
+   (add-before 2)
+   (delete 1)
+   (replace 1)))
+
 
 ;;; Aurel
 
