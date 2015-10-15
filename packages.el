@@ -204,6 +204,11 @@
   :defer t
   :diminish " γ"
   :config
+  (defconst al/guix-devel-keys
+    '(("d" . guix-devel-download-package-source))
+    "Alist of auxiliary keys for `guix-devel-keys-map'.")
+  (al/bind-keys-from-vars 'guix-devel-keys-map 'al/guix-devel-keys)
+
   ;; Indents for 'modify-phases' syntax:
   (guix-devel-scheme-indent
    (add-after 2)
