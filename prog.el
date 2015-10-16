@@ -468,9 +468,15 @@
 (use-package magit-diff
   :defer t
   :config
+  (defconst al/magit-diff-visit-keys
+    '(("RET" . magit-diff-visit-file-worktree)
+      ("<C-return>" . magit-diff-visit-file))
+    "Alist of auxiliary keys for visiting files in `magit-diff-mode'.")
   (al/bind-keys-from-vars 'magit-diff-mode-map 'al/magit-history-keys)
-  (al/bind-keys-from-vars 'magit-file-section-map 'al/magit-common-keys)
-  (al/bind-keys-from-vars 'magit-hunk-section-map 'al/magit-common-keys)
+  (al/bind-keys-from-vars 'magit-file-section-map
+    '(al/magit-common-keys al/magit-diff-visit-keys))
+  (al/bind-keys-from-vars 'magit-hunk-section-map
+    '(al/magit-common-keys al/magit-diff-visit-keys))
   (al/bind-keys-from-vars 'magit-staged-section-map 'al/magit-common-keys))
 
 (use-package magit-sequence
