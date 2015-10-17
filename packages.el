@@ -74,7 +74,8 @@
  ("l"   . (lambda () (interactive)
             (switch-to-buffer guix-package-list-buffer-name)))
  ("C-l" . (lambda () (interactive)
-            (switch-to-buffer guix-generation-list-buffer-name))))
+            (switch-to-buffer guix-generation-list-buffer-name)))
+ ("u"   . utl-guix-commit-url))
 
 (use-package guix
   :defer t
