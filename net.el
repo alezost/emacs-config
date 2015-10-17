@@ -295,6 +295,7 @@
       (">"     . gnus-summary-prev-unread-article)
       ("E"     . gnus-summary-next-unread-article)
       ("n"     . gnus-summary-reply)
+      ("m"     . gnus-summary-mark-as-read-forward)
       ("r"     . gnus-summary-mark-as-read-forward)
       ("z"     . gnus-summary-clear-mark-forward)
       ("u"     . gnus-summary-scroll-up)
