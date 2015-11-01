@@ -468,6 +468,9 @@
 (use-package magit-diff
   :defer t
   :config
+  (setq magit-diff-auto-show
+        (remove 'blame-follow magit-diff-auto-show))
+
   (defconst al/magit-diff-visit-keys
     '(("RET" . magit-diff-visit-file-worktree)
       ("<C-return>" . magit-diff-visit-file))
@@ -493,6 +496,20 @@
   (magit-change-popup-key 'magit-bisect-popup :action ?a ?!) ; run
   (magit-change-popup-key 'magit-bisect-popup :action ?B ?s) ; start
   )
+
+(use-package magit-blame
+  :defer t
+  :diminish " µBlame"
+  :config
+  (defconst al/magit-blame-keys
+    '(("M-." . magit-blame-previous-chunk)
+      ("M-e" . magit-blame-next-chunk)
+      (">"   . magit-blame-previous-chunk-same-commit)
+      ("E"   . magit-blame-next-chunk-same-commit)
+      ("M-k" . magit-blame-copy-hash))
+    "Alist of auxiliary keys for `magit-blame-mode-map'.")
+  (al/bind-keys-from-vars 'magit-blame-mode-map
+    '(al/lazy-scrolling-keys al/magit-blame-keys)))
 
 (use-package magit-git
   :defer t
