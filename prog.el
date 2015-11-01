@@ -544,12 +544,6 @@
 
 ;;; Misc settings and packages
 
-(setq c-default-style
-      '((c-mode    . "stroustrup")
-        (java-mode . "java")
-        (awk-mode  . "awk")
-        (other     . "gnu")))
-
 (use-package prog-mode
   :defer t
   :config
@@ -563,6 +557,21 @@
     '(("<C-M-tab>" . prog-indent-sexp))
     "Alist of auxiliary keys for `prog-mode-map'.")
   (al/bind-keys-from-vars 'prog-mode-map 'al/prog-keys))
+
+(use-package cc-mode
+  :defer t
+  :config
+  (setq
+   c-default-style
+   '((c-mode    . "stroustrup")
+     (java-mode . "java")
+     (awk-mode  . "awk")
+     (other     . "gnu")))
+  (defconst al/c-base-keys
+    '(("<H-M-tab>" . c-indent-defun))
+    "Alist of auxiliary keys for `c-mode-base-map'.")
+  (al/bind-keys-from-vars 'c-mode-base-map
+    '(al/prog-keys al/c-base-keys)))
 
 (use-package js
   :defer t
