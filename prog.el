@@ -434,7 +434,8 @@
       ("M-h" . magit-popup-toggle-show-common-commands))
     "Alist of auxiliary keys for `magit-popup-mode-map'.")
   (al/bind-keys-from-vars 'magit-popup-mode-map
-    'al/magit-popup-keys)
+    'al/magit-popup-keys
+    t)
 
   (al/add-hook-maybe 'magit-popup-mode-hook 'al/bar-cursor-type)
 
@@ -475,11 +476,15 @@
     '(("RET" . magit-diff-visit-file-worktree)
       ("<C-return>" . magit-diff-visit-file))
     "Alist of auxiliary keys for visiting files in `magit-diff-mode'.")
-  (al/bind-keys-from-vars 'magit-diff-mode-map 'al/magit-history-keys)
+  (al/bind-keys-from-vars 'magit-diff-mode-map
+    'al/magit-history-keys
+    t)
   (al/bind-keys-from-vars 'magit-file-section-map
-    '(al/magit-common-keys al/magit-diff-visit-keys))
+    '(al/magit-common-keys al/magit-diff-visit-keys)
+    t)
   (al/bind-keys-from-vars 'magit-hunk-section-map
-    '(al/magit-common-keys al/magit-diff-visit-keys))
+    '(al/magit-common-keys al/magit-diff-visit-keys)
+    t)
   (al/bind-keys-from-vars 'magit-staged-section-map 'al/magit-common-keys))
 
 (use-package magit-sequence
