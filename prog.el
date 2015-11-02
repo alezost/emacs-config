@@ -404,7 +404,7 @@
   (defconst al/magit-keys
     '(("<backtab>" . magit-section-cycle-global)
       ("H-SPC" . magit-diff-show-or-scroll-up)
-      ("M-k" . magit-copy-as-kill)
+      ("M-k" . magit-copy-section-value)
       ("u" . magit-show-commit)
       ("U" . magit-unstage-file)
       ("E" . magit-ediff-dwim)
@@ -450,8 +450,12 @@
   :config
   (setq
    magit-log-margin-spec '(25 1 magit-duration-spec)
-   magit-log-arguments '("--decorate"))
+   magit-reflog-arguments '("-n99")
+   magit-log-arguments `(,@magit-reflog-arguments "--decorate")
+   magit-log-select-arguments magit-log-arguments
+   )
   (magit-change-popup-key 'magit-log-popup :option ?m ?g) ; grep
+  (magit-change-popup-key 'magit-log-popup :option ?G ?p) ; patch
 
   (defconst al/magit-log-select-keys
     '(("m" . magit-log-select-pick))
@@ -469,9 +473,6 @@
 (use-package magit-diff
   :defer t
   :config
-  (setq magit-diff-auto-show
-        (remove 'blame-follow magit-diff-auto-show))
-
   (defconst al/magit-diff-visit-keys
     '(("RET" . magit-diff-visit-file-worktree)
       ("<C-return>" . magit-diff-visit-file))
@@ -490,16 +491,16 @@
 (use-package magit-sequence
   :defer t
   :config
-  (magit-change-popup-key 'magit-rebase-popup :action ?e ?i) ; interactive
-  (magit-change-popup-key 'magit-rebase-popup :action ?s ?e) ; edit
   (magit-change-popup-key 'magit-cherry-pick-popup :action ?A ?C) ; pick
   )
 
 (use-package magit-bisect
   :defer t
   :config
-  (magit-change-popup-key 'magit-bisect-popup :action ?a ?!) ; run
   (magit-change-popup-key 'magit-bisect-popup :action ?B ?s) ; start
+  (magit-change-popup-key 'magit-bisect-popup :action ?s ?!) ; run script
+  (magit-change-popup-key 'magit-bisect-popup
+                          :sequence-action ?s ?!) ; run script
   )
 
 (use-package magit-blame
