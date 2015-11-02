@@ -206,8 +206,7 @@
 
 (setq auto-mode-alist
       (append
-       '(("/var/log.*\\'" . syslog-mode)
-         ("/etc/profile\\'" . sh-mode)
+       '(("/etc/profile\\'" . sh-mode)
          ("bashrc\\'"     . sh-mode)
          ("\\.Xmodmap\\'" . conf-xdefaults-mode)
          ("\\.rules\\'"   . conf-unix-mode)
@@ -227,6 +226,7 @@
          ("\\.plot\\'"    . gnuplot-mode)
          ("\\.max\\'"     . maxima-mode))
        auto-mode-alist))
+(add-to-list 'auto-mode-alist '("/var/log.*\\'" . syslog-mode) t)
 (add-to-list 'auto-mode-alist '(".*rc\\'" . conf-unix-mode) t)
 (add-to-list 'auto-mode-alist '("/etc/.*\\'" . conf-unix-mode) t)
 
