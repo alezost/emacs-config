@@ -355,7 +355,8 @@
       ("u" . widget-button-press))
     "Alist of auxiliary keys for modes with widget buttons.")
   (defconst al/widget-field-keys
-    '(("M-<" . widget-kill-line)
+    '(("<M-tab>" . widget-complete)
+      ("M-<" . widget-kill-line)
       ("C-п" . widget-end-of-line)
       ("C-k"   (beginning-of-line) (widget-kill-line)))
     "Alist of auxiliary keys for modes with widget fields.")
