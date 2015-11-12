@@ -45,7 +45,7 @@
 (al/file-accessors "journal"       (al/notes-dir-file  "journal"))
 (al/file-accessors "music"         "~/music")
 (al/file-accessors "sound"         "~/docs/audio/small")
-(al/file-accessors "tmp"           "~/temp")
+(al/file-accessors "tmp"           "~/tmp")
 (al/file-accessors "src"           "~/src")
 (al/file-accessors "devel"         "~/devel")
 (al/file-accessors "download"      "~/downloads")
