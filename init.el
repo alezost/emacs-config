@@ -309,6 +309,7 @@ Also it (default syntax) breaks `indent-guide-mode'."
     (mana               :fetcher git :url ,(al/emacs-repo "mana"))
     (ducpel             :fetcher git :url ,(al/emacs-repo "ducpel")
                         :files ("*.el"))
+    typing-game
     (sokoban            :fetcher github :repo "leoliu/sokoban"
                         :files ("*.el" "sokoban.levels")))
   "Packages that I use from rarely to never.")

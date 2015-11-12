@@ -23,7 +23,8 @@
  :prefix-docstring "Map for games."
  :prefix "M-G"
  ("p" . (lambda () (interactive) (practice-words 1000 1)))
- ("t" . tetris)
+ ("T" . tetris)
+ ("t" . typing-game)
  ("d" . ducpel)
  ("D" . (lambda () (interactive)
           (princ ducpel-moves-history (current-buffer))))
