@@ -30,6 +30,7 @@
  ("a n" . appt-add)
  ("a k" . appt-delete)
  ("M-T" . (lambda () (interactive) (utl-timer-set "Tea!!" 180)))
+ ("T"   . (lambda () (interactive) (utl-timer-set "Break!!" (* 45 60))))
  ("t n" . utl-timer-set)
  ("t t" . utl-timer-remaining-time)
  ("t k" . utl-timer-cancel))
