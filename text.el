@@ -175,8 +175,8 @@
  :prefix "M-i"
  ("M-i" . utl-insert-delimiter)
  ("M-a" . (lambda () (interactive) (insert ";;;###autoload\n")))
- ("t"   . (lambda () (interactive) (insert "TODO ")))
- ("f"   . (lambda () (interactive) (insert "FIXME ")))
+ ("t"   . (lambda () (interactive) (insert "TODO")))
+ ("f"   . (lambda () (interactive) (insert "FIXME")))
  ("d"   . utl-insert-date)
  ("M-'" . insert-pair-top-corners)
  ("M-;" . insert-pair-bottom-corners))
