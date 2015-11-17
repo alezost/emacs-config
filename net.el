@@ -86,7 +86,7 @@
       ("n"         . utl-w3m-next-url)
       ("<backtab>" . w3m-previous-form)
       ("<tab>"     . w3m-next-form)
-      ("r"         . w3m-redisplay-this-page)
+      ("R"         . w3m-redisplay-this-page)
       ("g"         . w3m-reload-this-page)
       ("j"         . w3m-goto-url)
       ("."         . w3m-previous-anchor)
