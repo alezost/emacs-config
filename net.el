@@ -623,8 +623,9 @@
   :init
   (al/with-check
     :var 'erc-log-channels-directory
-    (push (cons (concat "^" (regexp-quote (expand-file-name
-                                           erc-log-channels-directory)))
+    (push (cons (concat "\\`"
+                        (regexp-quote (expand-file-name
+                                       erc-log-channels-directory)))
                 'erc-view-log-mode)
           auto-mode-alist)))
 
