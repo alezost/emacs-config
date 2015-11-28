@@ -53,12 +53,11 @@
 
   ;; XXX In 25.1 `emacs-lisp-mode-hook',
   ;; `emacs-lisp-mode-syntax-table', … are placed in elisp-mode.el
-  (al/add-hook-maybe 'lisp-mode-hook
-    '(utl-imenu-add-sections paredit-mode))
+  (al/add-hook-maybe 'lisp-mode-hook 'utl-imenu-add-sections)
   (al/add-hook-maybe
       '(emacs-lisp-mode-hook
         lisp-interaction-mode-hook)
-    '(utl-imenu-add-use-package utl-imenu-add-sections paredit-mode))
+    '(utl-imenu-add-use-package utl-imenu-add-sections))
 
   (if (version< emacs-version "25")
       (progn
@@ -71,8 +70,7 @@
   :config
   (setq ielm-prompt "EL> ")
   (al/bind-keys-from-vars 'ielm-map)
-  (al/add-hook-maybe 'ielm-mode-hook
-    '(al/no-truncate-lines paredit-mode)))
+  (al/add-hook-maybe 'ielm-mode-hook 'al/no-truncate-lines))
 
 (use-package eldoc
   :defer t
@@ -177,8 +175,7 @@
    ("M-e" . slime-repl-next-input)
    ("M->" . slime-repl-previous-prompt)
    ("M-E" . slime-repl-next-prompt)
-   ("M-r" . slime-repl-previous-matching-input))
-  (al/add-hook-maybe 'slime-repl-mode-hook 'paredit-mode))
+   ("M-r" . slime-repl-previous-matching-input)))
 
 (use-package slime-autodoc
   :defer t
@@ -197,8 +194,7 @@
   :config
   (put 'plist-new 'scheme-indent-function 1)
   (al/modify-page-break-syntax 'scheme-mode-syntax-table)
-  (al/add-hook-maybe 'scheme-mode-hook
-    '(utl-imenu-add-sections paredit-mode))
+  (al/add-hook-maybe 'scheme-mode-hook 'utl-imenu-add-sections)
   (when (require 'utl-scheme nil t)
     (setq scheme-imenu-generic-expression
           utl-scheme-imenu-generic-expression)
@@ -251,8 +247,7 @@
     '(al/comint-keys al/geiser-keys al/geiser-repl-keys))
 
   (al/add-hook-maybe 'geiser-repl-mode-hook
-    '(paredit-mode
-      al/inhibit-field-motion
+    '(al/inhibit-field-motion
       guix-build-log-minor-mode))
 
   (when (require 'utl-geiser nil t)
