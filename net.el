@@ -380,7 +380,10 @@
    message-signature "Alex"
    message-send-mail-function 'smtpmail-send-it
    message-citation-line-function 'message-insert-formatted-citation-line
-   message-citation-line-format "%N (%Y-%m-%d %H:%M %z) wrote:\n"))
+   message-citation-line-format "%N (%Y-%m-%d %H:%M %z) wrote:\n")
+
+  (modify-syntax-entry ?' "'   " message-mode-syntax-table)
+  (modify-syntax-entry ?\" "\"   " message-mode-syntax-table))
 
 (use-package mml
   :defer t
