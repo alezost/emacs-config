@@ -226,6 +226,7 @@
   :commands dired-jump
   :init
   (setq
+   dired-guess-shell-gnutar "tar"
    dired-bind-jump nil
    dired-bind-man nil)
   (bind-key "H-j" 'dired-jump)
