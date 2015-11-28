@@ -568,7 +568,7 @@
 ;;; Initial scratch and message buffers
 
 (setq
- initial-major-mode 'ignore
+ initial-major-mode #'emacs-lisp-mode
  initial-buffer-choice #'messages-buffer
  message-log-max 5000)
 
