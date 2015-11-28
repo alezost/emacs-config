@@ -569,4 +569,71 @@ $0")
   (add-to-list 'emulation-mode-map-alists
                `((paredit-mode . ,paredit-mode-map))))
 
+(use-package smartparens
+  :defer t
+  :commands
+  (sp-indent-defun
+   sp-backward-kill-word
+   sp-kill-word
+   sp-backward-sexp
+   sp-forward-sexp
+   sp-backward-up-sexp
+   sp-down-sexp
+   sp-splice-sexp
+   sp-splice-sexp-killing-forward
+   sp-splice-sexp-killing-backward
+   sp-splice-sexp-killing-around
+   sp-backward-kill-sexp
+   sp-backward-copy-sexp
+   sp-kill-sexp
+   sp-copy-sexp
+   sp-transpose-sexp
+   sp-forward-slurp-sexp
+   sp-forward-barf-sexp
+   sp-backward-slurp-sexp
+   sp-backward-barf-sexp)
+
+  :config
+  (require 'smartparens-config nil t)
+  (setq
+   sp-navigate-reindent-after-up nil
+   sp-ignore-modes-list nil
+   sp-wrap-entire-symbol 'globally
+   ;; It should be anything!!!!
+   sp-navigate-consider-stringlike-sexp '(latex-mode))
+
+  (bind-keys
+   :map smartparens-mode-map
+   ("<H-M-tab>" . sp-indent-defun)
+   ("M-p"       . sp-backward-kill-word)
+   ("M-,"       . sp-kill-word)
+   ("C-M-o"     . sp-backward-sexp)
+   ("C-M-u"     . sp-forward-sexp)
+   ("C-M-."     . sp-backward-up-sexp)
+   ("C-M-e"     . sp-down-sexp)
+   ("H-E"       . sp-splice-sexp)
+   ("H-<"       . sp-splice-sexp-killing-forward)
+   ("H-P"       . sp-splice-sexp-killing-backward)
+   ("H->"       . sp-splice-sexp-killing-around)
+   ("C-M-p"     . sp-backward-kill-sexp)
+   ("C-M-k"     . sp-backward-copy-sexp)
+   ("C-M-,"     . sp-kill-sexp)
+   ("C-M-q"     . sp-copy-sexp)
+   ("C-M-'"     . sp-transpose-sexp)
+   ("C-)"       . sp-forward-slurp-sexp)
+   ("C-M-0"     . sp-forward-barf-sexp)
+   ("C-("       . sp-backward-slurp-sexp)
+   ("C-M-9"     . sp-backward-barf-sexp))
+  (bind-keys
+   :map smartparens-mode-map
+   :prefix-map al/smartparens-map
+   :prefix-docstring "Map for misc smartparens commands."
+   :prefix "H-p"
+   ("c" . sp-cheat-sheet)
+   ("." . sp-absorb-sexp)
+   ("e" . sp-emit-sexp)
+   ("o" . sp-convolute-sexp)
+   ("j" . sp-join-sexp)
+   ("s" . sp-split-sexp)))
+
 ;;; text.el ends here

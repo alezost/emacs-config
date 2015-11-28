@@ -254,6 +254,7 @@ Also it (default syntax) breaks `indent-guide-mode'."
     (imenus             :fetcher git :url ,(al/emacs-repo "imenus"))
     smex
     paredit
+    smartparens
     elisp-slime-nav
     diminish
     (yasnippet          :fetcher github :repo "capitaomorte/yasnippet"
