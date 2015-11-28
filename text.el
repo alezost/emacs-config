@@ -521,7 +521,28 @@ $0")
 
 (use-package paredit
   :defer t
-  :diminish " ()"
+  :diminish " PE"
+  :commands
+  (paredit-reindent-defun
+   paredit-newline
+   paredit-backward-kill-word
+   paredit-forward-kill-word
+   paredit-backward
+   paredit-forward
+   paredit-backward-up
+   paredit-forward-down
+   paredit-kill
+   paredit-splice-sexp
+   paredit-splice-sexp-killing-backward
+   paredit-splice-sexp-killing-forward
+   paredit-raise-sexp
+   paredit-forward-slurp-sexp
+   paredit-forward-barf-sexp
+   paredit-backward-slurp-sexp
+   paredit-backward-barf-sexp
+   paredit-split-sexp
+   paredit-join-sexps)
+
   :config
   (al/clean-map 'paredit-mode-map)
   (bind-keys
@@ -535,10 +556,10 @@ $0")
    ("C-M-."     . paredit-backward-up)
    ("C-M-e"     . paredit-forward-down)
    ("M-<"       . paredit-kill)
-   ("H->"       . paredit-splice-sexp)
+   ("H-E"       . paredit-splice-sexp)
    ("H-P"       . paredit-splice-sexp-killing-backward)
    ("H-<"       . paredit-splice-sexp-killing-forward)
-   ("C-M-l"     . paredit-raise-sexp)
+   ("H->"       . paredit-raise-sexp)
    ("C-)"       . paredit-forward-slurp-sexp)
    ("C-M-0"     . paredit-forward-barf-sexp)
    ("C-("       . paredit-backward-slurp-sexp)
