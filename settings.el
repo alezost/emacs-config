@@ -104,7 +104,7 @@
       ("C-M-." . ido-prev-match-dir)
       ("C-M-e" . ido-next-match-dir)
       ("M-m"   . ido-enter-magit-status)
-      ("M-h"   . utl-ido-home-work-directory))
+      ("M-h"     (utl-ido-set-current-directory "~")))
     "Alist of auxiliary keys for `ido-file-dir-completion-map'.")
   (al/bind-keys-from-vars
       '(ido-common-completion-map
