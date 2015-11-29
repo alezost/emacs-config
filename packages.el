@@ -192,12 +192,15 @@
   :defer t
   :diminish (guix-build-log-minor-mode . " γ🄻")
   :config
-  (setq guix-build-log-mode-hook '(view-mode))
-  (defconst al/guix-build-log-keys
+  (defconst al/guix-build-log-common-keys
     '(("M-." . guix-build-log-previous-phase)
-      ("M-e" . guix-build-log-next-phase)
-      ("C-c c" . compilation-shell-minor-mode))
+      ("M-e" . guix-build-log-next-phase))
+    "Alist of auxiliary keys for `guix-build-log-common-map'.")
+  (defconst al/guix-build-log-keys
+    '(("C-c c" . compilation-shell-minor-mode))
     "Alist of auxiliary keys for `guix-build-log-mode-map'.")
+  (al/bind-keys-from-vars 'guix-build-log-common-map
+    'al/guix-build-log-common-keys)
   (al/bind-keys-from-vars 'guix-build-log-mode-map
     'al/guix-build-log-keys))
 
