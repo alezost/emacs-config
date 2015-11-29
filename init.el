@@ -51,12 +51,20 @@
 (al/file-accessors "download"      "~/downloads")
 (al/file-accessors "echo-download" (al/download-dir-file "echo"))
 
+
+;;; Guix stuff
+
+(al/file-accessors "guix-profile" "~/.guix-profiles")
 (al/file-accessors "guix-user-profile" "~/.guix-profile")
 (al/file-accessors "guix-system-profile" "/run/current-system/profile")
 
-(defvar al/guix-system-p
+(defvar al/guix-system?
   (file-exists-p al/guix-system-profile-dir)
   "Non-nil, if current OS is GuixSD.")
+
+(defun al/guix-profile (name)
+  "Return file name of my guix profile with name."
+  (al/guix-profile-dir-file (concat name "/" name)))
 
 
 ;;; Auxiliary functions and macros
