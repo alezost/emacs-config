@@ -87,7 +87,7 @@
  ("C-M-c" . (lambda () (interactive)
               (find-file (al/config-dir-file "config.scm"))))
  ("M-g"   . (lambda () (interactive)
-              (utl-ido-find-file al/guix-user-profile-dir)))
+              (utl-ido-find-file al/guix-profile-dir)))
  ("c"     . (lambda () (interactive)
               (utl-ido-find-file (al/config-dir-file "conkeror"))))
  ("s"     . (lambda () (interactive)

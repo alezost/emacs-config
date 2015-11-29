@@ -104,7 +104,8 @@
       ("C-M-." . ido-prev-match-dir)
       ("C-M-e" . ido-next-match-dir)
       ("M-m"   . ido-enter-magit-status)
-      ("M-h"     (utl-ido-set-current-directory "~")))
+      ("M-h"     (utl-ido-set-current-directory "~"))
+      ("M-g"     (utl-ido-set-current-directory al/guix-profile-dir)))
     "Alist of auxiliary keys for `ido-file-dir-completion-map'.")
   (al/bind-keys-from-vars
       '(ido-common-completion-map

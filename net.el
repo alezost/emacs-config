@@ -165,7 +165,7 @@
 (use-package gnus
   :defer t
   :init
-  (bind-keys*
+  (bind-keys
    :prefix-map al/gnus-map
    :prefix-docstring "Map for Gnus."
    :prefix "M-g"
