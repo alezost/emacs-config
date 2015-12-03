@@ -534,6 +534,7 @@
 (use-package git-rebase
   :defer t
   :config
+  (al/add-hook-maybe 'git-rebase-mode-hook 'hl-line-mode)
   (defconst al/git-rebase-keys
     '(("p"   . git-rebase-pick)
       ("w"   . git-rebase-reword)
