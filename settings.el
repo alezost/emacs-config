@@ -179,22 +179,22 @@
   :defer t
   :config
   (setq ibuffer-default-sorting-mode 'filename/process)
-  (al/bind-keys-from-vars 'ibuffer-mode-map)
-  (bind-keys
-   :map ibuffer-mode-map
-   ("u"   . ibuffer-visit-buffer)
-   ("."   . ibuffer-backward-line)
-   ("e"   . ibuffer-forward-line)
-   ("M-." . ibuffer-backward-filter-group)
-   ("M-e" . ibuffer-forward-filter-group)
+  (defconst al/ibuffer-keys
+    '(("u"   . ibuffer-visit-buffer)
+      ("."   . ibuffer-backward-line)
+      ("e"   . ibuffer-forward-line)
+      ("M-." . ibuffer-backward-filter-group)
+      ("M-e" . ibuffer-forward-filter-group)
 
-   ("d"   . ibuffer-visit-buffer-other-window-noselect)
-   ("C-d" . ibuffer-visit-buffer-other-window)
-   ("C-l" . (lambda () (interactive) (ibuffer-update t)))
+      ("d"   . ibuffer-visit-buffer-other-window-noselect)
+      ("C-d" . ibuffer-visit-buffer-other-window)
+      ("C-l"   (ibuffer-update t))
 
-   ("z"   . ibuffer-unmark-forward)
-   ("Z"   . (lambda () (interactive) (ibuffer-unmark-all 0)))
-   ("* o" . ibuffer-mark-old-buffers))
+      ("z"   . ibuffer-unmark-forward)
+      ("Z"     (ibuffer-unmark-all 0))
+      ("* o" . ibuffer-mark-old-buffers))
+    "Alist of auxiliary keys for `ibuffer-mode-map'.")
+  (al/bind-keys-from-vars 'ibuffer-mode-map 'al/ibuffer-keys)
   (al/add-hook-maybe 'ibuffer-mode-hook
     '(utl-mode-ibuffer-info hl-line-mode)))
 
