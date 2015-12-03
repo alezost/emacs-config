@@ -55,7 +55,6 @@
 ;;; Guix stuff
 
 (al/file-accessors "guix-profile" "~/.guix-profiles")
-(al/file-accessors "guix-user-profile" "~/.guix-profile")
 (al/file-accessors "guix-system-profile" "/run/current-system/profile")
 
 (defvar al/guix-system?
@@ -65,6 +64,8 @@
 (defun al/guix-profile (name)
   "Return file name of my guix profile with name."
   (al/guix-profile-dir-file (concat name "/" name)))
+
+(al/file-accessors "guix-user-profile" (al/guix-profile "main"))
 
 
 ;;; Auxiliary functions and macros

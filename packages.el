@@ -96,9 +96,10 @@
 
   (setq
    guix-guile-program "guile"
-   guix-default-profile (concat "/var/guix/profiles/per-user/"
-                                user-login-name "/guix-profile"))
-  (require 'guix-init nil t))
+   guix-package-enable-at-startup nil
+   guix-default-profile al/guix-user-profile-dir)
+  (require 'guix-init nil t)
+  (guix-emacs-load-autoloads (al/guix-profile "emacs")))
 
 (use-package guix-base
   :defer t
