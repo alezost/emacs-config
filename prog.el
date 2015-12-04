@@ -556,6 +556,7 @@
       hl-todo-mode
       ;; indent-guide-mode
       abbrev-mode
+      al/set-comment-column
       al/show-trailing-whitespace))
   (defconst al/prog-keys
     '(("<C-M-tab>" . prog-indent-sexp))

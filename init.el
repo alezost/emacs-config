@@ -226,6 +226,9 @@ Also it (default syntax) breaks `indent-guide-mode'."
 (defun al/no-syntactic-font-lock ()
   (setq-local font-lock-keywords-only t))
 
+(defun al/set-comment-column ()
+  (setq-local comment-column 32))
+
 (defun al/file-regexp (&rest extensions)
   "Return regexp to match file name by EXTENSIONS."
   (rx-to-string `(and "." (or ,@extensions) string-end)
