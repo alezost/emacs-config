@@ -223,6 +223,9 @@ Also it (default syntax) breaks `indent-guide-mode'."
 (defun al/hbar-cursor-type ()
   (setq-local cursor-type 'hbar))
 
+(defun al/no-syntactic-font-lock ()
+  (setq-local font-lock-keywords-only t))
+
 (defun al/file-regexp (&rest extensions)
   "Return regexp to match file name by EXTENSIONS."
   (rx-to-string `(and "." (or ,@extensions) string-end)
