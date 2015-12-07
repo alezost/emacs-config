@@ -247,7 +247,7 @@ Also it (default syntax) breaks `indent-guide-mode'."
 (package-initialize)
 (setq package-enable-at-startup nil)
 
-(defvar al/fresh-init (not (fboundp 'quelpa))
+(defvar al/fresh-init? (not (fboundp 'quelpa))
   "Non-nil, if this is the first time my config is loaded by Emacs.")
 
 (defun al/emacs-repo (name)
@@ -473,7 +473,7 @@ relies on a particular version of a built-in package (e.g.,
 
 ;; If this is the first start of emacs, bootstrap quelpa and install
 ;; core packages.
-(when al/fresh-init
+(when al/fresh-init?
   (with-temp-buffer
     (url-insert-file-contents
      "https://raw.github.com/quelpa/quelpa/master/bootstrap.el")
