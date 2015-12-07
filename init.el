@@ -268,20 +268,12 @@ Also it (default syntax) breaks `indent-guide-mode'."
     (insert-pair        :fetcher git :url ,(al/emacs-repo "insert-pair"))
     (imenus             :fetcher git :url ,(al/emacs-repo "imenus"))
     smex
-    paredit
     smartparens
     elisp-slime-nav
     diminish
     hydra
     (yasnippet          :fetcher github :repo "capitaomorte/yasnippet"
                         :files ("yasnippet.el"))
-
-    ;; With the MELPA's 'magit' package recipe, magit repo will be
-    ;; downloaded 4 times to build the magit package itself and its
-    ;; dependencies (git-commit, magit-popup and with-editor).  So
-    ;; install everything in one piece.
-    (magit              :fetcher github :repo "magit/magit"
-                        :files ("lisp/*.el" "Documentation/*.texi"))
 
     github-browse-file
     (pathify            :fetcher git :url ,(al/emacs-repo "pathify"))
@@ -300,7 +292,6 @@ Also it (default syntax) breaks `indent-guide-mode'."
     org-pdfview
     (dictem             :fetcher github :repo "cheusov/dictem")
     google-translate
-    geiser
     (emms-status        :fetcher git :url ,(al/emacs-repo "emms-status"))
     emms-player-simple-mpv
     browse-kill-ring
@@ -320,6 +311,14 @@ Also it (default syntax) breaks `indent-guide-mode'."
   `(indent-guide
     mentor
     pkgbuild-mode
+
+    ;; With the MELPA's 'magit' package recipe, magit repo will be
+    ;; downloaded 4 times to build the magit package itself and its
+    ;; dependencies (git-commit, magit-popup and with-editor).  So
+    ;; install everything in one piece.
+    (magit              :fetcher github :repo "magit/magit"
+                        :files ("lisp/*.el" "Documentation/*.texi"))
+
     (rainbow-mode       :fetcher url :url "http://git.savannah.gnu.org/cgit/emacs/elpa.git/plain/packages/rainbow-mode/rainbow-mode.el")
     (sunrise-commander  :fetcher github :repo "escherdragon/sunrise-commander")
     (typing-practice    :fetcher url :url "https://raw.github.com/mebubo/dotfiles/master/.emacs.d/site-lisp/typing-practice.el")
@@ -396,6 +395,8 @@ relies on a particular version of a built-in package (e.g.,
     ;; Installed via Guix:
     pdf-tools
     emms
+    geiser
+    magit
     ;; Redundant dependencies of magit:
     magit-popup git-commit with-editor)
   "Names of packages that shouldn't be installed.")
