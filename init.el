@@ -272,6 +272,7 @@ Also it (default syntax) breaks `indent-guide-mode'."
     smartparens
     elisp-slime-nav
     diminish
+    hydra
     (yasnippet          :fetcher github :repo "capitaomorte/yasnippet"
                         :files ("yasnippet.el"))
 
@@ -486,6 +487,19 @@ relies on a particular version of a built-in package (e.g.,
 (eval-when-compile
   (require 'use-package))
 (setq use-package-verbose t)
+
+(defvar al/hydra-exists? (fboundp 'defhydra)
+  "Non-nil, if `hydra' package is available")
+
+(use-package hydra
+  :defer t
+  :config
+  (setq hydra-verbose t)
+  (bind-keys
+   :map hydra-base-map
+   ("C-4" . hydra--universal-argument)
+   ("C-u"))
+  (hydra-add-font-lock))
 
 (use-package diminish
   :config
