@@ -243,26 +243,27 @@
 (use-package gnus-group
   :defer t
   :config
-  (bind-keys
-   :map gnus-group-mode-map
-   ("." . gnus-group-prev-group)
-   ("e" . gnus-group-next-group)
-   (">" . gnus-group-prev-unread-group)
-   ("E" . gnus-group-next-unread-group)
-   ("u" . gnus-group-read-group)
-   ("U" . gnus-group-unsubscribe-current-group)
-   ("m" . gnus-group-mark-group)
-   ("z" . gnus-group-unmark-group)
-   ("Z" . gnus-group-unmark-all-groups)
-   ("M-U" . gnus-group-unsubscribe-group)
-   ("H i" . gnus-info-find-node)
+  (defconst al/gnus-group-keys
+    '(("." . gnus-group-prev-group)
+      ("e" . gnus-group-next-group)
+      (">" . gnus-group-prev-unread-group)
+      ("E" . gnus-group-next-unread-group)
+      ("u" . gnus-group-read-group)
+      ("U" . gnus-group-unsubscribe-current-group)
+      ("m" . gnus-group-mark-group)
+      ("z" . gnus-group-unmark-group)
+      ("Z" . gnus-group-unmark-all-groups)
+      ("M-U" . gnus-group-unsubscribe-group)
+      ("H i" . gnus-info-find-node)
+      ("C-k" . gnus-group-kill-group)
+      ("C-t" . gnus-group-kill-region)
+      ("H-u" . gnus-undo)
+      ("<backtab>" . gnus-topic-unindent)
+      ("M-." . gnus-topic-goto-previous-topic)
+      ("M-e" . gnus-topic-goto-next-topic))
+    "Alist of auxiliary keys for `gnus-group-mode-map'.")
+  (al/bind-keys-from-vars 'gnus-group-mode-map 'al/gnus-group-keys)
 
-   ("C-k" . gnus-group-kill-group)
-   ("C-t" . gnus-group-kill-region)
-   ("H-u" . gnus-undo)
-   ("<backtab>" . gnus-topic-unindent)
-   ("M-." . gnus-topic-goto-previous-topic)
-   ("M-e" . gnus-topic-goto-next-topic))
   (add-hook 'gnus-group-mode-hook 'hl-line-mode))
 
 (use-package gnus-sum
