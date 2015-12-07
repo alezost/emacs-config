@@ -364,7 +364,9 @@
   :config
   (setq
    gnus-topic-display-empty-topics nil
-   gnus-topic-line-format "%i%(%{%n%}%) – %A %v\n"))
+   gnus-topic-line-format "%i%(%{%n%}%) – %A %v\n")
+  (al/bind-keys-from-vars 'gnus-topic-mode-map
+    'al/free-important-keys t))
 
 (use-package gnus-dired
   :defer t
