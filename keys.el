@@ -130,6 +130,10 @@
     "C-t" "M-x" "C-M-x")
   "Alist of editing keys that should be unbound.")
 
+(defconst al/free-important-keys
+  '("M-g")
+  "Alist of important keys that should be unbound.")
+
 (defconst al/free-misc-keys
   '("M-_" "M-+"
     "M-/" "C-M-/" "M-?"
@@ -168,7 +172,7 @@
 ;;; Binding keys from variables
 
 (defconst al/default-keys-variables
-  '(al/free-moving-keys al/free-editing-keys)
+  '(al/free-moving-keys al/free-editing-keys al/free-important-keys)
   "Default list of variables used by `al/bind-keys-from-vars'.")
 
 (defmacro al/bind-key (key command &optional map)
