@@ -120,8 +120,11 @@
  ("C-M-s-SPC" . mark-defun)
  ("H-s-SPC"   . mark-whole-buffer)
 
- ("C-j" . newline-and-indent)
+ ("C-y" . utl-yank-or-prev)
+ ("M-y" . utl-yank-or-next)
  ("C-M-y" . utl-insert-clipboard)
+
+ ("C-j" . newline-and-indent)
  ("<S-backspace>" . delete-region)
  ("H-M-a" . align-regexp)
  ("C-H-M-a" . (lambda () (interactive)
@@ -283,7 +286,9 @@
         select-enable-clipboard nil))
 
 (use-package browse-kill-ring
-  :defer 5
+  :defer t
+  :init
+  (bind-key "C-H-y" 'browse-kill-ring)
   :config
   (setq
    browse-kill-ring-separator (make-string 64 ?—)
@@ -300,8 +305,7 @@
     (al/bind-keys-from-vars 'browse-kill-ring-mode-map
       'al/browse-kill-ring-keys t))
   (al/add-hook-maybe 'browse-kill-ring-mode-hook
-    'al/browse-kill-ring-bind-keys)
-  (browse-kill-ring-default-keybindings))
+    'al/browse-kill-ring-bind-keys))
 
 (use-package register
   :defer t
