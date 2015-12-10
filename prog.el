@@ -391,6 +391,7 @@
   (setq
    magit-merge-arguments '("--ff-only")
    magit-revert-buffers nil
+   magit-push-always-verify t
    magit-branch-read-upstream-first nil))
 
 (use-package magit-mode
