@@ -483,7 +483,7 @@ relies on a particular version of a built-in package (e.g.,
   (apply #'al/quelpa al/core-packages))
 
 (require 'bind-key)
-(setq bind-key-describe-special-forms t)
+(setq bind-key-describe-special-forms nil)
 
 (eval-when-compile
   (require 'use-package))
