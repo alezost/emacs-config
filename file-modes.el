@@ -37,6 +37,8 @@
   :defer t
   :commands (org-read-date org-open-file)
   :init
+  (setq org-export-backends
+        '(ascii html icalendar latex odt texinfo man))
   (when (utl-server-running-p)
     (require 'org-protocol nil t))
 
