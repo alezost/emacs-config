@@ -94,6 +94,7 @@
       ("<C-kp-enter>" . utl-org-table-next-column)
       ("<M-kp-enter>" . utl-org-table-kill-rows-recalculate)
       ("<C-M-kp-enter>" . utl-org-table-next-table)
+      ("C-c e" . org-export-dispatch)
       ("C-c M-x" . org-copy-special)
       ("C-c C-t" . org-cut-special)
       ("C-c C-y" . org-paste-special))
