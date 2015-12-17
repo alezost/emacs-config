@@ -24,8 +24,8 @@
  :prefix "M-C"
  ("M-C" . calendar)
  ("c"   . calendar)
- ("d"   . utl-diary-file)
- ("D"   . diary)
+ ("d"   . diary)
+ ("D"   . utl-diary-file)
  ("A"   . appt-activate)
  ("a n" . appt-add)
  ("a k" . appt-delete)
