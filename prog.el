@@ -523,10 +523,15 @@
 (use-package git-commit
   :defer t
   :config
+  (defun al/git-commit-fix-syntax ()
+    (modify-syntax-entry ?\" "\"   ")
+    (al/no-syntactic-font-lock))
   (al/add-hook-maybe 'git-commit-setup-hook
-    ;; Not `git-commit-turn-on-flyspell' because it calls
-    ;; `flyspell-buffer'.
-    'flyspell-mode)
+    '(;; Not `git-commit-turn-on-flyspell' because it calls `flyspell-buffer'.
+      flyspell-mode
+      ;; `git-commit-setup-font-lock' spoils my `text-mode' syntax stuff.
+      al/git-commit-fix-syntax))
+
   (defconst al/git-commit-keys
     '(("M->" . git-commit-prev-message)
       ("M-E" . git-commit-next-message))
