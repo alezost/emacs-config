@@ -192,14 +192,29 @@ Both HOOKS and FUNCTIONS may be single variables or lists of those."
     :var map-var
     (setcdr (symbol-value map-var) nil)))
 
-(defun al/modify-page-break-syntax (table-var)
-  "Set non-whitespace syntax for ^L in syntax table from TABLE-VAR.
+(defmacro al/modify-syntax (table-name &rest specs)
+  "Update syntax table according to SPECS.
+TABLE-NAME is a name (unquoted symbol) of a syntax table variable.
+SPECS are (CHAR NEWENTRY) elements.  See `modify-syntax-entry'
+for details."
+  (declare (indent 1))
+  (let ((table-var (make-symbol "table")))
+    `(al/with-check
+       :var ',table-name
+       (let ((,table-var (symbol-value ',table-name)))
+         ,@(mapcar
+            (lambda (spec)
+              (pcase spec
+                (`(,char ,entry)
+                 `(modify-syntax-entry ,char ,entry ,table-var))))
+            specs)))))
+
+(defmacro al/modify-page-break-syntax (table-name)
+  "Set non-whitespace syntax for ^L in syntax table TABLE-NAME.
 Page break should not belong to whitespace syntax, because
 `back-to-indentation' moves the point after ^L character which is not good.
 Also it (default syntax) breaks `indent-guide-mode'."
-  (al/with-check
-    :var table-var
-    (modify-syntax-entry ?\f ">   " (symbol-value table-var))))
+  `(al/modify-syntax ,table-name (?\f ">   ")))
 
 (defsubst al/emacs-trunk-p ()
   "Return non-nil, if current Emacs is the latest development build."

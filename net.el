@@ -385,8 +385,9 @@
    message-citation-line-function 'message-insert-formatted-citation-line
    message-citation-line-format "%N (%Y-%m-%d %H:%M %z) wrote:\n")
 
-  (modify-syntax-entry ?' "'   " message-mode-syntax-table)
-  (modify-syntax-entry ?\" "\"   " message-mode-syntax-table))
+  (al/modify-syntax message-mode-syntax-table
+    (?' "'   ")
+    (?\" "\"   ")))
 
 (use-package mml
   :defer t
@@ -523,7 +524,7 @@
 
   ;; Do not consider "'" a part of a symbol, so that `symbol-at-point'
   ;; (used by `elisp-slime-nav' functions) returns a proper symbol.
-  (modify-syntax-entry ?' "'   " erc-mode-syntax-table)
+  (al/modify-syntax erc-mode-syntax-table (?' "'   "))
 
   (defun al/erc-channel-config ()
     "Define additional settings depending on a channel."
