@@ -343,9 +343,11 @@
 (prefer-coding-system 'utf-8)
 (al/add-hook-maybe 'after-save-hook 'utl-check-parens)
 
+(al/modify-syntax text-mode-syntax-table (?\" "\"   "))
 (al/add-hook-maybe 'text-mode-hook
   '(visual-line-mode
     abbrev-mode
+    al/no-syntactic-font-lock
     al/show-trailing-whitespace))
 (al/bind-keys-from-vars 'text-mode-map 'al/text-editing-keys)
 
