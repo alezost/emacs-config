@@ -710,10 +710,12 @@
   :defer t
   :diminish " 👀"
   :config
-  (bind-keys
-   :map view-mode-map
-   ("f" . View-exit))
-  (al/bind-keys-from-vars 'view-mode-map 'al/lazy-moving-keys t))
+  (defconst al/view-keys
+    '(("v" . View-exit))
+    "Alist of auxiliary keys for `view-mode-map'.")
+  (al/bind-keys-from-vars 'view-mode-map
+    '(al/lazy-moving-keys al/view-keys)
+    t))
 
 (use-package epa
   :defer t
