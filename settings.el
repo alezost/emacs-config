@@ -467,7 +467,10 @@
    ("C-v"   . sql-send-region)
    ("C-M-v" . sql-send-paragraph)
    ("M-s-v" . sql-send-buffer))
-  (bind-key "<tab>" 'complete-symbol sql-interactive-mode-map)
+
+  ;; I just can't stand the default key bindings.
+  (al/clean-map 'sql-interactive-mode-map)
+  (set-keymap-parent sql-interactive-mode-map comint-mode-map)
 
   (when (require 'utl-sql nil t)
     (advice-add 'sql-highlight-product
