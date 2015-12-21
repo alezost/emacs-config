@@ -31,84 +31,6 @@
   'al/frame-keys-actions)
 
 
-;;; Global keys
-
-(bind-keys
- :map ctl-x-map
- ("C"   . save-buffers-kill-emacs)
- ("C-8" . insert-char))
-
-(bind-keys
- :map universal-argument-map
- ("C-4" . universal-argument-more)
- ("C-u"))
-
-(bind-keys
- ("C-4"         . universal-argument)
-
- ("H-u"         . undo)
- ("H-M-u"       . undo-only)
-
- ("C-\\"        . (lambda () (interactive) (toggle-input-method t)))
- ("s-7"         . (lambda () (interactive) (set-input-method nil)))
- ("s-8"         . dvorak-russian-computer)
- ("s-9"         . dvorak-qwerty)
- ("s-0"         . (lambda () (interactive) (set-input-method "greek")))
- ("s-M-7"       . (lambda () (interactive) (ispell-change-dictionary "en")))
- ("s-M-8"       . (lambda () (interactive) (ispell-change-dictionary "ru-yeyo")))
-
- ("<f4>"        . kmacro-end-or-call-macro)
- ("<XF86New>"   . kmacro-end-or-call-macro)
- ("<C-f4>"      . kmacro-start-macro-or-insert-counter)
- ("<C-XF86New>" . kmacro-start-macro-or-insert-counter)
- ("<M-f4>"      . kmacro-edit-macro)
- ("<M-XF86New>" . kmacro-edit-macro)
-
- ("<f5>"        . compile)
- ("C-="         . (lambda () (interactive) (describe-char (point))))
- ("C-c r"       . revert-buffer)
- ("C-c p"       . list-processes)
- ("C-c k"       . utl-kill-process))
-
-(defalias 'ctl-x-r-prefix ctl-x-r-map)
-(bind-key "M-R" 'ctl-x-r-prefix)
-(bind-keys
- :map ctl-x-r-map
- ("a" . append-to-register)
- ("p" . prepend-to-register))
-
-(defalias 'goto-prefix goto-map)
-(bind-key "C-M-g" 'goto-prefix)
-(bind-keys
- :map goto-map
- ("C-M-g" . goto-line)
- ("c"     . move-to-column)
- ("p"     . goto-char)
- ("h"     . previous-error)
- ("C-M-h" . previous-error)
- ("C-M-n" . next-error))
-
-(bind-keys
- :prefix-map al/modes-map
- :prefix-docstring "Map for enabling/disabling modes."
- :prefix "M-M"
- ("M-M" . utl-major-mode-to-kill-ring)
- ("SPC" . diminished-modes)
- ("a" . artist-mode)
- ("A" . auto-fill-mode)
- ("c" . conf-unix-mode)
- ("e" . emacs-lisp-mode)
- ("f" . font-lock-mode)
- ("o" . org-mode)
- ("p" . python-mode)
- ("P" . paredit-mode)
- ("r" . rainbow-mode)
- ("l" . nlinum-mode)
- ("t" . toggle-truncate-lines)
- ("v" . view-mode)
- ("|" . indent-guide-mode))
-
-
 ;;; Keys for multiple maps
 
 (defconst al/free-moving-keys
@@ -246,6 +168,12 @@ KEY-VARS have a priority over the bindings from these variables."
       (lambda (map-var)
         (al/bind-keys specs map-var)))))
 
+(defun al/clean-map (map-var)
+  "Remove all key bindings from MAP-VAR variable with keymap."
+  (al/with-check
+    :var map-var
+    (setcdr (symbol-value map-var) nil)))
+
 
 ;;; Binding buffer local keys
 
@@ -261,5 +189,99 @@ VARS are variables with bindings supported by
   (setq al/local-map (copy-keymap (current-local-map)))
   (use-local-map al/local-map)
   (al/bind-keys-from-vars 'al/local-map vars t))
+
+
+;;; Hydra
+
+(defvar al/hydra-exists? (fboundp 'defhydra)
+  "Non-nil, if `hydra' package is available.")
+
+(use-package hydra
+  :defer t
+  :config
+  (setq hydra-verbose t)
+  (bind-keys
+   :map hydra-base-map
+   ("C-4" . hydra--universal-argument)
+   ("C-u"))
+  (hydra-add-font-lock))
+
+
+;;; Global keys
+
+(bind-keys
+ :map ctl-x-map
+ ("C"   . save-buffers-kill-emacs)
+ ("C-8" . insert-char))
+
+(bind-keys
+ :map universal-argument-map
+ ("C-4" . universal-argument-more)
+ ("C-u"))
+
+(bind-keys
+ ("C-4"         . universal-argument)
+
+ ("H-u"         . undo)
+ ("H-M-u"       . undo-only)
+
+ ("C-\\"        . (lambda () (interactive) (toggle-input-method t)))
+ ("s-7"         . (lambda () (interactive) (set-input-method nil)))
+ ("s-8"         . dvorak-russian-computer)
+ ("s-9"         . dvorak-qwerty)
+ ("s-0"         . (lambda () (interactive) (set-input-method "greek")))
+ ("s-M-7"       . (lambda () (interactive) (ispell-change-dictionary "en")))
+ ("s-M-8"       . (lambda () (interactive) (ispell-change-dictionary "ru-yeyo")))
+
+ ("<f4>"        . kmacro-end-or-call-macro)
+ ("<XF86New>"   . kmacro-end-or-call-macro)
+ ("<C-f4>"      . kmacro-start-macro-or-insert-counter)
+ ("<C-XF86New>" . kmacro-start-macro-or-insert-counter)
+ ("<M-f4>"      . kmacro-edit-macro)
+ ("<M-XF86New>" . kmacro-edit-macro)
+
+ ("<f5>"        . compile)
+ ("C-="         . (lambda () (interactive) (describe-char (point))))
+ ("C-c r"       . revert-buffer)
+ ("C-c p"       . list-processes)
+ ("C-c k"       . utl-kill-process))
+
+(defalias 'ctl-x-r-prefix ctl-x-r-map)
+(bind-key "M-R" 'ctl-x-r-prefix)
+(bind-keys
+ :map ctl-x-r-map
+ ("a" . append-to-register)
+ ("p" . prepend-to-register))
+
+(defalias 'goto-prefix goto-map)
+(bind-key "C-M-g" 'goto-prefix)
+(bind-keys
+ :map goto-map
+ ("C-M-g" . goto-line)
+ ("c"     . move-to-column)
+ ("p"     . goto-char)
+ ("h"     . previous-error)
+ ("C-M-h" . previous-error)
+ ("C-M-n" . next-error))
+
+(bind-keys
+ :prefix-map al/modes-map
+ :prefix-docstring "Map for enabling/disabling modes."
+ :prefix "M-M"
+ ("M-M" . utl-major-mode-to-kill-ring)
+ ("SPC" . diminished-modes)
+ ("a" . artist-mode)
+ ("A" . auto-fill-mode)
+ ("c" . conf-unix-mode)
+ ("e" . emacs-lisp-mode)
+ ("f" . font-lock-mode)
+ ("o" . org-mode)
+ ("p" . python-mode)
+ ("P" . paredit-mode)
+ ("r" . rainbow-mode)
+ ("l" . nlinum-mode)
+ ("t" . toggle-truncate-lines)
+ ("v" . view-mode)
+ ("|" . indent-guide-mode))
 
 ;;; keys.el ends here

@@ -186,12 +186,6 @@ Both HOOKS and FUNCTIONS may be single variables or lists of those."
           (lambda (hook)
             (add-hook hook fun append local)))))))
 
-(defun al/clean-map (map-var)
-  "Remove all key bindings from MAP-VAR variable."
-  (al/with-check
-    :var map-var
-    (setcdr (symbol-value map-var) nil)))
-
 (defmacro al/modify-syntax (table-name &rest specs)
   "Update syntax table according to SPECS.
 TABLE-NAME is a name (unquoted symbol) of a syntax table variable.
@@ -503,19 +497,6 @@ relies on a particular version of a built-in package (e.g.,
 (eval-when-compile
   (require 'use-package))
 (setq use-package-verbose t)
-
-(defvar al/hydra-exists? (fboundp 'defhydra)
-  "Non-nil, if `hydra' package is available")
-
-(use-package hydra
-  :defer t
-  :config
-  (setq hydra-verbose t)
-  (bind-keys
-   :map hydra-base-map
-   ("C-4" . hydra--universal-argument)
-   ("C-u"))
-  (hydra-add-font-lock))
 
 (use-package diminish
   :config
