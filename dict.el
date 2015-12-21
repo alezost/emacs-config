@@ -18,7 +18,7 @@
 
 ;;; Global keys
 
-(bind-keys
+(al/bind-keys
  :prefix-map al/translation-map
  :prefix-docstring "Map for dictionaries, translating and friends."
  :prefix "<XF86Spell>"
@@ -28,20 +28,15 @@
  ("i" . utl-dictem-run-show-all-info)
  ("d" . utl-dictem-run-dict-search)
  ("q" . dictem-kill-all-buffers)
- ("e" . (lambda () (interactive)
-          (utl-google-translate-using-languages "en" "ru")))
- ("r" . (lambda () (interactive)
-          (utl-google-translate-using-languages "ru" "en")))
- ("f" . (lambda () (interactive)
-          (utl-google-translate-using-languages "fr" "ru")))
- ("l" . (lambda () (interactive)
-          (let ((google-translate-translation-directions-alist
-                 '(("la" . "ru") ("ru" . "la")
-                   ("la" . "en") ("en" . "la"))))
-            (utl-google-translate-smooth-translate))))
- ("g" . (lambda () (interactive)
-          (let ((google-translate-translation-directions-alist nil))
-            (utl-google-translate-smooth-translate)))))
+ ("e"   (utl-google-translate-using-languages "en" "ru"))
+ ("r"   (utl-google-translate-using-languages "ru" "en"))
+ ("f"   (utl-google-translate-using-languages "fr" "ru"))
+ ("l"   (let ((google-translate-translation-directions-alist
+               '(("la" . "ru") ("ru" . "la")
+                 ("la" . "en") ("en" . "la"))))
+          (utl-google-translate-smooth-translate)))
+ ("g"   (let ((google-translate-translation-directions-alist nil))
+          (utl-google-translate-smooth-translate))))
 
 
 ;;; Misc settings and packages
@@ -72,7 +67,7 @@
     (advice-add 'dictem-define-on-press
       :override 'utl-dictem-define-on-press))
   (setq dictem-use-existing-buffer nil)
-  (bind-keys
+  (al/bind-keys
    :map dictem-mode-map
    ("." . dictem-previous-link)
    ("e" . dictem-next-link)

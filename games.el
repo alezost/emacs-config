@@ -18,16 +18,15 @@
 
 ;;; Global keys
 
-(bind-keys*
+(al/bind-keys*
  :prefix-map al/games-map
  :prefix-docstring "Map for games."
  :prefix "M-G"
- ("p" . (lambda () (interactive) (practice-words 1000 1)))
+ ("p"   (practice-words 1000 1))
  ("T" . tetris)
  ("t" . typing-game)
  ("d" . ducpel)
- ("D" . (lambda () (interactive)
-          (princ ducpel-moves-history (current-buffer))))
+ ("D"   (princ ducpel-moves-history (current-buffer)))
  ("s" . snake))
 
 
@@ -58,7 +57,7 @@
      (file-name-as-directory (expand-file-name "levels" ducpel-dir))
      ducpel-user-saves-directory
      (file-name-as-directory (expand-file-name "temp" ducpel-dir))))
-  (bind-keys
+  (al/bind-keys
    :map ducpel-mode-map
    ("o" . ducpel-move-left)
    ("u" . ducpel-move-right)
@@ -105,7 +104,7 @@
       (t ?\s))
      nil nil))
 
-  (bind-keys
+  (al/bind-keys
    :map tetris-mode-map
    ("o"   . tetris-move-left)
    ("u"   . tetris-move-right)
@@ -118,7 +117,7 @@
 (use-package snake
   :defer t
   :config
-  (bind-keys
+  (al/bind-keys
    :map snake-mode-map
    ("o"   . snake-move-left)
    ("u"   . snake-move-right)

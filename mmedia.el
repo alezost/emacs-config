@@ -25,7 +25,7 @@
    emms-directory (al/emacs-data-dir-file "emms")
    emms-playlist-sort-prefix "s")
 
-  (bind-keys
+  (al/bind-keys
    :prefix-map al/emms-map
    :prefix-docstring "Map for EMMS."
    :prefix "C-ь"
@@ -40,9 +40,9 @@
    ("g" . utl-emms-seek-to)
    ("y" . utl-emms-mpv-sync-playing-time)
    ("S" . emms-cache-save)
-   ("u" . (lambda () (interactive) (emms-playlist-simple-uniq))))
+   ("u"   (emms-playlist-simple-uniq)))
 
-  (bind-keys
+  (al/bind-keys
    :map al/emms-map
    :prefix-map al/emms-play-map
    :prefix-docstring "Map for playing EMMS entries."
@@ -52,11 +52,10 @@
    ("f" . emms-play-file)
    ("l" . emms-play-playlist)
    ("u" . emms-play-url)
-   ("e" . (lambda () (interactive)
-            (emms-play-file
-             (read-file-name "Play file: " al/echo-download-dir)))))
+   ("e"   (emms-play-file
+           (read-file-name "Play file: " al/echo-download-dir))))
 
-  (bind-keys
+  (al/bind-keys
    :map al/emms-map
    :prefix-map al/emms-add-map
    :prefix-docstring "Map for adding EMMS entries."
@@ -66,9 +65,8 @@
    ("f" . emms-add-file)
    ("l" . emms-add-playlist)
    ("u" . emms-add-url)
-   ("e" . (lambda () (interactive)
-            (emms-add-file
-             (read-file-name "Add file: " al/echo-download-dir)))))
+   ("e"   (emms-add-file
+           (read-file-name "Add file: " al/echo-download-dir))))
 
   :config
   (require 'emms-source-file)

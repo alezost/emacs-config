@@ -49,7 +49,7 @@
 
 ;;; Global keys
 
-(bind-keys
+(al/bind-keys
  :prefix-map al/visual-map
  :prefix-docstring "Map for visual stuff."
  :prefix "M-V"
@@ -61,18 +61,17 @@
  ("t"   . utl-load-theme)
  ("C"   . make-color)
  ("c"   . make-color-switch-to-buffer)
- ("l"   . (lambda () (interactive) (utl-load-theme 'alect-light)))
- ("M-l" . (lambda () (interactive) (utl-load-theme 'alect-light-alt)))
- ("d"   . (lambda () (interactive) (utl-load-theme 'alect-dark)))
- ("M-d" . (lambda () (interactive) (utl-load-theme 'alect-dark-alt)))
- ("b"   . (lambda () (interactive) (utl-load-theme 'alect-black)))
- ("M-b" . (lambda () (interactive) (utl-load-theme 'alect-black-alt)))
+ ("l"     (utl-load-theme 'alect-light))
+ ("M-l"   (utl-load-theme 'alect-light-alt))
+ ("d"     (utl-load-theme 'alect-dark))
+ ("M-d"   (utl-load-theme 'alect-dark-alt))
+ ("b"     (utl-load-theme 'alect-black))
+ ("M-b"   (utl-load-theme 'alect-black-alt))
  ("h"   . hl-line-mode)
  ("w"   . whitespace-mode)
  ("W"   . global-whitespace-mode)
- ("M-W" . (lambda () (interactive)
-            (setq show-trailing-whitespace
-                  (not show-trailing-whitespace))))
+ ("M-W"   (setq show-trailing-whitespace
+                (not show-trailing-whitespace)))
  ("f"   . utl-face-to-kill-ring)
  ("F"   . facemenu-set-foreground)
  ("B"   . facemenu-set-background)

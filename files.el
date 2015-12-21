@@ -18,9 +18,9 @@
 
 ;;; Global keys
 
-(bind-key* "M-C-f" 'find-file-at-point)
+(al/bind-key* "M-C-f" find-file-at-point)
 
-(bind-keys*
+(al/bind-keys*
  :prefix-map al/find-file-map
  :prefix-docstring "Map for finding files."
  :prefix "C-f"
@@ -30,30 +30,20 @@
  ("z"     . utl-router-get-log)
  ("u"     . browse-url-emacs)
  ("l"     . find-library)
- ("q"     . (lambda () (interactive)
-              (utl-ido-find-file
-               (expand-file-name "package-build/recipes/"
-                                 quelpa-build-dir))))
- ("e"     . (lambda () (interactive)
-              (utl-ido-find-file al/emacs-dir)))
- ("C-c"   . (lambda () (interactive)
-              (utl-ido-find-file al/emacs-init-dir)))
- ("C-s"   . (lambda () (interactive)
-              (find-file (al/emacs-init-dir-file "settings.el"))))
- ("k"     . (lambda () (interactive)
-              (find-file (al/emacs-init-dir-file "keys.el"))))
- ("i"     . (lambda () (interactive)
-              (find-file (al/emacs-init-dir-file "init.el"))))
- ("t"     . (lambda () (interactive)
-              (find-file (al/emacs-init-dir-file "text.el"))))
- ("v"     . (lambda () (interactive)
-              (find-file (al/emacs-init-dir-file "visual.el"))))
- ("c"     . (lambda () (interactive)
-              (utl-ido-find-file (al/emacs-dir-file "alect-themes"))))
- ("C-M-c" . (lambda () (interactive)
-              (find-file (al/emacs-dir-file "alect-themes/alect-themes.el")))))
+ ("q"       (utl-ido-find-file
+             (expand-file-name "package-build/recipes/"
+                               quelpa-build-dir)))
+ ("e"       (utl-ido-find-file al/emacs-dir))
+ ("C-c"     (utl-ido-find-file al/emacs-init-dir))
+ ("C-s"     (find-file (al/emacs-init-dir-file "settings.el")))
+ ("k"       (find-file (al/emacs-init-dir-file "keys.el")))
+ ("i"       (find-file (al/emacs-init-dir-file "init.el")))
+ ("t"       (find-file (al/emacs-init-dir-file "text.el")))
+ ("v"       (find-file (al/emacs-init-dir-file "visual.el")))
+ ("c"       (utl-ido-find-file (al/emacs-dir-file "alect-themes")))
+ ("C-M-c"   (find-file (al/emacs-dir-file "alect-themes/alect-themes.el"))))
 
-(bind-keys
+(al/bind-keys
  :prefix-map al/bookmark-map
  :prefix-docstring "Map for bookmarks and finding files."
  :prefix "M-f"
@@ -62,40 +52,24 @@
  ("k"     . bookmark-delete)
  ("l"     . bookmark-bmenu-list)
  ("S"     . utl-sr-toggle)
- ("h"     . (lambda () (interactive)
-              (utl-ido-find-file "~")))
- ("d"     . (lambda () (interactive)
-              (utl-ido-find-file al/journal-dir)))
- ("w"     . (lambda () (interactive)
-              (utl-ido-find-file al/download-dir)))
- ("e"     . (lambda () (interactive)
-              (find-file al/echo-download-dir)))
- ("M-n"   . (lambda () (interactive)
-              (utl-ido-find-file al/notes-dir)))
- ("t"     . (lambda () (interactive)
-              (utl-ido-find-file al/tmp-dir)))
- ("m"     . (lambda () (interactive)
-              (utl-ido-find-file al/music-dir)))
- ("p"     . (lambda () (interactive)
-              (utl-ido-find-file al/progs-dir)))
- ("b"     . (lambda () (interactive)
-              (utl-ido-find-file (al/progs-dir-file "bash"))))
- ("g"     . (lambda () (interactive)
-              (utl-ido-find-file (al/progs-dir-file "guile"))))
- ("M-c"   . (lambda () (interactive)
-              (utl-ido-find-file al/config-dir)))
- ("C-M-c" . (lambda () (interactive)
-              (find-file (al/config-dir-file "config.scm"))))
- ("M-g"   . (lambda () (interactive)
-              (utl-ido-find-file al/guix-profile-dir)))
- ("c"     . (lambda () (interactive)
-              (utl-ido-find-file (al/config-dir-file "conkeror"))))
- ("s"     . (lambda () (interactive)
-              (utl-ido-find-file (al/config-dir-file "stumpwm"))))
- ("v"     . (lambda () (interactive)
-              (utl-ido-find-file "/var/log"))))
+ ("h"       (utl-ido-find-file "~"))
+ ("d"       (utl-ido-find-file al/journal-dir))
+ ("w"       (utl-ido-find-file al/download-dir))
+ ("e"       (find-file al/echo-download-dir))
+ ("M-n"     (utl-ido-find-file al/notes-dir))
+ ("t"       (utl-ido-find-file al/tmp-dir))
+ ("m"       (utl-ido-find-file al/music-dir))
+ ("p"       (utl-ido-find-file al/progs-dir))
+ ("b"       (utl-ido-find-file (al/progs-dir-file "bash")))
+ ("g"       (utl-ido-find-file (al/progs-dir-file "guile")))
+ ("M-c"     (utl-ido-find-file al/config-dir))
+ ("C-M-c"   (find-file (al/config-dir-file "config.scm")))
+ ("M-g"     (utl-ido-find-file al/guix-profile-dir))
+ ("c"       (utl-ido-find-file (al/config-dir-file "conkeror")))
+ ("s"       (utl-ido-find-file (al/config-dir-file "stumpwm")))
+ ("v"       (utl-ido-find-file "/var/log")))
 
-(bind-keys
+(al/bind-keys
  :prefix-map al/grep-find-map
  :prefix-docstring "Map for find/grep commands."
  :prefix "M-F"
@@ -176,7 +150,7 @@
     "Alist of auxiliary keys for `dired-mode'.")
   (al/bind-keys-from-vars 'dired-mode-map 'al/dired-keys)
 
-  (bind-keys
+  (al/bind-keys
    :map dired-mode-map
    :prefix-map al/dired-isearch-map
    :prefix-docstring "Map for isearch in dired."
@@ -186,30 +160,22 @@
    ("f" . dired-isearch-filenames-regexp)
    ("F" . dired-isearch-filenames))
 
-  (bind-keys
+  (al/bind-keys
    :map dired-mode-map
    :prefix-map al/dired-open-file-map
    :prefix-docstring "Map for opening files in external programs in dired."
    :prefix "C-j"
-   ("M-j" . (lambda () (interactive)
-              (utl-dired-start-process "xdg-open")))
+   ("M-j"   (utl-dired-start-process "xdg-open"))
    ("C-j" . utl-dired-open-file)
-   ("v d" . (lambda () (interactive)
-              (utl-dired-start-process "baobab")))
-   ("v f" . (lambda () (interactive)
-              (utl-dired-start-process "gdmap" "-f")))
-   ("m"   . (lambda () (interactive)
-              (utl-dired-start-process "mupdf")))
-   ("z"   . (lambda () (interactive)
-              (utl-dired-start-process "zathura")))
-   ("s"   . (lambda () (interactive)
-              (utl-dired-start-process-on-marked-files "sxiv")))
-   ("c"   . (lambda () (interactive)
-              (utl-browse-url-conkeror
-               (browse-url-file-url (dired-get-filename)))))
-   ("w"   . (lambda () (interactive)
-              (w3m-browse-url
-               (browse-url-file-url (dired-get-filename))))))
+   ("v d"   (utl-dired-start-process "baobab"))
+   ("v f"   (utl-dired-start-process "gdmap" "-f"))
+   ("m"     (utl-dired-start-process "mupdf"))
+   ("z"     (utl-dired-start-process "zathura"))
+   ("s"     (utl-dired-start-process-on-marked-files "sxiv"))
+   ("c"     (utl-browse-url-conkeror
+             (browse-url-file-url (dired-get-filename))))
+   ("w"     (w3m-browse-url
+             (browse-url-file-url (dired-get-filename)))))
 
   (al/add-hook-maybe 'dired-mode-hook 'hl-line-mode)
 
@@ -229,7 +195,7 @@
    dired-guess-shell-gnutar "tar"
    dired-bind-jump nil
    dired-bind-man nil)
-  (bind-key "H-j" 'dired-jump)
+  (al/bind-key "H-j" dired-jump)
   :config
   (setq
    ;; Do not show "hidden" files only.
@@ -265,7 +231,7 @@
 (use-package image-dired
   :defer t
   :config
-  (bind-keys
+  (al/bind-keys
    :map image-dired-thumbnail-mode-map
    ("."     . image-dired-backward-image)
    ("e"     . image-dired-forward-image)

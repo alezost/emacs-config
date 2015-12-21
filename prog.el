@@ -22,8 +22,8 @@
 
 (put 'advice-add 'lisp-indent-function 1)
 
-(bind-key* "M-v" 'utl-pp-eval-expression)
-(bind-keys
+(al/bind-key* "M-v" utl-pp-eval-expression)
+(al/bind-keys
  ("C-v"   . utl-eval-dwim)
  ("C-s-v" . utl-pp-eval-dwim)
  ("C-S-v" . pp-macroexpand-last-sexp)
@@ -31,7 +31,7 @@
  ("M-s-v" . eval-buffer)
  ("C-d"   . elisp-slime-nav-describe-elisp-thing-at-point)
  ("M-d"   . elisp-slime-nav-find-elisp-thing-at-point))
-(bind-keys
+(al/bind-keys
  :prefix-map al/doc-map
  :prefix-docstring "Map for documentation/finding definitions."
  :prefix "C-M-d"
@@ -44,12 +44,14 @@
   :defer t
   :config
   ;; (setq lisp-indent-function 'common-lisp-indent-function)
+  (defconst al/lisp-shared-keys
+    '(("<C-M-tab>" . utl-indent-sexp))
+    "Alist of auxiliary keys for `lisp-mode-shared-map'.")
+  (al/bind-keys-from-vars 'lisp-mode-shared-map 'al/lisp-shared-keys)
   (al/bind-keys-from-vars
-      '(lisp-mode-shared-map
-        emacs-lisp-mode-map
+      '(emacs-lisp-mode-map
         lisp-interaction-mode-map
         lisp-mode-map))
-  (bind-key "<C-M-tab>" 'utl-indent-sexp lisp-mode-shared-map)
 
   ;; XXX In 25.1 `emacs-lisp-mode-hook',
   ;; `emacs-lisp-mode-syntax-table', … are placed in elisp-mode.el
@@ -92,7 +94,7 @@
   :defer t
   :diminish " 🔧"
   :config
-  (bind-keys
+  (al/bind-keys
    :map edebug-mode-map
    ("v"   . edebug-eval-expression)
    ("C-v" . edebug-eval-last-sexp)))
@@ -100,10 +102,10 @@
 (use-package debug
   :defer t
   :init
-  (bind-key "C-c d" 'toggle-debug-on-error)
+  (al/bind-key "C-c d" toggle-debug-on-error)
   :config
   (al/bind-keys-from-vars 'debugger-mode-map 'al/button-keys t)
-  (bind-keys
+  (al/bind-keys
    :map debugger-mode-map
    ("v" . debugger-eval-expression)
    ("l" . debugger-toggle-locals)
@@ -142,7 +144,7 @@
       ("C-M-d"   . slime-doc-map)
       "C-c C-d")
     "Alist of auxiliary keys for slime modes.")
-  (bind-keys
+  (al/bind-keys
    :prefix-map al/slime-map
    :prefix-docstring "Map for slime commands."
    :prefix "M-L"
@@ -168,7 +170,7 @@
 (use-package slime-repl
   :defer t
   :config
-  (bind-keys
+  (al/bind-keys
    :map slime-repl-mode-map
    ("C-k" . utl-slime-repl-kill-whole-line)
    ("M-." . slime-repl-previous-input)
@@ -182,7 +184,7 @@
   :config
   ;; `slime-autodoc-mode' binds some useless keys into "C-c C-d" prefix.
   (al/clean-map 'slime-autodoc-mode-map)
-  (bind-keys
+  (al/bind-keys
    :map slime-autodoc-mode-map
    ("SPC" . slime-autodoc-space)))
 
@@ -221,7 +223,7 @@
   (put 'al/geiser-doc-map 'variable-documentation
        "Map for geiser documentation.")
   (define-prefix-command 'al/geiser-doc-map)
-  (bind-keys
+  (al/bind-keys
    :map al/geiser-doc-map
    ("d" . geiser-doc-symbol-at-point)
    ("i" . geiser-doc-look-up-manual)
@@ -339,7 +341,7 @@
 
 (setq vc-handled-backends nil)
 
-(bind-keys
+(al/bind-keys
  :prefix-map al/magit-map
  :prefix-docstring "Map for magit and git stuff."
  :prefix "M-m"

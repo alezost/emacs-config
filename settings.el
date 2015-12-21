@@ -126,9 +126,9 @@
   :defer t
   :init
   (setq smex-save-file (al/emacs-data-dir-file "smex-items"))
-  (bind-key "M-t" 'execute-extended-command ctl-x-map)
-  (bind-key "C-M-t" 'smex-major-mode-commands)
-  (bind-key* "M-t" 'smex)
+  (al/bind-key "M-t" execute-extended-command ctl-x-map)
+  (al/bind-key "C-M-t" smex-major-mode-commands)
+  (al/bind-key* "M-t" smex)
   :config
   (setq
    smex-history-length 32
@@ -148,11 +148,11 @@
 
 ;;; Working with buffers: ibuffer, uniquify, …
 
-(bind-keys*
+(al/bind-keys*
  ("M-b" . mode-line-other-buffer)
  ("C-M-b" . ibuffer))
 
-(bind-keys*
+(al/bind-keys*
  :prefix-map al/buffer-map
  :prefix-docstring "Map for managing/switching to buffers."
  :prefix "C-b"
@@ -161,13 +161,13 @@
  ("n" . info)
  ("b" . utl-buffer-name-to-kill-ring)
  ("f" . utl-file-name-to-kill-ring)
- ("g" . (lambda () (interactive) (switch-to-buffer "*grep*")))
- ("o" . (lambda () (interactive) (switch-to-buffer "*Occur*")))
- ("h" . (lambda () (interactive) (switch-to-buffer "*Help*")))
- ("s" . (lambda () (interactive) (switch-to-buffer "*scratch*")))
+ ("g"   (switch-to-buffer "*grep*"))
+ ("o"   (switch-to-buffer "*Occur*"))
+ ("h"   (switch-to-buffer "*Help*"))
+ ("s"   (switch-to-buffer "*scratch*"))
  ("w" . utl-switch-to-w3m)
  ("m" . man)
- ("k" . (lambda () (interactive) (kill-buffer nil)))
+ ("k"   (kill-buffer nil))
  ("8" . utl-switch-to-characters))
 
 (use-package uniquify
@@ -212,15 +212,14 @@
         "*Process List*"))
 (push ".*\\.el\\.gz$" same-window-regexps)
 
-(bind-keys
- ("<H-XF86AudioRaiseVolume>"   . (lambda () (interactive) (enlarge-window 1)))
- ("<H-XF86AudioLowerVolume>"   . (lambda () (interactive) (enlarge-window -1)))
- ("<C-H-XF86AudioRaiseVolume>" . (lambda () (interactive) (enlarge-window 1 t)))
- ("<C-H-XF86AudioLowerVolume>" . (lambda () (interactive) (enlarge-window -1 t)))
+(al/bind-keys
+ ("<H-XF86AudioRaiseVolume>"   (enlarge-window 1))
+ ("<H-XF86AudioLowerVolume>"   (enlarge-window -1))
+ ("<C-H-XF86AudioRaiseVolume>" (enlarge-window 1 t))
+ ("<C-H-XF86AudioLowerVolume>" (enlarge-window -1 t))
  ("H-o" . other-window)
  ("H-M-o" . utl-switch-windows)
- ("H-M-q" . (lambda () (interactive)
-              (quit-window nil (previous-window))))
+ ("H-M-q" (quit-window nil (previous-window)))
  ("H-O" . utl-switch-to-minibuffer)
  ("H-1" . delete-other-windows)
  ("H-2" . utl-make-vertical-windows)
@@ -231,7 +230,7 @@
   :defer 5
   :init
   (setq winner-dont-bind-my-keys t)
-  (bind-keys
+  (al/bind-keys
    ("<C-left>"  . winner-undo)
    ("<C-right>" . winner-redo))
   :config
@@ -243,7 +242,7 @@
 
 (setq shell-file-name "bash")
 
-(bind-keys*
+(al/bind-keys*
  :prefix-map al/repl-map
  :prefix-docstring "Map for various REPLs."
  :prefix "C-n"
@@ -251,13 +250,12 @@
  ("t"   . visit-ansi-term)
  ("e"   . eshell)
  ("i"   . ielm)
- ("s"   . (lambda () (interactive) (al/sql-connect 'darts)))
+ ("s"     (al/sql-connect 'darts))
  ("l"   . slime-repl)
  ("g"   . (lambda (arg) (interactive "P")
             (let (geiser-repl-use-other-window)
               (switch-to-guile arg))))
- ("G"   . (lambda () (interactive)
-            (geiser-connect-local 'guile guix-repl-current-socket)))
+ ("G"     (geiser-connect-local 'guile guix-repl-current-socket))
  ("P"   . run-python)
  ("p"   . python-shell-switch-to-shell)
  ("L"   . lua-start-process)
@@ -292,7 +290,7 @@
   :defer t
   :init
   (setq eshell-directory-name (al/emacs-data-dir-file "eshell"))
-  (bind-keys
+  (al/bind-keys
    ("C-z"   . eshell)
    ("C-M-z" . utl-eshell-cd))
   :config
@@ -343,8 +341,11 @@
 (use-package button
   :defer t
   :config
-  (al/bind-keys-from-vars 'button-buffer-map 'al/button-keys t)
-  (bind-key "u" 'push-button button-map))
+  (defconst al/button-map-keys
+    '(("u" . push-button))
+    "Alist of auxiliary keys for `button-map'.")
+  (al/bind-keys-from-vars 'button-map 'al/button-map-keys t)
+  (al/bind-keys-from-vars 'button-buffer-map 'al/button-keys t))
 
 (use-package wid-edit
   :defer t
@@ -367,7 +368,7 @@
   :defer t
   :config
   (al/bind-keys-from-vars 'custom-mode-map 'al/widget-button-keys t)
-  (bind-keys
+  (al/bind-keys
    :map custom-mode-map
    ("o" . Custom-goto-parent)
    ("g" . Custom-reset-standard)))
@@ -380,15 +381,15 @@
 (use-package help
   :defer t
   :config
-  (bind-keys
+  (al/bind-keys
    :map help-map
-   ("R" . (lambda () (interactive) (info "elisp")))
+   ("R"   (info "elisp"))
    ("A" . apropos)))
 
 (use-package help-mode
   :defer t
   :config
-  (bind-keys
+  (al/bind-keys
    :map help-mode-map
    ("," . help-go-back)
    ("p" . help-go-forward))
@@ -417,12 +418,12 @@
   :config
   (setq Info-additional-directory-list
         (list (al/guix-user-profile-dir-file "share/info/")))
-  (bind-keys
+  (al/bind-keys
    :map Info-mode-map
    ("." . Info-prev-reference)
    ("e" . Info-next-reference)
-   ("c" . (lambda () (interactive) (Info-copy-current-node-name 0)))
-   ("o" . (lambda () (interactive) (Info-up) (goto-char (point-min))))
+   ("c"   (Info-copy-current-node-name 0))
+   ("o"   (Info-up) (goto-char (point-min)))
    ("O" . Info-top-node)
    ("u" . Info-follow-nearest-node)
    ("," . Info-history-back)
@@ -461,7 +462,7 @@
       (setq sql-password nil)))
 
   :config
-  (bind-keys
+  (al/bind-keys
    :map sql-mode-map
    ("C-v"   . sql-send-region)
    ("C-M-v" . sql-send-paragraph)
@@ -509,7 +510,7 @@
 
 ;;; Darts, journal
 
-(bind-keys
+(al/bind-keys
  :prefix-map al/darts-map
  :prefix-docstring "Map for darts and journal."
  :prefix "M-D"
@@ -526,8 +527,7 @@
  ("h" . journal-insert-subheading)
  ("H" . journal-back-to-entry-heading)
  ("i" . journal-insert-block)
- ("t" . (lambda () (interactive)
-          (find-file (al/journal-dir-file "tags")))))
+ ("t"   (find-file (al/journal-dir-file "tags"))))
 
 (use-package journal
   :defer t
@@ -634,7 +634,7 @@
 (use-package picture
   :defer t
   :config
-  (bind-keys
+  (al/bind-keys
    :map picture-mode-map
    ("M-O" . picture-movement-left)
    ("M-U" . picture-movement-right)
@@ -648,7 +648,7 @@
 (use-package hexl
   :defer t
   :config
-  (bind-keys
+  (al/bind-keys
    :map hexl-mode-map
    ("C-." . hexl-previous-line)
    ("C-e" . hexl-next-line)
@@ -722,20 +722,19 @@
   (require 'wid-edit) ; for `al/widget-button-keys' (it is required anyway)
   (al/bind-keys-from-vars 'epa-key-list-mode-map
     'al/widget-button-keys t)
-  (bind-keys
+  (al/bind-keys
    :map epa-key-list-mode-map
    ("z" . epa-unmark-key)))
 
 (use-package etags
   :defer t
   :init
-  (bind-keys
+  (al/bind-keys
    :prefix-map al/tags-map
    :prefix-docstring "Map for tags."
    :prefix "M-T"
    ("M-T" . find-tag)
-   ("d"   . (lambda () (interactive)
-              (find-tag (find-tag-default))))
+   ("d"     (find-tag (find-tag-default)))
    ("r"   . find-tag-regexp)
    ("n"   . tags-loop-continue)
    ("v"   . visit-tags-table)

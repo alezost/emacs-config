@@ -18,7 +18,7 @@
 
 ;;; Global keys
 
-(bind-keys
+(al/bind-keys
  :prefix-map al/net-map
  :prefix-docstring "Map for net utils."
  :prefix "C-w"
@@ -27,7 +27,7 @@
  ("w" . wget)
  ("m" . utl-url-wget-mp3))
 
-(bind-keys*
+(al/bind-keys*
  :prefix-map al/web-search-map
  :prefix-docstring "Map for web-search commands and browsing URLs."
  :prefix "M-S"
@@ -47,16 +47,14 @@
  ("I"   . web-search-ip-address)
  ("b"   . web-search-debbugs)
  ("`"   . web-search-ej)
- ("t"   . (lambda () (interactive)
-            (w3m-browse-url "http://m.tv.yandex.ru/4")))
+ ("t"     (w3m-browse-url "http://m.tv.yandex.ru/4"))
  ("l"   . utl-browse-irc-log)
- ("L"   . (lambda () (interactive)
-            (utl-browse-irc-log
-             "guix"
-             (format-time-string
-              "%Y-%m-%d"
-              (time-subtract (current-time)
-                             (seconds-to-time (* 24 60 60))))))))
+ ("L"     (utl-browse-irc-log
+           "guix"
+           (format-time-string
+            "%Y-%m-%d"
+            (time-subtract (current-time)
+                           (seconds-to-time (* 24 60 60)))))))
 
 
 ;;; Browsing
@@ -165,7 +163,7 @@
 (use-package gnus
   :defer t
   :init
-  (bind-keys
+  (al/bind-keys
    :prefix-map al/gnus-map
    :prefix-docstring "Map for Gnus."
    :prefix "M-g"
@@ -228,7 +226,7 @@
   (al/bind-keys-from-vars 'gnus-server-mode-map
     '(al/lazy-moving-keys al/gnus-server-keys)
     t)
-  (bind-keys
+  (al/bind-keys
    :map gnus-browse-mode-map
    ("." . gnus-browse-prev-group)
    ("e" . gnus-browse-next-group)
@@ -323,7 +321,10 @@
 (use-package gnus-draft
   :defer t
   :config
-  (bind-key "M-d" 'gnus-draft-edit-message gnus-draft-mode-map))
+  (defconst al/gnus-draft-keys
+    '(("M-d" . gnus-draft-edit-message))
+    "Alist of auxiliary keys for `gnus-draft-mode-map'.")
+  (al/bind-keys-from-vars 'gnus-draft-mode-map 'al/gnus-draft-keys))
 
 (use-package gnus-art
   :defer t
@@ -372,7 +373,7 @@
   :defer t
   :diminish " 𝗚"
   :config
-  (bind-keys
+  (al/bind-keys
    :map gnus-dired-mode-map
    ("C-c a" . gnus-dired-attach)))
 
@@ -410,7 +411,7 @@
 (use-package shr
   :defer t
   :config
-  (bind-keys
+  (al/bind-keys
    :map shr-map
    ("u" . shr-browse-url)
    ("c" . shr-copy-url)))
@@ -444,7 +445,7 @@
           noncommands irccontrols move-to-prompt stamp menu list))
   (setq erc-log-channels-directory (al/emacs-data-dir-file "erc-log"))
 
-  (bind-keys*
+  (al/bind-keys*
    :prefix-map al/erc-map
    :prefix-docstring "Map for ERC."
    :prefix "M-c"
@@ -453,18 +454,18 @@
    ("b"   . utl-erc-switch-buffer)
    ("M-s" . utl-erc-switch-to-server-buffer)
    ;; Interactive erc - compute everything without prompting:
-   ("c"   . (lambda () (interactive) (erc)))
+   ("c"     (erc))
    ("R"   . utl-erc-server-buffer-rename)
    ("d"   . utl-erc-quit-server)
    ("j"   . utl-erc-join-channel)
    ("a"   . utl-erc-away)
    ("m"   . erc-track-mode)
    ("n"   . erc-notifications-mode)
-   ("p"   . (lambda () (interactive) (erc-part-from-channel "")))
-   ("e"   . (lambda () (interactive) (switch-to-buffer "#emacs")))
-   ("x"   . (lambda () (interactive) (switch-to-buffer "#guix")))
-   ("s"   . (lambda () (interactive) (switch-to-buffer "#stumpwm")))
-   ("M-z" . (lambda () (interactive) (switch-to-buffer "*status"))))
+   ("p"     (erc-part-from-channel ""))
+   ("e"     (switch-to-buffer "#emacs"))
+   ("x"     (switch-to-buffer "#guix"))
+   ("s"     (switch-to-buffer "#stumpwm"))
+   ("M-z"   (switch-to-buffer "*status")))
 
   :config
   (setq
@@ -590,20 +591,18 @@
 (use-package erc-button
   :defer t
   :config
-  (bind-keys
+  (al/bind-keys
    :map erc-button-keymap
    ("u" . erc-button-press-button)
    ("e" . utl-next-link)
    ("." . utl-previous-link)
-   ("c" . (lambda () (interactive)
-            (kill-new (car (get-text-property (point) 'erc-data)))))
-   ("w" . (lambda () (interactive)
-            (wget (car (get-text-property (point) 'erc-data)))))))
+   ("c"   (kill-new (car (get-text-property (point) 'erc-data))))
+   ("w"   (wget (car (get-text-property (point) 'erc-data))))))
 
 (use-package erc-list
   :defer t
   :config
-  (bind-keys
+  (al/bind-keys
    :map erc-list-menu-mode-map
    ("u"   . erc-list-join)
    ("RET" . erc-list-join))
@@ -680,7 +679,7 @@
   :defer t
   :init
   (al/add-my-package-to-load-path-maybe "debpaste")
-  (bind-keys
+  (al/bind-keys
    :prefix-map al/debpaste-map
    :prefix-docstring "Map for debpaste."
    :prefix "C-H-p"
@@ -739,7 +738,7 @@
   :defer t
   :init
   (al/add-my-package-to-load-path-maybe "echo-msk")
-  (bind-keys
+  (al/bind-keys
    :prefix-map al/echo-msk-map
    :prefix-docstring "Map for echo-msk."
    :prefix "C-M-s-e"

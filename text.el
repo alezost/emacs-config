@@ -18,24 +18,24 @@
 
 ;;; Global keys for moving
 
-(bind-keys
+(al/bind-keys
  ("C-o"   . backward-char)
  ("M-o"   . backward-word)
  ("C-M-o" . backward-sexp)
  ("M-O"   . backward-sentence)
- ("C-H-o" . (lambda () (interactive) (scroll-right 1)))
+ ("C-H-o"   (scroll-right 1))
 
  ("C-u"   . forward-char)
  ("M-u"   . forward-word)
  ("C-M-u" . forward-sexp)
  ("M-U"   . forward-sentence)
- ("C-H-u" . (lambda () (interactive) (scroll-left 1)))
+ ("C-H-u"   (scroll-left 1))
 
  ("C-."   . previous-line)
  ("M-."   . backward-paragraph)
  ("C-M-." . backward-up-list)
  ("M->"   . backward-page)
- ("C-H-." . (lambda () (interactive) (scroll-down 1)))
+ ("C-H-."   (scroll-down 1))
  ("H-."   . scroll-down-command)
  ("H-M-." . scroll-other-window-down)
  ("s-."   . utl-previous-link)
@@ -44,7 +44,7 @@
  ("M-e"   . forward-paragraph)
  ("C-M-e" . down-list)
  ("M-E"   . forward-page)
- ("C-H-e" . (lambda () (interactive) (scroll-up 1)))
+ ("C-H-e"   (scroll-up 1))
  ("H-e"   . scroll-up-command)
  ("H-M-e" . scroll-other-window)
  ("s-e"   . utl-next-link)
@@ -64,7 +64,7 @@
  ("C-2"   . move-to-window-line-top-bottom))
 
 (unless (display-graphic-p)
-  (bind-keys
+  (al/bind-keys
    ("M-."   . previous-line)
    ("M-e"   . next-line)
    ("M-a"   . mwim-beginning-of-code-or-line)
@@ -78,7 +78,7 @@
 
 ;;; Global keys for editing
 
-(bind-keys
+(al/bind-keys
  ("C-,"   . delete-char)
  ("M-,"   . kill-word)
  ("C-M-," . kill-sexp)
@@ -101,7 +101,7 @@
  ("H-k"   . utl-duplicate-dwim)
 
  ("C-'"   . transpose-chars)
- ("M-'"   . (lambda () (interactive) (transpose-words -1)))
+ ("M-'"     (transpose-words -1))
  ("C-M-'" . transpose-sexps)
  ("M-\""  . transpose-lines)
 
@@ -127,9 +127,8 @@
  ("C-j" . newline-and-indent)
  ("<S-backspace>" . delete-region)
  ("H-M-a" . align-regexp)
- ("C-H-M-a" . (lambda () (interactive)
-                (align-regexp (region-beginning) (region-end)
-                              "\\(\\s-*\\)((")))
+ ("C-H-M-a" (align-regexp (region-beginning) (region-end)
+                          "\\(\\s-*\\)(("))
  ("M-%" . ispell-complete-word)
  ("M-_" . utl-number-down)
  ("M-+" . utl-number-up)
@@ -145,7 +144,7 @@
  ("<M-S-kanji>" . utl-capitalize-dwim)
  ("<H-M-kanji>" . utl-upcase-dwim))
 
-(bind-keys
+(al/bind-keys
  ("<M-tab>" . complete-symbol) ; shadows "\M-\t" ("C-M-i") in any mode, so be careful
  ("<C-tab>" . indent-relative)
  ("<M-S-iso-lefttab>" . tab-to-tab-stop)
@@ -158,8 +157,8 @@
 (define-key key-translation-map [?\C--] [?–])
 (define-key key-translation-map [?\C-\M--] [?—])
 
-(bind-keys
- ("C->"   . (lambda () (interactive) (insert "->")))
+(al/bind-keys
+ ("C->"     (insert "->"))
  ("H-4"   . insert-parentheses)
  ("H-5"   . insert-pair-square-brackets)
  ("H-6"   . insert-pair-curly-brackets)
@@ -172,14 +171,14 @@
  ("H-`"   . insert-pair-grave-accent-quotation)
  ("C-H-`" . insert-pair-grave-accents))
 
-(bind-keys
+(al/bind-keys
  :prefix-map al/insert-map
  :prefix-docstring "Map for inserting symbols and text."
  :prefix "M-i"
  ("M-i" . utl-insert-delimiter)
- ("M-a" . (lambda () (interactive) (insert ";;;###autoload\n")))
- ("t"   . (lambda () (interactive) (insert "TODO")))
- ("f"   . (lambda () (interactive) (insert "FIXME")))
+ ("M-a"   (insert ";;;###autoload\n"))
+ ("t"     (insert "TODO"))
+ ("f"     (insert "FIXME"))
  ("d"   . utl-insert-date)
  ("M-'" . insert-pair-top-corners)
  ("M-;" . insert-pair-bottom-corners))
@@ -187,7 +186,7 @@
 
 ;;; Searching, finding and replacing
 
-(bind-keys
+(al/bind-keys
  :map search-map
  ("s"   . query-replace)
  ("M-s" . query-replace)
@@ -195,15 +194,13 @@
  ("R"   . replace-regexp))
 
 (setq isearch-allow-scroll t)
-(bind-keys
+(al/bind-keys
  :map isearch-mode-map
  ("M-s" . isearch-query-replace)
  ("M-d" . isearch-edit-string)
  ("M-o" . isearch-occur)
- ("s-7" . (lambda () (interactive)
-            (utl-set-isearch-input-method nil)))
- ("s-8" . (lambda () (interactive)
-            (utl-set-isearch-input-method "dvorak-russian-computer"))))
+ ("s-7"   (utl-set-isearch-input-method nil))
+ ("s-8"   (utl-set-isearch-input-method "dvorak-russian-computer")))
 
 (defconst al/occur-keys
   '(("." . occur-prev)
@@ -226,7 +223,7 @@
   :defer t
   :init
   (al/add-my-package-to-load-path-maybe "point-pos")
-  (bind-keys
+  (al/bind-keys
    :prefix-map al/point-pos-map
    :prefix-docstring "Map for point-pos."
    :prefix "M-Z"
@@ -235,7 +232,7 @@
    ("g" . point-pos-goto)
    ("h" . point-pos-previous)
    ("n" . point-pos-next))
-  (bind-keys
+  (al/bind-keys
    ("C-M-S-g" . point-pos-goto)
    ("C-M-S-h" . point-pos-previous)
    ("C-M-S-n" . point-pos-next)))
@@ -243,7 +240,7 @@
 (use-package imenu
   :defer t
   :init
-  (bind-key* "C-M-s-m" 'imenu)
+  (al/bind-key* "C-M-s-m" imenu)
   :config
   (setq imenu-space-replacement nil))
 
@@ -251,10 +248,10 @@
   :defer t
   :init
   (al/add-my-package-to-load-path-maybe "imenus")
-  (bind-key* "C-M-m" 'imenus)
+  (al/bind-key* "C-M-m" imenus)
   :config
   (setq imenus-delimiter " ⇨ ")
-  (bind-keys
+  (al/bind-keys
    :map imenus-minibuffer-map
    ("C-r" . imenus-rescan)
    ("C-s" . imenus-exit-to-isearch)
@@ -263,7 +260,7 @@
 (use-package utl-imenus
   :defer t
   :init
-  (bind-key "s-s" 'utl-imenus-search-elisp-dir)
+  (al/bind-key "s-s" utl-imenus-search-elisp-dir)
   :config
   (setq utl-imenus-elisp-dir al/emacs-init-dir))
 
@@ -288,7 +285,7 @@
 (use-package browse-kill-ring
   :defer t
   :init
-  (bind-key "C-H-y" 'browse-kill-ring)
+  (al/bind-key "C-H-y" browse-kill-ring)
   :config
   (setq
    browse-kill-ring-separator (make-string 64 ?—)
@@ -444,12 +441,12 @@
   :diminish " ⍈"
   :commands company-complete
   :init
-  (bind-key "<C-H-tab>" 'company-complete)
+  (al/bind-key "<C-H-tab>" company-complete)
   :config
   (setq
    company-idle-delay nil
    company-show-numbers t)
-  (bind-keys
+  (al/bind-keys
    :map company-active-map
    ("M-." . company-select-previous)
    ("M-e" . company-select-next))
@@ -473,25 +470,24 @@
    yas-snippet-dirs (list al/my-snippets-dir al/yas-snippets-dir)
    yas-prompt-functions '(yas-ido-prompt))
 
-  (bind-keys
+  (al/bind-keys
    ("<kanji>"   . utl-yas-next-field-or-expand)
    ("<M-kanji>" . utl-yas-exit-and-expand))
-  (bind-keys
+  (al/bind-keys
    :prefix-map al/yas-map
    :prefix-docstring "Map for yasnippet commands."
    :prefix "M-Y"
    ("M-Y" . yas-insert-snippet)
    ("f"   . yas-visit-snippet-file)
-   ("r"   . (lambda () (interactive) (yas--load-pending-jits)))
+   ("r"     (yas--load-pending-jits))
    ("R"   . yas-reload-all)
    ("n"   . yas-new-snippet)
    ("l"   . yas-load-directory)
    ("d"   . yas-describe-tables)
    ("g"   . yas-global-mode)
-   ("s"   . (lambda () (interactive)
-              (utl-ido-find-file
-               (expand-file-name "yasnippet/snippets/emacs-lisp-mode"
-                                 quelpa-build-dir)))))
+   ("s"     (utl-ido-find-file
+             (expand-file-name "yasnippet/snippets/emacs-lisp-mode"
+                               quelpa-build-dir))))
 
   :config
   (setq yas-indent-line 'fixed)
@@ -507,20 +503,19 @@ $0")
   (advice-add 'yas--on-protection-overlay-modification
     :override 'ignore)
 
-  (bind-key "C-g" (lambda () (interactive)
-                    (yas-exit-all-snippets) (keyboard-quit)))
-  (bind-keys
+  (al/bind-key "C-g" ((yas-exit-all-snippets) (keyboard-quit)))
+  (al/bind-keys
    :map yas-minor-mode-map
    ("<tab>") ("TAB"))
-  (bind-keys
+  (al/bind-keys
    :map yas-keymap
    ("<kanji>"   . yas-next-field-or-maybe-expand)
    ("<S-kanji>" . yas-prev-field)
    ("M-<"       . yas-skip-and-clear-or-delete-char)
    ("C-d") ("C-g") ("<tab>") ("TAB"))
-  (bind-keys
+  (al/bind-keys
    :map snippet-mode-map
-   ("C-c C-k" . (lambda () (interactive) (kill-buffer nil))))
+   ("C-c C-k" (kill-buffer nil)))
 
   (yas--load-snippet-dirs)
   (yas--load-pending-jits))
@@ -551,7 +546,7 @@ $0")
 
   :config
   (al/clean-map 'paredit-mode-map)
-  (bind-keys
+  (al/bind-keys
    :map paredit-mode-map
    ("<H-M-tab>" . paredit-reindent-defun)
    ("C-j"       . paredit-newline)
@@ -608,7 +603,7 @@ $0")
    ;; It should be anything!!!!
    sp-navigate-consider-stringlike-sexp '(latex-mode))
 
-  (bind-keys
+  (al/bind-keys
    :map smartparens-mode-map
    ("<H-M-tab>" . sp-indent-defun)
    ("M-p"       . sp-backward-kill-word)
@@ -630,7 +625,7 @@ $0")
    ("C-M-0"     . sp-forward-barf-sexp)
    ("C-("       . sp-backward-slurp-sexp)
    ("C-M-9"     . sp-backward-barf-sexp))
-  (bind-keys
+  (al/bind-keys
    :map smartparens-mode-map
    :prefix-map al/smartparens-map
    :prefix-docstring "Map for misc smartparens commands."
@@ -644,10 +639,10 @@ $0")
 
 (when (and (fboundp 'smartparens-mode)
            (fboundp 'paredit-mode))
-  (bind-key "H-p H-p" 'al/parens-mode)
+  (al/bind-key "H-p H-p" al/parens-mode)
 
   (defvar al/parens-mode-map (make-sparse-keymap))
-  (bind-keys
+  (al/bind-keys
    :map al/parens-mode-map
    ("<H-M-tab>" . sp-indent-defun)
    ("M-p"       . paredit-backward-kill-word)
@@ -665,7 +660,7 @@ $0")
    ("C-M-0"     . sp-forward-barf-sexp)
    ("C-("       . sp-backward-slurp-sexp)
    ("C-M-9"     . sp-backward-barf-sexp))
-  (bind-keys
+  (al/bind-keys
    :map al/parens-mode-map
    :prefix-map al/parens-misc-map
    :prefix-docstring "Map for misc parens commands."

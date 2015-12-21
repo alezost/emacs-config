@@ -18,14 +18,13 @@
 
 ;;; Emacs packages
 
-(bind-keys
+(al/bind-keys
  :prefix-map al/package-map
  :prefix-docstring "Map for Emacs packages commands."
  :prefix "H-q"
  ("H-q" . al/quelpa)
- ("q"   . (lambda () (interactive)
-            (let (quelpa-update-melpa-p)
-              (call-interactively #'quelpa))))
+ ("q"     (let (quelpa-update-melpa-p)
+            (call-interactively #'quelpa)))
  ("l"   . utl-switch-to-packages)
  ("a"   . utl-add-package-archive)
  ("r"   . utl-remove-package-archive))
@@ -34,7 +33,7 @@
   :defer t
   :config
   (setq package-archives nil)
-  (bind-keys
+  (al/bind-keys
    :map package-menu-mode-map
    ("u" . package-menu-describe-package)
    ("i" . package-menu-mark-install)
@@ -58,7 +57,7 @@
 (when (require 'guix-init nil t)
   (guix-emacs-load-autoloads (al/guix-profile "emacs")))
 
-(bind-keys
+(al/bind-keys
  :prefix-map al/guix-map
  :prefix-docstring "Map for guix."
  :prefix "H-x"
@@ -81,18 +80,14 @@
  ("O"   . guix-obsolete-packages)
  ("G"   . guix-generations)
  ("p"   . guix-set-current-profile)
- ("i"   . (lambda () (interactive)
-            (switch-to-buffer
-             (guix-package-info-buffer-name guix-current-profile))))
- ("C-п" . (lambda () (interactive)
-            (switch-to-buffer
-             (guix-generation-info-buffer-name guix-current-profile))))
- ("l"   . (lambda () (interactive)
-            (switch-to-buffer
-             (guix-package-list-buffer-name guix-current-profile))))
- ("C-l" . (lambda () (interactive)
-            (switch-to-buffer
-             (guix-generation-list-buffer-name guix-current-profile))))
+ ("i"     (switch-to-buffer (guix-package-info-buffer-name
+                             guix-current-profile)))
+ ("C-п"   (switch-to-buffer (guix-generation-info-buffer-name
+                             guix-current-profile)))
+ ("l"     (switch-to-buffer (guix-package-list-buffer-name
+                             guix-current-profile)))
+ ("C-l"   (switch-to-buffer (guix-generation-list-buffer-name
+                             guix-current-profile)))
  ("u"   . utl-guix-commit-url))
 
 (use-package guix-external
@@ -223,7 +218,7 @@
   :defer t
   :init
   (al/add-my-package-to-load-path-maybe "aurel")
-  (bind-keys
+  (al/bind-keys
    :prefix-map al/aurel-map
    :prefix-docstring "Map for aurel."
    :prefix "C-H-a"
@@ -259,14 +254,14 @@
      (version . "Ver.")
      (installed-version . "Inst.")))
 
-  (bind-keys
+  (al/bind-keys
    :map aurel-list-mode-map
    ("u" . aurel-list-describe-package)
    ("," . aurel-history-back)
    ("p" . aurel-history-forward)
    ("z" . aurel-list-unmark)
    ("Z" . aurel-list-unmark-all))
-  (bind-keys
+  (al/bind-keys
    :map aurel-info-mode-map
    ("," . aurel-history-back)
    ("p" . aurel-history-forward)))

@@ -18,7 +18,7 @@
 
 ;;; Org
 
-(bind-keys
+(al/bind-keys
  :prefix-map al/org-map
  :prefix-docstring "Map for org mode."
  :prefix "M-r"
@@ -122,7 +122,7 @@
 (use-package org-agenda
   :defer t
   :config
-  (bind-keys
+  (al/bind-keys
    :map org-agenda-mode-map
    ("." . org-agenda-previous-line)
    ("e" . org-agenda-next-line)))
@@ -147,7 +147,7 @@
   :defer t
   :mode ("\\.[pP][dD][fF]\\'" . pdf-view-mode)
   :config
-  (bind-keys
+  (al/bind-keys
    :map pdf-view-mode-map
    ("h" . pdf-view-previous-page-command))
   (add-hook 'pdf-view-mode-hook 'pdf-tools-enable-minor-modes)
@@ -157,7 +157,7 @@
   :defer t
   :config
   (al/clean-map 'pdf-outline-minor-mode-map)
-  (bind-keys
+  (al/bind-keys
    :map pdf-outline-minor-mode-map
    ("c" . pdf-outline))
 
@@ -181,7 +181,7 @@
   (setq pdf-links-convert-pointsize-scale 0.02)
 
   (al/clean-map 'pdf-links-minor-mode-map)
-  (bind-keys
+  (al/bind-keys
    :map pdf-links-minor-mode-map
    ("u" . pdf-links-action-perform)
    ("U" . pdf-links-isearch-link)))
@@ -190,7 +190,7 @@
   :defer t
   :config
   (al/clean-map 'pdf-history-minor-mode-map)
-  (bind-keys
+  (al/bind-keys
    :map pdf-history-minor-mode-map
    ("," . pdf-history-backward)
    ("p" . pdf-history-forward)))
@@ -199,7 +199,7 @@
   :defer t
   :config
   (al/clean-map 'pdf-misc-minor-mode-map)
-  (bind-keys
+  (al/bind-keys
    :map pdf-misc-minor-mode-map
    ("f" . pdf-misc-display-metadata)
    ("F" . pdf-misc-display-metadata)))
@@ -270,7 +270,7 @@
     (format-time-string "  %d-%b-%Y" time))
   (advice-add 'tar-clip-time-string :override 'al/tar-time-string)
 
-  (bind-keys
+  (al/bind-keys
    :map tar-mode-map
    ("." . tar-previous-line)
    ("e" . tar-next-line)
