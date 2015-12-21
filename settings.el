@@ -402,7 +402,9 @@
     (utl-mode-line-default-buffer-identification 'Man-mode))
 
   (defconst al/man-keys
-    '(("h" . Man-previous-section)
+    '(("M->" . Man-previous-section)
+      ("M-E" . Man-next-section)
+      ("h" . Man-previous-section)
       ("n" . Man-next-section)
       ("m" . Man-goto-section)
       ("g" . Man-update-manpage))
