@@ -44,6 +44,20 @@
 
 ;;; Guix
 
+(defun al/guix-set-load-path (dir)
+  (al/with-check
+    :dir dir
+    (al/add-to-load-path-maybe dir)
+    (setq guix-load-path dir)))
+(al/guix-set-load-path (al/devel-dir-file "guix/emacs"))
+(al/guix-set-load-path (al/src-dir-file "guix/emacs"))
+
+(setq
+ guix-package-enable-at-startup nil
+ guix-default-profile al/guix-user-profile-dir)
+(when (require 'guix-init nil t)
+  (guix-emacs-load-autoloads (al/guix-profile "emacs")))
+
 (bind-keys
  :prefix-map al/guix-map
  :prefix-docstring "Map for guix."
@@ -58,7 +72,7 @@
  ("n"   . (lambda (regexp)
             (interactive
              (list (read-string "Package name by regexp: "
-                                nil 'guix-search-history)))
+                                nil 'guix-package-search-history)))
             (guix-search-by-regexp regexp '(name))))
  ("r"   . guix-search-by-regexp)
  ("A"   . guix-all-available-packages)
@@ -68,117 +82,105 @@
  ("G"   . guix-generations)
  ("p"   . guix-set-current-profile)
  ("i"   . (lambda () (interactive)
-            (switch-to-buffer guix-package-info-buffer-name)))
+            (switch-to-buffer
+             (guix-package-info-buffer-name guix-current-profile))))
  ("C-п" . (lambda () (interactive)
-            (switch-to-buffer guix-generation-info-buffer-name)))
+            (switch-to-buffer
+             (guix-generation-info-buffer-name guix-current-profile))))
  ("l"   . (lambda () (interactive)
-            (switch-to-buffer guix-package-list-buffer-name)))
+            (switch-to-buffer
+             (guix-package-list-buffer-name guix-current-profile))))
  ("C-l" . (lambda () (interactive)
-            (switch-to-buffer guix-generation-list-buffer-name)))
+            (switch-to-buffer
+             (guix-generation-list-buffer-name guix-current-profile))))
  ("u"   . utl-guix-commit-url))
 
-(use-package guix
+(use-package guix-external
   :defer t
-  :init
-  (defconst al/guix-common-keys
-    '(("," . guix-history-back)
-      ("p" . guix-history-forward)
-      ("P"   (message "%s" guix-profile)))
-    "Alist of auxiliary keys that should be bound in any guix mode.")
-
-  (defun al/guix-set-load-path (dir)
-    (al/with-check
-      :dir dir
-      (al/add-to-load-path-maybe dir)
-      (setq guix-load-path dir)))
-  (al/guix-set-load-path (al/devel-dir-file "guix/emacs"))
-  (al/guix-set-load-path (al/src-dir-file "guix/emacs"))
-
-  (setq
-   guix-guile-program "guile"
-   guix-package-enable-at-startup nil
-   guix-default-profile al/guix-user-profile-dir)
-  (require 'guix-init nil t)
-  (guix-emacs-load-autoloads (al/guix-profile "emacs")))
+  :config
+  (setq guix-guile-program "guile"))
 
 (use-package guix-base
   :defer t
   :config
   (setq
    guix-directory (al/src-dir-file "guix")
-   guix-package-list-type 'package
-   guix-generation-packages-update-buffer nil
-   guix-buffer-name-function #'guix-buffer-name-simple
    guix-operation-option-separator "  │  ")
   (when (display-graphic-p)
     (setq
      guix-operation-option-false-string "☐"
-     guix-operation-option-true-string  "☑"))
+     guix-operation-option-true-string  "☑")))
 
-  (al/bind-keys-from-vars 'guix-root-map 'al/guix-common-keys t))
+(use-package guix-buffer
+  :defer t
+  :config
+  (defconst al/guix-buffer-keys
+    '(("," . guix-history-back)
+      ("p" . guix-history-forward))
+    "Alist of auxiliary keys for `guix-buffer-map'.")
+  (al/bind-keys-from-vars 'guix-buffer-map 'al/guix-buffer-keys t))
+
+(use-package guix-list
+  :defer t
+  :config
+  (defconst al/guix-list-keys
+    '(("u" . guix-list-describe)
+      ("z" . guix-list-unmark)
+      ("Z" . guix-list-unmark-all))
+    "Alist of auxiliary keys for `guix-list-mode-map'.")
+  (al/bind-keys-from-vars 'guix-list-mode-map 'al/guix-list-keys t)
+  (defconst al/guix-list-key-vars
+    '(al/lazy-moving-keys
+      al/tabulated-list-keys
+      al/guix-buffer-keys
+      al/guix-list-keys)))
+
+(use-package guix-ui
+  :defer t
+  :config
+  (defconst al/guix-ui-keys
+    '(("P"   (message "%s" (guix-ui-current-profile))))
+    "Alist of auxiliary keys for `guix-ui-map'.")
+  (al/bind-keys-from-vars 'guix-ui-map 'al/guix-ui-keys t))
+
+(use-package guix-ui-package
+  :defer t
+  :config
+  (setq
+   guix-package-list-type 'package)
+
+  (defconst al/guix-package-list-keys
+    '(("M-d" . guix-package-list-edit))
+    "Alist of auxiliary keys for `guix-package-list-mode-map'.")
+  (defconst al/guix-output-list-keys
+    '(("M-d" . guix-output-list-edit))
+    "Alist of auxiliary keys for `guix-output-list-mode-map'.")
+  (al/bind-keys-from-vars 'guix-package-list-mode-map
+    (append al/guix-list-key-vars '(al/guix-package-list-keys))
+    t)
+  (al/bind-keys-from-vars 'guix-output-list-mode-map
+    (append al/guix-list-key-vars '(al/guix-output-list-keys))
+    t))
+
+(use-package guix-ui-generation
+  :defer t
+  :config
+  (setq
+   guix-generation-packages-update-buffer nil
+   guix-generation-output-name-width 40)
+
+  (defconst al/guix-generation-list-keys
+    '(("E" . guix-generation-list-ediff))
+    "Alist of auxiliary keys for `guix-generation-list-mode-map'.")
+  (al/bind-keys-from-vars 'guix-generation-list-mode-map
+    (append al/guix-list-key-vars '(al/guix-generation-list-keys))
+    t))
 
 (use-package guix-utils
   :defer t
   :config
   (setq
    guix-find-file-function #'org-open-file))
-
-(use-package guix-info
-  :defer t
-  :config
-  (setq
-   guix-package-info-heading-params '(synopsis)
-   guix-package-info-fill-heading nil))
-
-(use-package guix-list
-  :defer t
-  :config
-  (setcdr (assq 'package guix-list-column-format)
-          '((name 20 t)
-            (version 10 t)
-            (outputs 13 t)
-            (installed 12 t)
-            (synopsis 30 t)))
-  (setcdr (assq 'output guix-list-column-format)
-          '((name 20 t)
-            (version 10 t)
-            (output 9 t)
-            (installed 12 t)
-            (synopsis 30 t)))
-
-  (defconst al/guix-list-keys
-    '(("u" . guix-list-describe)
-      ("z" . guix-list-unmark)
-      ("Z" . guix-list-unmark-all))
-    "Alist of auxiliary keys for `guix-list-mode-map'.")
-  (defconst al/guix-package-or-output-list-keys
-    '(("M-d" . guix-list-edit-package))
-    "Alist of auxiliary keys for `guix-package-list-mode-map' and
-    `guix-output-list-mode-map'.")
-  (defconst al/guix-output-list-keys
-    '(("u" . guix-output-list-describe))
-    "Alist of auxiliary keys for `guix-output-list-mode-map'.")
-  (defconst al/guix-generation-list-keys
-    '(("u" . guix-generation-list-show-packages)
-      ("c" . guix-generation-list-switch)
-      ("E" . guix-generation-list-ediff))
-    "Alist of auxiliary keys for `guix-generation-list-mode-map'.")
-
-  (al/bind-keys-from-vars 'guix-list-mode-map 'al/guix-list-keys t)
-  (let ((list-vars '(al/lazy-moving-keys
-                     al/tabulated-list-keys
-                     al/guix-common-keys
-                     al/guix-list-keys)))
-    (al/bind-keys-from-vars 'guix-generation-list-mode-map
-      (append list-vars '(al/guix-generation-list-keys))
-      t)
-    (al/bind-keys-from-vars 'guix-package-list-mode-map
-      (append list-vars '(al/guix-package-or-output-list-keys))
-      t)
-    (al/bind-keys-from-vars 'guix-output-list-mode-map
-      (append list-vars '(al/guix-package-or-output-list-keys
-                          al/guix-output-list-keys))
-      t)))
 
 (use-package guix-prettify
   :defer 7
