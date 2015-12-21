@@ -275,6 +275,7 @@
       ("M-E" . comint-next-prompt)
       ("C-c c" . compilation-shell-minor-mode)
       ("C-c C-d" (process-send-eof))
+      ("TAB" . completion-at-point)
       "C-d")
     "Alist of auxiliary keys for comint modes.")
   (al/bind-keys-from-vars 'comint-mode-map 'al/comint-keys))
