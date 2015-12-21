@@ -257,8 +257,7 @@
             (let (geiser-repl-use-other-window)
               (switch-to-guile arg))))
  ("G"   . (lambda () (interactive)
-            (geiser-connect
-             'guile "localhost" guix-default-port)))
+            (geiser-connect-local 'guile guix-repl-current-socket)))
  ("P"   . run-python)
  ("p"   . python-shell-switch-to-shell)
  ("L"   . lua-start-process)
