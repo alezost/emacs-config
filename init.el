@@ -480,6 +480,22 @@ relies on a particular version of a built-in package (e.g.,
   :around #'al/package-build--write-pkg-file)
 
 
+;;; Code for optional dependencies on external packages
+
+(defmacro al/define-package-exists (name &optional symbol)
+  "Define `al/NAME-exists?' variable.
+The value of the variable tells if SYMBOL is `fbound'.  If SYMBOL
+is not specified, NAME is checked (both should be unquoted
+symbols)."
+  (let* ((name-str (symbol-name name))
+         (var (intern (concat "al/" name-str "-exists?"))))
+    `(defvar ,var (fboundp ',(or symbol name))
+       ,(format "Non-nil, if `%s' package is available."
+                name-str))))
+
+(al/define-package-exists hydra defhydra)
+
+
 ;;; Loading the rest config and required packages
 
 ;; If this is the first start of emacs, bootstrap quelpa and install

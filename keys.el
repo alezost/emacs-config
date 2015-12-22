@@ -268,9 +268,6 @@ VARS are variables with bindings supported by
 
 ;;; Hydra
 
-(defvar al/hydra-exists? (fboundp 'defhydra)
-  "Non-nil, if `hydra' package is available.")
-
 (use-package hydra
   :defer t
   :config
