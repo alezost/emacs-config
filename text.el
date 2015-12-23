@@ -49,12 +49,10 @@
  ("H-M-e" . scroll-other-window)
  ("s-e"   . utl-next-link)
 
- ("C-a"   . mwim-beginning-of-code-or-line)
  ("C-M-a" . beginning-of-defun)
  ("M-A"   . utl-beginning-of-line)
  ("H-a"   . beginning-of-buffer)
 
- ("C-п"   . mwim-end-of-code-or-line)
  ("C-M-i" . end-of-defun)
  ("M-I"   . utl-end-of-line)
  ("H-i"   . end-of-buffer)
@@ -62,6 +60,14 @@
  ("C-3"   . recenter-top-bottom)
  ("C-H-3" . utl-recenter-top)
  ("C-2"   . move-to-window-line-top-bottom))
+
+(if al/mwim-exists?
+    (al/bind-keys
+     ("C-a" . mwim-beginning-of-code-or-line)
+     ("C-п" . mwim-end-of-code-or-line))
+  (al/bind-keys
+   ("C-a" . beginning-of-line)
+   ("C-п" . end-of-line)))
 
 (unless (display-graphic-p)
   (al/bind-keys
@@ -73,7 +79,14 @@
    ("M-E"   . scroll-up-command)
    ("C-x a" . beginning-of-buffer)
    ("C-x i" . end-of-buffer)
-   ("C-M-i" . complete-symbol)))
+   ("C-M-i" . complete-symbol))
+  (if al/mwim-exists?
+      (al/bind-keys
+       ("M-a" . mwim-beginning-of-code-or-line)
+       ("M-i" . mwim-end-of-code-or-line))
+    (al/bind-keys
+     ("M-a" . beginning-of-line)
+     ("M-i" . end-of-line))))
 
 
 ;;; Global keys for editing
