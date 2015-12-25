@@ -363,7 +363,6 @@
 
 (use-package abbrev
   :defer t
-  :diminish " Ab"
   :config
   (define-abbrev-table 'global-abbrev-table
     '(("gos"  "GuixSD")
@@ -451,7 +450,6 @@
 
 (use-package company
   :defer t
-  :diminish " ⍈"
   :commands company-complete
   :init
   (al/bind-key "<C-H-tab>" company-complete)
@@ -471,7 +469,6 @@
   ;; just use yas functionality when I need to expand something without
   ;; enabling the mode.
   :defer t
-  :diminish (yas-minor-mode . " ⮞")
   :commands
   (yas-new-snippet yas-insert-snippet)
   :init
@@ -535,7 +532,6 @@ $0")
 
 (use-package paredit
   :defer t
-  :diminish " PE"
   :commands
   (paredit-reindent-defun
    paredit-newline

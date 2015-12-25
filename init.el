@@ -274,12 +274,12 @@ Also it (default syntax) breaks `indent-guide-mode'."
 (defvar al/main-packages
   `((alect-themes       :fetcher git :url ,(al/emacs-repo "alect-themes"))
     (dvorak-layouts     :fetcher git :url ,(al/emacs-repo "dvorak-layouts"))
+    (dim                :fetcher git :url ,(al/emacs-repo "dim"))
     (insert-pair        :fetcher git :url ,(al/emacs-repo "insert-pair"))
     (imenus             :fetcher git :url ,(al/emacs-repo "imenus"))
     smex
     smartparens
     elisp-slime-nav
-    diminish
     hydra
     (yasnippet          :fetcher github :repo "capitaomorte/yasnippet"
                         :files ("yasnippet.el"))
@@ -511,16 +511,6 @@ symbols)."
 (eval-when-compile
   (require 'use-package))
 (setq use-package-verbose t)
-
-(use-package diminish
-  :config
-  (defun al/add-minor-mode-name (mode &rest _)
-    "Add MODE to `minor-mode-alist' if it is bound but is not there."
-    (when (and (boundp mode)
-               (null (assq mode minor-mode-alist)))
-      (push (list mode "") minor-mode-alist)
-      (message "%S has been added to `minor-mode-alist'." mode)))
-  (advice-add 'diminish :before #'al/add-minor-mode-name))
 
 (al/add-my-package-to-load-path-maybe "utils")
 

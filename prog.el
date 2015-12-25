@@ -76,7 +76,6 @@
 
 (use-package eldoc
   :defer t
-  :diminish ""
   :init
   ;; XXX delete (In 25.1 there is `global-eldoc-mode' enabled by default).
   (when (version< emacs-version "25")
@@ -92,7 +91,6 @@
 
 (use-package edebug
   :defer t
-  :diminish " 🔧"
   :config
   (al/bind-keys
    :map edebug-mode-map
@@ -505,7 +503,6 @@
 
 (use-package magit-blame
   :defer t
-  :diminish " µBlame"
   :config
   (defconst al/magit-blame-keys
     '(("M-." . magit-blame-previous-chunk)

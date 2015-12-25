@@ -119,81 +119,100 @@
     (((background dark))  :foreground "yellow"))
   "Face for `mode-name' displayed in the mode line.")
 
-(use-package utl-mode-line
-  :config
-  (setq
-   utl-mode-names-alist
-   '((emacs-lisp-mode            . "EL")
-     (lisp-interaction-mode      . "ELi")
-     (inferior-emacs-lisp-mode   . "EL>")
-     (lisp-mode                  . "CL")
-     (slime-repl-mode            . "CL>")
-     (scheme-mode                . "λ")
-     (geiser-repl-mode           . "λ>")
-     (geiser-doc-mode            . "λ🄷")
-     (python-mode                . "Py")
-     (inferior-python-mode       . "Py>")
-     (js-mode                    . "JS")
-     (sh-mode                    . "Sh")
-     (shell-mode                 . "Sh>")
-     (eshell-mode                . "ESh>")
-     (dired-mode                 . "🗀")
-     (wdired-mode                . "🗁")
-     (Info-mode                  . "🄸")
-     (help-mode                  . "🄷")
-     (doc-view-mode              . "Doc")
-     (pdf-view-mode              . "pdfView")
-     (pdf-outline-buffer-mode    . "pdf🖹")
-     (sql-interactive-mode       . "SQL>")
-     (ibuffer-mode               . "IB")
-     (gnus-server-mode           . "𝗚Srv")
-     (gnus-group-mode            . "𝗚Gr")
-     (gnus-summary-mode          . "𝗚Sum")
-     (gnus-article-mode          . "𝗚Art")
-     (message-mode               . "🖂")
-     (erc-view-log-mode          . "ERC🄻")
-     (erc-list-menu-mode         . "ERC🗋")
-     (calc-mode                  . "=")
-     (debugger-mode              . "🔨")
-     (snippet-mode               . "🗍")
-     (diary-mode                 . "🕮")
-     (ediff-mode                 . "ε")
+(al/add-my-package-to-load-path-maybe "dim")
+(when (require 'dim nil t)
+  (dim-major-names
+   '((emacs-lisp-mode            "EL")
+     (lisp-interaction-mode      "ELi")
+     (inferior-emacs-lisp-mode   "EL>")
+     (lisp-mode                  "CL")
+     (slime-repl-mode            "CL>")
+     (scheme-mode                "λ")
+     (geiser-repl-mode           "λ>")
+     (geiser-doc-mode            "λ🄷")
+     (python-mode                "Py")
+     (inferior-python-mode       "Py>")
+     (js-mode                    "JS")
+     (sh-mode                    "Sh")
+     (shell-mode                 "Sh>")
+     (eshell-mode                "ESh>")
+     (dired-mode                 "🗀")
+     (wdired-mode                "🗁")
+     (Info-mode                  "🄸")
+     (help-mode                  "🄷")
+     (doc-view-mode              "Doc")
+     (pdf-view-mode              "pdfView")
+     (pdf-outline-buffer-mode    "pdf🖹")
+     (sql-interactive-mode       "SQL>")
+     (ibuffer-mode               "IB")
+     (message-mode               "🖂")
+     (erc-view-log-mode          "ERC🄻")
+     (erc-list-menu-mode         "ERC🗋")
+     (calc-mode                  "=")
+     (debugger-mode              "🔨")
+     (snippet-mode               "🗍")
+     (diary-mode                 "🕮")
+     (ediff-mode                 "ε")
 
-     (magit-status-mode          . "µStatus")
-     (magit-process-mode         . "µProc")
-     (magit-log-mode             . "µ🄻")
-     (magit-log-select-mode      . "µ🄻Select")
-     (magit-reflog-mode          . "µReflog")
-     (magit-refs-mode            . "µRefs")
-     (magit-diff-mode            . "µDiff")
-     (magit-revision-mode        . "µRevision")
-     (magit-cherry-mode          . "µCherry")
-     (magit-stash-mode           . "µStash")
-     (magit-stashes-mode         . "µStashes")
-     (magit-popup-mode           . "µPopup")
-     (magit-popup-sequence-mode  . "µPopupSeq")
-     (git-rebase-mode            . "gitRebase")
+     (gnus-server-mode           "𝗚Srv")
+     (gnus-group-mode            "𝗚Gr")
+     (gnus-summary-mode          "𝗚Sum")
+     (gnus-article-mode          "𝗚Art")
 
-     (calendar-mode              . "📆")
-     (w3m-form-input-select-mode . "w3m🗹")
-     (package-menu-mode          . "Pkg🗋")
-     (guix-package-info-mode     . "γ🄷p")
-     (guix-output-info-mode      . "γ🄷o")
-     (guix-generation-info-mode  . "γ🄷g")
-     (guix-package-list-mode     . "γ🗋p")
-     (guix-output-list-mode      . "γ🗋o")
-     (guix-generation-list-mode  . "γ🗋g")
-     (emms-playlist-mode         . "🎝")
-     (emms-stream-mode           . "🎝 Streams")
-     (sauron-mode                . "👁"))
+     (guix-package-info-mode     "γ🄷p")
+     (guix-output-info-mode      "γ🄷o")
+     (guix-generation-info-mode  "γ🄷g")
+     (guix-package-list-mode     "γ🗋p")
+     (guix-output-list-mode      "γ🗋o")
+     (guix-generation-list-mode  "γ🗋g")
 
-   utl-minor-mode-names-alist
-   '((visual-line-mode           . "↩")
-     (auto-fill-function         . "↵")
-     (isearch-mode               . "🔎")))
+     (magit-status-mode          "µStatus")
+     (magit-process-mode         "µProc")
+     (magit-log-mode             "µ🄻")
+     (magit-log-select-mode      "µ🄻Select")
+     (magit-reflog-mode          "µReflog")
+     (magit-refs-mode            "µRefs")
+     (magit-diff-mode            "µDiff")
+     (magit-revision-mode        "µRevision")
+     (magit-cherry-mode          "µCherry")
+     (magit-stash-mode           "µStash")
+     (magit-stashes-mode         "µStashes")
+     (magit-popup-mode           "µPopup")
+     (magit-popup-sequence-mode  "µPopupSeq")
+     (git-rebase-mode            "gitRebase")
 
-  (utl-diminish utl-minor-mode-names-alist)
-  (al/add-hook-maybe 'after-change-major-mode-hook 'utl-mode-name))
+     (calendar-mode              "📆")
+     (w3m-form-input-select-mode "w3m🗹")
+     (package-menu-mode          "Pkg🗋")
+     (emms-playlist-mode         "🎝")
+     (emms-stream-mode           "🎝 Streams")
+     (sauron-mode                "👁")))
+
+  (dim-minor-names
+   '((visual-line-mode           " ↩")
+     (auto-fill-function         " ↵")
+     (isearch-mode               " 🔎")
+     (whitespace-mode            " _"           whitespace)
+     (indent-guide-mode          " ¦"           indent-guide)
+     (rainbow-mode               " 🖌"           rainbow-mode)
+     (abbrev-mode                " Ab"          abbrev)
+     (company-mode               " ⍈"           company)
+     (yas-minor-mode             " ⮞"           yasnippet)
+     (paredit-mode               " PE"          paredit)
+     (view-mode                  " 👀"           view)
+     (eldoc-mode                 ""             eldoc)
+     (edebug-mode                " 🔧"           edebug)
+
+     (gnus-topic-mode            " T"           gnus-topic)
+     (gnus-dired-mode            " 𝗚"           gnus-dired)
+
+     (guix-build-log-minor-mode  " γ🄻"          guix-build-log)
+     (guix-devel-mode            " γ"           guix-devel)
+
+     (magit-blame-mode           " µBlame"      magit-blame)
+     (erc-notifications-mode     " 🗩"           erc-desktop-notifications)
+     (utl-emms-notification-mode " 🎧"           utl-emms)
+     (flyspell-mode              " fly"         flyspell))))
 
 (setq-default
  mode-line-format
@@ -312,7 +331,6 @@
 
 (use-package whitespace
   :defer t
-  :diminish " _"
   :config
   (setq
    whitespace-line-column 78
@@ -341,7 +359,6 @@
 
 (use-package indent-guide
   :defer t
-  :diminish " ¦"
   :config
   (setq
    indent-guide-delay 0.3
@@ -362,7 +379,6 @@
 
 (use-package rainbow-mode
   :defer t
-  :diminish (rainbow-mode . " 🖌")
   :config
   (setq rainbow-x-colors t)
   (advice-add 'rainbow-mode :after #'utl-refontify))

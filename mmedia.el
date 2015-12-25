@@ -157,7 +157,6 @@
 
 (use-package utl-emms
   :defer t
-  :diminish (utl-emms-notification-mode . " 🎧")
   :config
   (setq
    utl-emms-notification-artist-format "<big>%s</big>"

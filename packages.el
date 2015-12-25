@@ -188,7 +188,6 @@
 
 (use-package guix-build-log
   :defer t
-  :diminish (guix-build-log-minor-mode . " γ🄻")
   :config
   (defconst al/guix-build-log-common-keys
     '(("M-." . guix-build-log-previous-phase)
@@ -204,7 +203,6 @@
 
 (use-package guix-devel
   :defer t
-  :diminish " γ"
   :config
   (defconst al/guix-devel-keys
     '(("d" . guix-devel-download-package-source))

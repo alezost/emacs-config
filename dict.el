@@ -48,7 +48,6 @@
 
 (use-package flyspell
   :defer t
-  :diminish "fly"
   :init
   (setq flyspell-use-meta-tab nil)
   :config

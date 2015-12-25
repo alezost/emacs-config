@@ -361,7 +361,6 @@
 
 (use-package gnus-topic
   :defer t
-  :diminish " T"
   :config
   (setq
    gnus-topic-display-empty-topics nil
@@ -371,7 +370,6 @@
 
 (use-package gnus-dired
   :defer t
-  :diminish " 𝗚"
   :config
   (al/bind-keys
    :map gnus-dired-mode-map
@@ -578,7 +576,6 @@
 
 (use-package erc-desktop-notifications
   :defer t
-  :diminish (erc-notifications-mode . " 🗩")
   :config
   (setq erc-notifications-icon "erc")
   (defun al/play-erc-sound (&rest _)

@@ -222,11 +222,11 @@
   :defer t
   :config
   (al/bind-keys-from-vars 'wdired-mode-map)
-  (when (require 'utl-mode-line nil t)
-    ;; `mode-name' is hardcoded to "Dired" in
-    ;; `wdired-change-to-dired-mode', so change it.
+  (when (require 'dim nil t)
+    ;; "Dired" `mode-name' is hard-coded in
+    ;; `wdired-change-to-dired-mode'.
     (advice-add 'wdired-change-to-dired-mode
-      :after #'utl-mode-name)))
+      :after #'dim-set-major-name)))
 
 (use-package image-dired
   :defer t

@@ -707,7 +707,6 @@
 
 (use-package view
   :defer t
-  :diminish " 👀"
   :config
   (defconst al/view-keys
     '(("v" . View-exit))

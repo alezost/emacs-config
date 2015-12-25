@@ -342,7 +342,6 @@ VARS are variables with bindings supported by
  :prefix-docstring "Map for enabling/disabling modes."
  :prefix "M-M"
  ("M-M" . utl-major-mode-to-kill-ring)
- ("SPC" . diminished-modes)
  ("a" . artist-mode)
  ("A" . auto-fill-mode)
  ("c" . conf-unix-mode)
