@@ -43,19 +43,10 @@
 
 ;;; Guix
 
-(defun al/guix-set-load-path (dir)
-  (al/with-check
-    :dir dir
-    (al/add-to-load-path-maybe dir)
-    (setq guix-load-path dir)))
-(al/guix-set-load-path (al/devel-dir-file "guix/emacs"))
-(al/guix-set-load-path (al/src-dir-file "guix/emacs"))
-
 (setq
- guix-package-enable-at-startup nil
- guix-default-profile al/guix-user-profile-dir)
-(when (require 'guix-init nil t)
-  (guix-emacs-load-autoloads (al/guix-profile "emacs")))
+ guix-default-profile al/guix-user-profile-dir
+ guix-current-profile guix-default-profile)
+(require 'guix-autoloads nil t)
 
 (al/bind-keys
  :prefix-map al/guix-map

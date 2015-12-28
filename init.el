@@ -247,6 +247,18 @@ Also it (default syntax) breaks `indent-guide-mode'."
 ;;; External packages
 
 (setq load-prefer-newer t)
+
+(defun al/guix-set-load-path (dir)
+  (al/with-check
+    :dir dir
+    (al/add-to-load-path-maybe dir)
+    (setq guix-load-path dir)))
+(al/guix-set-load-path (al/devel-dir-file "guix/emacs"))
+(al/guix-set-load-path (al/src-dir-file "guix/emacs"))
+
+(when (require 'guix-emacs nil t)
+  (guix-emacs-load-autoloads (al/guix-profile "emacs")))
+
 (setq
  quelpa-upgrade-p t
  ;; quelpa dirs are used in several places of my config.

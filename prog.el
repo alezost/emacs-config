@@ -194,7 +194,8 @@
   :config
   (put 'plist-new 'scheme-indent-function 1)
   (al/modify-page-break-syntax scheme-mode-syntax-table)
-  (al/add-hook-maybe 'scheme-mode-hook 'utl-imenu-add-sections)
+  (al/add-hook-maybe 'scheme-mode-hook
+    '(utl-imenu-add-sections guix-devel-mode))
   (when (require 'utl-scheme nil t)
     (setq scheme-imenu-generic-expression
           utl-scheme-imenu-generic-expression)
