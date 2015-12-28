@@ -123,6 +123,7 @@
 (when (require 'dim nil t)
   (dim-major-names
    '((emacs-lisp-mode            "EL")
+     (emacs-lisp-byte-code-mode  "EL-byte")
      (lisp-interaction-mode      "ELi")
      (inferior-emacs-lisp-mode   "EL>")
      (lisp-mode                  "CL")
@@ -141,7 +142,7 @@
      (Info-mode                  "🄸")
      (help-mode                  "🄷")
      (doc-view-mode              "Doc")
-     (pdf-view-mode              "pdfView")
+     (pdf-view-mode              "pdf-View")
      (pdf-outline-buffer-mode    "pdf🖹")
      (sql-interactive-mode       "SQL>")
      (ibuffer-mode               "IB")
@@ -155,6 +156,7 @@
      (ediff-mode                 "ε")
 
      (gnus-server-mode           "𝗚Srv")
+     (gnus-browse-mode           "𝗚Srv🗋")
      (gnus-group-mode            "𝗚Gr")
      (gnus-summary-mode          "𝗚Sum")
      (gnus-article-mode          "𝗚Art")
@@ -165,6 +167,7 @@
      (guix-package-list-mode     "γ🗋p")
      (guix-output-list-mode      "γ🗋o")
      (guix-generation-list-mode  "γ🗋g")
+     (guix-build-log-mode        "γ🄻")
 
      (magit-status-mode          "µStatus")
      (magit-process-mode         "µProc")
@@ -179,7 +182,10 @@
      (magit-stashes-mode         "µStashes")
      (magit-popup-mode           "µPopup")
      (magit-popup-sequence-mode  "µPopupSeq")
-     (git-rebase-mode            "gitRebase")
+     (git-rebase-mode            "git-Rebase")
+     (gitconfig-mode             "git-Config")
+     (gitignore-mode             "git-Ignore")
+     (gitattributes-mode         "git-Attributes")
 
      (calendar-mode              "📆")
      (w3m-form-input-select-mode "w3m🗹")
