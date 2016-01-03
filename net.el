@@ -701,6 +701,7 @@
    web-search-ip-address
    web-search-wikipedia-ru
    web-search-arch-package
+   web-search-multitran
    web-search-ej)
   :init (al/add-my-package-to-load-path-maybe "web-search")
   :config
