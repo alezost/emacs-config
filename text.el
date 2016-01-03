@@ -88,6 +88,10 @@
      ("M-a" . beginning-of-line)
      ("M-i" . end-of-line))))
 
+(al/bind-keys
+ :map narrow-map
+ ("r" . narrow-to-region))
+
 
 ;;; Global keys for editing
 
