@@ -201,6 +201,8 @@
 
 ;;; Working with windows and frames
 
+(setq split-width-threshold 120)
+
 (al/add-hook-maybe 'window-configuration-change-hook
   'utl-set-windows-num-property)
 
