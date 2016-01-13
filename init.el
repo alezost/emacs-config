@@ -62,7 +62,7 @@
   "Non-nil, if current OS is GuixSD.")
 
 (defun al/guix-profile (name)
-  "Return file name of my guix profile with name."
+  "Return file name of my guix profile with NAME."
   (al/guix-profile-dir-file (concat name "/" name)))
 
 (al/file-accessors "guix-user-profile" (al/guix-profile "main"))
