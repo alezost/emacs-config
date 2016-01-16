@@ -592,8 +592,9 @@
   (with-current-buffer (messages-buffer)
     (messages-buffer-mode)))
 
-(al/add-hook-maybe 'after-init-hook
-  '(al/set-scratch-message al/reinit-messages-buffer))
+(al/eval-after-init
+  (al/set-scratch-message)
+  (al/reinit-messages-buffer))
 
 (al/add-hook-maybe 'messages-buffer-mode-hook
   (list 'hl-todo-mode

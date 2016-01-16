@@ -186,6 +186,11 @@ Both HOOKS and FUNCTIONS may be single variables or lists of those."
           (lambda (hook)
             (add-hook hook fun append local)))))))
 
+(defmacro al/eval-after-init (&rest body)
+  "Add to `after-init-hook' a `lambda' expression with BODY."
+  (declare (indent 0))
+  `(add-hook 'after-init-hook (lambda () ,@body)))
+
 (defmacro al/modify-syntax (table-name &rest specs)
   "Update syntax table according to SPECS.
 TABLE-NAME is a name (unquoted symbol) of a syntax table variable.
@@ -544,6 +549,6 @@ symbols)."
 
 ;; (setq custom-file "/tmp/custom.el")
 (setq custom-file (al/emacs-init-dir-file "custom.el"))
-(add-hook 'after-init-hook (lambda () (load custom-file 'noerror)))
+(al/eval-after-init (load custom-file 'noerror))
 
 ;;; init.el ends here
