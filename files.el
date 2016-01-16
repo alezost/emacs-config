@@ -104,9 +104,7 @@
 
 ;;; Dired
 
-(use-package dired
-  :defer t
-  :config
+(with-eval-after-load 'dired
   (setq
    dired-auto-revert-buffer 'dired-directory-changed-p
    dired-dwim-target t
@@ -187,16 +185,14 @@
     (advice-add 'dired-sort-set-mode-line
       :override 'utl-dired-sort-set-mode-line)))
 
-(use-package dired-x
-  :defer t
-  :commands dired-jump
-  :init
-  (setq
-   dired-guess-shell-gnutar "tar"
-   dired-bind-jump nil
-   dired-bind-man nil)
-  (al/bind-key "H-j" dired-jump)
-  :config
+(setq
+ dired-guess-shell-gnutar "tar"
+ dired-bind-jump nil
+ dired-bind-man nil)
+(al/bind-key "H-j" dired-jump)
+(al/autoload "dired-x" dired-jump)
+
+(with-eval-after-load 'dired-x
   (setq
    ;; Do not show "hidden" files only.
    dired-omit-files "^\\..*"
@@ -211,16 +207,12 @@
   ;; Do not rebind my keys!!
   (al/bind-keys-from-vars 'dired-mode-map 'al/dired-keys t))
 
-(use-package dired-aux
-  :defer t
-  :config
+(with-eval-after-load 'dired-aux
   (when (require 'utl-dired nil t)
     (advice-add 'dired-mark-read-file-name
       :override 'utl-dired-mark-read-file-name)))
 
-(use-package wdired
-  :defer t
-  :config
+(with-eval-after-load 'wdired
   (al/bind-keys-from-vars 'wdired-mode-map)
   (when (require 'dim nil t)
     ;; "Dired" `mode-name' is hard-coded in
@@ -228,9 +220,7 @@
     (advice-add 'wdired-change-to-dired-mode
       :after #'dim-set-major-name)))
 
-(use-package image-dired
-  :defer t
-  :config
+(with-eval-after-load 'image-dired
   (al/bind-keys
    :map image-dired-thumbnail-mode-map
    ("."     . image-dired-backward-image)
@@ -253,9 +243,7 @@
  ;; enable-local-eval nil
  )
 
-(use-package bookmark
-  :defer t
-  :config
+(with-eval-after-load 'bookmark
   (setq
    bookmark-save-flag 1
    bookmark-default-file (al/emacs-data-dir-file "bookmarks"))
@@ -271,32 +259,26 @@
   (al/bind-keys-from-vars 'bookmark-bmenu-mode-map
     '(al/lazy-moving-keys al/bookmark-keys)))
 
-(use-package recentf
-  :defer t
-  :config
+(with-eval-after-load 'recentf
   (setq
    recentf-keep nil
    recentf-auto-cleanup 'never
    recentf-max-saved-items 99
    recentf-save-file (al/emacs-data-dir-file "recentf")))
 
-(use-package saveplace
-  :config
+(with-eval-after-load 'saveplace
   (setq-default save-place t)
   (setq
    save-place-file (al/emacs-data-dir-file "save-places")
    save-place-limit 999))
+(al/eval-after-init (require 'saveplace nil t))
 
-(use-package utl-file
-  :defer t
-  :config
+(with-eval-after-load 'utl-file
   (setq
    utl-ssh-default-user (list user-login-name "root" "lena")
    utl-ssh-default-host "hyperion"))
 
-(use-package sunrise-commander
-  :defer t
-  :config
+(with-eval-after-load 'sunrise-commander
   (setq
    sr-listing-switches "-alh --group-directories-first --no-group"
    sr-show-hidden-files nil

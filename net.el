@@ -59,9 +59,7 @@
 
 ;;; Browsing
 
-(use-package w3m
-  :defer t
-  :config
+(with-eval-after-load 'w3m
   (setq
    w3m-confirm-leaving-secure-page nil
    w3m-use-title-buffer-name t  ; don't duplicate title in the mode-line
@@ -112,33 +110,25 @@
     (utl-w3m-bind-number-keys 'utl-w3m-switch-to-buffer)
     (utl-w3m-bind-number-keys 'utl-w3m-kill-buffer "k")))
 
-(use-package w3m-form
-  :defer t
-  :config
+(with-eval-after-load 'w3m-form
   (defconst al/w3m-form-keys
     '(("u" . w3m-form-input-select-set))
     "Alist of auxiliary keys for `w3m-form-input-select-keymap'.")
   (al/bind-keys-from-vars 'w3m-form-input-select-keymap
     '(al/lazy-moving-keys al/w3m-form-keys)))
 
-(use-package utl-w3m
-  :defer t
-  :config
+(with-eval-after-load 'utl-w3m
   (setq
    utl-w3m-search-link-depth 20
    utl-w3m-search-re "[^[:alnum:]]*\\<%s\\>"))
 
-(use-package browse-url
-  :defer t
-  :config
+(with-eval-after-load 'browse-url
   (when (require 'utl-browse-url nil t)
     (setq browse-url-browser-function 'utl-choose-browser)
     (advice-add 'browse-url-default-browser
       :override 'utl-browse-url-conkeror)))
 
-(use-package utl-browse-url
-  :defer t
-  :config
+(with-eval-after-load 'utl-browse-url
   (setcar (cl-find-if (lambda (spec)
                         (string= "conkeror" (cadr spec)))
                       utl-browser-choices)
@@ -160,20 +150,17 @@
 
 (setq mail-user-agent 'gnus-user-agent)
 
-(use-package gnus
-  :defer t
-  :init
-  (al/bind-keys
-   :prefix-map al/gnus-map
-   :prefix-docstring "Map for Gnus."
-   :prefix "M-g"
-   ("M-g" . utl-gnus-switch-win-config)
-   ("g"   . utl-gnus-switch-to-group-buffer)
-   ("b"   . utl-gnus-ido-switch-buffer)
-   ("m"   . gnus-msg-mail)
-   ("n"   . gnus-msg-mail))
+(al/bind-keys
+ :prefix-map al/gnus-map
+ :prefix-docstring "Map for Gnus."
+ :prefix "M-g"
+ ("M-g" . utl-gnus-switch-win-config)
+ ("g"   . utl-gnus-switch-to-group-buffer)
+ ("b"   . utl-gnus-ido-switch-buffer)
+ ("m"   . gnus-msg-mail)
+ ("n"   . gnus-msg-mail))
 
-  :config
+(with-eval-after-load 'gnus
   (require 'utl-gnus nil t)
   (setq
    gnus-select-method '(nnml "")
@@ -216,9 +203,7 @@
   (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
   (al/add-hook-maybe 'dired-mode-hook 'turn-on-gnus-dired-mode))
 
-(use-package gnus-srvr
-  :defer t
-  :config
+(with-eval-after-load 'gnus-srvr
   (defconst al/gnus-server-keys
     '(("u"   . gnus-server-read-server)
       ("M-d" . gnus-server-edit-server))
@@ -238,9 +223,7 @@
 ;; are defined in "gnus.el" but are filled in
 ;; "gnus-group.el"/"gnus-sum.el"/"gnus-art.el".
 
-(use-package gnus-group
-  :defer t
-  :config
+(with-eval-after-load 'gnus-group
   (defconst al/gnus-group-keys
     '(("." . gnus-group-prev-group)
       ("e" . gnus-group-next-group)
@@ -264,9 +247,7 @@
 
   (add-hook 'gnus-group-mode-hook 'hl-line-mode))
 
-(use-package gnus-sum
-  :defer t
-  :config
+(with-eval-after-load 'gnus-sum
   (defvar al/ej-url-re "www\\.ej\\.ru.+id=\\([0-9]+\\)"
     "Regexp matching 'ej.ru' arcticles.")
 
@@ -318,17 +299,13 @@
   (al/add-hook-maybe 'gnus-summary-mode-hook
     '(hl-line-mode al/hbar-cursor-type)))
 
-(use-package gnus-draft
-  :defer t
-  :config
+(with-eval-after-load 'gnus-draft
   (defconst al/gnus-draft-keys
     '(("M-d" . gnus-draft-edit-message))
     "Alist of auxiliary keys for `gnus-draft-mode-map'.")
   (al/bind-keys-from-vars 'gnus-draft-mode-map 'al/gnus-draft-keys))
 
-(use-package gnus-art
-  :defer t
-  :config
+(with-eval-after-load 'gnus-art
   (setq
    gnus-unbuttonized-mime-types '("text/plain")
    gnus-prompt-before-saving t
@@ -359,25 +336,19 @@
   (add-hook 'gnus-article-mode-hook
             (lambda () (setq-local widget-button-face nil))))
 
-(use-package gnus-topic
-  :defer t
-  :config
+(with-eval-after-load 'gnus-topic
   (setq
    gnus-topic-display-empty-topics nil
    gnus-topic-line-format "%i%(%{%n%}%) – %A %v\n")
   (al/bind-keys-from-vars 'gnus-topic-mode-map
     'al/free-important-keys t))
 
-(use-package gnus-dired
-  :defer t
-  :config
+(with-eval-after-load 'gnus-dired
   (al/bind-keys
    :map gnus-dired-mode-map
    ("C-c a" . gnus-dired-attach)))
 
-(use-package message
-  :defer t
-  :config
+(with-eval-after-load 'message
   (setq
    message-signature "Alex"
    message-send-mail-function 'smtpmail-send-it
@@ -388,9 +359,7 @@
     (?' "'   ")
     (?\" "\"   ")))
 
-(use-package mml
-  :defer t
-  :config
+(with-eval-after-load 'mml
   (defconst al/mml-keys
     '(("C-c a" . mml-attach-file)
       ("C-c f" . mml-attach-file)
@@ -399,34 +368,26 @@
     "Alist of auxiliary keys for `mml-mode-map'.")
   (al/bind-keys-from-vars 'mml-mode-map 'al/mml-keys))
 
-(use-package smtpmail
-  :defer t
-  :config
+(with-eval-after-load 'smtpmail
   (setq
    smtpmail-smtp-server "smtp.gmail.com"
    smtpmail-smtp-service 587))
 
-(use-package shr
-  :defer t
-  :config
+(with-eval-after-load 'shr
   (al/bind-keys
    :map shr-map
    ("u" . shr-browse-url)
    ("c" . shr-copy-url)))
 
-(use-package utl-gnus
-  :defer t
-  :config
+(with-eval-after-load 'utl-gnus
   (setq utl-atom2rss-file (al/emacs-data-dir-file "atom2rss.xsl"))
   (advice-add 'mm-url-insert
     :after #'utl-convert-atom-to-rss)
   (advice-add 'gnus-agent-make-mode-line-string
     :around #'utl-gnus-agent-mode-line-string))
 
-(use-package mu4e
-  :defer t
-  :commands mu4e
-  :config
+(al/autoload "mu4e" mu4e)
+(with-eval-after-load 'mu4e
   (setq
    mu4e-maildir (expand-file-name "~/mail")
    mu4e~main-buffer-name "*mu4e-main*"))
@@ -434,38 +395,35 @@
 
 ;;; ERC
 
-(use-package erc
-  :defer t
-  :init
-  (setq erc-modules
-        '(truncate keep-place log pcomplete netsplit button match
-          notifications track completion readonly networks ring autojoin
-          noncommands irccontrols move-to-prompt stamp menu list))
-  (setq erc-log-channels-directory (al/emacs-data-dir-file "erc-log"))
+(setq erc-modules
+      '(truncate keep-place log pcomplete netsplit button match
+                 notifications track completion readonly networks ring autojoin
+                 noncommands irccontrols move-to-prompt stamp menu list))
+(setq erc-log-channels-directory (al/emacs-data-dir-file "erc-log"))
 
-  (al/bind-keys*
-   :prefix-map al/erc-map
-   :prefix-docstring "Map for ERC."
-   :prefix "M-c"
-   ("M-c" . utl-erc-track-switch-buffer)
-   ("M-n" . utl-erc-cycle)
-   ("b"   . utl-erc-switch-buffer)
-   ("M-s" . utl-erc-switch-to-server-buffer)
-   ;; Interactive erc - compute everything without prompting:
-   ("c"     (erc))
-   ("R"   . utl-erc-server-buffer-rename)
-   ("d"   . utl-erc-quit-server)
-   ("j"   . utl-erc-join-channel)
-   ("a"   . utl-erc-away)
-   ("m"   . erc-track-mode)
-   ("n"   . erc-notifications-mode)
-   ("p"     (erc-part-from-channel ""))
-   ("e"     (switch-to-buffer "#emacs"))
-   ("x"     (switch-to-buffer "#guix"))
-   ("s"     (switch-to-buffer "#stumpwm"))
-   ("M-z"   (switch-to-buffer "*status")))
+(al/bind-keys*
+ :prefix-map al/erc-map
+ :prefix-docstring "Map for ERC."
+ :prefix "M-c"
+ ("M-c" . utl-erc-track-switch-buffer)
+ ("M-n" . utl-erc-cycle)
+ ("b"   . utl-erc-switch-buffer)
+ ("M-s" . utl-erc-switch-to-server-buffer)
+ ;; Interactive erc - compute everything without prompting:
+ ("c"     (erc))
+ ("R"   . utl-erc-server-buffer-rename)
+ ("d"   . utl-erc-quit-server)
+ ("j"   . utl-erc-join-channel)
+ ("a"   . utl-erc-away)
+ ("m"   . erc-track-mode)
+ ("n"   . erc-notifications-mode)
+ ("p"     (erc-part-from-channel ""))
+ ("e"     (switch-to-buffer "#emacs"))
+ ("x"     (switch-to-buffer "#guix"))
+ ("s"     (switch-to-buffer "#stumpwm"))
+ ("M-z"   (switch-to-buffer "*status")))
 
-  :config
+(with-eval-after-load 'erc
   (setq
    erc-server "chat.freenode.net"
    erc-port 7000
@@ -574,9 +532,7 @@
   (setq after-load-alist
         (assq-delete-all 'erc after-load-alist)))
 
-(use-package erc-desktop-notifications
-  :defer t
-  :config
+(with-eval-after-load 'erc-desktop-notifications
   (setq erc-notifications-icon "erc")
   (defun al/play-erc-sound (&rest _)
     (utl-play-sound (al/sound-dir-file "chimes.wav")))
@@ -585,9 +541,7 @@
     (advice-add 'erc-notifications-notify
       :before #'al/play-erc-sound)))
 
-(use-package erc-button
-  :defer t
-  :config
+(with-eval-after-load 'erc-button
   (al/bind-keys
    :map erc-button-keymap
    ("u" . erc-button-press-button)
@@ -596,9 +550,7 @@
    ("c"   (kill-new (car (get-text-property (point) 'erc-data))))
    ("w"   (wget (car (get-text-property (point) 'erc-data))))))
 
-(use-package erc-list
-  :defer t
-  :config
+(with-eval-after-load 'erc-list
   (al/bind-keys
    :map erc-list-menu-mode-map
    ("u"   . erc-list-join)
@@ -606,9 +558,7 @@
   (define-key erc-list-menu-sort-button-map
     [header-line mouse-2] 'erc-list-menu-sort-by-column))
 
-(use-package utl-erc
-  :defer t
-  :config
+(with-eval-after-load 'utl-erc
   (setq
    utl-erc-log-excluded-regexps
    '("\\`#archlinux\\'" "\\`#emacs\\'" "\\`#freenode\\'" "\\`#znc\\'")
@@ -620,29 +570,22 @@
      "#lisp" "#lispgames" "#git" "#github" "#netfilter" "#wesnoth"
      "#themanaworld" "##french" "##english" "##programming")))
 
-(use-package erc-view-log
-  :defer t
-  :commands erc-view-log-mode
-  :init
-  (al/with-check
-    :var 'erc-log-channels-directory
-    (push (cons (concat "\\`"
-                        (regexp-quote (expand-file-name
-                                       erc-log-channels-directory)))
-                'erc-view-log-mode)
-          auto-mode-alist)))
+(al/autoload "erc-view-log" erc-view-log-mode)
+(al/with-check
+  :var 'erc-log-channels-directory
+  (push (cons (concat "\\`"
+                      (regexp-quote (expand-file-name
+                                     erc-log-channels-directory)))
+              'erc-view-log-mode)
+        auto-mode-alist))
 
 
 ;;; Misc settings and packages
 
-(use-package url
-  :defer t
-  :config
+(with-eval-after-load 'url
   (setq url-configuration-directory (al/emacs-data-dir-file "url")))
 
-(use-package wget
-  :defer t
-  :config
+(with-eval-after-load 'wget
   (setq
    wget-debug-buffer "*wget-log*"
    wget-download-directory-filter 'wget-download-dir-filter-regexp
@@ -654,29 +597,19 @@
      (,(regexp-quote "echo.msk.ru") . ,al/echo-download-dir)
      ("." . ,al/download-dir))))
 
-(use-package mentor
-  :defer t
-  :config
+(with-eval-after-load 'mentor
   (setq mentor-rtorrent-url "scgi://127.0.0.1:5000"))
 
-(use-package net-utils
-  :defer t
-  :config
+(with-eval-after-load 'net-utils
   (setq ping-program-options '("-c" "3")))
 
-(use-package utl-net
-  :defer t
-  :config
+(with-eval-after-load 'utl-net
   (setq
    utl-net-hosts '("zeus" "hyperion" "192.168.1.1" "10.11.149.1"
                    "10.10.0.1" "google.com" "ya.ru")
    utl-router-log-path "~/docs/net/RT_G32.log/"))
 
-(use-package debpaste
-  :defer t
-  :init
-  (al/add-my-package-to-load-path-maybe "debpaste")
-  (al/bind-keys
+(al/bind-keys
    :prefix-map al/debpaste-map
    :prefix-docstring "Map for debpaste."
    :prefix "C-H-p"
@@ -687,23 +620,24 @@
    ("q" . debpaste-quit-buffers)
    ("K" . debpaste-kill-all-buffers))
 
-  :config
+(al/add-my-package-to-load-path-maybe "debpaste")
+(with-eval-after-load 'debpaste
   (setq
    debpaste-user-name "alezost"
    debpaste-expire-time (* 3 24 60 60))
   (add-to-list 'debpaste-domains "debpaste" t))
 
-(use-package web-search
-  :defer t
-  :commands
-  (web-search-yandex
-   web-search-ipduh
-   web-search-ip-address
-   web-search-wikipedia-ru
-   web-search-arch-package
-   web-search-multitran
-   web-search-ej)
-  :init (al/add-my-package-to-load-path-maybe "web-search")
+(al/autoload "web-search"
+  web-search-yandex
+  web-search-ipduh
+  web-search-ip-address
+  web-search-wikipedia-ru
+  web-search-arch-package
+  web-search-multitran
+  web-search-ej)
+
+(al/add-my-package-to-load-path-maybe "web-search")
+(with-eval-after-load 'web-search
   :config
   (web-search-add-engine
    'ipduh "IPduh"
@@ -732,20 +666,18 @@
    'ej "ej.ru"
    "http://mvvc44tv.cmle.ru/?a=note&id=%s"))
 
-(use-package echo-msk
-  :defer t
-  :init
-  (al/add-my-package-to-load-path-maybe "echo-msk")
-  (al/bind-keys
-   :prefix-map al/echo-msk-map
-   :prefix-docstring "Map for echo-msk."
-   :prefix "C-M-s-e"
-   ("p" . echo-msk-program-task)
-   ("s" . echo-msk-browse-schedule)
-   ("a" . echo-msk-emms-play-online-audio)
-   ("A" . echo-msk-browse-online-audio)
-   ("v" . echo-msk-browse-online-video))
-  :config
+(al/bind-keys
+ :prefix-map al/echo-msk-map
+ :prefix-docstring "Map for echo-msk."
+ :prefix "C-M-s-e"
+ ("p" . echo-msk-program-task)
+ ("s" . echo-msk-browse-schedule)
+ ("a" . echo-msk-emms-play-online-audio)
+ ("A" . echo-msk-browse-online-audio)
+ ("v" . echo-msk-browse-online-video))
+
+(al/add-my-package-to-load-path-maybe "echo-msk")
+(with-eval-after-load 'echo-msk
   (when (require 'dvorak-russian-computer nil t)
     (setq echo-msk-input-method "dvorak-russian-computer")))
 

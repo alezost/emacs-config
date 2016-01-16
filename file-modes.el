@@ -33,16 +33,13 @@
  ("e"   . org-export)
  ("TAB" . org-indent-mode))
 
-(use-package org
-  :defer t
-  :commands (org-read-date org-open-file)
-  :init
-  (setq org-export-backends
-        '(ascii html icalendar latex odt texinfo man))
-  (when (utl-server-running-p)
-    (require 'org-protocol nil t))
+(al/autoload "org"
+  org-read-date
+  org-open-file)
 
-  :config
+(setq org-export-backends
+      '(ascii html icalendar latex odt texinfo man))
+(with-eval-after-load 'org
   (require 'utl-org nil t)
   (setq
    org-imenu-depth 6
@@ -107,55 +104,48 @@
 
   (org-add-link-type "pdfview" 'org-pdfview-open 'org-pdfview-export))
 
-(use-package org-src
-  :defer t
-  :config
+(al/eval-after-init
+  (when (utl-server-running-p)
+    (require 'org-protocol nil t)))
+
+(with-eval-after-load 'org-src
   (push '("shell" . shell-script) org-src-lang-modes))
 
-(use-package org-capture
-  :defer t
-  :config
+(with-eval-after-load 'org-capture
   (setq org-capture-templates
         '(("n" "notes" entry (file org-default-notes-file)
            "* %T\n  %?\n"))))
 
-(use-package org-agenda
-  :defer t
-  :config
+(with-eval-after-load 'org-agenda
   (al/bind-keys
    :map org-agenda-mode-map
    ("." . org-agenda-previous-line)
    ("e" . org-agenda-next-line)))
 
-(use-package utl-org
-  :defer t
-  :config
+(with-eval-after-load 'utl-org
   (org-add-link-type "emms" 'utl-org-emms-open)
   (al/add-hook-maybe 'org-store-link-functions
     'utl-org-emms-store-link))
 
-(use-package org-pdfview
-  :defer t
-  :commands (org-pdfview-open org-pdfview-export))
+(al/autoload "org-pdfview"
+  org-pdfview-open
+  org-pdfview-export)
 
 
 ;;; Pdf tools
 
 (setq pdf-tools-handle-upgrades nil)
 
-(use-package pdf-view
-  :defer t
-  :mode ("\\.[pP][dD][fF]\\'" . pdf-view-mode)
-  :config
+(with-eval-after-load 'pdf-view
+  (push '("\\.[pP][dD][fF]\\'" . pdf-view-mode)
+        auto-mode-alist)
   (al/bind-keys
    :map pdf-view-mode-map
    ("h" . pdf-view-previous-page-command))
   (add-hook 'pdf-view-mode-hook 'pdf-tools-enable-minor-modes)
   (require 'org-pdfview nil t))
 
-(use-package pdf-outline
-  :defer t
-  :config
+(with-eval-after-load 'pdf-outline
   (al/clean-map 'pdf-outline-minor-mode-map)
   (al/bind-keys
    :map pdf-outline-minor-mode-map
@@ -175,9 +165,7 @@
 
   (add-hook 'pdf-outline-buffer-mode-hook 'hl-line-mode))
 
-(use-package pdf-links
-  :defer t
-  :config
+(with-eval-after-load 'pdf-links
   (setq pdf-links-convert-pointsize-scale 0.02)
 
   (al/clean-map 'pdf-links-minor-mode-map)
@@ -186,18 +174,14 @@
    ("u" . pdf-links-action-perform)
    ("U" . pdf-links-isearch-link)))
 
-(use-package pdf-history
-  :defer t
-  :config
+(with-eval-after-load 'pdf-history
   (al/clean-map 'pdf-history-minor-mode-map)
   (al/bind-keys
    :map pdf-history-minor-mode-map
    ("," . pdf-history-backward)
    ("p" . pdf-history-forward)))
 
-(use-package pdf-misc
-  :defer t
-  :config
+(with-eval-after-load 'pdf-misc
   (al/clean-map 'pdf-misc-minor-mode-map)
   (al/bind-keys
    :map pdf-misc-minor-mode-map
@@ -233,9 +217,7 @@
 (add-to-list 'auto-mode-alist '(".*rc\\'" . conf-unix-mode) t)
 (add-to-list 'auto-mode-alist '("/etc/.*\\'" . conf-unix-mode) t)
 
-(use-package image-mode
-  :defer t
-  :config
+(with-eval-after-load 'image-mode
   (defconst al/image-keys
     '(("C-a" . image-bol)
       ("C-п" . image-eol)
@@ -245,26 +227,21 @@
     "Alist of auxiliary keys for `image-mode-map'.")
   (al/bind-keys-from-vars 'image-mode-map 'al/image-keys))
 
-(use-package doc-view
-  :defer t
-  :config
+(with-eval-after-load 'doc-view
   (setq doc-view-cache-directory "~/.cache/docview")
   (push "-r200" doc-view-ghostscript-options) ; picture resolution
   )
 
-(use-package markdown-mode
-  :defer t
-  :mode "\\.mdown\\'"
-  :config
+(with-eval-after-load 'markdown-mode
   (defconst al/markdown-keys
     '(("M->" . markdown-previous-link)
       ("M-E" . markdown-next-link))
     "Alist of auxiliary keys for `markdown-mode-map'.")
-  (al/bind-keys-from-vars 'markdown-mode-map 'al/markdown-keys))
+  (al/bind-keys-from-vars 'markdown-mode-map 'al/markdown-keys)
+  (push '("\\.mdown\\'" . markdown-mode)
+        auto-mode-alist))
 
-(use-package tar-mode
-  :defer t
-  :config
+(with-eval-after-load 'tar-mode
   (setq tar-mode-show-date t)
   (defun al/tar-time-string (time)
     (format-time-string "  %d-%b-%Y" time))
@@ -278,9 +255,7 @@
 
   (add-hook 'tar-mode-hook 'hl-line-mode))
 
-(use-package nxml-mode
-  :defer t
-  :config
+(with-eval-after-load 'nxml-mode
   (defconst al/nxml-keys
     '(("C-M-." . nxml-backward-up-element)
       ("C-M-e" . nxml-down-element)

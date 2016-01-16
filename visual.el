@@ -81,9 +81,7 @@
 
 ;;; Themes
 
-(use-package custom
-  :defer t
-  :config
+(with-eval-after-load 'custom
   (setq custom-safe-themes t)
 
   ;; Fix bug <http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16266>.
@@ -94,10 +92,8 @@
   (advice-add 'custom-theme-set-variables
     :around #'al/fix-custom-variables-bug))
 
-(use-package alect-themes
-  :init
-  (al/add-my-package-to-load-path-maybe "alect-themes")
-  :config
+(al/add-my-package-to-load-path-maybe "alect-themes")
+(with-eval-after-load 'alect-themes
   (setq
    alect-display-class '((class color) (min-colors 256))
    alect-overriding-faces
@@ -107,7 +103,9 @@
   (unless (al/emacs-trunk-p)
     (push '(fringe ((((class color) (min-colors 256))
                      :foreground gray :background bg+2)))
-          alect-overriding-faces))
+          alect-overriding-faces)))
+
+(al/eval-after-init
   (when (require 'utl-color nil t)
     (utl-load-theme 'alect-light)))
 
@@ -324,20 +322,11 @@
 (menu-bar-mode 0)
 ;; (mouse-avoidance-mode 'banish)
 
-(use-package scroll-bar
-  :init
-  (setq scroll-bar-mode 'right)
-  (scroll-bar-mode 0))
+(setq tooltip-delay 0.2)
+(setq scroll-bar-mode 'right)
+(scroll-bar-mode 0)
 
-(use-package tooltip
-  :defer t
-  ;; :init (tooltip-mode 0)
-  :config
-  (setq tooltip-delay 0.2))
-
-(use-package whitespace
-  :defer t
-  :config
+(with-eval-after-load 'whitespace
   (setq
    whitespace-line-column 78
    whitespace-display-mappings
@@ -350,22 +339,16 @@
    '(face spaces tabs trailing lines space-before-tab newline
           indentation space-after-tab tab-mark newline-mark)))
 
-(use-package ruler-mode
-  :defer t
-  :config
+(with-eval-after-load 'ruler-mode
   (setq ruler-mode-show-tab-stops t))
 
-(use-package paren
-  :init
-  (setq show-paren-delay 0.1)
-  (show-paren-mode)
-  :config
+(setq show-paren-delay 0.1)
+(with-eval-after-load 'paren
   (setq show-paren-when-point-inside-paren t
         show-paren-when-point-in-periphery t))
+(al/add-after-init-hook 'show-paren-mode)
 
-(use-package indent-guide
-  :defer t
-  :config
+(with-eval-after-load 'indent-guide
   (setq
    indent-guide-delay 0.3
    indent-guide-char "¦")
@@ -378,29 +361,21 @@
   (advice-add 'indent-guide-post-command-hook
     :override 'al/indent-guide-post-command-hook))
 
-(use-package make-color
-  :defer t
-  :config
+(with-eval-after-load 'make-color
   (al/add-hook-maybe 'make-color-mode-hook 'al/bar-cursor-type))
 
-(use-package rainbow-mode
-  :defer t
-  :config
+(with-eval-after-load 'rainbow-mode
   (setq rainbow-x-colors t)
   (advice-add 'rainbow-mode :after #'utl-refontify))
 
-(use-package hl-todo
-  :defer t
-  :init
-  (setq hl-todo-keyword-faces
-        (mapcar (lambda (word)
-                  (cons word 'hl-todo))
-                '("TODO" "FIXME" "XXX" "WARNING")))
-  :config
-  (setq hl-todo-keywords
-        `(((lambda (_)
-             (let (case-fold-search)
-               (re-search-forward hl-todo-regexp nil t)))
-           (1 (hl-todo-get-face) t t)))))
+(setq hl-todo-keyword-faces
+      (mapcar (lambda (word)
+                (cons word 'hl-todo))
+              '("TODO" "FIXME" "XXX" "WARNING"))
+      hl-todo-keywords
+      `(((lambda (_)
+           (let (case-fold-search)
+             (re-search-forward hl-todo-regexp nil t)))
+         (1 (hl-todo-get-face) t t))))
 
 ;;; visual.el ends here

@@ -18,23 +18,18 @@
 
 ;;; Server
 
-(use-package server
-  :defer t
-  :config
+(with-eval-after-load 'server
   (setq
    server-kill-new-buffers nil
    server-temp-file-regexp "^/tmp/Re\\|/draft$\\|COMMIT_EDITMSG\\|git-rebase-todo"))
 
-(use-package utl-server
-  :config
+(when (require 'utl-server nil t)
   (utl-server-named-start '("server-emms" "server")))
 
 
 ;;; External processes
 
-(use-package utl-process
-  :defer 3
-  :config
+(with-eval-after-load 'utl-process
   (defun al/set-zathura-theme (name)
     (make-symbolic-link name (al/config-dir-file "zathura/theme") t))
 
@@ -45,8 +40,8 @@
        (format "%S-theme" (frame-parameter nil 'background-mode)))))
 
   (al/add-hook-maybe 'utl-before-process-functions
-    'al/sync-zathura-theme)
-  (utl-enable-process-hooks))
+    'al/sync-zathura-theme))
+(al/add-after-init-hook 'utl-enable-process-hooks)
 
 
 ;;; Minibuffer, ido, smex
@@ -57,14 +52,11 @@
 
 (al/bind-keys-from-vars 'minibuffer-local-map 'al/minibuffer-keys)
 
-(use-package minibuffer
-  :config
+(with-eval-after-load 'minibuffer
   (when (require 'utl-ido nil t)
     (advice-add 'read-file-name-default :around #'utl-ido-disable)))
 
-(use-package ido
-  :init (ido-mode t)
-  :config
+(with-eval-after-load 'ido
   (setq
    ido-use-virtual-buffers t
    ;; Disable auto searching for files unless called explicitly.
@@ -121,15 +113,15 @@
     (setq completing-read-function #'utl-completing-read))
 
   (ido-everywhere))
+(al/add-after-init-hook 'ido-mode)
 
-(use-package smex
-  :defer t
-  :init
+(when (fboundp 'smex)
   (setq smex-save-file (al/emacs-data-dir-file "smex-items"))
   (al/bind-key "M-t" execute-extended-command ctl-x-map)
   (al/bind-key "C-M-t" smex-major-mode-commands)
-  (al/bind-key* "M-t" smex)
-  :config
+  (al/bind-key* "M-t" smex))
+
+(with-eval-after-load 'smex
   (setq
    smex-history-length 32
    smex-prompt-string
@@ -170,14 +162,10 @@
  ("k"   (kill-buffer nil))
  ("8" . utl-switch-to-characters))
 
-(use-package uniquify
-  :defer nil
-  :config
+(with-eval-after-load 'uniquify
   (setq uniquify-buffer-name-style 'post-forward))
 
-(use-package ibuffer
-  :defer t
-  :config
+(with-eval-after-load 'ibuffer
   (setq ibuffer-default-sorting-mode 'filename/process)
   (defconst al/ibuffer-keys
     '(("u"   . ibuffer-visit-buffer)
@@ -227,17 +215,13 @@
  ("H-2" . utl-make-vertical-windows)
  ("H-3" . utl-make-horizontal-windows))
 
-(use-package winner
-  :disabled t
-  :defer 5
-  :init
-  (setq winner-dont-bind-my-keys t)
-  (al/bind-keys
-   ("<C-left>"  . winner-undo)
-   ("<C-right>" . winner-redo))
-  :config
-  (setq winner-ring-size 40)
-  (winner-mode))
+(setq
+ winner-dont-bind-my-keys t
+ winner-ring-size 40)
+(al/bind-keys
+ ("<C-left>"  . winner-undo)
+ ("<C-right>" . winner-redo))
+(al/add-after-init-hook 'winner-mode)
 
 
 ;;; comint, shell, eshell
@@ -264,9 +248,7 @@
  ("m"   . maxima)
  ("x"   . guix-switch-to-repl))
 
-(use-package comint
-  :defer t
-  :config
+(with-eval-after-load 'comint
   (defconst al/comint-keys
     '(("M-." . comint-previous-input)
       ("M-e" . comint-next-input)
@@ -279,9 +261,7 @@
     "Alist of auxiliary keys for comint modes.")
   (al/bind-keys-from-vars 'comint-mode-map 'al/comint-keys))
 
-(use-package shell
-  :defer t
-  :config
+(with-eval-after-load 'shell
   (defconst al/shell-keys
     '(("M-O" . shell-backward-command)
       ("M-U" . shell-forward-command))
@@ -289,14 +269,12 @@
   (al/bind-keys-from-vars 'shell-mode-map 'al/shell-keys t)
   (al/add-hook-maybe 'shell-mode-hook 'guix-build-log-minor-mode))
 
-(use-package eshell
-  :defer t
-  :init
+(al/bind-keys
+ ("C-z"   . eshell)
+ ("C-M-z" . utl-eshell-cd))
+
+(with-eval-after-load 'eshell
   (setq eshell-directory-name (al/emacs-data-dir-file "eshell"))
-  (al/bind-keys
-   ("C-z"   . eshell)
-   ("C-M-z" . utl-eshell-cd))
-  :config
   (setq
    eshell-modules-list
    '(eshell-smart eshell-alias eshell-basic eshell-cmpl eshell-dirs
@@ -341,18 +319,14 @@
 
 ;;; Button, custom, widget
 
-(use-package button
-  :defer t
-  :config
+(with-eval-after-load 'button
   (defconst al/button-map-keys
     '(("u" . push-button))
     "Alist of auxiliary keys for `button-map'.")
   (al/bind-keys-from-vars 'button-map 'al/button-map-keys t)
   (al/bind-keys-from-vars 'button-buffer-map 'al/button-keys t))
 
-(use-package wid-edit
-  :defer t
-  :config
+(with-eval-after-load 'wid-edit
   (defconst al/widget-button-keys
     '(("." . widget-backward)
       ("e" . widget-forward)
@@ -367,9 +341,7 @@
   (al/bind-keys-from-vars 'widget-keymap 'al/widget-button-keys t)
   (al/bind-keys-from-vars 'widget-field-keymap 'al/widget-field-keys))
 
-(use-package cus-edit
-  :defer t
-  :config
+(with-eval-after-load 'cus-edit
   (al/bind-keys-from-vars 'custom-mode-map 'al/widget-button-keys t)
   (al/bind-keys
    :map custom-mode-map
@@ -381,26 +353,20 @@
 
 (setq apropos-do-all t)
 
-(use-package help
-  :defer t
-  :config
+(with-eval-after-load 'help
   (al/bind-keys
    :map help-map
    ("R"   (info "elisp"))
    ("A" . apropos)))
 
-(use-package help-mode
-  :defer t
-  :config
+(with-eval-after-load 'help-mode
   (al/bind-keys
    :map help-mode-map
    ("," . help-go-back)
    ("p" . help-go-forward))
   (al/add-hook-maybe 'help-mode-hook 'al/no-truncate-lines))
 
-(use-package man
-  :defer t
-  :config
+(with-eval-after-load 'man
   (setq Man-notify-method 'pushy)
   (when (require 'utl-mode-line nil t)
     (utl-mode-line-default-buffer-identification 'Man-mode))
@@ -416,9 +382,7 @@
   (al/bind-keys-from-vars 'Man-mode-map
     '(al/button-keys al/man-keys)))
 
-(use-package info
-  :defer t
-  :config
+(with-eval-after-load 'info
   (setq Info-additional-directory-list
         (list (al/guix-user-profile-dir-file "share/info/")))
   (al/bind-keys
@@ -440,31 +404,28 @@
 
 ;;; SQL
 
-(use-package sql
-  :defer t
-  :init
-  (setq
-   sql-product 'mysql
-   sql-database "darts"
-   sql-user user-login-name)
-  (defun al/sql-connect (conn)
-    (let ((sql-connection-alist
-           `((darts (sql-product 'mysql)
-                    (sql-server "")
-                    (sql-database "darts")
-                    (sql-user ,user-login-name)
-                    (sql-password ,(utl-sql-password-from-auth-source
-                                    "sql-darts" user-login-name)))
-             (paste (sql-product 'postgres)
-                    (sql-server "")
-                    (sql-database "paste")
-                    (sql-user "www-data")
-                    (sql-password ,(utl-sql-password-from-auth-source
-                                    "sql-paste"))))))
-      (sql-connect conn)
-      (setq sql-password nil)))
+(setq
+ sql-product 'mysql
+ sql-database "darts"
+ sql-user user-login-name)
+(defun al/sql-connect (conn)
+  (let ((sql-connection-alist
+         `((darts (sql-product 'mysql)
+                  (sql-server "")
+                  (sql-database "darts")
+                  (sql-user ,user-login-name)
+                  (sql-password ,(utl-sql-password-from-auth-source
+                                  "sql-darts" user-login-name)))
+           (paste (sql-product 'postgres)
+                  (sql-server "")
+                  (sql-database "paste")
+                  (sql-user "www-data")
+                  (sql-password ,(utl-sql-password-from-auth-source
+                                  "sql-paste"))))))
+    (sql-connect conn)
+    (setq sql-password nil)))
 
-  :config
+(with-eval-after-load 'sql
   (al/bind-keys
    :map sql-mode-map
    ("C-v"   . sql-send-region)
@@ -488,26 +449,20 @@
   (sql-set-product-feature 'mysql :prompt-regexp
                            "^\\(?:mysql\\|mariadb\\).*> "))
 
-(use-package mysql
-  :defer t
-  :config
+(with-eval-after-load 'mysql
   (setq mysql-user sql-user)
   (when (require 'utl-mysql nil t)
     (advice-add 'mysql-shell-query
       :override 'utl-mysql-shell-query)))
 
-(use-package sql-completion
-  :defer t
-  :config
+(with-eval-after-load 'sql-completion
   (setq
    sql-mysql-database sql-database
    sql-mysql-exclude-databases
    '("mysql" "information_schema" "performance_schema"))
   (require 'cl nil t))
 
-(use-package utl-sql
-  :defer t
-  :config
+(with-eval-after-load 'utl-sql
   (setq utl-sql-history-dir (al/emacs-data-dir-file "sql")))
 
 
@@ -532,10 +487,8 @@
  ("i" . journal-insert-block)
  ("t"   (find-file (al/journal-dir-file "tags"))))
 
-(use-package journal
-  :defer t
-  :init (al/add-my-package-to-load-path-maybe "journal")
-  :config
+(al/add-my-package-to-load-path-maybe "journal")
+(with-eval-after-load 'journal
   (setq
    org-id-files (al/with-check
                   :dir al/journal-dir
@@ -556,15 +509,17 @@
          (setq-local sentence-end-double-space nil)))
   (al/add-hook-maybe 'org-mode-hook 'al/journal-no-double-space))
 
-(use-package darts-value
-  :defer t
-  :commands (darts-throw-string-to-points darts-throw-string-to-code)
-  :init (al/add-my-package-to-load-path-maybe "darts-value"))
+(al/autoload "darts-value"
+  darts-throw-string-to-points
+  darts-throw-string-to-code)
+(al/add-my-package-to-load-path-maybe "darts-value")
 
-(use-package darts-daydata
-  :defer t
-  :commands (darts-day-template darts-day-select)
-  :init (al/add-my-package-to-load-path-maybe "darts-daydata")
+(al/autoload "darts-daydata"
+  darts-day-template
+  darts-day-select)
+
+(al/add-my-package-to-load-path-maybe "darts-daydata")
+(with-eval-after-load 'darts-daydata
   :config
   (setq
    darts-database "darts"
@@ -622,22 +577,16 @@
 
 (al/bind-keys-from-vars 'special-mode-map 'al/lazy-moving-keys t)
 
-(use-package tramp-sh
-  :defer t
-  :config
+(with-eval-after-load 'tramp-sh
   (push 'tramp-own-remote-path tramp-remote-path)
   (push "LC_ALL=en_US.UTF-8" tramp-remote-process-environment)
   (push "DISPLAY=:0" tramp-remote-process-environment))
 
-(use-package gnutls
-  :defer t
-  :config
+(with-eval-after-load 'gnutls
   ;; http://comments.gmane.org/gmane.emacs.gnus.general/83413
   (setq gnutls-min-prime-bits nil))
 
-(use-package picture
-  :defer t
-  :config
+(with-eval-after-load 'picture
   (al/bind-keys
    :map picture-mode-map
    ("M-O" . picture-movement-left)
@@ -649,9 +598,7 @@
    ("M-Q" . picture-movement-sw)
    ("M-K" . picture-movement-se)))
 
-(use-package hexl
-  :defer t
-  :config
+(with-eval-after-load 'hexl
   (al/bind-keys
    :map hexl-mode-map
    ("C-." . hexl-previous-line)
@@ -666,9 +613,7 @@
    ("H-a" . hexl-beginning-of-buffer)
    ("H-i" . hexl-end-of-buffer)))
 
-(use-package diff-mode
-  :defer t
-  :config
+(with-eval-after-load 'diff-mode
   (defconst al/diff-shared-keys
     '(("." . diff-hunk-prev)
       (">" . diff-file-prev)
@@ -685,9 +630,7 @@
   (al/bind-keys-from-vars 'diff-mode-shared-map 'al/diff-shared-keys t)
   (al/bind-keys-from-vars 'diff-mode-map 'al/diff-keys))
 
-(use-package ediff
-  :defer t
-  :config
+(with-eval-after-load 'ediff
   (when (require 'utl-ediff nil t)
     (al/add-hook-maybe 'ediff-before-setup-hook
       'utl-ediff-save-window-configuration)
@@ -709,9 +652,7 @@
     (al/bind-keys-from-vars 'ediff-mode-map 'al/ediff-keys))
   (al/add-hook-maybe 'ediff-startup-hook 'al/ediff-bind-keys))
 
-(use-package view
-  :defer t
-  :config
+(with-eval-after-load 'view
   (defconst al/view-keys
     '(("v" . View-exit))
     "Alist of auxiliary keys for `view-mode-map'.")
@@ -719,9 +660,7 @@
     '(al/lazy-moving-keys al/view-keys)
     t))
 
-(use-package epa
-  :defer t
-  :config
+(with-eval-after-load 'epa
   (require 'wid-edit) ; for `al/widget-button-keys' (it is required anyway)
   (al/bind-keys-from-vars 'epa-key-list-mode-map
     'al/widget-button-keys t)
@@ -729,25 +668,21 @@
    :map epa-key-list-mode-map
    ("z" . epa-unmark-key)))
 
-(use-package etags
-  :defer t
-  :init
-  (al/bind-keys
-   :prefix-map al/tags-map
-   :prefix-docstring "Map for tags."
-   :prefix "M-T"
-   ("M-T" . find-tag)
-   ("d"     (find-tag (find-tag-default)))
-   ("r"   . find-tag-regexp)
-   ("n"   . tags-loop-continue)
-   ("v"   . visit-tags-table)
-   ("c"   . utl-create-tags))
-  :config
+(al/bind-keys
+ :prefix-map al/tags-map
+ :prefix-docstring "Map for tags."
+ :prefix "M-T"
+ ("M-T" . find-tag)
+ ("d"     (find-tag (find-tag-default)))
+ ("r"   . find-tag-regexp)
+ ("n"   . tags-loop-continue)
+ ("v"   . visit-tags-table)
+ ("c"   . utl-create-tags))
+
+(with-eval-after-load 'etags
   (setq tags-file-name (al/src-dir-file "conkeror/modules/TAGS")))
 
-(use-package tabulated-list
-  :defer t
-  :config
+(with-eval-after-load 'tabulated-list
   (defconst al/tabulated-list-keys
     '(("s" . tabulated-list-sort))
     "Alist of auxiliary keys for `tabulated-list-mode-map'.")

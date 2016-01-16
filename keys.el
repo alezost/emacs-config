@@ -149,7 +149,7 @@ Examples:
              (define-key ,map-var ,key-var nil))))))
 
 (defmacro al/bind-key* (key-name command)
-  `(al/bind-key ,key-name ,command override-global-map))
+  `(al/bind-key ,key-name ,command al/override-global-map))
 
 (defmacro al/bind-keys (&rest args)
   "Bind multiple keys.
@@ -269,9 +269,7 @@ VARS are variables with bindings supported by
 
 ;;; Hydra
 
-(use-package hydra
-  :defer t
-  :config
+(with-eval-after-load 'hydra
   (setq hydra-verbose t)
   (al/bind-keys
    :map hydra-base-map

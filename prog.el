@@ -40,9 +40,7 @@
  ("F" . find-face-definition)
  ("b" . describe-personal-keybindings))
 
-(use-package lisp-mode
-  :defer t
-  :config
+(with-eval-after-load 'lisp-mode
   ;; (setq lisp-indent-function 'common-lisp-indent-function)
   (defconst al/lisp-shared-keys
     '(("<C-M-tab>" . utl-indent-sexp))
@@ -67,41 +65,32 @@
         (al/modify-page-break-syntax lisp-mode-syntax-table))
     (al/modify-page-break-syntax lisp--mode-syntax-table)))
 
-(use-package ielm
-  :defer t
-  :config
+(with-eval-after-load 'ielm
   (setq ielm-prompt "EL> ")
   (al/bind-keys-from-vars 'ielm-map)
   (al/add-hook-maybe 'ielm-mode-hook 'al/no-truncate-lines))
 
-(use-package eldoc
-  :defer t
-  :init
-  ;; XXX delete (In 25.1 there is `global-eldoc-mode' enabled by default).
-  (when (version< emacs-version "25")
-    (al/add-hook-maybe
-        '(emacs-lisp-mode-hook
-          lisp-interaction-mode-hook
-          ielm-mode-hook)
-      'eldoc-mode))
-  :config
+;; XXX delete (In 25.1 there is `global-eldoc-mode' enabled by default).
+(when (version< emacs-version "25")
+  (al/add-hook-maybe
+      '(emacs-lisp-mode-hook
+        lisp-interaction-mode-hook
+        ielm-mode-hook)
+    'eldoc-mode))
+
+(with-eval-after-load 'eldoc
   (when (version< emacs-version "25")
     (setq eldoc-argument-case 'utl-eldoc-argument-list))
   (setq eldoc-idle-delay 0.3))
 
-(use-package edebug
-  :defer t
-  :config
+(with-eval-after-load 'edebug
   (al/bind-keys
    :map edebug-mode-map
    ("v"   . edebug-eval-expression)
    ("C-v" . edebug-eval-last-sexp)))
 
-(use-package debug
-  :defer t
-  :init
-  (al/bind-key "C-c d" toggle-debug-on-error)
-  :config
+(al/bind-key "C-c d" toggle-debug-on-error)
+(with-eval-after-load 'debug
   (al/bind-keys-from-vars 'debugger-mode-map 'al/button-keys t)
   (al/bind-keys
    :map debugger-mode-map
@@ -112,49 +101,46 @@
 
 ;;; SLIME
 
-(use-package slime
-  :defer t
-  :init
-  ;; Use SLIME from quicklisp.
-  (let* ((quicklisp-dir  (expand-file-name "~/.quicklisp"))
-         (swank.txt-file (expand-file-name
-                          "dists/quicklisp/installed/systems/swank.txt"
-                          quicklisp-dir)))
-    (al/with-check
-      :file swank.txt-file
-      (let* ((swank.txt (with-temp-buffer
-                          (insert-file-contents swank.txt-file)
-                          (buffer-string)))
-             (slime-dir (file-name-directory
-                         (expand-file-name swank.txt quicklisp-dir))))
-        (al/add-to-load-path-maybe slime-dir)
-        (require 'slime-autoloads nil t))))
-  (setq slime-contribs '(slime-fancy))
+;; Use SLIME from quicklisp.
+(let* ((quicklisp-dir  (expand-file-name "~/.quicklisp"))
+       (swank.txt-file (expand-file-name
+                        "dists/quicklisp/installed/systems/swank.txt"
+                        quicklisp-dir)))
+  (al/with-check
+    :file swank.txt-file
+    (let* ((swank.txt (with-temp-buffer
+                        (insert-file-contents swank.txt-file)
+                        (buffer-string)))
+           (slime-dir (file-name-directory
+                       (expand-file-name swank.txt quicklisp-dir))))
+      (al/add-to-load-path-maybe slime-dir)
+      (require 'slime-autoloads nil t))))
+(setq slime-contribs '(slime-fancy))
 
-  ;; `al/slime-keys' is required for `al/erc-channel-config'
-  (defconst al/slime-keys
-    '(("C-v"     . utl-slime-eval-dwim)
-      ("C-M-v"   . slime-eval-defun)
-      ("M-s-v"   . slime-eval-buffer)
-      ("<M-tab>" . slime-complete-symbol)
-      ("C-d"     . slime-describe-symbol)
-      ("M-d"     . slime-edit-definition)
-      ("C-M-d"   . slime-doc-map)
-      "C-c C-d")
-    "Alist of auxiliary keys for slime modes.")
-  (al/bind-keys
-   :prefix-map al/slime-map
-   :prefix-docstring "Map for slime commands."
-   :prefix "M-L"
-   ("l"   . slime-repl)
-   ("M-L" . slime-repl)
-   ("c"   . (lambda () (interactive)
-              (slime-connect slime-lisp-host slime-port)))
-   ("d"   . slime-disconnect)
-   ("M-S" . slime)
-   ("s"   . slime-selector))
+;; `al/slime-keys' is required for `al/erc-channel-config'
+(defconst al/slime-keys
+  '(("C-v"     . utl-slime-eval-dwim)
+    ("C-M-v"   . slime-eval-defun)
+    ("M-s-v"   . slime-eval-buffer)
+    ("<M-tab>" . slime-complete-symbol)
+    ("C-d"     . slime-describe-symbol)
+    ("M-d"     . slime-edit-definition)
+    ("C-M-d"   . slime-doc-map)
+    "C-c C-d")
+  "Alist of auxiliary keys for slime modes.")
+(al/bind-keys
+ :prefix-map al/slime-map
+ :prefix-docstring "Map for slime commands."
+ :prefix "M-L"
+ ("l"   . slime-repl)
+ ("M-L" . slime-repl)
+ ("c"   . (lambda () (interactive)
+            (slime-connect slime-lisp-host slime-port)))
+ ("d"   . slime-disconnect)
+ ("M-S" . slime)
+ ("s"   . slime-selector))
 
-  :config
+(with-eval-after-load 'slime
   (setq
    inferior-lisp-program "sbcl"
    ;; slime-lisp-implementations
@@ -165,9 +151,7 @@
   (al/bind-keys-from-vars 'slime-parent-map 'al/slime-keys)
   (al/bind-keys-from-vars 'slime-editing-map))
 
-(use-package slime-repl
-  :defer t
-  :config
+(with-eval-after-load 'slime-repl
   (al/bind-keys
    :map slime-repl-mode-map
    ("C-k" . utl-slime-repl-kill-whole-line)
@@ -177,9 +161,7 @@
    ("M-E" . slime-repl-next-prompt)
    ("M-r" . slime-repl-previous-matching-input)))
 
-(use-package slime-autodoc
-  :defer t
-  :config
+(with-eval-after-load 'slime-autodoc
   ;; `slime-autodoc-mode' binds some useless keys into "C-c C-d" prefix.
   (al/clean-map 'slime-autodoc-mode-map)
   (al/bind-keys
@@ -189,9 +171,7 @@
 
 ;;; Scheme, geiser
 
-(use-package scheme
-  :defer t
-  :config
+(with-eval-after-load 'scheme
   (put 'plist-new 'scheme-indent-function 1)
   (al/modify-page-break-syntax scheme-mode-syntax-table)
   (al/add-hook-maybe 'scheme-mode-hook
@@ -202,22 +182,19 @@
     (advice-add 'scheme-indent-function
       :override 'utl-scheme-indent-function)))
 
-(use-package geiser-mode
-  :defer t
-  :init
-  (defconst al/geiser-keys
-    '(("C-v"   . utl-geiser-eval-dwim)
-      ("C-S-v" . geiser-expand-last-sexp)
-      ("C-M-v" . geiser-eval-definition)
-      ("M-s-v" . geiser-eval-buffer)
-      ("C-d"   . geiser-doc-symbol-at-point)
-      ("M-d"   . geiser-edit-symbol-at-point)
-      ("C-M-d" . al/geiser-doc-map)
-      ("C-c a" . geiser-autodoc-mode)
-      ("C-c j" . switch-to-geiser-module))
-    "Alist of auxiliary keys for geiser modes.")
+(defconst al/geiser-keys
+  '(("C-v"   . utl-geiser-eval-dwim)
+    ("C-S-v" . geiser-expand-last-sexp)
+    ("C-M-v" . geiser-eval-definition)
+    ("M-s-v" . geiser-eval-buffer)
+    ("C-d"   . geiser-doc-symbol-at-point)
+    ("M-d"   . geiser-edit-symbol-at-point)
+    ("C-M-d" . al/geiser-doc-map)
+    ("C-c a" . geiser-autodoc-mode)
+    ("C-c j" . switch-to-geiser-module))
+  "Alist of auxiliary keys for geiser modes.")
 
-  :config
+(with-eval-after-load 'geiser-mode
   (defvar al/geiser-doc-map)
   (put 'al/geiser-doc-map 'variable-documentation
        "Map for geiser documentation.")
@@ -231,9 +208,7 @@
    ("t" . geiser-autodoc-mode))
   (al/bind-keys-from-vars 'geiser-mode-map 'al/geiser-keys))
 
-(use-package geiser-repl
-  :defer t
-  :config
+(with-eval-after-load 'geiser-repl
   (setq
    geiser-repl-use-other-window t
    geiser-repl-history-filename (al/emacs-data-dir-file "geiser-history"))
@@ -257,20 +232,14 @@
     (setq geiser-repl-buffer-name-function
           #'utl-geiser-repl-buffer-name)))
 
-(use-package geiser-impl
-  :defer t
-  :config
+(with-eval-after-load 'geiser-impl
   (setq-default geiser-scheme-implementation 'guile)
   (setq geiser-active-implementations '(guile)))
 
-(use-package geiser-guile
-  :defer t
-  :config
+(with-eval-after-load 'geiser-guile
   (setq geiser-guile-binary '("guile" "--no-auto-compile")))
 
-(use-package geiser-doc
-  :defer t
-  :config
+(with-eval-after-load 'geiser-doc
   (defconst al/geiser-doc-keys
     '((","   . geiser-doc-previous)
       ("p"   . geiser-doc-next)
@@ -283,18 +252,14 @@
 
 ;;; Compilation, Makefile
 
-(use-package make-mode
-  :defer t
-  :config
+(with-eval-after-load 'make-mode
   (defconst al/make-keys
     '(("M->" . makefile-previous-dependency)
       ("M-E" . makefile-next-dependency))
     "Alist of auxiliary keys for `make-mode-map'.")
   (al/bind-keys-from-vars 'makefile-mode-map 'al/make-keys))
 
-(use-package compile
-  :defer t
-  :config
+(with-eval-after-load 'compile
   (setq
    ;; Don't ask, don't save.
    compilation-ask-about-save nil
@@ -328,9 +293,7 @@
     (al/add-hook-maybe 'compilation-finish-functions
       'utl-compilation-notify)))
 
-(use-package utl-compilation
-  :defer t
-  :config
+(with-eval-after-load 'utl-compilation
   (setq
    utl-compilation-sound-success (al/sound-dir-file "bell.oga")
    utl-compilation-sound-error (al/sound-dir-file "splat.wav")))
@@ -354,30 +317,27 @@
             (github-browse-file))))
  ("g" . github-browse-file))
 
-(use-package magit
-  :defer t
-  :commands ido-enter-magit-status
-  :init
-  (defconst al/magit-common-keys
-    '(("v"   . magit-git-command)
-      "M-m")
-    "Alist of auxiliary keys that should be bound in any magit mode.")
-  (defconst al/magit-history-keys
-    '((","   . magit-go-backward)
-      ("p"   . magit-go-forward))
-    "Alist of auxiliary keys for moving by magit history.")
-  (defconst al/magit-scroll-diff-keys
-    '(("SPC" . magit-diff-show-or-scroll-up)
-      ("DEL" . magit-diff-show-or-scroll-down))
-    "Alist of auxiliary keys for scrolling magit diff in other window.")
-  (defconst al/magit-moving-keys
-    '(("."   . magit-section-backward)
-      ("e"   . magit-section-forward)
-      ("M-." . magit-section-backward-sibling)
-      ("M-e" . magit-section-forward-sibling))
-    "Alist of auxiliary keys for moving by magit sections.")
+(defconst al/magit-common-keys
+  '(("v"   . magit-git-command)
+    "M-m")
+  "Alist of auxiliary keys that should be bound in any magit mode.")
+(defconst al/magit-history-keys
+  '((","   . magit-go-backward)
+    ("p"   . magit-go-forward))
+  "Alist of auxiliary keys for moving by magit history.")
+(defconst al/magit-scroll-diff-keys
+  '(("SPC" . magit-diff-show-or-scroll-up)
+    ("DEL" . magit-diff-show-or-scroll-down))
+  "Alist of auxiliary keys for scrolling magit diff in other window.")
+(defconst al/magit-moving-keys
+  '(("."   . magit-section-backward)
+    ("e"   . magit-section-forward)
+    ("M-." . magit-section-backward-sibling)
+    ("M-e" . magit-section-forward-sibling))
+  "Alist of auxiliary keys for moving by magit sections.")
 
-  :config
+(al/autoload "magit" ido-enter-magit-status)
+(with-eval-after-load 'magit
   (setq
    magit-status-buffer-name-format   "*magit: %a*"
    magit-process-buffer-name-format  "*magit-process: %a*"
@@ -395,9 +355,7 @@
    magit-push-always-verify t
    magit-branch-read-upstream-first nil))
 
-(use-package magit-mode
-  :defer t
-  :config
+(with-eval-after-load 'magit-mode
   (setq magit-save-repository-buffers nil)
 
   (defconst al/magit-keys
@@ -420,9 +378,7 @@
       al/magit-moving-keys
       al/magit-keys)))
 
-(use-package magit-popup
-  :defer t
-  :config
+(with-eval-after-load 'magit-popup
   (setq
    magit-popup-show-common-commands nil
    magit-popup-use-prefix-argument 'default)
@@ -444,9 +400,7 @@
   (advice-add 'magit-refresh-popup-buffer
     :after #'al/beginning-of-buffer))
 
-(use-package magit-log
-  :defer t
-  :config
+(with-eval-after-load 'magit-log
   (setq
    magit-log-margin-spec '(25 1 magit-duration-spec)
    magit-reflog-arguments '("-n99")
@@ -469,9 +423,7 @@
     'al/magit-common-keys
     t))
 
-(use-package magit-diff
-  :defer t
-  :config
+(with-eval-after-load 'magit-diff
   (defconst al/magit-diff-visit-keys
     '(("RET" . magit-diff-visit-file-worktree)
       ("<C-return>" . magit-diff-visit-file))
@@ -487,24 +439,18 @@
     t)
   (al/bind-keys-from-vars 'magit-staged-section-map 'al/magit-common-keys))
 
-(use-package magit-sequence
-  :defer t
-  :config
+(with-eval-after-load 'magit-sequence
   (magit-change-popup-key 'magit-cherry-pick-popup :action ?A ?C) ; pick
   )
 
-(use-package magit-bisect
-  :defer t
-  :config
+(with-eval-after-load 'magit-bisect
   (magit-change-popup-key 'magit-bisect-popup :action ?B ?s) ; start
   (magit-change-popup-key 'magit-bisect-popup :action ?s ?!) ; run script
   (magit-change-popup-key 'magit-bisect-popup
                           :sequence-action ?s ?!) ; run script
   )
 
-(use-package magit-blame
-  :defer t
-  :config
+(with-eval-after-load 'magit-blame
   (defconst al/magit-blame-keys
     '(("M-." . magit-blame-previous-chunk)
       ("M-e" . magit-blame-next-chunk)
@@ -515,14 +461,10 @@
   (al/bind-keys-from-vars 'magit-blame-mode-map
     '(al/lazy-scrolling-keys al/magit-blame-keys)))
 
-(use-package magit-git
-  :defer t
-  :config
+(with-eval-after-load 'magit-git
   (setq magit-git-executable "git"))
 
-(use-package git-commit
-  :defer t
-  :config
+(with-eval-after-load 'git-commit
   (defun al/git-commit-fix-syntax ()
     (modify-syntax-entry ?\" "\"   ")
     (al/no-syntactic-font-lock))
@@ -538,9 +480,7 @@
     "Alist of auxiliary keys for `git-commit-mode-map'.")
   (al/bind-keys-from-vars 'git-commit-mode-map 'al/git-commit-keys))
 
-(use-package git-rebase
-  :defer t
-  :config
+(with-eval-after-load 'git-rebase
   (al/add-hook-maybe 'git-rebase-mode-hook 'hl-line-mode)
   (defconst al/git-rebase-keys
     '(("p"   . git-rebase-pick)
@@ -554,9 +494,7 @@
 
 ;;; Misc settings and packages
 
-(use-package prog-mode
-  :defer t
-  :config
+(with-eval-after-load 'prog-mode
   (al/add-hook-maybe 'prog-mode-hook
     '(hl-line-mode
       hl-todo-mode
@@ -569,9 +507,7 @@
     "Alist of auxiliary keys for `prog-mode-map'.")
   (al/bind-keys-from-vars 'prog-mode-map 'al/prog-keys))
 
-(use-package cc-mode
-  :defer t
-  :config
+(with-eval-after-load 'cc-mode
   (setq
    c-default-style
    '((c-mode    . "stroustrup")
@@ -584,19 +520,15 @@
   (al/bind-keys-from-vars 'c-mode-base-map
     '(al/prog-keys al/c-base-keys)))
 
-(use-package js
-  :defer t
-  :config
+(with-eval-after-load 'js
   (defun al/js-delimiter ()
     (setq-local utl-delimiter
                 (concat (make-string 64 ?/) "\n///")))
   (al/add-hook-maybe 'js-mode-hook
     '(utl-imenu-add-js-sections al/js-delimiter)))
 
-(use-package python
-  :defer t
-  :commands python-shell-switch-to-shell
-  :config
+(al/autoload "python" python-shell-switch-to-shell)
+(with-eval-after-load 'python
   (setq python-shell-interpreter "ipython"))
 
 ;;; prog.el ends here

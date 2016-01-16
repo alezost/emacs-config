@@ -186,10 +186,23 @@ Both HOOKS and FUNCTIONS may be single variables or lists of those."
           (lambda (hook)
             (add-hook hook fun append local)))))))
 
+(defun al/add-after-init-hook (functions)
+  "Add functions to `after-init-hook'.
+See `al/add-hook-maybe'."
+  (al/add-hook-maybe 'after-init-hook functions))
+
 (defmacro al/eval-after-init (&rest body)
   "Add to `after-init-hook' a `lambda' expression with BODY."
   (declare (indent 0))
   `(add-hook 'after-init-hook (lambda () ,@body)))
+
+(defmacro al/autoload (file &rest symbols)
+  "Autoload (unquoted) SYMBOLS from file as interactive commands."
+  (declare (indent 1))
+  `(progn
+     ,@(mapcar (lambda (symbol)
+                 `(autoload ',symbol ,file nil t))
+               symbols)))
 
 (defmacro al/modify-syntax (table-name &rest specs)
   "Update syntax table according to SPECS.
@@ -283,8 +296,6 @@ Also it (default syntax) breaks `indent-guide-mode'."
 
 (defvar al/core-packages
   `((quelpa             :fetcher github :repo "quelpa/quelpa")
-    (use+bind           :fetcher github :repo "jwiegley/use-package"
-                        :files ("bind-key.el" "use-package.el"))
     (mwim               :fetcher git :url ,(al/emacs-repo "mwim"))
     (utils              :fetcher git :url ,(al/emacs-repo "utils")))
   "Packages essential for my workflow.")
@@ -525,10 +536,6 @@ symbols)."
      "https://raw.github.com/quelpa/quelpa/master/bootstrap.el")
     (eval-buffer))
   (apply #'al/quelpa al/core-packages))
-
-(eval-when-compile
-  (require 'use-package))
-(setq use-package-verbose t)
 
 (al/add-my-package-to-load-path-maybe "utils")
 

@@ -38,18 +38,13 @@
 
 ;;; Misc settings and packages
 
-(use-package time
-  :defer t
-  :config
+(with-eval-after-load 'time
   (setq
    display-time-interval 5
    display-time-format " %H:%M:%S"))
 
-(use-package calendar
-  :defer t
-  :init
-  (setq calendar-date-style 'iso)
-  :config
+(setq calendar-date-style 'iso)
+(with-eval-after-load 'calendar
   (setq
    diary-file (al/notes-dir-file "diary")
    calendar-week-start-day 1
@@ -86,15 +81,11 @@
   (al/add-hook-maybe 'calendar-mode-hook 'al/bar-cursor-type)
   (add-hook 'calendar-today-visible-hook 'calendar-mark-today))
 
-(use-package utl-calendar
-  :defer t
-  :config
+(with-eval-after-load 'utl-calendar
   (setq utl-calendar-date-display-form
         '((format "%s %.3s %2s" year monthname day))))
 
-(use-package solar
-  :defer t
-  :config
+(with-eval-after-load 'solar
   (setq
    calendar-latitude 50.6
    calendar-longitude 36.6
@@ -103,18 +94,13 @@
    '(24-hours ":" minutes
      (if time-zone " (") time-zone (if time-zone ")"))))
 
-(use-package diary-lib
-  :defer t
-  :config
+(with-eval-after-load 'diary-lib
   (setq
    diary-number-of-entries 3
    diary-comment-start "#")
   (add-hook 'diary-list-entries-hook 'diary-sort-entries t))
 
-(use-package appt
-  :defer 5
-  :if (utl-server-running-p)
-  :config
+(with-eval-after-load 'appt
   (setq
    appt-audible nil
    appt-display-diary nil
@@ -124,37 +110,31 @@
     (add-to-list 'sauron-modules 'sauron-org))
   (when (require 'utl-appt nil t)
     (advice-add 'appt-display-message
-      :override 'utl-appt-display-message))
-  (appt-activate))
+      :override 'utl-appt-display-message)))
+(al/eval-after-init
+  (when (utl-server-running-p)
+    (appt-activate)))
 
-(use-package utl-appt
-  :defer t
-  :config
+(with-eval-after-load 'utl-appt
   (setq
    utl-appt-notify-normal-sound (al/sound-dir-file "drums.wav")
    utl-appt-notify-urgent-sound (al/sound-dir-file "bell.oga")))
 
-(use-package utl-notification
-  :defer t
-  :commands utl-play-sound
-  :config
+(al/autoload "utl-notification" utl-play-sound)
+(with-eval-after-load 'utl-notification
   (setq
    utl-sound-file (al/sound-dir-file "alarm.wav")
    utl-timer-format "%M min %S sec"))
 
-(use-package notifications
-  :defer t
-  :config
+(with-eval-after-load 'notifications
   ;; XXX Remove when dunst will support icons.
   (setq notifications-application-icon ""))
 
-(use-package sauron
-  :defer t
-  :init
-  (al/bind-keys
-   ("C-c s" . utl-sauron-toggle-hide-show)
-   ("C-c S" . utl-sauron-restart))
-  :config
+(al/bind-keys
+ ("C-c s" . utl-sauron-toggle-hide-show)
+ ("C-c S" . utl-sauron-restart))
+
+(with-eval-after-load 'sauron
   (setq
    sauron-max-line-length 174
    sauron-separate-frame nil

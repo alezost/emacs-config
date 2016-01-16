@@ -18,57 +18,54 @@
 
 ;;; EMMS
 
-(use-package emms
-  :defer t
-  :init
-  (setq
-   emms-directory (al/emacs-data-dir-file "emms")
-   emms-playlist-sort-prefix "s")
+(setq
+ emms-directory (al/emacs-data-dir-file "emms")
+ emms-playlist-sort-prefix "s")
 
-  (al/bind-keys
-   :prefix-map al/emms-map
-   :prefix-docstring "Map for EMMS."
-   :prefix "C-ь"
-   ("SPC" . emms-pause)
-   ("M-SPC" . emms-stop)
-   ("s" . emms-show)
-   ("m" . emms-status-toggle-mode-line)
-   ("n" . utl-emms-notification-mode)
-   ("b" . emms-browser)
-   ("l" . emms)
-   ("r" . emms-streams)
-   ("g" . utl-emms-seek-to)
-   ("y" . utl-emms-mpv-sync-playing-time)
-   ("S" . emms-cache-save)
-   ("u"   (emms-playlist-simple-uniq)))
+(al/bind-keys
+ :prefix-map al/emms-map
+ :prefix-docstring "Map for EMMS."
+ :prefix "C-ь"
+ ("SPC" . emms-pause)
+ ("M-SPC" . emms-stop)
+ ("s" . emms-show)
+ ("m" . emms-status-toggle-mode-line)
+ ("n" . utl-emms-notification-mode)
+ ("b" . emms-browser)
+ ("l" . emms)
+ ("r" . emms-streams)
+ ("g" . utl-emms-seek-to)
+ ("y" . utl-emms-mpv-sync-playing-time)
+ ("S" . emms-cache-save)
+ ("u"   (emms-playlist-simple-uniq)))
 
-  (al/bind-keys
-   :map al/emms-map
-   :prefix-map al/emms-play-map
-   :prefix-docstring "Map for playing EMMS entries."
-   :prefix "p"
-   ("t" . emms-play-directory-tree)
-   ("d" . emms-play-directory)
-   ("f" . emms-play-file)
-   ("l" . emms-play-playlist)
-   ("u" . emms-play-url)
-   ("e"   (emms-play-file
-           (read-file-name "Play file: " al/echo-download-dir))))
+(al/bind-keys
+ :map al/emms-map
+ :prefix-map al/emms-play-map
+ :prefix-docstring "Map for playing EMMS entries."
+ :prefix "p"
+ ("t" . emms-play-directory-tree)
+ ("d" . emms-play-directory)
+ ("f" . emms-play-file)
+ ("l" . emms-play-playlist)
+ ("u" . emms-play-url)
+ ("e"   (emms-play-file
+         (read-file-name "Play file: " al/echo-download-dir))))
 
-  (al/bind-keys
-   :map al/emms-map
-   :prefix-map al/emms-add-map
-   :prefix-docstring "Map for adding EMMS entries."
-   :prefix "a"
-   ("t" . emms-add-directory-tree)
-   ("d" . emms-add-directory)
-   ("f" . emms-add-file)
-   ("l" . emms-add-playlist)
-   ("u" . emms-add-url)
-   ("e"   (emms-add-file
-           (read-file-name "Add file: " al/echo-download-dir))))
+(al/bind-keys
+ :map al/emms-map
+ :prefix-map al/emms-add-map
+ :prefix-docstring "Map for adding EMMS entries."
+ :prefix "a"
+ ("t" . emms-add-directory-tree)
+ ("d" . emms-add-directory)
+ ("f" . emms-add-file)
+ ("l" . emms-add-playlist)
+ ("u" . emms-add-url)
+ ("e"   (emms-add-file
+         (read-file-name "Add file: " al/echo-download-dir))))
 
-  :config
+(with-eval-after-load 'emms
   (require 'emms-source-file)
   (require 'emms-source-playlist)
   (require 'emms-player-mplayer)
@@ -116,9 +113,7 @@
     (advice-add 'emms-source-play
       :override 'utl-emms-source-add-and-play)))
 
-(use-package emms-playlist-mode
-  :defer t
-  :config
+(with-eval-after-load 'emms-playlist-mode
   (defconst al/emms-playlist-keys
     '(("SPC" . emms-pause)
       ("S"   . emms-stop)
@@ -135,9 +130,7 @@
   (al/add-hook-maybe 'emms-playlist-mode-hook
     '(utl-mode-name hl-line-mode)))
 
-(use-package emms-streams
-  :defer t
-  :config
+(with-eval-after-load 'emms-streams
   (defconst al/emms-stream-keys
     '(("." . emms-stream-previous-line)
       ("e" . emms-stream-next-line)
@@ -147,17 +140,10 @@
   (al/add-hook-maybe 'emms-stream-hook
     '(utl-mode-name hl-line-mode)))
 
-(use-package emms-cue
-  :defer t
-  :commands emms-info-cueinfo)
+(al/autoload "emms-cue" emms-info-cueinfo)
+(al/autoload "emms-info-libtag" emms-info-libtag)
 
-(use-package emms-info-libtag
-  :defer t
-  :commands emms-info-libtag)
-
-(use-package utl-emms
-  :defer t
-  :config
+(with-eval-after-load 'utl-emms
   (setq
    utl-emms-notification-artist-format "<big>%s</big>"
    utl-emms-notification-title-format "<span foreground=\"yellow\">%s</span>"

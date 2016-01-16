@@ -29,9 +29,7 @@
  ("a"   . utl-add-package-archive)
  ("r"   . utl-remove-package-archive))
 
-(use-package package
-  :defer t
-  :config
+(with-eval-after-load 'package
   (setq package-archives nil)
   (al/bind-keys
    :map package-menu-mode-map
@@ -81,14 +79,10 @@
                              guix-current-profile)))
  ("u"   . utl-guix-commit-url))
 
-(use-package guix-external
-  :defer t
-  :config
+(with-eval-after-load 'guix-external
   (setq guix-guile-program "guile"))
 
-(use-package guix-base
-  :defer t
-  :config
+(with-eval-after-load 'guix-base
   (setq
    guix-directory (al/src-dir-file "guix")
    guix-operation-option-separator "  │  ")
@@ -97,18 +91,14 @@
      guix-operation-option-false-string "☐"
      guix-operation-option-true-string  "☑")))
 
-(use-package guix-buffer
-  :defer t
-  :config
+(with-eval-after-load 'guix-buffer
   (defconst al/guix-buffer-keys
     '(("," . guix-history-back)
       ("p" . guix-history-forward))
     "Alist of auxiliary keys for `guix-buffer-map'.")
   (al/bind-keys-from-vars 'guix-buffer-map 'al/guix-buffer-keys t))
 
-(use-package guix-list
-  :defer t
-  :config
+(with-eval-after-load 'guix-list
   (defconst al/guix-list-keys
     '(("u" . guix-list-describe)
       ("z" . guix-list-unmark)
@@ -121,17 +111,13 @@
       al/guix-buffer-keys
       al/guix-list-keys)))
 
-(use-package guix-ui
-  :defer t
-  :config
+(with-eval-after-load 'guix-ui
   (defconst al/guix-ui-keys
     '(("P"   (message "%s" (guix-ui-current-profile))))
     "Alist of auxiliary keys for `guix-ui-map'.")
   (al/bind-keys-from-vars 'guix-ui-map 'al/guix-ui-keys t))
 
-(use-package guix-ui-package
-  :defer t
-  :config
+(with-eval-after-load 'guix-ui-package
   (setq
    guix-package-list-type 'package)
 
@@ -148,9 +134,7 @@
     (append al/guix-list-key-vars '(al/guix-output-list-keys))
     t))
 
-(use-package guix-ui-generation
-  :defer t
-  :config
+(with-eval-after-load 'guix-ui-generation
   (setq
    guix-generation-packages-update-buffer nil
    guix-generation-output-name-width 40)
@@ -162,24 +146,18 @@
     (append al/guix-list-key-vars '(al/guix-generation-list-keys))
     t))
 
-(use-package guix-utils
-  :defer t
-  :config
+(with-eval-after-load 'guix-utils
   (setq
    guix-find-file-function #'org-open-file))
 
-(use-package guix-prettify
-  :defer 7
-  :config
+(with-eval-after-load 'guix-prettify
   (setq
    guix-prettify-regexp (rx "/" (or "store" "nar" "log")
                             "/" (group (= 32 alnum)))
-   guix-prettify-regexp-group 1)
-  (global-guix-prettify-mode))
+   guix-prettify-regexp-group 1))
+(al/add-after-init-hook 'global-guix-prettify-mode)
 
-(use-package guix-build-log
-  :defer t
-  :config
+(with-eval-after-load 'guix-build-log
   (defconst al/guix-build-log-common-keys
     '(("M-." . guix-build-log-previous-phase)
       ("M-e" . guix-build-log-next-phase))
@@ -192,9 +170,7 @@
   (al/bind-keys-from-vars 'guix-build-log-mode-map
     'al/guix-build-log-keys))
 
-(use-package guix-devel
-  :defer t
-  :config
+(with-eval-after-load 'guix-devel
   (defconst al/guix-devel-keys
     '(("d" . guix-devel-download-package-source))
     "Alist of auxiliary keys for `guix-devel-keys-map'.")
@@ -203,23 +179,20 @@
 
 ;;; Aurel
 
-(use-package aurel
-  :defer t
-  :init
-  (al/add-my-package-to-load-path-maybe "aurel")
-  (al/bind-keys
-   :prefix-map al/aurel-map
-   :prefix-docstring "Map for aurel."
-   :prefix "C-H-a"
-   ("i"     . utl-switch-to-aurel-info)
-   ("l"     . utl-switch-to-aurel-list)
-   ("C-n"   . aurel-package-info)
-   ("p"     . aurel-package-search)
-   ("n"     . aurel-package-search)
-   ("m"     . aurel-maintainer-search)
-   ("I"     . aurel-installed-packages))
+(al/bind-keys
+ :prefix-map al/aurel-map
+ :prefix-docstring "Map for aurel."
+ :prefix "C-H-a"
+ ("i"     . utl-switch-to-aurel-info)
+ ("l"     . utl-switch-to-aurel-list)
+ ("C-n"   . aurel-package-info)
+ ("p"     . aurel-package-search)
+ ("n"     . aurel-package-search)
+ ("m"     . aurel-maintainer-search)
+ ("I"     . aurel-installed-packages))
 
-  :config
+(al/add-my-package-to-load-path-maybe "aurel")
+(with-eval-after-load 'aurel
   (setq
    aurel-download-directory (al/src-dir-file "abs")
    aurel-aur-user-name "alezost"

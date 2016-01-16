@@ -231,42 +231,31 @@
   (setq-local paragraph-start "[^ ]"))
 (al/add-hook-maybe 'occur-mode-hook 'al/occur-set-paragraph)
 
-(use-package misearch
-  :defer t
-  :config
+(with-eval-after-load 'misearch
   (setq multi-isearch-pause nil))
 
-(use-package point-pos
-  :defer t
-  :init
-  (al/add-my-package-to-load-path-maybe "point-pos")
-  (al/bind-keys
-   :prefix-map al/point-pos-map
-   :prefix-docstring "Map for point-pos."
-   :prefix "M-Z"
-   ("s" . point-pos-save)
-   ("d" . point-pos-delete)
-   ("g" . point-pos-goto)
-   ("h" . point-pos-previous)
-   ("n" . point-pos-next))
-  (al/bind-keys
-   ("C-M-S-g" . point-pos-goto)
-   ("C-M-S-h" . point-pos-previous)
-   ("C-M-S-n" . point-pos-next)))
+(al/bind-keys
+ :prefix-map al/point-pos-map
+ :prefix-docstring "Map for point-pos."
+ :prefix "M-Z"
+ ("s" . point-pos-save)
+ ("d" . point-pos-delete)
+ ("g" . point-pos-goto)
+ ("h" . point-pos-previous)
+ ("n" . point-pos-next))
+(al/bind-keys
+ ("C-M-S-g" . point-pos-goto)
+ ("C-M-S-h" . point-pos-previous)
+ ("C-M-S-n" . point-pos-next))
+(al/add-my-package-to-load-path-maybe "point-pos")
 
-(use-package imenu
-  :defer t
-  :init
-  (al/bind-key* "C-M-s-m" imenu)
-  :config
+(al/bind-key* "C-M-s-m" imenu)
+(with-eval-after-load 'imenu
   (setq imenu-space-replacement nil))
 
-(use-package imenus
-  :defer t
-  :init
-  (al/add-my-package-to-load-path-maybe "imenus")
-  (al/bind-key* "C-M-m" imenus)
-  :config
+(al/bind-key* "C-M-m" imenus)
+(al/add-my-package-to-load-path-maybe "imenus")
+(with-eval-after-load 'imenus
   (setq imenus-delimiter " ⇨ ")
   (al/bind-keys
    :map imenus-minibuffer-map
@@ -274,11 +263,8 @@
    ("C-s" . imenus-exit-to-isearch)
    ("M-s" . imenus-exit-to-occur)))
 
-(use-package utl-imenus
-  :defer t
-  :init
-  (al/bind-key "s-s" utl-imenus-search-elisp-dir)
-  :config
+(al/bind-key "s-s" utl-imenus-search-elisp-dir)
+(with-eval-after-load 'utl-imenus
   (setq utl-imenus-elisp-dir al/emacs-init-dir))
 
 
@@ -299,11 +285,8 @@
   (setq select-enable-primary t
         select-enable-clipboard nil))
 
-(use-package browse-kill-ring
-  :defer t
-  :init
-  (al/bind-key "C-H-y" browse-kill-ring)
-  :config
+(al/bind-key "C-H-y" browse-kill-ring)
+(with-eval-after-load 'browse-kill-ring
   (setq
    browse-kill-ring-separator (make-string 64 ?—)
    browse-kill-ring-separator-face nil)
@@ -321,9 +304,7 @@
   (al/add-hook-maybe 'browse-kill-ring-mode-hook
     'al/browse-kill-ring-bind-keys))
 
-(use-package register
-  :defer t
-  :config
+(with-eval-after-load 'register
   (setq register-preview-delay 0.3)
 
   (defun al/insert-register-reverse-arg (fun register &optional arg)
@@ -365,9 +346,7 @@
     al/show-trailing-whitespace))
 (al/bind-keys-from-vars 'text-mode-map 'al/text-editing-keys)
 
-(use-package abbrev
-  :defer t
-  :config
+(with-eval-after-load 'abbrev
   (define-abbrev-table 'global-abbrev-table
     '(("gos"  "GuixSD")
       ("hhg"  "GNU/Linux")
@@ -382,11 +361,8 @@
       ("hh6"  "Saturday")
       ("hh7"  "Sunday"))))
 
-(use-package iso-transl
-  :defer t
-  :init
-  (define-key key-translation-map [?\M-i] 'iso-transl-ctl-x-8-map)
-  :config
+(define-key key-translation-map [?\M-i] 'iso-transl-ctl-x-8-map)
+(with-eval-after-load 'iso-transl
   ;; Expand "C-x 8" (now "M-i") map:
   (iso-transl-define-keys
    '(("a"        . [?α])
@@ -432,9 +408,7 @@
     (al/make-number-alist "⁰¹²³⁴⁵⁶⁷⁸⁹")
     (al/make-number-alist "₀₁₂₃₄₅₆₇₈₉" "M-"))))
 
-(use-package pcomplete
-  :defer t
-  :config
+(with-eval-after-load 'pcomplete
   ;; Although `pcomplete-suffix-list' is marked as obsolete, it is used
   ;; by `pcomplete-insert-entry', and its default value prevents
   ;; inserting space after ":" (while completing ERC nicks).
@@ -444,20 +418,15 @@
     (al/add-hook-maybe '(shell-mode-hook eshell-mode-hook)
       'utl-pcomplete-no-space)))
 
-(use-package pcmpl-args
-  :defer t
-  :config
+(with-eval-after-load 'pcmpl-args
   (setq
    pcmpl-args-debug-parse-help t
    pcmpl-args-cache-default-duration 999999
    pcmpl-args-cache-max-duration pcmpl-args-cache-default-duration))
 
-(use-package company
-  :defer t
-  :commands company-complete
-  :init
-  (al/bind-key "<C-H-tab>" company-complete)
-  :config
+(al/bind-key "<C-H-tab>" company-complete)
+(al/autoload "company" company-complete)
+(with-eval-after-load 'company
   (setq
    company-idle-delay nil
    company-show-numbers t)
@@ -467,43 +436,44 @@
    ("M-e" . company-select-next))
   (global-company-mode))
 
-(use-package yasnippet
-  ;; I do not use `yas-minor-mode' (or `yas-global-mode') because I don't
-  ;; want to see `yas--post-command-handler' in `post-command-hook'.  I
-  ;; just use yas functionality when I need to expand something without
-  ;; enabling the mode.
-  :defer t
-  :commands
-  (yas-new-snippet yas-insert-snippet)
-  :init
-  (setq
-   al/my-snippets-dir  (al/emacs-data-dir-file "snippets/my")
-   al/yas-snippets-dir (al/emacs-data-dir-file "snippets/yas")
-   ;; al/yas-snippets-dir (expand-file-name "yasnippet/snippets"
-   ;;                                       quelpa-build-dir)
-   yas-snippet-dirs (list al/my-snippets-dir al/yas-snippets-dir)
-   yas-prompt-functions '(yas-ido-prompt))
+
+;;; Yasnippet
 
-  (al/bind-keys
-   ("<kanji>"   . utl-yas-next-field-or-expand)
-   ("<M-kanji>" . utl-yas-exit-and-expand))
-  (al/bind-keys
-   :prefix-map al/yas-map
-   :prefix-docstring "Map for yasnippet commands."
-   :prefix "M-Y"
-   ("M-Y" . yas-insert-snippet)
-   ("f"   . yas-visit-snippet-file)
-   ("r"     (yas--load-pending-jits))
-   ("R"   . yas-reload-all)
-   ("n"   . yas-new-snippet)
-   ("l"   . yas-load-directory)
-   ("d"   . yas-describe-tables)
-   ("g"   . yas-global-mode)
-   ("s"     (utl-ido-find-file
-             (expand-file-name "yasnippet/snippets/emacs-lisp-mode"
-                               quelpa-build-dir))))
+(al/autoload "yasnippet"
+  yas-new-snippet
+  yas-insert-snippet)
+(setq
+ al/my-snippets-dir  (al/emacs-data-dir-file "snippets/my")
+ al/yas-snippets-dir (al/emacs-data-dir-file "snippets/yas")
+ ;; al/yas-snippets-dir (expand-file-name "yasnippet/snippets"
+ ;;                                       quelpa-build-dir)
+ yas-snippet-dirs (list al/my-snippets-dir al/yas-snippets-dir)
+ yas-prompt-functions '(yas-ido-prompt))
 
-  :config
+;; I do not use `yas-minor-mode' (or `yas-global-mode') because I don't
+;; want to see `yas--post-command-handler' in `post-command-hook'.  I
+;; just use yas functionality when I need to expand something without
+;; enabling the mode.
+(al/bind-keys
+ ("<kanji>"   . utl-yas-next-field-or-expand)
+ ("<M-kanji>" . utl-yas-exit-and-expand))
+(al/bind-keys
+ :prefix-map al/yas-map
+ :prefix-docstring "Map for yasnippet commands."
+ :prefix "M-Y"
+ ("M-Y" . yas-insert-snippet)
+ ("f"   . yas-visit-snippet-file)
+ ("r"     (yas--load-pending-jits))
+ ("R"   . yas-reload-all)
+ ("n"   . yas-new-snippet)
+ ("l"   . yas-load-directory)
+ ("d"   . yas-describe-tables)
+ ("g"   . yas-global-mode)
+ ("s"     (utl-ido-find-file
+           (expand-file-name "yasnippet/snippets/emacs-lisp-mode"
+                             quelpa-build-dir))))
+
+(with-eval-after-load 'yasnippet
   (setq yas-indent-line 'fixed)
   (setq yas-new-snippet-default "\
 # -*- mode: snippet; require-final-newline: nil -*-
@@ -534,30 +504,31 @@ $0")
   (yas--load-snippet-dirs)
   (yas--load-pending-jits))
 
-(use-package paredit
-  :defer t
-  :commands
-  (paredit-reindent-defun
-   paredit-newline
-   paredit-backward-kill-word
-   paredit-forward-kill-word
-   paredit-backward
-   paredit-forward
-   paredit-backward-up
-   paredit-forward-down
-   paredit-kill
-   paredit-splice-sexp
-   paredit-splice-sexp-killing-backward
-   paredit-splice-sexp-killing-forward
-   paredit-raise-sexp
-   paredit-forward-slurp-sexp
-   paredit-forward-barf-sexp
-   paredit-backward-slurp-sexp
-   paredit-backward-barf-sexp
-   paredit-split-sexp
-   paredit-join-sexps)
+
+;;; Working with parentheses (paredit, smartparens)
 
-  :config
+(al/autoload "paredit"
+  paredit-reindent-defun
+  paredit-newline
+  paredit-backward-kill-word
+  paredit-forward-kill-word
+  paredit-backward
+  paredit-forward
+  paredit-backward-up
+  paredit-forward-down
+  paredit-kill
+  paredit-splice-sexp
+  paredit-splice-sexp-killing-backward
+  paredit-splice-sexp-killing-forward
+  paredit-raise-sexp
+  paredit-forward-slurp-sexp
+  paredit-forward-barf-sexp
+  paredit-backward-slurp-sexp
+  paredit-backward-barf-sexp
+  paredit-split-sexp
+  paredit-join-sexps)
+
+(with-eval-after-load 'paredit
   (al/clean-map 'paredit-mode-map)
   (al/bind-keys
    :map paredit-mode-map
@@ -583,31 +554,29 @@ $0")
   (add-to-list 'emulation-mode-map-alists
                `((paredit-mode . ,paredit-mode-map))))
 
-(use-package smartparens
-  :defer t
-  :commands
-  (sp-indent-defun
-   sp-backward-kill-word
-   sp-kill-word
-   sp-backward-sexp
-   sp-forward-sexp
-   sp-backward-up-sexp
-   sp-down-sexp
-   sp-splice-sexp
-   sp-splice-sexp-killing-forward
-   sp-splice-sexp-killing-backward
-   sp-splice-sexp-killing-around
-   sp-backward-kill-sexp
-   sp-backward-copy-sexp
-   sp-kill-sexp
-   sp-copy-sexp
-   sp-transpose-sexp
-   sp-forward-slurp-sexp
-   sp-forward-barf-sexp
-   sp-backward-slurp-sexp
-   sp-backward-barf-sexp)
+(al/autoload "smartparens"
+  sp-indent-defun
+  sp-backward-kill-word
+  sp-kill-word
+  sp-backward-sexp
+  sp-forward-sexp
+  sp-backward-up-sexp
+  sp-down-sexp
+  sp-splice-sexp
+  sp-splice-sexp-killing-forward
+  sp-splice-sexp-killing-backward
+  sp-splice-sexp-killing-around
+  sp-backward-kill-sexp
+  sp-backward-copy-sexp
+  sp-kill-sexp
+  sp-copy-sexp
+  sp-transpose-sexp
+  sp-forward-slurp-sexp
+  sp-forward-barf-sexp
+  sp-backward-slurp-sexp
+  sp-backward-barf-sexp)
 
-  :config
+(with-eval-after-load 'smartparens
   (require 'smartparens-config nil t)
   (setq
    sp-navigate-reindent-after-up nil

@@ -41,25 +41,21 @@
 
 ;;; Misc settings and packages
 
-(use-package ispell
-  :defer t
-  :config
+(with-eval-after-load 'ispell
   (ispell-change-dictionary "en" 'global))
 
-(use-package flyspell
-  :defer t
-  :init
-  (setq flyspell-use-meta-tab nil)
-  :config
+(setq flyspell-use-meta-tab nil)
+(with-eval-after-load 'flyspell
   (defconst al/flyspell-keys
     '(("C-M-g n" . flyspell-goto-next-error))
     "Alist of auxiliary keys for `flyspell-mode-map'.")
   (al/bind-keys-from-vars 'flyspell-mode-map 'al/flyspell-keys))
 
-(use-package dictem
-  :defer t
-  :commands (dictem-run-search dictem-run-match)
-  :config
+(al/autoload "dictem"
+  dictem-run-search
+  dictem-run-match)
+
+(with-eval-after-load 'dictem
   (when (require 'utl-dictem nil t)
     (dictem-initialize)
     (advice-add 'dictem :override 'utl-dictem)
@@ -85,21 +81,15 @@
   (add-hook 'dictem-postprocess-show-info-hook
             'dictem-postprocess-definition-hyperlinks))
 
-(use-package utl-dictem
-  :defer t
-  :config
+(with-eval-after-load 'utl-dictem
   (setq utl-dictem-dicts
         '(nil "mueller7" "korolew_en-ru" "korolew_ru-en"
               "slovnyk_ru-en" "ushakov" "fd-eng-lat" "fd-lat-eng")))
 
-(use-package google-translate-core-ui
-  :defer t
-  :config
+(with-eval-after-load 'google-translate-core-ui
   (setq google-translate-show-phonetic t))
 
-(use-package google-translate-smooth-ui
-  :defer t
-  :config
+(with-eval-after-load 'google-translate-smooth-ui
   (when (require 'dvorak-russian-computer nil t)
     (setq google-translate-preferable-input-methods-alist
           '((dvorak-russian-computer "ru"))))

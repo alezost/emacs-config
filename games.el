@@ -32,21 +32,15 @@
 
 ;;; Misc settings and packages
 
-(use-package gamegrid
-  :defer t
-  :config
+(with-eval-after-load 'gamegrid
   (setq gamegrid-user-score-file-directory
         (al/emacs-data-dir-file "games")))
 
-(use-package typing-practice
-  :defer t
-  :commands practice-words
-  :config
+(al/autoload "typing-practice" practice-words)
+(with-eval-after-load 'typing-practice
   (setq typing-practice-time-threshold 2))
 
-(use-package ducpel
-  :defer t
-  :config
+(with-eval-after-load 'ducpel
   (setq
    ducpel-levels-directory
    (expand-file-name "ducpel/levels" quelpa-build-dir)
@@ -69,15 +63,13 @@
    ("p" . ducpel-next-level)
    ("H-u" . ducpel-undo)))
 
-(use-package tetris
-  :defer t
-  :init
-  (setq
-   tetris-width 16
-   tetris-height 32
-   tetris-buffer-width 40
-   tetris-buffer-height 40)
-  :config
+(setq
+ tetris-width 16
+ tetris-height 32
+ tetris-buffer-width 40
+ tetris-buffer-height 40)
+
+(with-eval-after-load 'tetris
   (setq
    tetris-blank-options
    '(((glyph
@@ -114,9 +106,7 @@
    ("RET" . tetris-move-bottom)
    ("SPC" . tetris-pause-game)))
 
-(use-package snake
-  :defer t
-  :config
+(with-eval-after-load 'snake
   (al/bind-keys
    :map snake-mode-map
    ("o"   . snake-move-left)
@@ -125,10 +115,8 @@
    ("e"   . snake-move-down)
    ("SPC" . snake-pause-game)))
 
-(use-package mana
-  :defer t
-  :init (al/add-my-package-to-load-path-maybe "mana")
-  :config
+(al/add-my-package-to-load-path-maybe "mana")
+(with-eval-after-load 'mana
   (setq mana-character (rot13 "wbuanguna")))
 
 ;;; games.el ends here
