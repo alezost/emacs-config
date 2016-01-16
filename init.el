@@ -256,6 +256,7 @@ Also it (default syntax) breaks `indent-guide-mode'."
 (al/guix-set-load-path (al/devel-dir-file "guix/emacs"))
 (al/guix-set-load-path (al/src-dir-file "guix/emacs"))
 
+(setq guix-package-enable-at-startup nil)
 (when (require 'guix-emacs nil t)
   (guix-emacs-load-autoloads (al/guix-profile "emacs")))
 
