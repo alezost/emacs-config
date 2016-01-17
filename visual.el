@@ -372,7 +372,7 @@
 (setq hl-todo-keyword-faces
       (mapcar (lambda (word)
                 (cons word 'hl-todo))
-              '("TODO" "FIXME" "XXX" "WARNING"))
+              '("TODO" "FIXME" "XXX" "WARNING" "ERROR"))
       hl-todo-keywords
       `(((lambda (_)
            (let (case-fold-search)
