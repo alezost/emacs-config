@@ -322,21 +322,15 @@ If servers with all NAMES are running, do not start the server."
 (package-initialize)
 (setq package-enable-at-startup nil)
 
-(defvar al/fresh-init? (not (fboundp 'quelpa))
-  "Non-nil, if this is the first time my config is loaded by Emacs.")
-
 (defun al/emacs-repo (name)
   "Return git url of a repository with my package NAME."
   (concat "https://gitlab.com/alezost-emacs/" name ".git"))
 
-(defvar al/core-packages
+(defvar al/main-packages
   `((quelpa             :fetcher github :repo "quelpa/quelpa")
     (mwim               :fetcher git :url ,(al/emacs-repo "mwim"))
-    (utils              :fetcher git :url ,(al/emacs-repo "utils")))
-  "Packages essential for my workflow.")
-
-(defvar al/main-packages
-  `((alect-themes       :fetcher git :url ,(al/emacs-repo "alect-themes"))
+    (utils              :fetcher git :url ,(al/emacs-repo "utils"))
+    (alect-themes       :fetcher git :url ,(al/emacs-repo "alect-themes"))
     (dvorak-layouts     :fetcher git :url ,(al/emacs-repo "dvorak-layouts"))
     (dim                :fetcher git :url ,(al/emacs-repo "dim"))
     (insert-pair        :fetcher git :url ,(al/emacs-repo "insert-pair"))
@@ -405,8 +399,7 @@ If servers with all NAMES are running, do not start the server."
 
 (defun al/all-packages ()
   "Return all package recipes I use."
-  (append al/core-packages
-          al/main-packages
+  (append al/main-packages
           al/extra-packages))
 
 (defun al/package-name (name-or-recipe)
@@ -442,11 +435,15 @@ With \\[universal-argument], update all packages except `al/extra-packages'.
 With \\[universal-argument] \\[universal-argument], update all packages."
   (interactive
    (cond ((equal current-prefix-arg '(4))
-          (append al/core-packages
-                  al/main-packages))
+          al/main-packages)
          ((equal current-prefix-arg '(16))
           (al/all-packages))
          (t (list (al/package-recipe (al/read-package-name))))))
+  (unless (fboundp 'quelpa)
+    (with-temp-buffer
+      (url-insert-file-contents
+       "https://raw.github.com/quelpa/quelpa/master/bootstrap.el")
+      (eval-buffer)))
   (mapc #'quelpa recipes))
 
 (defun al/package-installed-p (fun package &rest args)
@@ -561,16 +558,7 @@ symbols)."
 (al/define-package-exists mwim mwim-beginning-of-code-or-line)
 
 
-;;; Loading the rest config and required packages
-
-;; If this is the first start of emacs, bootstrap quelpa and install
-;; core packages.
-(when al/fresh-init?
-  (with-temp-buffer
-    (url-insert-file-contents
-     "https://raw.github.com/quelpa/quelpa/master/bootstrap.el")
-    (eval-buffer))
-  (apply #'al/quelpa al/core-packages))
+;;; Loading the rest config
 
 (al/add-my-package-to-load-path-maybe "utils")
 
