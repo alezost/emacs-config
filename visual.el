@@ -106,8 +106,9 @@
           alect-overriding-faces)))
 
 (al/eval-after-init
-  (when (require 'utl-color nil t)
-    (utl-load-theme 'alect-light)))
+  (and (require 'alect-themes nil t)
+       (require 'utl-color nil t)
+       (utl-load-theme 'alect-light)))
 
 
 ;;; Mode line
