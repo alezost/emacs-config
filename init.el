@@ -299,6 +299,9 @@ If servers with all NAMES are running, do not start the server."
 
 ;;; External packages
 
+(defvar al/pure-config? (getenv "EMPURE")
+  "Non-nil, if external packages should not be loaded.")
+
 (setq load-prefer-newer t)
 
 (defun al/guix-set-load-path (dir)
@@ -309,18 +312,19 @@ If servers with all NAMES are running, do not start the server."
 (al/guix-set-load-path (al/devel-dir-file "guix/emacs"))
 (al/guix-set-load-path (al/src-dir-file "guix/emacs"))
 
-(setq guix-package-enable-at-startup nil)
-(when (require 'guix-emacs nil t)
-  (guix-emacs-load-autoloads (al/guix-profile "emacs")))
+(setq
+ package-enable-at-startup nil
+ guix-package-enable-at-startup nil)
+(unless al/pure-config?
+  (when (require 'guix-emacs nil t)
+    (guix-emacs-load-autoloads (al/guix-profile "emacs")))
+  (package-initialize))
 
 (setq
  quelpa-upgrade-p t
  ;; quelpa dirs are used in several places of my config.
  quelpa-dir (expand-file-name "quelpa" user-emacs-directory)
  quelpa-build-dir (expand-file-name "build" quelpa-dir))
-
-(package-initialize)
-(setq package-enable-at-startup nil)
 
 (defun al/emacs-repo (name)
   "Return git url of a repository with my package NAME."
