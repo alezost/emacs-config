@@ -118,6 +118,19 @@
     (((background dark))  :foreground "yellow"))
   "Face for `mode-name' displayed in the mode line.")
 
+;; To have a server name of the running server in the mode-line, I use
+;; an auxiliary variable `al/server-running?', because calling of
+;; `server-running-p' in the mode-line construct eats CPU.  Idea of
+;; right-aligning from
+;; <http://lists.gnu.org/archive/html/help-gnu-emacs/2013-12/msg00191.html>
+(defvar al/mode-server
+  '(al/server-running?
+    (:eval (list (propertize " " 'display
+                             `(space :align-to (- right ,(length server-name))))
+                 server-name)))
+  "Mode line construct for displaying `server-name' if server is running.")
+(put 'al/mode-server 'risky-local-variable t)
+
 (al/add-my-package-to-load-path-maybe "dim")
 (when (require 'dim nil t)
   (dim-major-names
@@ -227,7 +240,7 @@
    " %l,%c"
    (vc-mode vc-mode)
    " " mode-line-modes mode-line-misc-info
-   utl-mode-server
+   al/mode-server
    mode-line-end-spaces)
 
  mode-line-buffer-identification

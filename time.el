@@ -112,7 +112,7 @@
     (advice-add 'appt-display-message
       :override 'utl-appt-display-message)))
 (al/eval-after-init
-  (when (utl-server-running-p)
+  (when (string= server-name "server")
     (appt-activate)))
 
 (with-eval-after-load 'utl-appt

@@ -16,17 +16,6 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-;;; Server
-
-(with-eval-after-load 'server
-  (setq
-   server-kill-new-buffers nil
-   server-temp-file-regexp "^/tmp/Re\\|/draft$\\|COMMIT_EDITMSG\\|git-rebase-todo"))
-
-(when (require 'utl-server nil t)
-  (utl-server-named-start '("server-emms" "server")))
-
-
 ;;; External processes
 
 (with-eval-after-load 'utl-process
@@ -578,6 +567,13 @@
 (advice-add 'yes-or-no-p :override 'y-or-n-p)
 
 (al/bind-keys-from-vars 'special-mode-map 'al/lazy-moving-keys t)
+
+(with-eval-after-load 'server
+  (setq
+   server-kill-new-buffers nil
+   server-temp-file-regexp
+   (concat server-temp-file-regexp
+           "\\|COMMIT_EDITMSG\\|git-rebase-todo")))
 
 (with-eval-after-load 'tramp-sh
   (push 'tramp-own-remote-path tramp-remote-path)

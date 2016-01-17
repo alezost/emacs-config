@@ -262,6 +262,41 @@ Also it (default syntax) breaks `indent-guide-mode'."
                 'no-group))
 
 
+;;; Server
+
+(defvar al/server-running? nil
+  "The state of the current server.
+This variable is set by `al/server-start'.")
+
+(defun al/server-start (&optional leave-dead inhibit-prompt)
+  "Same as `server-start' but also set `al/server-running?'."
+  (interactive "P")
+  (server-start leave-dead inhibit-prompt)
+  (setq al/server-running? (not leave-dead)))
+
+(defun al/server-stop ()
+  "Stop the current server."
+  (interactive)
+  (al/server-start t))
+
+(defun al/server-named-start (&rest names)
+  "Start server using the first `server-name' from NAMES.
+If there is such server running, try the second name and so on.
+If servers with all NAMES are running, do not start the server."
+  (let ((name (car names))
+        (rest (cdr names)))
+    (if (null name)
+        (setq server-name "server-unused")
+      (setq server-name name)
+      (if (server-running-p)
+          (apply #'al/server-named-start rest)
+        (al/server-start)))))
+
+(with-demoted-errors "ERROR during server start: %S"
+  (require 'server)
+  (al/server-named-start "server-emms" "server"))
+
+
 ;;; External packages
 
 (setq load-prefer-newer t)

@@ -105,7 +105,7 @@
   (org-add-link-type "pdfview" 'org-pdfview-open 'org-pdfview-export))
 
 (al/eval-after-init
-  (when (utl-server-running-p)
+  (when (string= server-name "server")
     (require 'org-protocol nil t)))
 
 (with-eval-after-load 'org-src
