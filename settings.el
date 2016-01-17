@@ -115,11 +115,13 @@
   (ido-everywhere))
 (al/add-after-init-hook 'ido-mode)
 
-(when (fboundp 'smex)
-  (setq smex-save-file (al/emacs-data-dir-file "smex-items"))
-  (al/bind-key "M-t" execute-extended-command ctl-x-map)
-  (al/bind-key "C-M-t" smex-major-mode-commands)
-  (al/bind-key* "M-t" smex))
+(al/bind-key "M-t" execute-extended-command ctl-x-map)
+(if (fboundp 'smex)
+    (progn
+      (setq smex-save-file (al/emacs-data-dir-file "smex-items"))
+      (al/bind-key "C-M-t" smex-major-mode-commands)
+      (al/bind-key* "M-t" smex))
+  (al/bind-key* "M-t" execute-extended-command))
 
 (with-eval-after-load 'smex
   (setq
