@@ -56,12 +56,8 @@
  ("B"   . guix-build-log-mode)
  ("P"   . guix-prettify-mode)
  ("z"   . guix-switch-to-repl)
- ("C-n" . guix-search-by-name)
- ("n"   . (lambda (regexp)
-            (interactive
-             (list (read-string "Package name by regexp: "
-                                nil 'guix-package-search-history)))
-            (guix-search-by-regexp regexp '(name))))
+ ("C-n" . guix-packages-by-name)
+ ("n"   . guix-search-by-name)
  ("r"   . guix-search-by-regexp)
  ("A"   . guix-all-available-packages)
  ("N"   . guix-newest-available-packages)
