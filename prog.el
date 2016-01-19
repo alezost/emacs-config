@@ -57,7 +57,9 @@
   (al/add-hook-maybe
       '(emacs-lisp-mode-hook
         lisp-interaction-mode-hook)
-    '(utl-imenu-add-use-package utl-imenu-add-sections))
+    '(utl-imenu-add-sections
+      utl-imenu-add-use-package
+      utl-imenu-add-eval-after-load))
 
   (if (version< emacs-version "25")
       (progn
