@@ -1,6 +1,6 @@
 ** About
 
-Ask =fsbot= on [[http://www.freenode.net/][freenode]] about hell, and he will answer you that =hell is
+Ask =fsbot= on [[http://www.freenode.net/][freenode]] about hell, and it will answer you that =hell is
 other people's .emacs=.  This repo is my own hell and I like it very
 much.
 
@@ -17,28 +17,41 @@ Anyway here is what makes this hell so warm and comfortable for me.
 
 - Unusable key bindings: I use hundreds and hundreds of non-standard key
   bindings that are suitable for me.  Besides I use dvorak layout, so my
-  bindings may look really weird for other people.  I use [[https://github.com/jwiegley/use-package/blob/master/bind-key.el][bind-key]]
-  package and some my code (from [[https://github.com/alezost/emacs-config/blob/master/keys.el][keys.el]]) to manage those tons of keys.
-
-- I use [[https://github.com/quelpa/quelpa][quelpa]] to install/upgrade Emacs packages.  For the initial start
-  of Emacs with my config (if no packages are installed), quelpa is
-  bootstrapped and installs everything, so I can easily deploy my config
-  on a fresh system: I just clone the repo and make [[~/.emacs.d/init.el]]
-  file a symlink to my [[https://github.com/alezost/emacs-config/blob/master/init.el][init.el]].
-
-- I use [[https://github.com/jwiegley/use-package/][use-package]] hardly (currently I have over 150 of "use-package"
-  clauses in my config), even for the built-in Emacs packages that
-  are being loaded anyway (isn't it strange?)
+  bindings may look really weird for other people.  I use my code (from
+  [[https://github.com/alezost/emacs-config/blob/master/keys.el][keys.el]]) based on [[https://github.com/jwiegley/use-package/blob/master/bind-key.el][bind-key]] to manage those tons of keys.
 
 - I prefer to split my config into several files than to keep everything
   in a single one.  And it is really easy to search them using [[https://github.com/alezost/imenus.el][imenus]].
   I just press =s-s= (which is bound to =utl-imenus-search-elisp-dir=
-  from [[https://github.com/alezost/emacs-utils/blob/master/utl-imenus.el][utl-imenus.el]]) and jump to a "use-package" clause or perform
-  =isearch= or =occur= if I need to search for something.
+  from [[https://github.com/alezost/emacs-utils/blob/master/utl-imenus.el][utl-imenus.el]]) and jump to =with-eval-after-load= clause or
+  perform =isearch= or =occur= if I need to search for something.
 
-- Although "use-package" (+ "bind-key") is the only package that is
-  required for my emacs config to be loaded successfully, there is
-  another repo that may be counted as the second part of my config –
-  [[https://github.com/alezost/emacs-utils/][emacs-utils]].  It has a form of many small packages that are loaded
-  only when they are needed (for example when I press some key that is
-  bound to an autoloaded function from some "utl-…" package).
+- Currently I use [[https://github.com/quelpa/quelpa][quelpa]] to install/upgrade Emacs packages.  I just run
+  =al/quelpa= command (with prefix if needed) to install or upgrade some
+  package (or all packages).  However I'm going to switch to [[http://www.gnu.org/software/guix/][GNU Guix]]
+  for managing the Emacs packages I use (this is a work in progress:
+  some of the packages are already handled by Guix, but most are still
+  installed using Emacs package system and quelpa).
+
+- My emacs config is intended to be robust.  I mean it does not require
+  any third-party packages to be started successfully.  So I can easily
+  deploy my config on a fresh system: I just clone the repo and make
+  [[~/.emacs.d/init.el]] file a symlink to my [[https://github.com/alezost/emacs-config/blob/master/init.el][init.el]].  Actually this
+  process is even more simple, as I don't do this manually – I use my
+  [[https://gitlab.com/alezost-config/config][config]] script to fetch and deploy all my configs including Emacs
+  config.
+
+- And I don't use [[https://github.com/jwiegley/use-package/][use-package]] anymore (see commit 2e49f03).  I used to
+  do it until I realized the importance of the previous point.  When you
+  use =use-package= in your config, it becomes a required dependency for
+  starting Emacs, so on a "fresh" system, you need to install it at
+  first, before you can use your config.  Also someday it may be changed
+  in a way that will break your system, and you'll have to fix your
+  config without using it.
+
+- Although there are no packages that are required for my emacs config
+  to be loaded successfully, there is another repo that may be counted
+  as the second part of my config – [[https://github.com/alezost/emacs-utils/][emacs-utils]].  It has a form of many
+  small packages that are loaded only when they are needed (for example
+  when I press some key that is bound to an autoloaded function from
+  some "utl-…" package).
