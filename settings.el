@@ -240,6 +240,10 @@
  ("x"   . guix-switch-to-repl))
 
 (with-eval-after-load 'comint
+  (setq comint-password-prompt-regexp
+        (rx-to-string `(or (and bol "Password")
+                           (regex ,comint-password-prompt-regexp))))
+
   (defconst al/comint-keys
     '(("M-." . comint-previous-input)
       ("M-e" . comint-next-input)
