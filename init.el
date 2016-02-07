@@ -317,7 +317,7 @@ If servers with all NAMES are running, do not start the server."
  guix-package-enable-at-startup nil)
 (unless al/pure-config?
   (when (require 'guix-emacs nil t)
-    (guix-emacs-load-autoloads (al/guix-profile "emacs")))
+    (guix-emacs-autoload-packages (al/guix-profile "emacs")))
   (package-initialize))
 
 (setq
