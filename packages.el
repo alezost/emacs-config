@@ -154,6 +154,7 @@
 (al/add-after-init-hook 'global-guix-prettify-mode)
 
 (with-eval-after-load 'guix-build-log
+  (setq guix-build-log-minor-mode-activate nil)
   (defconst al/guix-build-log-common-keys
     '(("M-." . guix-build-log-previous-phase)
       ("M-e" . guix-build-log-next-phase))
