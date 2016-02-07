@@ -301,7 +301,8 @@
 
 (with-eval-after-load 'gnus-draft
   (defconst al/gnus-draft-keys
-    '(("M-d" . gnus-draft-edit-message))
+    '(("M-d" . gnus-draft-edit-message)
+      "e")
     "Alist of auxiliary keys for `gnus-draft-mode-map'.")
   (al/bind-keys-from-vars 'gnus-draft-mode-map 'al/gnus-draft-keys))
 
