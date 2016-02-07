@@ -40,8 +40,9 @@
  ("i"       (find-file (al/emacs-init-dir-file "init.el")))
  ("t"       (find-file (al/emacs-init-dir-file "text.el")))
  ("v"       (find-file (al/emacs-init-dir-file "visual.el")))
- ("c"       (utl-ido-find-file (al/emacs-dir-file "alect-themes")))
- ("C-M-c"   (find-file (al/emacs-dir-file "alect-themes/alect-themes.el"))))
+ ("c"       (utl-ido-find-file (al/emacs-my-packages-dir-file "alect-themes")))
+ ("C-M-c"   (find-file (al/emacs-my-packages-dir-file
+                        "alect-themes/alect-themes.el"))))
 
 (al/bind-keys
  :prefix-map al/bookmark-map

@@ -45,7 +45,7 @@
    ducpel-levels-directory
    (expand-file-name "ducpel/levels" quelpa-build-dir)
    ducpel-replay-pause 0.3)
-  (let ((ducpel-dir (al/emacs-dir-file "ducpel")))
+  (let ((ducpel-dir (al/emacs-my-packages-dir-file "ducpel")))
     (setq
      ducpel-user-levels-directory
      (file-name-as-directory (expand-file-name "levels" ducpel-dir))

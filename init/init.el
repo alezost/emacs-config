@@ -34,6 +34,8 @@
                      (file-truename load-file-name)))
 (al/file-accessors "emacs"         (al/emacs-init-dir-file "../"))
 (al/file-accessors "emacs-data"    (al/emacs-dir-file "data"))
+(al/file-accessors "emacs-utils"   (al/emacs-dir-file "utils"))
+(al/file-accessors "emacs-my-packages" (al/emacs-dir-file "packages"))
 (al/file-accessors "gnus"          (al/emacs-data-dir-file "gnus"))
 (al/file-accessors "gnus-news"     (al/gnus-dir-file "news"))
 (al/file-accessors "gnus-mail"     (al/gnus-dir-file "mail"))
@@ -162,7 +164,7 @@ If VAL is a list, call FUNCTION on each element of the list."
 
 (defun al/add-my-package-to-load-path-maybe (name)
   "Add directory with my package NAME (if it exists) to `load-path'."
-  (al/add-to-load-path-maybe (al/emacs-dir-file name)))
+  (al/add-to-load-path-maybe (al/emacs-my-packages-dir-file name)))
 
 (defun al/load (file)
   "Load FILE.
@@ -564,7 +566,7 @@ symbols)."
 
 ;;; Loading the rest config
 
-(al/add-my-package-to-load-path-maybe "utils")
+(al/add-to-load-path-maybe al/emacs-utils-dir)
 
 (mapc #'al/init-load
       '("keys"
