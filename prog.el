@@ -304,6 +304,7 @@
 ;;; Version control
 
 (setq vc-handled-backends nil)
+(setq magit-auto-revert-mode nil)
 
 (al/bind-keys
  :prefix-map al/magit-map
@@ -353,9 +354,10 @@
    magit-stashes-buffer-name-format  "*magit-stashes: %a*")
   (setq
    magit-merge-arguments '("--ff-only")
-   magit-revert-buffers nil
    magit-push-always-verify t
-   magit-branch-read-upstream-first nil))
+   magit-branch-read-upstream-first nil)
+  (magit-change-popup-key 'magit-branch-popup :action ?m ?R) ; rename
+  )
 
 (with-eval-after-load 'magit-mode
   (setq magit-save-repository-buffers nil)
@@ -443,6 +445,7 @@
 
 (with-eval-after-load 'magit-sequence
   (magit-change-popup-key 'magit-cherry-pick-popup :action ?A ?C) ; pick
+  (magit-change-popup-key 'magit-rebase-popup :action ?u ?r) ; upstream
   )
 
 (with-eval-after-load 'magit-bisect
@@ -450,6 +453,13 @@
   (magit-change-popup-key 'magit-bisect-popup :action ?s ?!) ; run script
   (magit-change-popup-key 'magit-bisect-popup
                           :sequence-action ?s ?!) ; run script
+  )
+
+(with-eval-after-load 'magit-remote
+  (magit-change-popup-key 'magit-remote-popup :action ?r ?R) ; rename
+  (magit-change-popup-key 'magit-push-popup :action ?p ?P) ; pushRemote
+  (magit-change-popup-key 'magit-pull-popup :action ?u ?F) ; upstream
+  (magit-change-popup-key 'magit-fetch-popup :action ?u ?f) ; upstream
   )
 
 (with-eval-after-load 'magit-blame
