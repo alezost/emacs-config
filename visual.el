@@ -100,7 +100,7 @@
    '((hl-line ((((type graphic)) :background bg)
                (t :background unspecified)))
      (sauron-header-face ((t :foreground unspecified)))))
-  (unless (al/emacs-trunk-p)
+  (when (al/emacs-trunk-p)
     (push '(fringe ((((class color) (min-colors 256))
                      :foreground gray :background bg+2)))
           alect-overriding-faces)))
