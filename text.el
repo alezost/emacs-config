@@ -665,7 +665,8 @@ $0")
     "List of modes where `al/parens-mode' should not be enabled.")
 
   (defun al/turn-on-parens-mode ()
-    (when (not (apply #'derived-mode-p al/parens-ignore-modes))
+    (unless (or (apply #'derived-mode-p al/parens-ignore-modes)
+                (boundp 'ido-completing-read)) ; inside ido
       (al/parens-mode)))
 
   (define-globalized-minor-mode al/global-parens-mode
