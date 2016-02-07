@@ -416,6 +416,7 @@
  ("d"   . utl-erc-quit-server)
  ("j"   . utl-erc-join-channel)
  ("a"   . utl-erc-away)
+ ("u"   . utl-erc-number-of-users)
  ("m"   . erc-track-mode)
  ("n"   . erc-notifications-mode)
  ("p"     (erc-part-from-channel ""))
