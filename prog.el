@@ -453,6 +453,7 @@
   )
 
 (with-eval-after-load 'magit-blame
+  (setq magit-blame-time-format "%F")
   (defconst al/magit-blame-keys
     '(("M-." . magit-blame-previous-chunk)
       ("M-e" . magit-blame-next-chunk)
