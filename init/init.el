@@ -264,6 +264,26 @@ Also it (default syntax) breaks `indent-guide-mode'."
                 'no-group))
 
 
+;;; Autoloading utils
+
+(defvar al/autoloads-file
+  (al/emacs-utils-dir-file "al-autoloads.el"))
+
+(defun al/update-autoloads ()
+  "Update the contents of `al/autoloads-file'."
+  (interactive)
+  (require 'autoload)
+  (let ((generated-autoload-file al/autoloads-file))
+    (update-directory-autoloads al/emacs-utils-dir)))
+
+(unless (file-exists-p al/autoloads-file)
+  (with-demoted-errors "ERROR during generating autoloads: %S"
+    (al/update-autoloads)))
+
+(al/add-to-load-path-maybe al/emacs-utils-dir)
+(al/load al/autoloads-file)
+
+
 ;;; Server
 
 (defvar al/server-running? nil
@@ -565,8 +585,6 @@ symbols)."
 
 
 ;;; Loading the rest config
-
-(al/add-to-load-path-maybe al/emacs-utils-dir)
 
 (mapc #'al/init-load
       '("keys"

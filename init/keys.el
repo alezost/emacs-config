@@ -282,6 +282,7 @@ VARS are variables with bindings supported by
 
 (al/bind-keys
  :map ctl-x-map
+ ("A"   . al/update-autoloads)
  ("C"   . save-buffers-kill-emacs)
  ("C-8" . insert-char))
 
