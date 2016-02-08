@@ -1,2 +1,4 @@
 *.elc
-custom.el
+tmp
+/init/custom.el
+/packages
