@@ -22,10 +22,10 @@
 
 (put 'advice-add 'lisp-indent-function 1)
 
-(al/bind-key* "M-v" utl-pp-eval-expression)
+(al/bind-key* "M-v" al/pp-eval-expression)
 (al/bind-keys
- ("C-v"   . utl-eval-dwim)
- ("C-s-v" . utl-pp-eval-dwim)
+ ("C-v"   . al/eval-dwim)
+ ("C-s-v" . al/pp-eval-dwim)
  ("C-S-v" . pp-macroexpand-last-sexp)
  ("C-M-v" . eval-defun)
  ("M-s-v" . eval-buffer)
@@ -43,7 +43,7 @@
 (with-eval-after-load 'lisp-mode
   ;; (setq lisp-indent-function 'common-lisp-indent-function)
   (defconst al/lisp-shared-keys
-    '(("<C-M-tab>" . utl-indent-sexp))
+    '(("<C-M-tab>" . al/indent-sexp))
     "Alist of auxiliary keys for `lisp-mode-shared-map'.")
   (al/bind-keys-from-vars 'lisp-mode-shared-map 'al/lisp-shared-keys)
   (al/bind-keys-from-vars
@@ -53,13 +53,13 @@
 
   ;; XXX In 25.1 `emacs-lisp-mode-hook',
   ;; `emacs-lisp-mode-syntax-table', … are placed in elisp-mode.el
-  (al/add-hook-maybe 'lisp-mode-hook 'utl-imenu-add-sections)
+  (al/add-hook-maybe 'lisp-mode-hook 'al/imenu-add-sections)
   (al/add-hook-maybe
       '(emacs-lisp-mode-hook
         lisp-interaction-mode-hook)
-    '(utl-imenu-add-sections
-      utl-imenu-add-use-package
-      utl-imenu-add-eval-after-load))
+    '(al/imenu-add-sections
+      al/imenu-add-use-package
+      al/imenu-add-eval-after-load))
 
   (if (version< emacs-version "25")
       (progn
@@ -82,7 +82,7 @@
 
 (with-eval-after-load 'eldoc
   (when (version< emacs-version "25")
-    (setq eldoc-argument-case 'utl-eldoc-argument-list))
+    (setq eldoc-argument-case 'al/eldoc-argument-list))
   (setq eldoc-idle-delay 0.3))
 
 (with-eval-after-load 'edebug
@@ -121,7 +121,7 @@
 
 ;; `al/slime-keys' is required for `al/erc-channel-config'
 (defconst al/slime-keys
-  '(("C-v"     . utl-slime-eval-dwim)
+  '(("C-v"     . al/slime-eval-dwim)
     ("C-M-v"   . slime-eval-defun)
     ("M-s-v"   . slime-eval-buffer)
     ("<M-tab>" . slime-complete-symbol)
@@ -156,7 +156,7 @@
 (with-eval-after-load 'slime-repl
   (al/bind-keys
    :map slime-repl-mode-map
-   ("C-k" . utl-slime-repl-kill-whole-line)
+   ("C-k" . al/slime-repl-kill-whole-line)
    ("M-." . slime-repl-previous-input)
    ("M-e" . slime-repl-next-input)
    ("M->" . slime-repl-previous-prompt)
@@ -177,15 +177,15 @@
   (put 'plist-new 'scheme-indent-function 1)
   (al/modify-page-break-syntax scheme-mode-syntax-table)
   (al/add-hook-maybe 'scheme-mode-hook
-    '(utl-imenu-add-sections guix-devel-mode))
+    '(al/imenu-add-sections guix-devel-mode))
   (when (require 'al-scheme nil t)
     (setq scheme-imenu-generic-expression
-          utl-scheme-imenu-generic-expression)
+          al/scheme-imenu-generic-expression)
     (advice-add 'scheme-indent-function
-      :override 'utl-scheme-indent-function)))
+      :override 'al/scheme-indent-function)))
 
 (defconst al/geiser-keys
-  '(("C-v"   . utl-geiser-eval-dwim)
+  '(("C-v"   . al/geiser-eval-dwim)
     ("C-S-v" . geiser-expand-last-sexp)
     ("C-M-v" . geiser-eval-definition)
     ("M-s-v" . geiser-eval-buffer)
@@ -216,8 +216,8 @@
    geiser-repl-history-filename (al/emacs-data-dir-file "geiser-history"))
 
   (defconst al/geiser-repl-keys
-    '(("<return>" . utl-geiser-repl-enter-dwim)
-      ("C-k"      . utl-geiser-repl-kill-whole-line)
+    '(("<return>" . al/geiser-repl-enter-dwim)
+      ("C-k"      . al/geiser-repl-kill-whole-line)
       ("C-a"      . geiser-repl--bol)
       ("C-c C-d"  . geiser-repl-exit)
       "C-c k")
@@ -232,7 +232,7 @@
 
   (when (require 'al-geiser nil t)
     (setq geiser-repl-buffer-name-function
-          #'utl-geiser-repl-buffer-name)))
+          #'al/geiser-repl-buffer-name)))
 
 (with-eval-after-load 'geiser-impl
   (setq-default geiser-scheme-implementation 'guile)
@@ -245,7 +245,7 @@
   (defconst al/geiser-doc-keys
     '((","   . geiser-doc-previous)
       ("p"   . geiser-doc-next)
-      ("C-d" . utl-geiser-doc-doc-symbol-at-point)
+      ("C-d" . al/geiser-doc-doc-symbol-at-point)
       ("M-d" . geiser-doc-edit-symbol-at-point))
     "Alist of auxiliary keys for `geiser-doc-mode'.")
   (al/bind-keys-from-vars 'geiser-doc-mode-map
@@ -293,12 +293,12 @@
 
   (when (require 'al-compilation nil t)
     (al/add-hook-maybe 'compilation-finish-functions
-      'utl-compilation-notify)))
+      'al/compilation-notify)))
 
 (with-eval-after-load 'al-compilation
   (setq
-   utl-compilation-sound-success (al/sound-dir-file "bell.oga")
-   utl-compilation-sound-error (al/sound-dir-file "splat.wav")))
+   al/compilation-sound-success (al/sound-dir-file "bell.oga")
+   al/compilation-sound-error (al/sound-dir-file "splat.wav")))
 
 
 ;;; Version control
@@ -310,7 +310,7 @@
  :prefix-map al/magit-map
  :prefix-docstring "Map for magit and git stuff."
  :prefix "M-m"
- ("M-m" . utl-magit-ido-switch-buffer)
+ ("M-m" . al/magit-ido-switch-buffer)
  ("b" . magit-blame-popup)
  ("c" . magit-show-commit)
  ("s" . magit-status)
@@ -535,10 +535,10 @@
 
 (with-eval-after-load 'js
   (defun al/js-delimiter ()
-    (setq-local utl-delimiter
+    (setq-local al/delimiter
                 (concat (make-string 64 ?/) "\n///")))
   (al/add-hook-maybe 'js-mode-hook
-    '(utl-imenu-add-js-sections al/js-delimiter)))
+    '(al/imenu-add-js-sections al/js-delimiter)))
 
 (al/autoload "python" python-shell-switch-to-shell)
 (with-eval-after-load 'python

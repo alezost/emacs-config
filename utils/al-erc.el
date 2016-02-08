@@ -9,7 +9,7 @@
 (require 'erc-log)
 
 ;;;###autoload
-(defun utl-erc-number-of-users ()
+(defun al/erc-number-of-users ()
   "Show a number of users on the current channel."
   (interactive)
   (let ((channel (erc-default-target)))
@@ -19,44 +19,44 @@
                  (hash-table-count erc-channel-users))
       (user-error "The current buffer is not a channel"))))
 
-(defun utl-znc-running-p ()
+(defun al/znc-running-p ()
   "Return non-nil if 'znc' daemon is running."
   (string-match-p "\\`[[:digit:]]+ znc"
                   (shell-command-to-string "pgrep -l znc")))
 
-(defun utl-erc-server-buffer-name ()
+(defun al/erc-server-buffer-name ()
   "Return a name of buffer with default server."
   (concat (erc-compute-server) ":"
            (number-to-string (erc-compute-port))))
 
-(defun utl-erc-server-buffer (&optional noerror)
+(defun al/erc-server-buffer (&optional noerror)
   "Return the current ERC server buffer.
 If NOERROR is non-nil, return nil instead of raising an error if
 the server buffer does not exist."
   (or (erc-server-buffer)
-      (get-buffer (utl-erc-server-buffer-name))
+      (get-buffer (al/erc-server-buffer-name))
       (unless noerror
         (error "No active ERC server buffer"))))
 
-(defun utl-erc-server-buffer-rename ()
+(defun al/erc-server-buffer-rename ()
   "Rename current server buffer (make a general name)."
   ;; Sometimes we need to modify names like "irc.freenode.net:7000<2>".
   (interactive)
   (let ((old-name (buffer-name))
-        (new-name (utl-erc-server-buffer-name)))
+        (new-name (al/erc-server-buffer-name)))
     (when (string-match (concat (erc-compute-server) ":.*")
                         old-name)
       (rename-buffer new-name)
       (message "Current buffer was renamed from '%s' to '%s'."
                old-name new-name))))
 
-(defun utl-erc-switch-to-server-buffer ()
+(defun al/erc-switch-to-server-buffer ()
   "Switch to ERC buffer with server."
   (interactive)
-  (switch-to-buffer (utl-erc-server-buffer)))
+  (switch-to-buffer (al/erc-server-buffer)))
 
 ;;;###autoload
-(defun utl-erc-switch-buffer ()
+(defun al/erc-switch-buffer ()
   "Switch to ERC buffer, or start ERC if not already started."
   (interactive)
   (let ((bufs (mapcar #'buffer-name (erc-buffer-list))))
@@ -65,25 +65,25 @@ the server buffer does not exist."
       (erc))))
 
 ;;;###autoload
-(defun utl-erc-track-switch-buffer (arg)
+(defun al/erc-track-switch-buffer (arg)
   "Same as `erc-track-switch-buffer', but start ERC if not already started."
   (interactive "p")
-  (let ((buf (utl-erc-server-buffer t)))
+  (let ((buf (al/erc-server-buffer t)))
     (if buf
         (erc-track-switch-buffer arg)
       (erc))))
 
-(defun utl-erc-get-channel-buffer-list ()
+(defun al/erc-get-channel-buffer-list ()
   "Return a list of the ERC-channel-buffers."
   (erc-buffer-filter
    (lambda () (string-match "^#.*" (buffer-name (current-buffer))))))
 
 ;;;###autoload
-(defun utl-erc-cycle ()
+(defun al/erc-cycle ()
   "Switch to ERC channel buffer, or run `erc-select'.
 When called repeatedly, cycle through the buffers."
   (interactive)
-  (let ((buffers (utl-erc-get-channel-buffer-list)))
+  (let ((buffers (al/erc-get-channel-buffer-list)))
     (if buffers
         (progn (when (eq (current-buffer) (car buffers))
                  (bury-buffer)
@@ -92,12 +92,12 @@ When called repeatedly, cycle through the buffers."
                     (switch-to-buffer (car buffers))))
       (call-interactively 'erc-select))))
 
-(defvar utl-erc-channel-list '("#emacs" "#erc" "#gnus")
-  "A list of channels used in `utl-erc-join-channel'.")
+(defvar al/erc-channel-list '("#emacs" "#erc" "#gnus")
+  "A list of channels used in `al/erc-join-channel'.")
 
-(defun utl-erc-join-channel (channel &optional key)
+(defun al/erc-join-channel (channel &optional key)
   "Join CHANNEL.
-Similar to `erc-join-channel', but use `utl-erc-channel-list'."
+Similar to `erc-join-channel', but use `al/erc-channel-list'."
   (interactive
    (list
     (let* ((cur-sexp (thing-at-point 'sexp))
@@ -105,20 +105,20 @@ Similar to `erc-join-channel', but use `utl-erc-channel-list'."
                          (eq 0 (string-match-p "#" cur-sexp)))
                     cur-sexp
                   "#")))
-      (completing-read "Join channel: " utl-erc-channel-list nil nil chn))
+      (completing-read "Join channel: " al/erc-channel-list nil nil chn))
     (when (or current-prefix-arg erc-prompt-for-channel-key)
       (read-from-minibuffer "Channel key (RET for none): " nil))))
-  (with-current-buffer (utl-erc-server-buffer)
+  (with-current-buffer (al/erc-server-buffer)
     (erc-cmd-JOIN channel (when (>= (length key) 1) key))))
 
-(defun utl-erc-quit-server (reason)
+(defun al/erc-quit-server (reason)
   "Disconnect from current server.
 Similar to `erc-quit-server', but without prompting for REASON."
   (interactive (list ""))
-  (with-current-buffer (utl-erc-server-buffer)
+  (with-current-buffer (al/erc-server-buffer)
     (erc-cmd-QUIT reason)))
 
-(defun utl-erc-ghost-maybe (server nick)
+(defun al/erc-ghost-maybe (server nick)
   "Send GHOST message to NickServ if NICK ends with `erc-nick-uniquifier'.
 The function is suitable for `erc-after-connect'."
   (when (string-match (format "\\(.*?\\)%s+$" erc-nick-uniquifier) nick)
@@ -130,7 +130,7 @@ The function is suitable for `erc-after-connect'."
       (erc-message "PRIVMSG" (format "NickServ IDENTIFY %s %s"
                                      nick-orig password)))))
 
-(defun utl-erc-insert-timestamp (string)
+(defun al/erc-insert-timestamp (string)
   "Insert timestamps in the beginning of the line.
 
 This function is suitable for `erc-insert-timestamp-function'.
@@ -155,37 +155,37 @@ changed)."
 
 ;;; Away
 
-(defvar utl-erc-away-msg-list '("just away" "learning emacs" "sleeping")
-  "A list of away messages for `utl-erc-away'.")
+(defvar al/erc-away-msg-list '("just away" "learning emacs" "sleeping")
+  "A list of away messages for `al/erc-away'.")
 
-(defun utl-erc-away (&optional reason)
+(defun al/erc-away (&optional reason)
   "Mark the user as being away.
 Interactively prompt for reason; with prefix mark as unaway.
-Reasons are taken from `utl-erc-away-msg-list'."
+Reasons are taken from `al/erc-away-msg-list'."
   (interactive
    (list (if current-prefix-arg
              ""
            (completing-read "Reason for AWAY: "
-                            utl-erc-away-msg-list))))
-  (with-current-buffer (utl-erc-server-buffer)
+                            al/erc-away-msg-list))))
+  (with-current-buffer (al/erc-server-buffer)
     (erc-cmd-AWAY (or reason ""))))
 
-(defun utl-erc-away-time ()
+(defun al/erc-away-time ()
   "Return non-nil if the current ERC process is set away.
 Similar to `erc-away-time', but no need to be in ERC buffer."
-  (with-current-buffer (utl-erc-server-buffer)
+  (with-current-buffer (al/erc-server-buffer)
     (erc-away-time)))
 
 
 ;;; CTCP info
 
-(defun utl-erc-ctcp-query-FINGER (proc nick login host to msg)
+(defun al/erc-ctcp-query-FINGER (proc nick login host to msg)
   "Respond to a CTCP FINGER query."
   (unless erc-disable-ctcp-replies
     (erc-send-ctcp-notice nick "FINGER Keep your FINGER out of me."))
   nil)
 
-(defun utl-erc-ctcp-query-ECHO (proc nick login host to msg)
+(defun al/erc-ctcp-query-ECHO (proc nick login host to msg)
   "Respond to a CTCP ECHO query."
   (when (string-match "^ECHO\\s-+\\(.*\\)\\s-*$" msg)
     (let ((str (apply #'string
@@ -194,11 +194,11 @@ Similar to `erc-away-time', but no need to be in ERC buffer."
 	(erc-send-ctcp-notice nick (format "ECHO Did you mean '%s'?" str)))))
   nil)
 
-(defun utl-erc-ctcp-query-TIME (proc nick login host to msg)
+(defun al/erc-ctcp-query-TIME (proc nick login host to msg)
   "Respond to a CTCP TIME query."
   (unless erc-disable-ctcp-replies
     (let* ((hour (nth 2 (decode-time (current-time))))
-           (str (cond ((utl-erc-away-time) "time to be away")
+           (str (cond ((al/erc-away-time) "time to be away")
                       ((>= hour 18) "almost night")
                       ((>= hour 12) (format-time-string "%A"))
                       ((>= hour 6)  "always morning")
@@ -206,7 +206,7 @@ Similar to `erc-away-time', but no need to be in ERC buffer."
       (erc-send-ctcp-notice nick (format "TIME %s." str))))
   nil)
 
-(defun utl-erc-ctcp-query-VERSION (proc nick login host to msg)
+(defun al/erc-ctcp-query-VERSION (proc nick login host to msg)
   "Respond to a CTCP VERSION query."
   (unless erc-disable-ctcp-replies
     (erc-send-ctcp-notice
@@ -217,12 +217,12 @@ Similar to `erc-away-time', but no need to be in ERC buffer."
 
 ;;; Log
 
-(defun utl-erc-view-log-file ()
+(defun al/erc-view-log-file ()
   "Visit a log file for the current ERC buffer."
   (interactive)
   (view-file (erc-current-logfile)))
 
-(defun utl-erc-log-file-name-network-channel (buffer target nick server port)
+(defun al/erc-log-file-name-network-channel (buffer target nick server port)
   "Return erc log-file name of network (or server) and channel names.
 The result file name is in the form \"network_channel.txt\".
 This function is suitable for `erc-generate-log-file-name-function'."
@@ -237,23 +237,23 @@ This function is suitable for `erc-generate-log-file-name-function'."
 ;; If you want to exclude a particular channel "#foochannel" and
 ;; channels that have "beard" in their names, use the following:
 ;;
-;; (setq utl-erc-log-excluded-regexps '("\\`#foochannel" "beard"))
-;; (setq erc-enable-logging 'utl-erc-log-all-but-some-buffers)
+;; (setq al/erc-log-excluded-regexps '("\\`#foochannel" "beard"))
+;; (setq erc-enable-logging 'al/erc-log-all-but-some-buffers)
 ;;
 ;; Note: channel buffers may have names like "#foobar<2>", so too strict
 ;; regexps like "\\`#foochannel\\'" may be not good.
 
-(defvar utl-erc-log-excluded-regexps nil
+(defvar al/erc-log-excluded-regexps nil
   "List of regexps for erc buffer names that will not be logged.")
 
-(defun utl-erc-log-all-but-some-buffers (buffer)
+(defun al/erc-log-all-but-some-buffers (buffer)
   "Return t if logging should be enabled for BUFFER.
-Use `utl-erc-log-excluded-regexps' to check if BUFFER should be
+Use `al/erc-log-excluded-regexps' to check if BUFFER should be
 logged or not.
 The function is intended to be used for `erc-enable-logging'."
   (cl-notany (lambda (re)
                (string-match-p re (buffer-name buffer)))
-             utl-erc-log-excluded-regexps))
+             al/erc-log-excluded-regexps))
 
 (provide 'al-erc)
 

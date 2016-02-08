@@ -8,7 +8,7 @@
 (require 'sunrise-commander)
 
 ;;;###autoload
-(defun utl-sr-toggle ()
+(defun al/sr-toggle ()
   "Toggle Sunrise Commander.
 If sr is active - show dired with current directory.
 If dired is active - show sr with current directory."

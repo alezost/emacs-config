@@ -56,7 +56,7 @@
    org-ellipsis " […]"
    org-file-apps
    '(("\\.mm\\'" . default)
-     ("\\.x?html?\\'" utl-choose-browser file)
+     ("\\.x?html?\\'" al/choose-browser file)
      ("\\.png\\'" . "sxiv %s")
      ("\\.pdf\\'" . "zathura %s")
      ("\\.djvu\\'" . "zathura %s")
@@ -88,9 +88,9 @@
       ("C-M-H-u" . org-forward-element)
       ("C-M-H-." . org-up-element)
       ("C-M-H-e" . org-down-element)
-      ("<C-kp-enter>" . utl-org-table-next-column)
-      ("<M-kp-enter>" . utl-org-table-kill-rows-recalculate)
-      ("<C-M-kp-enter>" . utl-org-table-next-table)
+      ("<C-kp-enter>" . al/org-table-next-column)
+      ("<M-kp-enter>" . al/org-table-kill-rows-recalculate)
+      ("<C-M-kp-enter>" . al/org-table-next-table)
       ("C-c e" . org-export-dispatch)
       ("C-c M-x" . org-copy-special)
       ("C-c C-t" . org-cut-special)
@@ -100,7 +100,7 @@
     '(al/org-keys al/text-editing-keys))
 
   (when (require 'al-ido nil t)
-    (advice-add 'org-set-tags :around #'utl-ido-disable))
+    (advice-add 'org-set-tags :around #'al/ido-disable))
 
   (org-add-link-type "pdfview" 'org-pdfview-open 'org-pdfview-export))
 
@@ -123,9 +123,9 @@
    ("e" . org-agenda-next-line)))
 
 (with-eval-after-load 'al-org
-  (org-add-link-type "emms" 'utl-org-emms-open)
+  (org-add-link-type "emms" 'al/org-emms-open)
   (al/add-hook-maybe 'org-store-link-functions
-    'utl-org-emms-store-link))
+    'al/org-emms-store-link))
 
 (al/autoload "org-pdfview"
   org-pdfview-open

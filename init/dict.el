@@ -22,21 +22,21 @@
  :prefix-map al/translation-map
  :prefix-docstring "Map for dictionaries, translating and friends."
  :prefix "<XF86Spell>"
- ("<XF86Spell>" . utl-dictem-run-word)
+ ("<XF86Spell>" . al/dictem-run-word)
  ("s" . dictem-run-search)
  ("m" . dictem-run-match)
- ("i" . utl-dictem-run-show-all-info)
- ("d" . utl-dictem-run-dict-search)
+ ("i" . al/dictem-run-show-all-info)
+ ("d" . al/dictem-run-dict-search)
  ("q" . dictem-kill-all-buffers)
- ("e"   (utl-google-translate-using-languages "en" "ru"))
- ("r"   (utl-google-translate-using-languages "ru" "en"))
- ("f"   (utl-google-translate-using-languages "fr" "ru"))
+ ("e"   (al/google-translate-using-languages "en" "ru"))
+ ("r"   (al/google-translate-using-languages "ru" "en"))
+ ("f"   (al/google-translate-using-languages "fr" "ru"))
  ("l"   (let ((google-translate-translation-directions-alist
                '(("la" . "ru") ("ru" . "la")
                  ("la" . "en") ("en" . "la"))))
-          (utl-google-translate-smooth-translate)))
+          (al/google-translate-smooth-translate)))
  ("g"   (let ((google-translate-translation-directions-alist nil))
-          (utl-google-translate-smooth-translate))))
+          (al/google-translate-smooth-translate))))
 
 
 ;;; Misc settings and packages
@@ -58,9 +58,9 @@
 (with-eval-after-load 'dictem
   (when (require 'al-dictem nil t)
     (dictem-initialize)
-    (advice-add 'dictem :override 'utl-dictem)
+    (advice-add 'dictem :override 'al/dictem)
     (advice-add 'dictem-define-on-press
-      :override 'utl-dictem-define-on-press))
+      :override 'al/dictem-define-on-press))
   (setq dictem-use-existing-buffer nil)
   (al/bind-keys
    :map dictem-mode-map
@@ -82,7 +82,7 @@
             'dictem-postprocess-definition-hyperlinks))
 
 (with-eval-after-load 'al-dictem
-  (setq utl-dictem-dicts
+  (setq al/dictem-dicts
         '(nil "mueller7" "korolew_en-ru" "korolew_ru-en"
               "slovnyk_ru-en" "ushakov" "fd-eng-lat" "fd-lat-eng")))
 

@@ -8,7 +8,7 @@
 (require 'sauron)
 
 ;;;###autoload
-(defun utl-sauron-toggle-hide-show ()
+(defun al/sauron-toggle-hide-show ()
   "Toggle between showing/hiding the sauron window or frame.
 If sauron is shown, switch to its window."
   (interactive)
@@ -17,7 +17,7 @@ If sauron is shown, switch to its window."
     (and buf (select-window buf))))
 
 ;;;###autoload
-(defun utl-sauron-restart ()
+(defun al/sauron-restart ()
   "Restart sauron."
   (interactive)
   (sauron-stop)

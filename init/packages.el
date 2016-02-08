@@ -25,9 +25,9 @@
  ("H-q" . al/quelpa)
  ("q"     (let (quelpa-update-melpa-p)
             (call-interactively #'quelpa)))
- ("l"   . utl-switch-to-packages)
- ("a"   . utl-add-package-archive)
- ("r"   . utl-remove-package-archive))
+ ("l"   . al/switch-to-packages)
+ ("a"   . al/add-package-archive)
+ ("r"   . al/remove-package-archive))
 
 (with-eval-after-load 'package
   (setq package-archives nil)
@@ -73,7 +73,7 @@
                              guix-current-profile)))
  ("C-l"   (switch-to-buffer (guix-generation-list-buffer-name
                              guix-current-profile)))
- ("u"   . utl-guix-commit-url))
+ ("u"   . al/guix-commit-url))
 
 (with-eval-after-load 'guix-external
   (setq guix-guile-program "guile"))
@@ -180,8 +180,8 @@
  :prefix-map al/aurel-map
  :prefix-docstring "Map for aurel."
  :prefix "C-H-a"
- ("i"     . utl-switch-to-aurel-info)
- ("l"     . utl-switch-to-aurel-list)
+ ("i"     . al/switch-to-aurel-info)
+ ("l"     . al/switch-to-aurel-list)
  ("C-n"   . aurel-package-info)
  ("p"     . aurel-package-search)
  ("n"     . aurel-package-search)

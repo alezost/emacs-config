@@ -7,30 +7,30 @@
 
 (require 'cl-lib)
 
-(defvar utl-package-archives
+(defvar al/package-archives
   '(("gnu"          . "http://elpa.gnu.org/packages/")
     ("marmalade"    . "https://marmalade-repo.org/packages/")
     ("melpa"        . "http://melpa.org/packages/")
     ("melpa-stable" . "http://stable.melpa.org/packages/"))
-  "Alist of package archives used by `utl-add-package-archive'.
+  "Alist of package archives used by `al/add-package-archive'.
 This variable has the same form as `package-archives'.")
 
 (defvar package-archives)
 
 ;;;###autoload
-(defun utl-add-package-archive (name)
+(defun al/add-package-archive (name)
   "Add archive to the value of `package-archives'.
-NAME is an archive name from `utl-package-archives'."
+NAME is an archive name from `al/package-archives'."
   (interactive
    (list (completing-read "Add package archive: "
-                          (mapcar #'car utl-package-archives))))
-  (let ((archive (assoc name utl-package-archives)))
+                          (mapcar #'car al/package-archives))))
+  (let ((archive (assoc name al/package-archives)))
     (when archive
       (add-to-list 'package-archives archive)
       (pp-eval-expression 'package-archives))))
 
 ;;;###autoload
-(defun utl-remove-package-archive (&optional name)
+(defun al/remove-package-archive (&optional name)
   "Remove archive to the value of `package-archives'.
 NAME is an archive name from `package-archives'.
 If NAME is nil (interactively, with \\[universal-argument]), \

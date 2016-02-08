@@ -9,26 +9,26 @@
 
 (defvar emms-playing-time-string)
 
-(defvar utl-emms-seek-seconds 60
+(defvar al/emms-seek-seconds 60
   "The number of seconds to seek forward or backward.
-Used as a default value by `utl-emms-seek-forward' and
-`utl-emms-seek-backward'.")
+Used as a default value by `al/emms-seek-forward' and
+`al/emms-seek-backward'.")
 
-(defun utl-emms-seek-forward (&optional seconds)
+(defun al/emms-seek-forward (&optional seconds)
   "Seek by SECONDS forward.
-If SECONDS is nil, use `utl-emms-seek-seconds'.
+If SECONDS is nil, use `al/emms-seek-seconds'.
 Interactively, define SECONDS with a numeric prefix."
   (interactive "p")
   (when emms-player-playing-p
-    (emms-player-seek (or seconds utl-emms-seek-seconds))))
+    (emms-player-seek (or seconds al/emms-seek-seconds))))
 
-(defun utl-emms-seek-backward (&optional seconds)
+(defun al/emms-seek-backward (&optional seconds)
   "Seek by SECONDS backward.
-See `utl-emms-seek-forward' for details."
+See `al/emms-seek-forward' for details."
   (interactive "p")
-  (utl-emms-seek-forward (- (or seconds utl-emms-seek-seconds))))
+  (al/emms-seek-forward (- (or seconds al/emms-seek-seconds))))
 
-(defun utl-emms-seek-to (seconds)
+(defun al/emms-seek-to (seconds)
   "Seek the current player to SECONDS.
 Interactively, prompt for the number of minutes.
 With prefix, prompt for the number of seconds."
@@ -38,7 +38,7 @@ With prefix, prompt for the number of seconds."
            (* 60 (read-number "Minutes to seek to: ")))))
   (emms-seek-to seconds))
 
-(defun utl-emms-source-add-and-play (source &rest args)
+(defun al/emms-source-add-and-play (source &rest args)
   "Add the tracks of SOURCE to EMMS playlist and play the first one."
   (with-current-emms-playlist
     (goto-char (point-max))
@@ -48,7 +48,7 @@ With prefix, prompt for the number of seconds."
   (emms-stop)
   (emms-start))
 
-(defun utl-emms-first ()
+(defun al/emms-first ()
   "Start playing the first track in the EMMS playlist."
   (interactive)
   (when emms-player-playing-p
@@ -59,7 +59,7 @@ With prefix, prompt for the number of seconds."
 
 ;;; Track description
 
-(defun utl-emms-full-track-description (track)
+(defun al/emms-full-track-description (track)
   "Return a full description of TRACK.
 Intended to be used for `emms-track-description-function'."
   (let ((artist   (emms-track-get track 'info-artist))
@@ -83,7 +83,7 @@ Intended to be used for `emms-track-description-function'."
           (setq name (format "%s [%s]" name album))))
         name))))
 
-(defun utl-emms-short-track-description (track)
+(defun al/emms-short-track-description (track)
   "Return a short description of TRACK suitable for mode-line."
   (let ((title  (emms-track-get track 'info-title)))
     (if title
@@ -104,12 +104,12 @@ Intended to be used for `emms-track-description-function'."
 (require 'notifications)
 (require 'xml)
 
-(defvar utl-emms-notification-artist-format "%s")
-(defvar utl-emms-notification-title-format "%s")
-(defvar utl-emms-notification-album-format "%s")
-(defvar utl-emms-notification-year-format "%s")
+(defvar al/emms-notification-artist-format "%s")
+(defvar al/emms-notification-title-format "%s")
+(defvar al/emms-notification-album-format "%s")
+(defvar al/emms-notification-year-format "%s")
 
-(defun utl-emms-notification-track-property (track property
+(defun al/emms-notification-track-property (track property
                                              &optional format-str)
   "Return TRACK PROPERTY formatted with FORMAT-STR."
   (let* ((val (emms-track-get track property))
@@ -120,22 +120,22 @@ Intended to be used for `emms-track-description-function'."
              (format format-str val)
            val))))
 
-(defun utl-emms-notification-track-description (track)
+(defun al/emms-notification-track-description (track)
   "Return description of TRACK suitable for (dunst) notifications."
-  (let ((artist   (utl-emms-notification-track-property
+  (let ((artist   (al/emms-notification-track-property
                    track 'info-artist
-                   utl-emms-notification-artist-format))
-        (title    (utl-emms-notification-track-property
+                   al/emms-notification-artist-format))
+        (title    (al/emms-notification-track-property
                    track 'info-title
-                   utl-emms-notification-title-format))
-        (tracknum (utl-emms-notification-track-property
+                   al/emms-notification-title-format))
+        (tracknum (al/emms-notification-track-property
                    track 'info-tracknumber))
-        (album    (utl-emms-notification-track-property
+        (album    (al/emms-notification-track-property
                    track 'info-album
-                   utl-emms-notification-album-format))
-        (year     (utl-emms-notification-track-property
+                   al/emms-notification-album-format))
+        (year     (al/emms-notification-track-property
                    track 'info-year
-                   utl-emms-notification-year-format)))
+                   al/emms-notification-year-format)))
     (let* ((title (or title
                       (emms-track-simple-description track)))
            (title (if tracknum
@@ -151,7 +151,7 @@ Intended to be used for `emms-track-description-function'."
                  "\n"))))
 
 ;;;###autoload
-(defun utl-emms-notify ()
+(defun al/emms-notify ()
   "Notify about the current track using `notifications-notify'."
   (interactive)
   (let ((track (emms-playlist-current-selected-track)))
@@ -165,29 +165,29 @@ Intended to be used for `emms-track-description-function'."
         (notifications-notify
          :app-name "emms"
          :title (format "%s  %s" state time)
-         :body (utl-emms-notification-track-description track))))))
+         :body (al/emms-notification-track-description track))))))
 
 ;;;###autoload
-(define-minor-mode utl-emms-notification-mode
+(define-minor-mode al/emms-notification-mode
   "Minor mode for EMMS notifications."
   :global t
   :init-value nil
-  (if utl-emms-notification-mode
-      (add-hook 'emms-player-started-hook 'utl-emms-notify t)
-    (remove-hook 'emms-player-started-hook 'utl-emms-notify)))
+  (if al/emms-notification-mode
+      (add-hook 'emms-player-started-hook 'al/emms-notify t)
+    (remove-hook 'emms-player-started-hook 'al/emms-notify)))
 
 
 ;;; Mode line
 
-(defvar utl-emms-mode-line-song-function
-  'utl-emms-short-track-description
-  "Default function used in `utl-emms-mode-line-song-string'.")
+(defvar al/emms-mode-line-song-function
+  'al/emms-short-track-description
+  "Default function used in `al/emms-mode-line-song-string'.")
 
-(defun utl-emms-mode-line-song-string ()
+(defun al/emms-mode-line-song-string ()
   "Format the currently playing song.
 Intended to be used for `emms-mode-line-mode-line-function'."
   (format emms-mode-line-format
-          (funcall utl-emms-mode-line-song-function
+          (funcall al/emms-mode-line-song-function
                    (emms-playlist-current-selected-track))))
 
 (provide 'al-emms)

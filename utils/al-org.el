@@ -9,7 +9,7 @@
 (require 'org)
 (require 'org-table)
 
-(defun utl-org-get-time-stamp (time &optional with-hm)
+(defun al/org-get-time-stamp (time &optional with-hm)
   "Return org time stamp string from TIME (iso or system format).
 WITH-HM means use the stamp format that includes the time of the day."
   (let ((fmt (funcall (if with-hm 'cdr 'car)
@@ -18,7 +18,7 @@ WITH-HM means use the stamp format that includes the time of the day."
          (setq time (org-read-date nil t time)))
     (format-time-string fmt time)))
 
-(defun utl-org-get-time-from-stamp (org-time &optional end-time-p force)
+(defun al/org-get-time-from-stamp (org-time &optional end-time-p force)
   "Return time value from org time stamp or range ORG-TIME.
 Use the start part of the time range if END-TIME-P is nil.
 If ORG-TIME is a single time-stamp and END-TIME-P is non-nil,
@@ -36,7 +36,7 @@ return nil; with FORCE return its time value. "
        (eval (cons 'encode-time
                    (org-parse-time-string org-time)))))
 
-(defun utl-org-table-beginning-of-section ()
+(defun al/org-table-beginning-of-section ()
   "Move point to beginning of current section (a space between
 horizontal lines) - behaviour is similar to `backward-word' or
 `org-table-beginning-of-field'."
@@ -49,13 +49,13 @@ horizontal lines) - behaviour is similar to `backward-word' or
       (org-table-goto-line 1))
     (move-to-column cur-col)))
 
-(defun utl-org-table-next-column ()
+(defun al/org-table-next-column ()
   "Move point to first row, next column of the current section"
   (interactive)
-  (utl-org-table-beginning-of-section)
+  (al/org-table-beginning-of-section)
   (org-table-next-field))
 
-(defun utl-org-table-kill-rows-recalculate ()
+(defun al/org-table-kill-rows-recalculate ()
   "Kill all empty rows in the current section and recalculate a
 table. Emptiness is checked in the current column after the current
 row."
@@ -70,12 +70,12 @@ row."
 	  (forward-line))))
     (org-table-recalculate t)))
 
-(defun utl-org-table-next-table ()
+(defun al/org-table-next-table ()
   "Move point to the next org-table in the current buffer"
   (interactive)
   (beginning-of-line)
-  (and (utl-re-search-forward "^[^|]")
-       (utl-re-search-forward "^|")
+  (and (al/re-search-forward "^[^|]")
+       (al/re-search-forward "^|")
        (org-table-goto-line (+ 1 (org-table-current-line)))))
 
 
@@ -84,17 +84,17 @@ row."
 ;; To add a possibility of making org links for emms tracks under the
 ;; point in `emms-playlist-mode' use the following lines:
 
-;; (eval-after-load 'org '(org-add-link-type "emms" 'utl-org-emms-open))
-;; (add-hook 'org-store-link-functions 'utl-org-emms-store-link)
+;; (eval-after-load 'org '(org-add-link-type "emms" 'al/org-emms-open))
+;; (add-hook 'org-store-link-functions 'al/org-emms-store-link)
 
-(defvar utl-org-emms-file-sleep 3
+(defvar al/org-emms-file-sleep 3
   "Time in seconds after starting to play file before seeking to time.")
 
-(defvar utl-org-emms-url-sleep 7
+(defvar al/org-emms-url-sleep 7
   "Time in seconds after starting to play url before seeking to time.")
 
 ;;;###autoload
-(defun utl-org-emms-open (link)
+(defun al/org-emms-open (link)
   "Open emms LINK."
   (let ((path link)
         sec)
@@ -113,23 +113,23 @@ row."
       (if (string-match "^\\(ftp\\|https?\\)://" path)
           (progn (emms-play-url path)
                  ;; We need to wait while the backend will start to play.
-                 (and sec (sleep-for utl-org-emms-url-sleep)))
+                 (and sec (sleep-for al/org-emms-url-sleep)))
         (emms-play-file path)
-        (and sec (sleep-for utl-org-emms-file-sleep))))
+        (and sec (sleep-for al/org-emms-file-sleep))))
     (and sec (emms-seek-to sec))))
 
 ;;;###autoload
-(defun utl-org-emms-store-link ()
+(defun al/org-emms-store-link ()
   "Store link for the current playing file in EMMS."
   (when (eq major-mode 'emms-playlist-mode)
-    (let ((link (utl-org-emms-make-link
+    (let ((link (al/org-emms-make-link
                  (emms-playlist-track-at (point)))))
       (org-store-link-props
        :type        "emms"
        :link        (car link)
        :description (cdr link)))))
 
-(defun utl-org-emms-make-link (&optional track)
+(defun al/org-emms-make-link (&optional track)
   "Return org link for the EMMS track TRACK or current track.
 The return value is a cons cell (link . description)."
   (or track

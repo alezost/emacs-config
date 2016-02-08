@@ -15,7 +15,7 @@
 ;; - https://code.google.com/p/ywb-codes/source/browse/trunk/emacs/site-lisp/contrib/mysql.el
 ;; - https://code.google.com/p/ywb-codes/source/browse/trunk/emacs/site-lisp/contrib/sql-completion.el
 
-(defun utl-mysql-shell-query (sql &optional db)
+(defun al/mysql-shell-query (sql &optional db)
   "Same as `mysql-shell-query' but works.
 In `mysql-shell-query' SQL code does not quoted properly, so the
 shell command may fail."

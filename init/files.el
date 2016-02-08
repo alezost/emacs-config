@@ -25,22 +25,22 @@
  :prefix-docstring "Map for finding files."
  :prefix "C-f"
  ("C-f"   . ido-find-file)
- ("S"     . utl-sudo-find-file)
- ("h"     . utl-ssh-find-file)
- ("z"     . utl-router-get-log)
+ ("S"     . al/sudo-find-file)
+ ("h"     . al/ssh-find-file)
+ ("z"     . al/router-get-log)
  ("u"     . browse-url-emacs)
  ("l"     . find-library)
- ("q"       (utl-ido-find-file
+ ("q"       (al/ido-find-file
              (expand-file-name "package-build/recipes/"
                                quelpa-build-dir)))
- ("e"       (utl-ido-find-file al/emacs-dir))
- ("C-c"     (utl-ido-find-file al/emacs-init-dir))
+ ("e"       (al/ido-find-file al/emacs-dir))
+ ("C-c"     (al/ido-find-file al/emacs-init-dir))
  ("C-s"     (find-file (al/emacs-init-dir-file "settings.el")))
  ("k"       (find-file (al/emacs-init-dir-file "keys.el")))
  ("i"       (find-file (al/emacs-init-dir-file "init.el")))
  ("t"       (find-file (al/emacs-init-dir-file "text.el")))
  ("v"       (find-file (al/emacs-init-dir-file "visual.el")))
- ("c"       (utl-ido-find-file (al/emacs-my-packages-dir-file "alect-themes")))
+ ("c"       (al/ido-find-file (al/emacs-my-packages-dir-file "alect-themes")))
  ("C-M-c"   (find-file (al/emacs-my-packages-dir-file
                         "alect-themes/alect-themes.el"))))
 
@@ -52,23 +52,23 @@
  ("n"     . bookmark-set)
  ("k"     . bookmark-delete)
  ("l"     . bookmark-bmenu-list)
- ("S"     . utl-sr-toggle)
- ("h"       (utl-ido-find-file "~"))
- ("d"       (utl-ido-find-file al/journal-dir))
- ("w"       (utl-ido-find-file al/download-dir))
+ ("S"     . al/sr-toggle)
+ ("h"       (al/ido-find-file "~"))
+ ("d"       (al/ido-find-file al/journal-dir))
+ ("w"       (al/ido-find-file al/download-dir))
  ("e"       (find-file al/echo-download-dir))
- ("M-n"     (utl-ido-find-file al/notes-dir))
- ("t"       (utl-ido-find-file al/tmp-dir))
- ("m"       (utl-ido-find-file al/music-dir))
- ("p"       (utl-ido-find-file al/progs-dir))
- ("b"       (utl-ido-find-file (al/progs-dir-file "bash")))
- ("g"       (utl-ido-find-file (al/progs-dir-file "guile")))
- ("M-c"     (utl-ido-find-file al/config-dir))
+ ("M-n"     (al/ido-find-file al/notes-dir))
+ ("t"       (al/ido-find-file al/tmp-dir))
+ ("m"       (al/ido-find-file al/music-dir))
+ ("p"       (al/ido-find-file al/progs-dir))
+ ("b"       (al/ido-find-file (al/progs-dir-file "bash")))
+ ("g"       (al/ido-find-file (al/progs-dir-file "guile")))
+ ("M-c"     (al/ido-find-file al/config-dir))
  ("C-M-c"   (find-file (al/config-dir-file "config.scm")))
- ("M-g"     (utl-ido-find-file al/guix-profile-dir))
- ("c"       (utl-ido-find-file (al/config-dir-file "conkeror")))
- ("s"       (utl-ido-find-file (al/config-dir-file "stumpwm")))
- ("v"       (utl-ido-find-file "/var/log")))
+ ("M-g"     (al/ido-find-file al/guix-profile-dir))
+ ("c"       (al/ido-find-file (al/config-dir-file "conkeror")))
+ ("s"       (al/ido-find-file (al/config-dir-file "stumpwm")))
+ ("v"       (al/ido-find-file "/var/log")))
 
 (al/bind-keys
  :prefix-map al/grep-find-map
@@ -98,9 +98,9 @@
  vc-make-backup-files t)
 
 (when (require 'al-file nil t)
-  (setq backup-enable-predicate 'utl-backup-enable-predicate)
+  (setq backup-enable-predicate 'al/backup-enable-predicate)
   (advice-add 'make-backup-file-name-1
-    :override 'utl-make-backup-file-name-1))
+    :override 'al/make-backup-file-name-1))
 
 
 ;;; Dired
@@ -115,13 +115,13 @@
    dired-recursive-deletes 'always)
 
   (defconst al/dired-keys
-    '(("SPC"   . utl-dired-get-size)
+    '(("SPC"   . al/dired-get-size)
       ("N"     . dired-create-directory)
-      ("M"     . utl-dired-man-or-chmod)
+      ("M"     . al/dired-man-or-chmod)
       ("f"     . dired-show-file-type)
-      ("F"     . utl-dired-stat)
+      ("F"     . al/dired-stat)
       ("o"     . dired-up-directory)
-      ("u"     . utl-dired-find-file)
+      ("u"     . al/dired-find-file)
       ("U"     . dired-do-find-marked-files)
       ("."     . dired-previous-line)
       ("e"     . dired-next-line)
@@ -129,8 +129,8 @@
       ("E"     . dired-next-dirline)
       ("C-M-." . dired-prev-dirline)
       ("C-M-e" . dired-next-dirline)
-      ("H-a"   . utl-dired-beginning-of-buffer)
-      ("H-i"   . utl-dired-end-of-buffer)
+      ("H-a"   . al/dired-beginning-of-buffer)
+      ("H-i"   . al/dired-end-of-buffer)
       ("M-d"   . dired-toggle-read-only)
       ("p"     . pathify-dired)
       ("t"     . image-dired-display-thumbs)
@@ -141,7 +141,7 @@
       ("d"     . dired-display-file)
       ("C-d"   . dired-find-file-other-window)
       ("C-l"   . dired-omit-mode)
-      ("c 0"   . utl-default-directory-to-kill-ring)
+      ("c 0"   . al/default-directory-to-kill-ring)
       ("c RET"   (dired-copy-filename-as-kill 0))
       ("r"     . dired-do-query-replace-regexp)
       ("C-ь p" . emms-play-dired)
@@ -164,14 +164,14 @@
    :prefix-map al/dired-open-file-map
    :prefix-docstring "Map for opening files in external programs in dired."
    :prefix "C-j"
-   ("M-j"   (utl-dired-start-process "xdg-open"))
-   ("C-j" . utl-dired-open-file)
-   ("v d"   (utl-dired-start-process "baobab"))
-   ("v f"   (utl-dired-start-process "gdmap" "-f"))
-   ("m"     (utl-dired-start-process "mupdf"))
-   ("z"     (utl-dired-start-process "zathura"))
-   ("s"     (utl-dired-start-process-on-marked-files "sxiv"))
-   ("c"     (utl-browse-url-conkeror
+   ("M-j"   (al/dired-start-process "xdg-open"))
+   ("C-j" . al/dired-open-file)
+   ("v d"   (al/dired-start-process "baobab"))
+   ("v f"   (al/dired-start-process "gdmap" "-f"))
+   ("m"     (al/dired-start-process "mupdf"))
+   ("z"     (al/dired-start-process "zathura"))
+   ("s"     (al/dired-start-process-on-marked-files "sxiv"))
+   ("c"     (al/browse-url-conkeror
              (browse-url-file-url (dired-get-filename))))
    ("w"     (w3m-browse-url
              (browse-url-file-url (dired-get-filename)))))
@@ -179,12 +179,12 @@
   (al/add-hook-maybe 'dired-mode-hook 'hl-line-mode)
 
   (when (require 'al-mode-line nil t)
-    (utl-mode-line-default-buffer-identification 'dired-mode))
+    (al/mode-line-default-buffer-identification 'dired-mode))
 
   (require 'dired-x nil t)
   (when (require 'al-dired nil t)
     (advice-add 'dired-sort-set-mode-line
-      :override 'utl-dired-sort-set-mode-line)))
+      :override 'al/dired-sort-set-mode-line)))
 
 (setq
  dired-guess-shell-gnutar "tar"
@@ -211,7 +211,7 @@
 (with-eval-after-load 'dired-aux
   (when (require 'al-dired nil t)
     (advice-add 'dired-mark-read-file-name
-      :override 'utl-dired-mark-read-file-name)))
+      :override 'al/dired-mark-read-file-name)))
 
 (with-eval-after-load 'wdired
   (al/bind-keys-from-vars 'wdired-mode-map)
@@ -231,7 +231,7 @@
    ("o"     . image-dired-display-previous-thumbnail-original)
    ("u"     . image-dired-display-next-thumbnail-original)
    ("C-M-m" . image-dired-unmark-thumb-original-file)
-   ("DEL"   . utl-image-dired-unmark-thumb-original-file-backward)))
+   ("DEL"   . al/image-dired-unmark-thumb-original-file-backward)))
 
 
 ;;; Misc settings and packages
@@ -276,8 +276,8 @@
 
 (with-eval-after-load 'al-file
   (setq
-   utl-ssh-default-user (list user-login-name "root" "lena")
-   utl-ssh-default-host "hyperion"))
+   al/ssh-default-user (list user-login-name "root" "lena")
+   al/ssh-default-host "hyperion"))
 
 (with-eval-after-load 'sunrise-commander
   (setq

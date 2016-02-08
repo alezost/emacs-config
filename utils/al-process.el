@@ -7,7 +7,7 @@
 
 (require 'cl-lib)
 
-(defun utl-start-process (program &rest args)
+(defun al/start-process (program &rest args)
   "Same as `start-process', but don't bother about name and buffer."
   (let ((process-name (concat program "_process"))
         (buffer-name  (generate-new-buffer-name
@@ -19,7 +19,7 @@
 ;; <http://stackoverflow.com/questions/11572934/how-do-i-kill-a-running-process-in-emacs>.
 
 ;;;###autoload
-(defun utl-kill-process (process)
+(defun al/kill-process (process)
   "Kill PROCESS.
 See `delete-process' for the meaning of PROCESS.
 Interactively prompt for PROCESS name."
@@ -29,7 +29,7 @@ Interactively prompt for PROCESS name."
                        (mapcar #'process-name (process-list))))))
   (delete-process process))
 
-(defun utl-process-is-program (args name)
+(defun al/process-is-program (args name)
   "Return non-nil, if process defined by ARGS has program NAME."
   (let ((prog (car args)))
     (or (string= prog name)
@@ -41,44 +41,44 @@ Interactively prompt for PROCESS name."
 
 ;; Hooks for starting/calling processes
 
-(defvar utl-before-process-functions '(utl-process-message)
+(defvar al/before-process-functions '(al/process-message)
   "Functions to be called before Emacs starts an external process.
 Each function is called by applying to ARGS.  The first element
 of ARGS is a program name of the process, and the rest are
 program arguments.")
 
-(defun utl-process-message (&rest args)
+(defun al/process-message (&rest args)
   "Display message about ARGS."
   (message "Process to run: %S" args))
 
-(defun utl-run-before-process-hook (program args)
-  "Run `utl-before-process-functions' using PROGRAM and ARGS."
+(defun al/run-before-process-hook (program args)
+  "Run `al/before-process-functions' using PROGRAM and ARGS."
   (apply #'run-hook-with-args
-         'utl-before-process-functions program args))
+         'al/before-process-functions program args))
 
-(defun utl-run-before-call-process-hook
+(defun al/run-before-call-process-hook
     (program &optional infile destination display &rest args)
-  "Run `utl-before-process-functions' using PROGRAM and ARGS."
-  (utl-run-before-process-hook program args))
+  "Run `al/before-process-functions' using PROGRAM and ARGS."
+  (al/run-before-process-hook program args))
 
-(defun utl-run-before-start-process-hook
+(defun al/run-before-start-process-hook
     (name buffer program &rest args)
-  "Run `utl-before-process-functions' using PROGRAM and ARGS."
-  (utl-run-before-process-hook program args))
+  "Run `al/before-process-functions' using PROGRAM and ARGS."
+  (al/run-before-process-hook program args))
 
 ;;;###autoload
-(defun utl-enable-process-hooks ()
-  "Make `utl-before-process-functions' active."
+(defun al/enable-process-hooks ()
+  "Make `al/before-process-functions' active."
   (interactive)
-  (advice-add 'call-process :before #'utl-run-before-call-process-hook)
-  (advice-add 'start-process :before #'utl-run-before-start-process-hook))
+  (advice-add 'call-process :before #'al/run-before-call-process-hook)
+  (advice-add 'start-process :before #'al/run-before-start-process-hook))
 
 ;;;###autoload
-(defun utl-disable-process-hooks ()
-  "Make `utl-before-process-functions' inactive."
+(defun al/disable-process-hooks ()
+  "Make `al/before-process-functions' inactive."
   (interactive)
-  (advice-remove 'call-process #'utl-run-before-call-process-hook)
-  (advice-remove 'start-process #'utl-run-before-start-process-hook))
+  (advice-remove 'call-process #'al/run-before-call-process-hook)
+  (advice-remove 'start-process #'al/run-before-start-process-hook))
 
 (provide 'al-process)
 

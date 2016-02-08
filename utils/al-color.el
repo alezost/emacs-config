@@ -9,7 +9,7 @@
 ;;; Managing themes
 
 ;;;###autoload
-(defun utl-load-theme (theme)
+(defun al/load-theme (theme)
   "Similar to `load-theme' except it unloads the current themes at first."
   (interactive
    (list (intern (completing-read
@@ -21,17 +21,17 @@
 
 ;; Idea from <https://gist.github.com/joehakimrahme/6305195>.
 ;;;###autoload
-(defun utl-load-random-theme ()
+(defun al/load-random-theme ()
   "Load any random theme from the available ones."
   (interactive)
   (let ((themes (custom-available-themes)))
-    (utl-load-theme (nth (random (length themes))
+    (al/load-theme (nth (random (length themes))
                          themes))))
 
 
 ;;; Working with faces
 
-(defun utl-get-face (&optional pos)
+(defun al/get-face (&optional pos)
   "Return name of the face at point POS.
 If POS is nil, use current point position."
   (or pos
@@ -40,10 +40,10 @@ If POS is nil, use current point position."
       (get-char-property pos 'face)))
 
 ;;;###autoload
-(defun utl-face-to-kill-ring ()
+(defun al/face-to-kill-ring ()
   "Put a name of the current face into kill ring."
   (interactive)
-  (let ((face (utl-get-face)))
+  (let ((face (al/get-face)))
     (if (null face)
         (message "No face at point.")
       (setq face (symbol-name face))

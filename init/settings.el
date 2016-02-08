@@ -24,13 +24,13 @@
 
   (defun al/sync-zathura-theme (&rest args)
     "Synchronize zathura theme with the current emacs theme."
-    (when (utl-process-is-program args "zathura")
+    (when (al/process-is-program args "zathura")
       (al/set-zathura-theme
        (format "%S-theme" (frame-parameter nil 'background-mode)))))
 
-  (al/add-hook-maybe 'utl-before-process-functions
+  (al/add-hook-maybe 'al/before-process-functions
     'al/sync-zathura-theme))
-(al/add-after-init-hook 'utl-enable-process-hooks)
+(al/add-after-init-hook 'al/enable-process-hooks)
 
 
 ;;; Minibuffer, ido, smex
@@ -43,7 +43,7 @@
 
 (with-eval-after-load 'minibuffer
   (when (require 'al-ido nil t)
-    (advice-add 'read-file-name-default :around #'utl-ido-disable)))
+    (advice-add 'read-file-name-default :around #'al/ido-disable)))
 
 (with-eval-after-load 'ido
   (setq
@@ -74,7 +74,7 @@
       ("<down>" . ido-next-match)
       ("C-d"    . ido-fallback-command)
       ("M-d"    . ido-edit-input)
-      ("M-k"    . utl-ido-copy-current-item)
+      ("M-k"    . al/ido-copy-current-item)
       ("M-s"    . ido-select-text)
       "SPC")
     "Alist of auxiliary keys for `ido-common-completion-map'.")
@@ -85,8 +85,8 @@
       ("C-M-." . ido-prev-match-dir)
       ("C-M-e" . ido-next-match-dir)
       ("M-m"   . ido-enter-magit-status)
-      ("M-h"     (utl-ido-set-current-directory "~"))
-      ("M-g"     (utl-ido-set-current-directory al/guix-profile-dir)))
+      ("M-h"     (al/ido-set-current-directory "~"))
+      ("M-g"     (al/ido-set-current-directory al/guix-profile-dir)))
     "Alist of auxiliary keys for `ido-file-dir-completion-map'.")
   (al/bind-keys-from-vars
       '(ido-common-completion-map
@@ -99,7 +99,7 @@
 
   (al/add-hook-maybe 'ido-minibuffer-setup-hook 'al/no-truncate-lines)
   (when (require 'al-ido nil t)
-    (setq completing-read-function #'utl-completing-read))
+    (setq completing-read-function #'al/completing-read))
 
   (ido-everywhere))
 (al/add-after-init-hook 'ido-mode)
@@ -142,16 +142,16 @@
  ("C-b" . ido-switch-buffer)
  ("r" . rename-buffer)
  ("n" . info)
- ("b" . utl-buffer-name-to-kill-ring)
- ("f" . utl-file-name-to-kill-ring)
+ ("b" . al/buffer-name-to-kill-ring)
+ ("f" . al/file-name-to-kill-ring)
  ("g"   (switch-to-buffer "*grep*"))
  ("o"   (switch-to-buffer "*Occur*"))
  ("h"   (switch-to-buffer "*Help*"))
  ("s"   (switch-to-buffer "*scratch*"))
- ("w" . utl-switch-to-w3m)
+ ("w" . al/switch-to-w3m)
  ("m" . man)
  ("k"   (kill-buffer nil))
- ("8" . utl-switch-to-characters))
+ ("8" . al/switch-to-characters))
 
 (with-eval-after-load 'uniquify
   (setq uniquify-buffer-name-style 'post-forward))
@@ -175,7 +175,7 @@
     "Alist of auxiliary keys for `ibuffer-mode-map'.")
   (al/bind-keys-from-vars 'ibuffer-mode-map 'al/ibuffer-keys)
   (al/add-hook-maybe 'ibuffer-mode-hook
-    '(utl-mode-ibuffer-info hl-line-mode)))
+    '(al/mode-ibuffer-info hl-line-mode)))
 
 
 ;;; Working with windows and frames
@@ -183,7 +183,7 @@
 (setq split-width-threshold 120)
 
 (al/add-hook-maybe 'window-configuration-change-hook
-  'utl-set-windows-num-property)
+  'al/set-windows-num-property)
 
 ;; Open some buffers in the same window.
 (setq same-window-buffer-names
@@ -199,12 +199,12 @@
  ("<C-H-XF86AudioRaiseVolume>" (enlarge-window 1 t))
  ("<C-H-XF86AudioLowerVolume>" (enlarge-window -1 t))
  ("H-o" . other-window)
- ("H-M-o" . utl-switch-windows)
+ ("H-M-o" . al/switch-windows)
  ("H-M-q" (quit-window nil (previous-window)))
- ("H-O" . utl-switch-to-minibuffer)
+ ("H-O" . al/switch-to-minibuffer)
  ("H-1" . delete-other-windows)
- ("H-2" . utl-make-vertical-windows)
- ("H-3" . utl-make-horizontal-windows))
+ ("H-2" . al/make-vertical-windows)
+ ("H-3" . al/make-horizontal-windows))
 
 (setq
  winner-dont-bind-my-keys t
@@ -266,7 +266,7 @@
 
 (al/bind-keys
  ("C-z"   . eshell)
- ("C-M-z" . utl-eshell-cd))
+ ("C-M-z" . al/eshell-cd))
 
 (with-eval-after-load 'eshell
   (setq eshell-directory-name (al/emacs-data-dir-file "eshell"))
@@ -282,13 +282,13 @@
   (defconst al/eshell-keys
     '(("<M-tab>" . eshell-complete-lisp-symbol)
       ("C-a" . eshell-bol)
-      ("C-k" . utl-eshell-kill-whole-line)
+      ("C-k" . al/eshell-kill-whole-line)
       ("M-." . eshell-previous-input)
       ("M-e" . eshell-next-input)
       ("M->" . eshell-previous-prompt)
       ("M-E" . eshell-next-prompt)
-      ("M-r" . utl-eshell-previous-matching-input-from-input)
-      ("M-s" . utl-eshell-next-matching-input-from-input))
+      ("M-r" . al/eshell-previous-matching-input-from-input)
+      ("M-s" . al/eshell-next-matching-input-from-input))
     "Alist of auxiliary keys for `eshell-mode'.")
   ;; For some strange reason `eshell-mode-map' is buffer local, so key
   ;; bindings should be put in a hook.
@@ -307,9 +307,9 @@
   (require 'tramp nil t)
   (when (require 'al-eshell nil t)
     (setq
-     eshell-prompt-function 'utl-eshell-prompt
-     eshell-prompt-regexp utl-eshell-prompt-regexp)
-    (advice-add 'eshell/info :override 'utl-eshell/info)))
+     eshell-prompt-function 'al/eshell-prompt
+     eshell-prompt-regexp al/eshell-prompt-regexp)
+    (advice-add 'eshell/info :override 'al/eshell/info)))
 
 
 ;;; Button, custom, widget
@@ -364,7 +364,7 @@
 (with-eval-after-load 'man
   (setq Man-notify-method 'pushy)
   (when (require 'al-mode-line nil t)
-    (utl-mode-line-default-buffer-identification 'Man-mode))
+    (al/mode-line-default-buffer-identification 'Man-mode))
 
   (defconst al/man-keys
     '(("M->" . Man-previous-section)
@@ -409,13 +409,13 @@
                   (sql-server "")
                   (sql-database "darts")
                   (sql-user ,user-login-name)
-                  (sql-password ,(utl-sql-password-from-auth-source
+                  (sql-password ,(al/sql-password-from-auth-source
                                   "sql-darts" user-login-name)))
            (paste (sql-product 'postgres)
                   (sql-server "")
                   (sql-database "paste")
                   (sql-user "www-data")
-                  (sql-password ,(utl-sql-password-from-auth-source
+                  (sql-password ,(al/sql-password-from-auth-source
                                   "sql-paste"))))))
     (sql-connect conn)
     (setq sql-password nil)))
@@ -433,11 +433,11 @@
 
   (when (require 'al-sql nil t)
     (advice-add 'sql-highlight-product
-      :override 'utl-sql-highlight-product)
+      :override 'al/sql-highlight-product)
     (al/add-hook-maybe 'sql-interactive-mode-hook
-      '(utl-sql-save-history
-        utl-sql-highlight-product
-        utl-sql-completion-setup)))
+      '(al/sql-save-history
+        al/sql-highlight-product
+        al/sql-completion-setup)))
 
   ;; Fix bug with mariadb prompt:
   ;; <http://debbugs.gnu.org/cgi/bugreport.cgi?bug=17426>.
@@ -448,7 +448,7 @@
   (setq mysql-user sql-user)
   (when (require 'al-mysql nil t)
     (advice-add 'mysql-shell-query
-      :override 'utl-mysql-shell-query)))
+      :override 'al/mysql-shell-query)))
 
 (with-eval-after-load 'sql-completion
   (setq
@@ -458,7 +458,7 @@
   (require 'cl nil t))
 
 (with-eval-after-load 'al-sql
-  (setq utl-sql-history-dir (al/emacs-data-dir-file "sql")))
+  (setq al/sql-history-dir (al/emacs-data-dir-file "sql")))
 
 
 ;;; Darts, journal
@@ -635,9 +635,9 @@
 (with-eval-after-load 'ediff
   (when (require 'al-ediff nil t)
     (al/add-hook-maybe 'ediff-before-setup-hook
-      'utl-ediff-save-window-configuration)
+      'al/ediff-save-window-configuration)
     (al/add-hook-maybe 'ediff-quit-hook
-      'utl-ediff-restore-window-configuration
+      'al/ediff-restore-window-configuration
       t))
   (setq
    ediff-window-setup-function #'ediff-setup-windows-plain ; no new frame
@@ -679,7 +679,7 @@
  ("r"   . find-tag-regexp)
  ("n"   . tags-loop-continue)
  ("v"   . visit-tags-table)
- ("c"   . utl-create-tags))
+ ("c"   . al/create-tags))
 
 (with-eval-after-load 'etags
   (setq tags-file-name (al/src-dir-file "conkeror/modules/TAGS")))

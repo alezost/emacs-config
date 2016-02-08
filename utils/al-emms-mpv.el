@@ -7,7 +7,7 @@
 
 (require 'emms-player-simple-mpv)
 
-(defun utl-emms-mpv-run-command (command)
+(defun al/emms-mpv-run-command (command)
   "Run mpv COMMAND for the current EMMS mpv process.
 COMMAND is what may be put in mpv conf-file, e.g.: 'cycle mute',
 'show_text ${playback-time}', etc."
@@ -17,17 +17,17 @@ COMMAND is what may be put in mpv conf-file, e.g.: 'cycle mute',
                 (concat command "\n")   ; newline is vital
                 "" nil #'ignore)))
 
-(defun utl-emms-mpv-show-progress ()
+(defun al/emms-mpv-show-progress ()
   "Show progress in the OSD of the current video."
   (interactive)
-  (utl-emms-mpv-run-command "show_progress"))
+  (al/emms-mpv-run-command "show_progress"))
 
-(defun utl-emms-mpv-toggle-fullscreen ()
+(defun al/emms-mpv-toggle-fullscreen ()
   "Toggle fullscreen."
   (interactive)
-  (utl-emms-mpv-run-command "cycle fullscreen"))
+  (al/emms-mpv-run-command "cycle fullscreen"))
 
-(defun utl-emms-mpv-sync-playing-time ()
+(defun al/emms-mpv-sync-playing-time ()
   "Synchronize `emms-playing-time' with the real time reported by mpv."
   (interactive)
   (emms-player-simple-mpv-tq-enqueue
@@ -42,7 +42,7 @@ COMMAND is what may be put in mpv conf-file, e.g.: 'cycle mute',
            (setq emms-playing-time sec))
        (message "mpv refuses to report about playing time")))))
 
-(defun utl-emms-mpv-add-simple-player ()
+(defun al/emms-mpv-add-simple-player ()
   "Generate `emms-player-mpv' player."
   (define-emms-simple-player-mpv mpv
     '(file url streamlist playlist)

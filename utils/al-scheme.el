@@ -5,7 +5,7 @@
 
 ;;; Code:
 
-(defvar utl-scheme-imenu-generic-expression
+(defvar al/scheme-imenu-generic-expression
   `((nil
      ,(rx bol "(define"
           (zero-or-one "*")
@@ -58,10 +58,10 @@
 
 (defvar calculate-lisp-indent-last-sexp)
 
-;; The following code of `utl-scheme-indent-function' is taken from
+;; The following code of `al/scheme-indent-function' is taken from
 ;; <http://www.netris.org/~mhw/scheme-indent-function.el>.
 
-(defun utl-scheme-indent-function (indent-point state)
+(defun al/scheme-indent-function (indent-point state)
   "Scheme mode function for the value of the variable `lisp-indent-function'.
 This function is the same as `scheme-indent-function' except it
 indents property lists properly."

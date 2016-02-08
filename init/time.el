@@ -25,15 +25,15 @@
  ("M-C" . calendar)
  ("c"   . calendar)
  ("d"   . diary)
- ("D"   . utl-diary-file)
+ ("D"   . al/diary-file)
  ("A"   . appt-activate)
  ("a n" . appt-add)
  ("a k" . appt-delete)
- ("M-T"   (utl-timer-set "Tea!!" 180))
- ("T"     (utl-timer-set "Break!!" (* 45 60)))
- ("t n" . utl-timer-set)
- ("t t" . utl-timer-remaining-time)
- ("t k" . utl-timer-cancel))
+ ("M-T"   (al/timer-set "Tea!!" 180))
+ ("T"     (al/timer-set "Break!!" (* 45 60)))
+ ("t n" . al/timer-set)
+ ("t t" . al/timer-remaining-time)
+ ("t k" . al/timer-cancel))
 
 
 ;;; Misc settings and packages
@@ -70,8 +70,8 @@
    ("M-I" . calendar-end-of-month)
    ("H-." . calendar-backward-year)
    ("H-e" . calendar-forward-year)
-   ("n"   . utl-diary-insert-entry)
-   ("i d" . utl-diary-insert-entry))
+   ("n"   . al/diary-insert-entry)
+   ("i d" . al/diary-insert-entry))
 
   ;; Do not ruin the mode-line.
   (if (version< emacs-version "25")
@@ -82,7 +82,7 @@
   (add-hook 'calendar-today-visible-hook 'calendar-mark-today))
 
 (with-eval-after-load 'al-calendar
-  (setq utl-calendar-date-display-form
+  (setq al/calendar-date-display-form
         '((format "%s %.3s %2s" year monthname day))))
 
 (with-eval-after-load 'solar
@@ -110,29 +110,29 @@
     (add-to-list 'sauron-modules 'sauron-org))
   (when (require 'al-appt nil t)
     (advice-add 'appt-display-message
-      :override 'utl-appt-display-message)))
+      :override 'al/appt-display-message)))
 (al/eval-after-init
   (when (string= server-name "server")
     (appt-activate)))
 
 (with-eval-after-load 'al-appt
   (setq
-   utl-appt-notify-normal-sound (al/sound-dir-file "drums.wav")
-   utl-appt-notify-urgent-sound (al/sound-dir-file "bell.oga")))
+   al/appt-notify-normal-sound (al/sound-dir-file "drums.wav")
+   al/appt-notify-urgent-sound (al/sound-dir-file "bell.oga")))
 
-(al/autoload "al-notification" utl-play-sound)
+(al/autoload "al-notification" al/play-sound)
 (with-eval-after-load 'al-notification
   (setq
-   utl-sound-file (al/sound-dir-file "alarm.wav")
-   utl-timer-format "%M min %S sec"))
+   al/sound-file (al/sound-dir-file "alarm.wav")
+   al/timer-format "%M min %S sec"))
 
 (with-eval-after-load 'notifications
   ;; XXX Remove when dunst will support icons.
   (setq notifications-application-icon ""))
 
 (al/bind-keys
- ("C-c s" . utl-sauron-toggle-hide-show)
- ("C-c S" . utl-sauron-restart))
+ ("C-c s" . al/sauron-toggle-hide-show)
+ ("C-c S" . al/sauron-restart))
 
 (with-eval-after-load 'sauron
   (setq

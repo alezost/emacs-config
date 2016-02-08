@@ -5,7 +5,7 @@
 
 ;;; Code:
 
-(defun utl-pcomplete-no-space ()
+(defun al/pcomplete-no-space ()
   "Do not terminate a completion with space in the current buffer."
   (setq-local pcomplete-termination-string ""))
 

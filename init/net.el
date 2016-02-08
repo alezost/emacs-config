@@ -22,10 +22,10 @@
  :prefix-map al/net-map
  :prefix-docstring "Map for net utils."
  :prefix "C-w"
- ("p" . utl-ping)
- ("t" . utl-traceroute)
+ ("p" . al/ping)
+ ("t" . al/traceroute)
  ("w" . wget)
- ("m" . utl-url-wget-mp3))
+ ("m" . al/url-wget-mp3))
 
 (al/bind-keys*
  :prefix-map al/web-search-map
@@ -48,8 +48,8 @@
  ("b"   . web-search-debbugs)
  ("`"   . web-search-ej)
  ("t"     (w3m-browse-url "http://m.tv.yandex.ru/4"))
- ("l"   . utl-browse-irc-log)
- ("L"     (utl-browse-irc-log
+ ("l"   . al/browse-irc-log)
+ ("L"     (al/browse-irc-log
            "guix"
            (format-time-string
             "%Y-%m-%d"
@@ -78,8 +78,8 @@
       ("y"         . w3m-history)
       (","         . w3m-view-previous-page)
       ("p"         . w3m-view-next-page)
-      ("h"         . utl-w3m-previous-url)
-      ("n"         . utl-w3m-next-url)
+      ("h"         . al/w3m-previous-url)
+      ("n"         . al/w3m-next-url)
       ("<backtab>" . w3m-previous-form)
       ("<tab>"     . w3m-next-form)
       ("R"         . w3m-redisplay-this-page)
@@ -97,18 +97,18 @@
                       (echo-msk-program-video-url (w3m-anchor))))
       ("c 0"       . w3m-print-current-url)
       ("c RET"     . w3m-print-this-url)
-      ("s"         . utl-w3m-wget)
-      ("w"         . utl-w3m-wget)
-      ("C-w w"     . utl-w3m-wget)
-      ("C-w m"       (utl-url-wget-mp3 (w3m-anchor)))
+      ("s"         . al/w3m-wget)
+      ("w"         . al/w3m-wget)
+      ("C-w w"     . al/w3m-wget)
+      ("C-w m"       (al/url-wget-mp3 (w3m-anchor)))
       ("C-c C-f"   . w3m-next-buffer)
       ("C-c C-b"   . w3m-previous-buffer))
     "Alist of auxiliary keys for `w3m-mode-map'.")
   (al/bind-keys-from-vars 'w3m-mode-map 'al/w3m-keys)
 
   (when (require 'al-w3m nil t)
-    (utl-w3m-bind-number-keys 'utl-w3m-switch-to-buffer)
-    (utl-w3m-bind-number-keys 'utl-w3m-kill-buffer "k")))
+    (al/w3m-bind-number-keys 'al/w3m-switch-to-buffer)
+    (al/w3m-bind-number-keys 'al/w3m-kill-buffer "k")))
 
 (with-eval-after-load 'w3m-form
   (defconst al/w3m-form-keys
@@ -119,19 +119,19 @@
 
 (with-eval-after-load 'al-w3m
   (setq
-   utl-w3m-search-link-depth 20
-   utl-w3m-search-re "[^[:alnum:]]*\\<%s\\>"))
+   al/w3m-search-link-depth 20
+   al/w3m-search-re "[^[:alnum:]]*\\<%s\\>"))
 
 (with-eval-after-load 'browse-url
   (when (require 'al-browse-url nil t)
-    (setq browse-url-browser-function 'utl-choose-browser)
+    (setq browse-url-browser-function 'al/choose-browser)
     (advice-add 'browse-url-default-browser
-      :override 'utl-browse-url-conkeror)))
+      :override 'al/browse-url-conkeror)))
 
 (with-eval-after-load 'al-browse-url
   (setcar (cl-find-if (lambda (spec)
                         (string= "conkeror" (cadr spec)))
-                      utl-browser-choices)
+                      al/browser-choices)
           '(?c ?u ?\C-m)))
 
 
@@ -154,9 +154,9 @@
  :prefix-map al/gnus-map
  :prefix-docstring "Map for Gnus."
  :prefix "M-g"
- ("M-g" . utl-gnus-switch-win-config)
- ("g"   . utl-gnus-switch-to-group-buffer)
- ("b"   . utl-gnus-ido-switch-buffer)
+ ("M-g" . al/gnus-switch-win-config)
+ ("g"   . al/gnus-switch-to-group-buffer)
+ ("b"   . al/gnus-ido-switch-buffer)
  ("m"   . gnus-msg-mail)
  ("n"   . gnus-msg-mail))
 
@@ -285,13 +285,13 @@
       ("V"     . gnus-mime-view-all-parts)
       ("s"     . gnus-article-save-part)
       ("i"     . gnus-article-show-images)
-      ("U"     . utl-gnus-summary-browse-link-url)
-      ("a"     . utl-gnus-summary-emms-add-url)
-      ("p"     . utl-gnus-summary-emms-play-url)
-      ("C-ь a" . utl-gnus-summary-emms-add-url)
-      ("C-ь p" . utl-gnus-summary-emms-play-url)
-      ("w"       (wget (utl-gnus-summary-find-mm-url)))
-      ("`"       (web-search-ej (utl-gnus-summary-find-url-by-re
+      ("U"     . al/gnus-summary-browse-link-url)
+      ("a"     . al/gnus-summary-emms-add-url)
+      ("p"     . al/gnus-summary-emms-play-url)
+      ("C-ь a" . al/gnus-summary-emms-add-url)
+      ("C-ь p" . al/gnus-summary-emms-play-url)
+      ("w"       (wget (al/gnus-summary-find-mm-url)))
+      ("`"       (web-search-ej (al/gnus-summary-find-url-by-re
                                  al/ej-url-re 1))))
     "Alist of auxiliary keys for `gnus-summary-mode'.")
   (al/bind-keys-from-vars 'gnus-summary-mode-map 'al/gnus-summary-keys)
@@ -381,11 +381,11 @@
    ("c" . shr-copy-url)))
 
 (with-eval-after-load 'al-gnus
-  (setq utl-atom2rss-file (al/emacs-data-dir-file "atom2rss.xsl"))
+  (setq al/atom2rss-file (al/emacs-data-dir-file "atom2rss.xsl"))
   (advice-add 'mm-url-insert
-    :after #'utl-convert-atom-to-rss)
+    :after #'al/convert-atom-to-rss)
   (advice-add 'gnus-agent-make-mode-line-string
-    :around #'utl-gnus-agent-mode-line-string))
+    :around #'al/gnus-agent-mode-line-string))
 
 (al/autoload "mu4e" mu4e)
 (with-eval-after-load 'mu4e
@@ -406,17 +406,17 @@
  :prefix-map al/erc-map
  :prefix-docstring "Map for ERC."
  :prefix "M-c"
- ("M-c" . utl-erc-track-switch-buffer)
- ("M-n" . utl-erc-cycle)
- ("b"   . utl-erc-switch-buffer)
- ("M-s" . utl-erc-switch-to-server-buffer)
+ ("M-c" . al/erc-track-switch-buffer)
+ ("M-n" . al/erc-cycle)
+ ("b"   . al/erc-switch-buffer)
+ ("M-s" . al/erc-switch-to-server-buffer)
  ;; Interactive erc - compute everything without prompting:
  ("c"     (erc))
- ("R"   . utl-erc-server-buffer-rename)
- ("d"   . utl-erc-quit-server)
- ("j"   . utl-erc-join-channel)
- ("a"   . utl-erc-away)
- ("u"   . utl-erc-number-of-users)
+ ("R"   . al/erc-server-buffer-rename)
+ ("d"   . al/erc-quit-server)
+ ("j"   . al/erc-join-channel)
+ ("a"   . al/erc-away)
+ ("u"   . al/erc-number-of-users)
  ("m"   . erc-track-mode)
  ("n"   . erc-notifications-mode)
  ("p"     (erc-part-from-channel ""))
@@ -470,9 +470,9 @@
       ("M-." . erc-previous-command)
       ("M-e" . erc-next-command)
       ("C-a" . erc-bol)
-      ("C-l" . utl-erc-view-log-file)
-      ("<s-kanji>" . utl-recenter-end-of-buffer-top)
-      ("C-H-3" . utl-recenter-end-of-buffer-top))
+      ("C-l" . al/erc-view-log-file)
+      ("<s-kanji>" . al/recenter-end-of-buffer-top)
+      ("C-H-3" . al/recenter-end-of-buffer-top))
     "Alist of auxiliary keys for erc mode.")
   (defun al/erc-bind-keys ()
     (al/bind-keys-from-vars 'erc-mode-map 'al/erc-keys))
@@ -507,21 +507,21 @@
   (al/add-hook-maybe 'erc-join-hook 'al/erc-channel-config)
 
   (when (require 'al-erc nil t)
-    (when (utl-znc-running-p)
+    (when (al/znc-running-p)
       (setq erc-server "localhost"
             erc-port 32456))
-    (setq-default erc-enable-logging 'utl-erc-log-all-but-some-buffers)
+    (setq-default erc-enable-logging 'al/erc-log-all-but-some-buffers)
     (setq
-     erc-insert-timestamp-function 'utl-erc-insert-timestamp
+     erc-insert-timestamp-function 'al/erc-insert-timestamp
      erc-view-log-timestamp-position 'left
      erc-generate-log-file-name-function
-     'utl-erc-log-file-name-network-channel)
+     'al/erc-log-file-name-network-channel)
     (setq
-     erc-ctcp-query-FINGER-hook  '(utl-erc-ctcp-query-FINGER)
-     erc-ctcp-query-ECHO-hook    '(utl-erc-ctcp-query-ECHO)
-     erc-ctcp-query-TIME-hook    '(utl-erc-ctcp-query-TIME)
-     erc-ctcp-query-VERSION-hook '(utl-erc-ctcp-query-VERSION))
-    (al/add-hook-maybe 'erc-after-connect 'utl-erc-ghost-maybe))
+     erc-ctcp-query-FINGER-hook  '(al/erc-ctcp-query-FINGER)
+     erc-ctcp-query-ECHO-hook    '(al/erc-ctcp-query-ECHO)
+     erc-ctcp-query-TIME-hook    '(al/erc-ctcp-query-TIME)
+     erc-ctcp-query-VERSION-hook '(al/erc-ctcp-query-VERSION))
+    (al/add-hook-maybe 'erc-after-connect 'al/erc-ghost-maybe))
 
   (when (require 'sauron nil t)
     (setq sauron-watch-patterns
@@ -537,9 +537,9 @@
 (with-eval-after-load 'erc-desktop-notifications
   (setq erc-notifications-icon "erc")
   (defun al/play-erc-sound (&rest _)
-    (utl-play-sound (al/sound-dir-file "chimes.wav")))
+    (al/play-sound (al/sound-dir-file "chimes.wav")))
   (al/with-check
-    :fun #'utl-play-sound
+    :fun #'al/play-sound
     (advice-add 'erc-notifications-notify
       :before #'al/play-erc-sound)))
 
@@ -547,8 +547,8 @@
   (al/bind-keys
    :map erc-button-keymap
    ("u" . erc-button-press-button)
-   ("e" . utl-next-link)
-   ("." . utl-previous-link)
+   ("e" . al/next-link)
+   ("." . al/previous-link)
    ("c"   (kill-new (car (get-text-property (point) 'erc-data))))
    ("w"   (wget (car (get-text-property (point) 'erc-data))))))
 
@@ -562,12 +562,12 @@
 
 (with-eval-after-load 'al-erc
   (setq
-   utl-erc-log-excluded-regexps
+   al/erc-log-excluded-regexps
    '("\\`#archlinux\\'" "\\`#emacs\\'" "\\`#freenode\\'" "\\`#znc\\'")
-   utl-erc-away-msg-list
+   al/erc-away-msg-list
    '("just away" "watching athletics" "watching darts"
      "eating" "i'm not ready to chat" "time to sleep")
-   utl-erc-channel-list
+   al/erc-channel-list
    '("#emacs" "#archlinux" "#archlinux-classroom" "#trivialand" "##latin"
      "#lisp" "#lispgames" "#git" "#github" "#netfilter" "#wesnoth"
      "#themanaworld" "##french" "##english" "##programming")))
@@ -607,9 +607,9 @@
 
 (with-eval-after-load 'al-net
   (setq
-   utl-net-hosts '("zeus" "hyperion" "192.168.1.1" "10.11.149.1"
+   al/net-hosts '("zeus" "hyperion" "192.168.1.1" "10.11.149.1"
                    "10.10.0.1" "google.com" "ya.ru")
-   utl-router-log-path "~/docs/net/RT_G32.log/"))
+   al/router-log-path "~/docs/net/RT_G32.log/"))
 
 (al/bind-keys
    :prefix-map al/debpaste-map

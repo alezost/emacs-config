@@ -22,10 +22,10 @@
   "Perform some visual actions specific to a FRAME type."
   (when (and (display-graphic-p)
              (require 'al-font nil t))
-    (set-frame-font (utl-first-existing-font) nil t)
+    (set-frame-font (al/first-existing-font) nil t)
     ;; Should be "solved": 武 (droid); 🐼, 😻, ⚽, ∵, ⸪ (symbola);
     ;; ࿌ (unifont); 🃜, 🜒, 🝖 (quivira).
-    (utl-set-fontset
+    (al/set-fontset
      "fontset-default" nil nil
      '("Symbola-12"
        (#x2020  . #x24ff)
@@ -58,21 +58,21 @@
  ("S"   . scroll-bar-mode)
  ("I"   . tooltip-mode)
  ("r"   . rainbow-mode)
- ("t"   . utl-load-theme)
+ ("t"   . al/load-theme)
  ("C"   . make-color)
  ("c"   . make-color-switch-to-buffer)
- ("l"     (utl-load-theme 'alect-light))
- ("M-l"   (utl-load-theme 'alect-light-alt))
- ("d"     (utl-load-theme 'alect-dark))
- ("M-d"   (utl-load-theme 'alect-dark-alt))
- ("b"     (utl-load-theme 'alect-black))
- ("M-b"   (utl-load-theme 'alect-black-alt))
+ ("l"     (al/load-theme 'alect-light))
+ ("M-l"   (al/load-theme 'alect-light-alt))
+ ("d"     (al/load-theme 'alect-dark))
+ ("M-d"   (al/load-theme 'alect-dark-alt))
+ ("b"     (al/load-theme 'alect-black))
+ ("M-b"   (al/load-theme 'alect-black-alt))
  ("h"   . hl-line-mode)
  ("w"   . whitespace-mode)
  ("W"   . global-whitespace-mode)
  ("M-W"   (setq show-trailing-whitespace
                 (not show-trailing-whitespace)))
- ("f"   . utl-face-to-kill-ring)
+ ("f"   . al/face-to-kill-ring)
  ("F"   . facemenu-set-foreground)
  ("B"   . facemenu-set-background)
  ("M-F" . make-color-foreground-color-to-kill-ring)
@@ -108,7 +108,7 @@
 (al/eval-after-init
   (and (require 'alect-themes nil t)
        (require 'al-color nil t)
-       (utl-load-theme 'alect-light)))
+       (al/load-theme 'alect-light)))
 
 
 ;;; Mode line
@@ -229,7 +229,7 @@
 
      (magit-blame-mode           " µBlame"      magit-blame)
      (erc-notifications-mode     " 🗩"           erc-desktop-notifications)
-     (utl-emms-notification-mode " 🎧"           utl-emms)
+     (al/emms-notification-mode " 🎧"           al/emms)
      (flyspell-mode              " fly"         flyspell))))
 
 (setq-default
@@ -291,9 +291,9 @@
                        face al/mode-name
                        mouse-face mode-line-highlight
                        local-map ,mode-line-major-mode-keymap)
-         '(utl-mode-info
+         '(al/mode-info
            ("("
-            (:propertize utl-mode-info face font-lock-comment-face)
+            (:propertize al/mode-info face font-lock-comment-face)
             ")"))
          `(:propertize minor-mode-alist
                        mouse-face mode-line-highlight
@@ -380,7 +380,7 @@
 
 (with-eval-after-load 'rainbow-mode
   (setq rainbow-x-colors t)
-  (advice-add 'rainbow-mode :after #'utl-refontify))
+  (advice-add 'rainbow-mode :after #'al/refontify))
 
 (setq hl-todo-keyword-faces
       (mapcar (lambda (word)

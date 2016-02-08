@@ -9,16 +9,16 @@
 (require 'gnus-art)
 (require 'al-misc)  ; for al/xor
 
-(defun utl-gnus-buffer-names ()
+(defun al/gnus-buffer-names ()
   "Return a list of names of live gnus buffer."
   (mapcar #'buffer-name (gnus-buffers)))
 
-(defun utl-gnus-buffer-p ()
+(defun al/gnus-buffer-p ()
   "Return nil if current buffer is not a gnus buffer."
   (memq (current-buffer) (gnus-buffers)))
 
 ;;;###autoload
-(defun utl-gnus-switch-to-group-buffer ()
+(defun al/gnus-switch-to-group-buffer ()
   "Switch to gnus group buffer if it exists, otherwise start gnus."
   (interactive)
   (if (and (fboundp 'gnus-alive-p)
@@ -27,11 +27,11 @@
     (gnus)))
 
 ;;;###autoload
-(defun utl-gnus-ido-switch-buffer ()
+(defun al/gnus-ido-switch-buffer ()
   "Switch to gnus buffer, or start gnus if not already started.
 Gnus buffer is selected using IDO."
   (interactive)
-  (let ((gnus-bufs (utl-gnus-buffer-names)))
+  (let ((gnus-bufs (al/gnus-buffer-names)))
     (if gnus-bufs
      	(switch-to-buffer (completing-read "Gnus buffer: " gnus-bufs))
       (gnus))))
@@ -41,51 +41,51 @@ Gnus buffer is selected using IDO."
 
 ;; Idea from <http://www.emacswiki.org/emacs/SwitchToGnus>.
 
-(defvar utl-gnus-win-config nil
+(defvar al/gnus-win-config nil
   "Window configuration with gnus buffers.")
 
-(defvar utl-non-gnus-win-config nil
+(defvar al/non-gnus-win-config nil
   "Window configuration with non-gnus buffers.")
 
-(defun utl-gnus-win-config-variable (&optional revert)
+(defun al/gnus-win-config-variable (&optional revert)
   "Return a name of variable with window configuration.
-Return `utl-gnus-win-config' if current buffer is a gnus buffer,
-return `utl-non-gnus-win-config' otherwise.
+Return `al/gnus-win-config' if current buffer is a gnus buffer,
+return `al/non-gnus-win-config' otherwise.
 If REVERT is non-nil, do vice versa (return the other variable)."
-  (if (utl-xor (utl-gnus-buffer-p) revert)
-      'utl-gnus-win-config
-    'utl-non-gnus-win-config))
+  (if (al/xor (al/gnus-buffer-p) revert)
+      'al/gnus-win-config
+    'al/non-gnus-win-config))
 
-(defun utl-gnus-save-win-config ()
+(defun al/gnus-save-win-config ()
   "Save current gnus or non-gnus window configuration."
   (interactive)
-  (set (utl-gnus-win-config-variable)
+  (set (al/gnus-win-config-variable)
        (current-window-configuration)))
 
 ;;;###autoload
-(defun utl-gnus-switch-win-config ()
+(defun al/gnus-switch-win-config ()
   "Switch window configuration between gnus and non-gnus buffers.
 Start Gnus if needed."
   (interactive)
-  (utl-gnus-save-win-config)
+  (al/gnus-save-win-config)
   (if (gnus-alive-p)
       (set-window-configuration
-       (symbol-value (utl-gnus-win-config-variable 'other)))
+       (symbol-value (al/gnus-win-config-variable 'other)))
     (gnus)
-    (utl-gnus-save-win-config)))
+    (al/gnus-save-win-config)))
 
 
 ;;; Finding URLs in summary and article buffers
 
-(defvar utl-gnus-link-re "\\<link\\>"
+(defvar al/gnus-link-re "\\<link\\>"
   "Regexp matching a link name.
-Used in `utl-gnus-summary-find-link-url'.")
+Used in `al/gnus-summary-find-link-url'.")
 
-(defvar utl-gnus-mm-url-re "\\.mp3$"
+(defvar al/gnus-mm-url-re "\\.mp3$"
   "Regexp for multimedia links.
-Used in `utl-gnus-summary-find-mm-url'.")
+Used in `al/gnus-summary-find-mm-url'.")
 
-(defun utl-widget-next ()
+(defun al/widget-next ()
   "Move point to the next field or button.
 After the last widget, move point to the end of buffer."
   ;; The code is a rework of `widget-move'.
@@ -99,16 +99,16 @@ After the last widget, move point to the end of buffer."
                   (not (eobp))))
       (funcall move))))
 
-(defun utl-gnus-article-find-url (predicate)
+(defun al/gnus-article-find-url (predicate)
   "Return the first widget URL matching PREDICATE.
 Return nil if no matches found."
   (save-excursion
     (article-goto-body)
     (backward-char)
-    (utl-gnus-article-find-url-1 predicate)))
+    (al/gnus-article-find-url-1 predicate)))
 
-(defun utl-gnus-article-find-url-1 (predicate)
-  (utl-widget-next)
+(defun al/gnus-article-find-url-1 (predicate)
+  (al/widget-next)
   (unless (eobp)
     (let* ((point (point))
            ;; Text property with URL depends on `mm-text-html-renderer'.
@@ -116,27 +116,27 @@ Return nil if no matches found."
                     (get-text-property point 'shr-url))))
       (if (and url (funcall predicate url))
           url
-        (utl-gnus-article-find-url-1 predicate)))))
+        (al/gnus-article-find-url-1 predicate)))))
 
-(defun utl-gnus-article-find-url-by-re (regexp &optional group)
+(defun al/gnus-article-find-url-by-re (regexp &optional group)
   "Return the first widget URL matching REGEXP.
 If GROUP is non-nil, it should be a number specifying a
 parenthesized expression from REGEXP that should be returned.
 Return nil if no matches found."
-  (let ((url (utl-gnus-article-find-url
+  (let ((url (al/gnus-article-find-url
               (lambda (url) (string-match-p regexp url)))))
     (if (null group)
         url
       (string-match regexp url)
       (match-string group url))))
 
-(defun utl-gnus-article-find-url-by-name (regexp)
+(defun al/gnus-article-find-url-by-name (regexp)
   "Return the first widget URL with widget name matching REGEXP.
 Return nil if no matches found."
-  (utl-gnus-article-find-url
+  (al/gnus-article-find-url
    (lambda (_) (looking-at regexp))))
 
-(defmacro utl-gnus-summary-eval-in-article (&rest body)
+(defmacro al/gnus-summary-eval-in-article (&rest body)
   "Display an article buffer and evaluate BODY there."
   ;; The code is taken from `gnus-summary-next-page'.
   `(let ((article (gnus-summary-article-number)))
@@ -152,53 +152,53 @@ Return nil if no matches found."
      (gnus-eval-in-buffer-window gnus-article-buffer
        ,@body)))
 
-(defun utl-gnus-summary-find-url-by-re (regexp &optional group)
+(defun al/gnus-summary-find-url-by-re (regexp &optional group)
   "Return the first URL from the gnus article matching REGEXP.
-See `utl-gnus-article-find-url-by-re' for details."
-  (utl-gnus-summary-eval-in-article
-   (utl-gnus-article-find-url-by-re regexp group)))
+See `al/gnus-article-find-url-by-re' for details."
+  (al/gnus-summary-eval-in-article
+   (al/gnus-article-find-url-by-re regexp group)))
 
-(defun utl-gnus-summary-find-url-by-name (regexp)
+(defun al/gnus-summary-find-url-by-name (regexp)
   "Return the first URL from the gnus article with name matching REGEXP.
-See `utl-gnus-article-find-url-by-name' for details."
-  (utl-gnus-summary-eval-in-article
-   (utl-gnus-article-find-url-by-name regexp)))
+See `al/gnus-article-find-url-by-name' for details."
+  (al/gnus-summary-eval-in-article
+   (al/gnus-article-find-url-by-name regexp)))
 
-(defun utl-gnus-summary-find-link-url ()
+(defun al/gnus-summary-find-link-url ()
   "Return the first \"link\" URL from the gnus article.
-Matching url is defined by `utl-gnus-link-re'."
-  (utl-gnus-summary-find-url-by-name utl-gnus-link-re))
+Matching url is defined by `al/gnus-link-re'."
+  (al/gnus-summary-find-url-by-name al/gnus-link-re))
 
-(defun utl-gnus-summary-find-mm-url ()
+(defun al/gnus-summary-find-mm-url ()
   "Return the first multimedia URL from the gnus article.
-Matching url is defined by `utl-gnus-mm-url-re'."
-  (utl-gnus-summary-find-url-by-re utl-gnus-mm-url-re))
+Matching url is defined by `al/gnus-mm-url-re'."
+  (al/gnus-summary-find-url-by-re al/gnus-mm-url-re))
 
 ;;;###autoload
-(defun utl-gnus-summary-browse-link-url ()
+(defun al/gnus-summary-browse-link-url ()
   "Browse the first \"link\" URL from the gnus article."
   (interactive)
-  (browse-url (utl-gnus-summary-find-link-url)))
+  (browse-url (al/gnus-summary-find-link-url)))
 
 (declare-function emms-add-url "emms-source-file" (url))
 (declare-function emms-play-url "emms-source-file" (url))
 
 ;;;###autoload
-(defun utl-gnus-summary-emms-add-url ()
+(defun al/gnus-summary-emms-add-url ()
   "Add the first multimedia URL from gnus article to EMMS playlist."
   (interactive)
-  (emms-add-url (utl-gnus-summary-find-mm-url)))
+  (emms-add-url (al/gnus-summary-find-mm-url)))
 
 ;;;###autoload
-(defun utl-gnus-summary-emms-play-url ()
+(defun al/gnus-summary-emms-play-url ()
   "Play the first multimedia URL from gnus article with EMMS."
   (interactive)
-  (emms-play-url (utl-gnus-summary-find-mm-url)))
+  (emms-play-url (al/gnus-summary-find-mm-url)))
 
 
 ;;; Convert Atom to RSS
 
-;; The code for `utl-convert-atom-to-rss' is taken from a defadvice from
+;; The code for `al/convert-atom-to-rss' is taken from a defadvice from
 ;; <http://www.emacswiki.org/emacs/GnusRss>.  The original
 ;; "atom2rss.xsl" is taken from <http://atom.geekhood.net/>.
 
@@ -216,16 +216,16 @@ Matching url is defined by `utl-gnus-mm-url-re'."
 ;;
 ;; in "atom2rss.xsl" and now I can check github feed in gnus. Hooray!
 
-(defvar utl-atom2rss-file
+(defvar al/atom2rss-file
   (expand-file-name "atom2rss.xsl" user-emacs-directory)
   "Path to \"atom2rss.xsl\" file for converting Atom to RSS.")
 
-(defun utl-convert-atom-to-rss (&rest _)
+(defun al/convert-atom-to-rss (&rest _)
   "Convert Atom to RSS (if needed) by calling xsltproc.
 This function is intendend to be used as an 'after' advice for
 `mm-url-insert', i.e.:
 
-  (advice-add 'mm-url-insert :after #'utl-convert-atom-to-rss)"
+  (advice-add 'mm-url-insert :after #'al/convert-atom-to-rss)"
   (when (re-search-forward "xmlns=\"http://www.w3.org/.*/Atom\""
 			   nil t)
     (goto-char (point-min))
@@ -233,38 +233,38 @@ This function is intendend to be used as an 'after' advice for
     (call-process-region (point-min) (point-max)
 			 "xsltproc"
 			 t t nil
-			 utl-atom2rss-file "-")
+			 al/atom2rss-file "-")
     (goto-char (point-min))
     (message "Converting Atom to RSS... done")))
 
 
 ;;; Agent mode-line string
 
-(defvar utl-gnus-plugged " ↔"
+(defvar al/gnus-plugged " ↔"
   "Mode-line string indicating that Gnus is plugged.
-Used by `utl-change-mode-string' advice for
+Used by `al/change-mode-string' advice for
 `gnus-agent-make-mode-line-string'.")
 
-(defvar utl-gnus-unplugged " ↮"
+(defvar al/gnus-unplugged " ↮"
   "Mode-line string indicating that Gnus is unplugged.
-Used by `utl-change-mode-string' advice for
+Used by `al/change-mode-string' advice for
 `gnus-agent-make-mode-line-string'.")
 
-(defun utl-gnus-plugged-status (string)
-  "Return `utl-gnus-plugged' or `utl-gnus-unplugged' depending on STRING."
+(defun al/gnus-plugged-status (string)
+  "Return `al/gnus-plugged' or `al/gnus-unplugged' depending on STRING."
   (cond
-   ((string= string " Plugged") utl-gnus-plugged)
-   ((string= string " Unplugged") utl-gnus-unplugged)
+   ((string= string " Plugged") al/gnus-plugged)
+   ((string= string " Unplugged") al/gnus-unplugged)
    (t " unknown")))
 
-(defun utl-gnus-agent-mode-line-string (fun string &rest args)
+(defun al/gnus-agent-mode-line-string (fun string &rest args)
   "Modify \"Plugged\"/\"Unplugged\" mode-line string.
 This function is intendend to be used as an 'around' advice for
 `gnus-agent-make-mode-line-string', i.e.:
 
   (advice-add 'gnus-agent-make-mode-line-string
-              :around #'utl-gnus-agent-mode-line-string)"
-  (apply fun (utl-gnus-plugged-status string) args))
+              :around #'al/gnus-agent-mode-line-string)"
+  (apply fun (al/gnus-plugged-status string) args))
 
 (provide 'al-gnus)
 

@@ -6,14 +6,14 @@
 ;;; Code:
 
 ;;;###autoload
-(defun utl-ido-find-file (&optional dir)
+(defun al/ido-find-file (&optional dir)
   "Similar to `ido-find-file', but start from DIR if it is non-nil."
   (interactive)
   (let ((default-directory (or dir default-directory)))
     (ido-find-file)))
 
 ;;;###autoload
-(defun utl-sudo-find-file (&optional arg)
+(defun al/sudo-find-file (&optional arg)
   "Find current file or dired directory with root privileges.
 If ARG is nil use `find-alternate-file', otherwise - `find-file'."
   (interactive "P")
@@ -30,38 +30,38 @@ If ARG is nil use `find-alternate-file', otherwise - `find-file'."
     (goto-char point)
     (set-window-start nil window-start)))
 
-(defvar utl-ssh-default-user user-login-name
-  "A default user name for `utl-ssh-find-file'.
+(defvar al/ssh-default-user user-login-name
+  "A default user name for `al/ssh-find-file'.
 Can be a string or a list of strings (names).")
-(defvar utl-ssh-default-host "remote-host"
-  "A default host name for `utl-ssh-find-file'.
+(defvar al/ssh-default-host "remote-host"
+  "A default host name for `al/ssh-find-file'.
 Can be a string or a list of strings (hosts).")
 
 ;;;###autoload
-(defun utl-ssh-find-file (&optional user host)
+(defun al/ssh-find-file (&optional user host)
   "Find a file for a USER on a HOST using tramp ssh method.
 If USER and HOST are not specified, values from
-`utl-ssh-default-user' and `utl-ssh-default-host' will be used.
+`al/ssh-default-user' and `al/ssh-default-host' will be used.
 Interactively with \\[universal-argument] prompt for a user name,
 with \\[universal-argument] \\[universal-argument] prompt for a default host as well."
   (interactive
    (list (and (or (equal current-prefix-arg '(4))
                   (equal current-prefix-arg '(16)))
               (ido-completing-read "User: "
-                                   (if (listp utl-ssh-default-user)
-                                       utl-ssh-default-user
-                                     (list utl-ssh-default-user))))
+                                   (if (listp al/ssh-default-user)
+                                       al/ssh-default-user
+                                     (list al/ssh-default-user))))
          (and (equal current-prefix-arg '(16))
               (ido-completing-read "Host: "
-                                   (if (listp utl-ssh-default-host)
-                                       utl-ssh-default-host
-                                     (list utl-ssh-default-host))))))
-  (or user (setq user (or (and (listp utl-ssh-default-user)
-                               (car utl-ssh-default-user))
-                          utl-ssh-default-user)))
-  (or host (setq host (or (and (listp utl-ssh-default-host)
-                               (car utl-ssh-default-host))
-                          utl-ssh-default-host)))
+                                   (if (listp al/ssh-default-host)
+                                       al/ssh-default-host
+                                     (list al/ssh-default-host))))))
+  (or user (setq user (or (and (listp al/ssh-default-user)
+                               (car al/ssh-default-user))
+                          al/ssh-default-user)))
+  (or host (setq host (or (and (listp al/ssh-default-host)
+                               (car al/ssh-default-host))
+                          al/ssh-default-host)))
   (with-current-buffer
       (find-file-noselect (format "/ssh:%s@%s:/" user host))
     (ido-find-file)))
@@ -73,7 +73,7 @@ with \\[universal-argument] \\[universal-argument] prompt for a default host as 
 ;; by `make-backup-file-name', but not by `find-backup-file-name', so
 ;; replace `make-backup-file-name-1' instead.
 
-(defun utl-make-backup-file-name-1 (file)
+(defun al/make-backup-file-name-1 (file)
   "Return a new backup file path of a given FILE.
 If the new path's directories do not exist, create them.
 This function is intended to be used as a substitution for
@@ -101,7 +101,7 @@ This function is intended to be used as a substitution for
                               abs-backup-directory nil)))))
     backup-file))
 
-(defun utl-backup-enable-predicate (name)
+(defun al/backup-enable-predicate (name)
   "Function for `backup-enable-predicate'.
 Do not backup su/sudo files."
   (and (normal-backup-enable-predicate name)

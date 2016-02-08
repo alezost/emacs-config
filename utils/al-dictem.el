@@ -8,7 +8,7 @@
 (require 'dictem)
 (require 'al-misc)
 
-(defun utl-dictem ()
+(defun al/dictem ()
   "Same as `dictem' but do not use other window for a dictem buffer."
   (let ((buffer (generate-new-buffer dictem-buffer-name))
 	(window-configuration (current-window-configuration))
@@ -21,7 +21,7 @@
     (setq dictem-window-configuration window-configuration)
     (setq dictem-selected-window selected-window)))
 
-(defun utl-dictem-define-on-press ()
+(defun al/dictem-define-on-press ()
   "Same as `dictem-define-on-press' but with \"*\" for dicts."
   (interactive)
   (let* ((properties (text-properties-at (point)))
@@ -38,36 +38,36 @@
 		    (if word (cdr word) nil)
 		    nil))))
 
-(defun utl-dictem-read-query (&optional default-query)
-  "Similar to `dictem-read-query', but uses `utl-read-string'."
-  (utl-read-string "Query word" nil 'dictem-query-history default-query))
+(defun al/dictem-read-query (&optional default-query)
+  "Similar to `dictem-read-query', but uses `al/read-string'."
+  (al/read-string "Query word" nil 'dictem-query-history default-query))
 
-(defvar utl-dictem-dicts '(nil "mueller7")
-  "List of dictionaries to search by `utl-dictem-run-word'.
+(defvar al/dictem-dicts '(nil "mueller7")
+  "List of dictionaries to search by `al/dictem-run-word'.
 dictem ignores the first dictionary, so the first element of the
 list should be nil.")
 
 ;;;###autoload
-(defun utl-dictem-run-word (&optional word)
+(defun al/dictem-run-word (&optional word)
   "Ask about word and show definitions in new buffer."
   (interactive)
   (let ((dictem-server nil))
     (dictem-run 'dictem-base-define
-                utl-dictem-dicts
-                (or word (utl-dictem-read-query (thing-at-point 'word)))
+                al/dictem-dicts
+                (or word (al/dictem-read-query (thing-at-point 'word)))
                 "exact")))
 
 ;;;###autoload
-(defun utl-dictem-run-dict-search ()
+(defun al/dictem-run-dict-search ()
   "Search in \"dict.org\". Ask about search strategy and query."
   (interactive)
   (let ((dictem-server "dict.org")
-        (query (utl-dictem-read-query (thing-at-point 'word)))
+        (query (al/dictem-read-query (thing-at-point 'word)))
         (strat (dictem-select-strategy (dictem-get-default-strategy))))
     (dictem-run 'dictem-base-search "*" query strat)))
 
 ;;;###autoload
-(defun utl-dictem-run-show-all-info ()
+(defun al/dictem-run-show-all-info ()
   "Show information about all local databases"
   (interactive)
   (let ((dictem-server "localhost"))

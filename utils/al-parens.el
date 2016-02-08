@@ -8,7 +8,7 @@
 (require 'smartparens)
 
 ;;;###autoload
-(defun utl-kill-sexp (&optional arg)
+(defun al/kill-sexp (&optional arg)
   "Kill sexp forward.
 Similar to `kill-sexp', except if ARG is a raw prefix
 \\[universal-argument], kill from point to the end of current
@@ -19,7 +19,7 @@ list/string, as `sp-kill-sexp' does."
     (kill-sexp (prefix-numeric-value arg))))
 
 ;;;###autoload
-(defun utl-backward-kill-sexp (&optional arg)
+(defun al/backward-kill-sexp (&optional arg)
   "Kill sexp backward.
 Similar to `backward-kill-sexp', except if ARG is a raw prefix
 \\[universal-argument], kill from point to the end of current

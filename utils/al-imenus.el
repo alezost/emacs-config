@@ -10,22 +10,22 @@
 
 ;;; Searching/"imenu"-ing elisp files
 
-(defvar utl-imenus-elisp-dir user-emacs-directory
-  "Directory used by `utl-imenus-search-elisp-dir'.")
+(defvar al/imenus-elisp-dir user-emacs-directory
+  "Directory used by `al/imenus-search-elisp-dir'.")
 
-(defvar utl-imenus-elisp-re "^[^.].*\\.el\\'"
-  "Regexp for files to search from `utl-imenus-elisp-dir'.")
+(defvar al/imenus-elisp-re "^[^.].*\\.el\\'"
+  "Regexp for files to search from `al/imenus-elisp-dir'.")
 
-(defvar utl-imenus-elisp-prompt "Search elisp files: "
-  "Prompt used by `utl-imenus-search-elisp-dir'.")
+(defvar al/imenus-elisp-prompt "Search elisp files: "
+  "Prompt used by `al/imenus-search-elisp-dir'.")
 
 ;;;###autoload
-(defun utl-imenus-search-elisp-dir ()
-  "Perform `imenus' on elisp files from `utl-imenus-elisp-dir'."
+(defun al/imenus-search-elisp-dir ()
+  "Perform `imenus' on elisp files from `al/imenus-elisp-dir'."
   (interactive)
-  (let ((files (directory-files utl-imenus-elisp-dir
-                                t utl-imenus-elisp-re)))
-    (imenus-files files nil utl-imenus-elisp-prompt)))
+  (let ((files (directory-files al/imenus-elisp-dir
+                                t al/imenus-elisp-re)))
+    (imenus-files files nil al/imenus-elisp-prompt)))
 
 (provide 'al-imenus)
 

@@ -8,7 +8,7 @@
 (require 'pp)
 
 ;;;###autoload
-(defun utl-pp-eval-expression (expression)
+(defun al/pp-eval-expression (expression)
   "Same as `pp-eval-expression' but without \"Evaluating...\" message."
   (interactive
    (list (read--expression "Eval: ")))
@@ -16,7 +16,7 @@
   (pp-display-expression (car values) "*Pp Eval Output*"))
 
 ;;;###autoload
-(defun utl-eval-dwim (arg)
+(defun al/eval-dwim (arg)
   "Eval last sexp or region if it is active.
 ARG is passed to `eval-last-sexp'."
   (interactive "P")
@@ -25,7 +25,7 @@ ARG is passed to `eval-last-sexp'."
     (eval-last-sexp arg)))
 
 ;;;###autoload
-(defun utl-pp-eval-dwim (arg)
+(defun al/pp-eval-dwim (arg)
   "Eval last sexp or region if it is active.
 ARG is passed to `pp-eval-last-sexp'."
   (interactive "P")
@@ -35,14 +35,14 @@ ARG is passed to `pp-eval-last-sexp'."
 
 ;; From <http://www.emacswiki.org/emacs/ElDoc>.
 ;;;###autoload
-(defun utl-eldoc-argument-list (string)
+(defun al/eldoc-argument-list (string)
   "Fontify STRING for use with `eldoc-mode'.
 This function is suitable for `eldoc-argument-case' variable."
   (propertize (upcase string)
               'face 'font-lock-variable-name-face))
 
 ;;;###autoload
-(defun utl-indent-sexp (&optional no-offset pp)
+(defun al/indent-sexp (&optional no-offset pp)
   "Indent each line of the list starting just after point.
 If NO-OFFSET is non-nil (with \\[universal-argument]), indent
 without offset for the following lines.

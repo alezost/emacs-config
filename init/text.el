@@ -38,7 +38,7 @@
  ("C-H-."   (scroll-down 1))
  ("H-."   . scroll-down-command)
  ("H-M-." . scroll-other-window-down)
- ("s-."   . utl-previous-link)
+ ("s-."   . al/previous-link)
 
  ("C-e"   . next-line)
  ("M-e"   . forward-paragraph)
@@ -47,18 +47,18 @@
  ("C-H-e"   (scroll-up 1))
  ("H-e"   . scroll-up-command)
  ("H-M-e" . scroll-other-window)
- ("s-e"   . utl-next-link)
+ ("s-e"   . al/next-link)
 
  ("C-M-a" . beginning-of-defun)
- ("M-A"   . utl-beginning-of-line)
+ ("M-A"   . al/beginning-of-line)
  ("H-a"   . beginning-of-buffer)
 
  ("C-M-i" . end-of-defun)
- ("M-I"   . utl-end-of-line)
+ ("M-I"   . al/end-of-line)
  ("H-i"   . end-of-buffer)
 
  ("C-3"   . recenter-top-bottom)
- ("C-H-3" . utl-recenter-top)
+ ("C-H-3" . al/recenter-top)
  ("C-2"   . move-to-window-line-top-bottom))
 
 (if al/mwim-exists?
@@ -100,22 +100,22 @@
  ("M-,"   . kill-word)
  ("C-M-," . kill-sexp)
  ("M-<"   . kill-line)
- ("H-M-," . utl-delete-blank-lines)
+ ("H-M-," . al/delete-blank-lines)
 
  ("C-p"   . delete-backward-char)
  ("M-p"   . backward-kill-word)
  ("C-M-p" . backward-kill-sexp)
- ("M-P"   . utl-backward-kill-line)
+ ("M-P"   . al/backward-kill-line)
  ("H-M-p" . delete-trailing-whitespace)
 
- ("C-M-q" . utl-save-sexp)
- ("M-Q"   . utl-save-line)
+ ("C-M-q" . al/save-sexp)
+ ("M-Q"   . al/save-line)
 
  ("C-k"   . kill-whole-line)
- ("M-k"   . utl-save-whole-line)
- ("C-M-k" . utl-backward-save-sexp)
- ("M-K"   . utl-backward-save-line)
- ("H-k"   . utl-duplicate-dwim)
+ ("M-k"   . al/save-whole-line)
+ ("C-M-k" . al/backward-save-sexp)
+ ("M-K"   . al/backward-save-line)
+ ("H-k"   . al/duplicate-dwim)
 
  ("C-'"   . transpose-chars)
  ("M-'"     (transpose-words -1))
@@ -123,7 +123,7 @@
  ("M-\""  . transpose-lines)
 
  ("C-;"   . open-line)
- ("M-;"   . utl-comment-dwirm)
+ ("M-;"   . al/comment-dwirm)
  ("C-M-;" . split-line)
 
  ("C-t"   . kill-region)
@@ -131,15 +131,15 @@
  ("C-M-x" . append-next-kill)
 
  ("S-SPC"     . just-one-space)
- ("M-S-SPC"   . utl-delete-horizontal-space)
+ ("M-S-SPC"   . al/delete-horizontal-space)
  ("M-SPC"     . mark-word)
  ("M-s-SPC"   . mark-paragraph)
  ("C-M-s-SPC" . mark-defun)
  ("H-s-SPC"   . mark-whole-buffer)
 
- ("C-y" . utl-yank-or-prev)
- ("M-y" . utl-yank-or-next)
- ("C-M-y" . utl-insert-clipboard)
+ ("C-y" . al/yank-or-prev)
+ ("M-y" . al/yank-or-next)
+ ("C-M-y" . al/insert-clipboard)
 
  ("C-j" . newline-and-indent)
  ("<S-backspace>" . delete-region)
@@ -147,26 +147,26 @@
  ("C-H-M-a" (align-regexp (region-beginning) (region-end)
                           "\\(\\s-*\\)(("))
  ("M-%" . ispell-complete-word)
- ("M-_" . utl-number-down)
- ("M-+" . utl-number-up)
+ ("M-_" . al/number-down)
+ ("M-+" . al/number-up)
 
  ("M-/"   . dabbrev-expand)
  ("C-M-/" . hippie-expand)
- ("M-?"   . utl-dabbrev-expand-word)
+ ("M-?"   . al/dabbrev-expand-word)
 
- ("<C-kanji>"   . utl-downcase-word-backward)
- ("<S-kanji>"   . utl-capitalize-word-backward)
- ("<H-kanji>"   . utl-upcase-word-backward)
- ("<C-M-kanji>" . utl-downcase-dwim)
- ("<M-S-kanji>" . utl-capitalize-dwim)
- ("<H-M-kanji>" . utl-upcase-dwim))
+ ("<C-kanji>"   . al/downcase-word-backward)
+ ("<S-kanji>"   . al/capitalize-word-backward)
+ ("<H-kanji>"   . al/upcase-word-backward)
+ ("<C-M-kanji>" . al/downcase-dwim)
+ ("<M-S-kanji>" . al/capitalize-dwim)
+ ("<H-M-kanji>" . al/upcase-dwim))
 
 (al/bind-keys
  ("<M-tab>" . complete-symbol) ; shadows "\M-\t" ("C-M-i") in any mode, so be careful
  ("<C-tab>" . indent-relative)
  ("<M-S-iso-lefttab>" . tab-to-tab-stop)
  ("<H-tab>" . indent-region)
- ("C-c u" . utl-decode-region))
+ ("C-c u" . al/decode-region))
 
 
 ;;; Global keys for inserting text
@@ -192,11 +192,11 @@
  :prefix-map al/insert-map
  :prefix-docstring "Map for inserting symbols and text."
  :prefix "M-i"
- ("M-i" . utl-insert-delimiter)
+ ("M-i" . al/insert-delimiter)
  ("M-a"   (insert ";;;###autoload\n"))
  ("t"     (insert "TODO"))
  ("f"     (insert "FIXME"))
- ("d"   . utl-insert-date)
+ ("d"   . al/insert-date)
  ("M-'" . insert-pair-top-corners)
  ("M-;" . insert-pair-bottom-corners))
 
@@ -216,8 +216,8 @@
  ("M-s" . isearch-query-replace)
  ("M-d" . isearch-edit-string)
  ("M-o" . isearch-occur)
- ("s-7"   (utl-set-isearch-input-method nil))
- ("s-8"   (utl-set-isearch-input-method "dvorak-russian-computer")))
+ ("s-7"   (al/set-isearch-input-method nil))
+ ("s-8"   (al/set-isearch-input-method "dvorak-russian-computer")))
 
 (defconst al/occur-keys
   '(("." . occur-prev)
@@ -263,9 +263,9 @@
    ("C-s" . imenus-exit-to-isearch)
    ("M-s" . imenus-exit-to-occur)))
 
-(al/bind-key "s-s" utl-imenus-search-elisp-dir)
+(al/bind-key "s-s" al/imenus-search-elisp-dir)
 (with-eval-after-load 'al-imenus
-  (setq utl-imenus-elisp-dir al/emacs-init-dir))
+  (setq al/imenus-elisp-dir al/emacs-init-dir))
 
 
 ;;; Killing and yanking
@@ -336,7 +336,7 @@
  scroll-preserve-screen-position t)
 
 (prefer-coding-system 'utf-8)
-(al/add-hook-maybe 'after-save-hook 'utl-check-parens)
+(al/add-hook-maybe 'after-save-hook 'al/check-parens)
 
 (al/modify-syntax text-mode-syntax-table (?\" "\"   "))
 (al/add-hook-maybe 'text-mode-hook
@@ -416,7 +416,7 @@
 
   (when (require 'al-pcomplete nil t)
     (al/add-hook-maybe '(shell-mode-hook eshell-mode-hook)
-      'utl-pcomplete-no-space)))
+      'al/pcomplete-no-space)))
 
 (with-eval-after-load 'pcmpl-args
   (setq
@@ -455,8 +455,8 @@
 ;; just use yas functionality when I need to expand something without
 ;; enabling the mode.
 (al/bind-keys
- ("<kanji>"   . utl-yas-next-field-or-expand)
- ("<M-kanji>" . utl-yas-exit-and-expand))
+ ("<kanji>"   . al/yas-next-field-or-expand)
+ ("<M-kanji>" . al/yas-exit-and-expand))
 (al/bind-keys
  :prefix-map al/yas-map
  :prefix-docstring "Map for yasnippet commands."
@@ -469,7 +469,7 @@
  ("l"   . yas-load-directory)
  ("d"   . yas-describe-tables)
  ("g"   . yas-global-mode)
- ("s"     (utl-ido-find-file
+ ("s"     (al/ido-find-file
            (expand-file-name "yasnippet/snippets/emacs-lisp-mode"
                              quelpa-build-dir))))
 
@@ -635,8 +635,8 @@ $0")
    ("H-P"       . paredit-splice-sexp-killing-backward)
    ("H-<"       . paredit-splice-sexp-killing-forward)
    ("H->"       . paredit-raise-sexp)
-   ("C-M-p"     . utl-backward-kill-sexp)
-   ("C-M-,"     . utl-kill-sexp)
+   ("C-M-p"     . al/backward-kill-sexp)
+   ("C-M-,"     . al/kill-sexp)
    ("C-M-'"     . sp-transpose-sexp)
    ("C-)"       . sp-forward-slurp-sexp)
    ("C-M-0"     . sp-forward-barf-sexp)

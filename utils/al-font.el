@@ -12,16 +12,16 @@
 
 ;; Idea from <http://www.emacswiki.org/emacs/SetFonts>.
 
-(defvar utl-font-candidates
+(defvar al/font-candidates
   '("Liberation Mono-12" "DejaVu Sans Mono-11" "Terminus-12")
-  "List of font names used by `utl-first-existing-font'.")
+  "List of font names used by `al/first-existing-font'.")
 
-(defun utl-first-existing-font (&rest font-names)
+(defun al/first-existing-font (&rest font-names)
   "Return first existing font from FONT-NAMES.
-If FONT-NAMES is nil, use `utl-font-candidates'."
+If FONT-NAMES is nil, use `al/font-candidates'."
   (cl-find-if (lambda (name)
                 (find-font (font-spec :name name)))
-              (or font-names utl-font-candidates)))
+              (or font-names al/font-candidates)))
 
 
 ;;; Setting different fonts for different characters
@@ -30,7 +30,7 @@ If FONT-NAMES is nil, use `utl-font-candidates'."
 ;; <http://www.emacswiki.org/emacs/FontSets> and
 ;; <http://paste.lisp.org/display/133488> for more information.
 
-(defun utl-set-fontset (&optional name frame add &rest specs)
+(defun al/set-fontset (&optional name frame add &rest specs)
   "Modify fontset NAME.
 Each specification from SPECS list has the following form:
 

@@ -30,12 +30,12 @@
  ("M-SPC" . emms-stop)
  ("s" . emms-show)
  ("m" . emms-status-toggle-mode-line)
- ("n" . utl-emms-notification-mode)
+ ("n" . al/emms-notification-mode)
  ("b" . emms-browser)
  ("l" . emms)
  ("r" . emms-streams)
- ("g" . utl-emms-seek-to)
- ("y" . utl-emms-mpv-sync-playing-time)
+ ("g" . al/emms-seek-to)
+ ("y" . al/emms-mpv-sync-playing-time)
  ("S" . emms-cache-save)
  ("u"   (emms-playlist-simple-uniq)))
 
@@ -95,7 +95,7 @@
   (setq emms-player-list '(emms-player-mplayer))
   (when (and (executable-find "mpv")
              (require 'al-emms-mpv nil t))
-    (utl-emms-mpv-add-simple-player)
+    (al/emms-mpv-add-simple-player)
     (push 'emms-player-mpv emms-player-list))
 
   ;; Do not add `emms-cache-save' to `kill-emacs-hook'.
@@ -108,10 +108,10 @@
   (emms-status-mode)
   (when (require 'al-emms nil t)
     (setq
-     emms-mode-line-mode-line-function 'utl-emms-mode-line-song-string
-     emms-track-description-function 'utl-emms-full-track-description)
+     emms-mode-line-mode-line-function 'al/emms-mode-line-song-string
+     emms-track-description-function 'al/emms-full-track-description)
     (advice-add 'emms-source-play
-      :override 'utl-emms-source-add-and-play)))
+      :override 'al/emms-source-add-and-play)))
 
 (with-eval-after-load 'emms-playlist-mode
   (defconst al/emms-playlist-keys
@@ -128,7 +128,7 @@
     '(al/free-misc-keys al/lazy-moving-keys al/emms-playlist-keys)
     t)
   (al/add-hook-maybe 'emms-playlist-mode-hook
-    '(utl-mode-name hl-line-mode)))
+    '(al/mode-name hl-line-mode)))
 
 (with-eval-after-load 'emms-streams
   (defconst al/emms-stream-keys
@@ -138,15 +138,15 @@
     "Alist of auxiliary keys for `emms-stream-mode-map'.")
   (al/bind-keys-from-vars 'emms-stream-mode-map 'al/emms-stream-keys)
   (al/add-hook-maybe 'emms-stream-hook
-    '(utl-mode-name hl-line-mode)))
+    '(al/mode-name hl-line-mode)))
 
 (al/autoload "emms-cue" emms-info-cueinfo)
 (al/autoload "emms-info-libtag" emms-info-libtag)
 
 (with-eval-after-load 'al-emms
   (setq
-   utl-emms-notification-artist-format "<big>%s</big>"
-   utl-emms-notification-title-format "<span foreground=\"yellow\">%s</span>"
-   utl-emms-notification-year-format "<span foreground=\"#84ebeb\">%s</span>"))
+   al/emms-notification-artist-format "<big>%s</big>"
+   al/emms-notification-title-format "<span foreground=\"yellow\">%s</span>"
+   al/emms-notification-year-format "<span foreground=\"#84ebeb\">%s</span>"))
 
 ;;; mmedia.el ends here

@@ -316,7 +316,7 @@ VARS are variables with bindings supported by
  ("C-="           (describe-char (point)))
  ("C-c r"       . revert-buffer)
  ("C-c p"       . list-processes)
- ("C-c k"       . utl-kill-process))
+ ("C-c k"       . al/kill-process))
 
 (defalias 'ctl-x-r-prefix ctl-x-r-map)
 (al/bind-key "M-R" ctl-x-r-prefix)
@@ -340,7 +340,7 @@ VARS are variables with bindings supported by
  :prefix-map al/modes-map
  :prefix-docstring "Map for enabling/disabling modes."
  :prefix "M-M"
- ("M-M" . utl-major-mode-to-kill-ring)
+ ("M-M" . al/major-mode-to-kill-ring)
  ("a" . artist-mode)
  ("A" . auto-fill-mode)
  ("c" . conf-unix-mode)

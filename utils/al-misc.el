@@ -7,12 +7,12 @@
 
 (require 'org)
 
-(defun utl-xor (a b)
+(defun al/xor (a b)
   "Exclusive or."
   (if a (not b) b))
 
 ;;;###autoload
-(defun utl-next-link (&optional search-backward)
+(defun al/next-link (&optional search-backward)
   "Go to the next link."
   ;; The function is almost the same as `org-next-link'.
   (interactive)
@@ -37,12 +37,12 @@
       (message "No further link found"))))
 
 ;;;###autoload
-(defun utl-previous-link ()
+(defun al/previous-link ()
   "Go to the previous link."
   (interactive)
-  (utl-next-link t))
+  (al/next-link t))
 
-(defun utl-read-string (prompt &optional initial-input history
+(defun al/read-string (prompt &optional initial-input history
                               default-value inherit-input-method)
   "Similar to `read-string', but put DEFAULT-VALUE in the prompt."
   (let (prompt-beg prompt-end)
@@ -59,7 +59,7 @@
      default-value inherit-input-method)))
 
 ;;;###autoload
-(defun utl-create-tags (shell-cmd)
+(defun al/create-tags (shell-cmd)
   "Create tags file using shell command SHELL-CMD.
 Interactively prompt for shell command.
 With prefix, prompt for directory as well."
@@ -74,7 +74,7 @@ With prefix, prompt for directory as well."
 
 ;; Idea from <http://www.emacswiki.org/emacs-en/DisabledCommands>.
 ;;;###autoload
-(defun utl-show-disabled-commands ()
+(defun al/show-disabled-commands ()
   "Show all disabled commands."
   (interactive)
   (with-output-to-temp-buffer "*Disabled commands*"
@@ -84,7 +84,7 @@ With prefix, prompt for directory as well."
                   (princ "\n"))))))
 
 ;;;###autoload
-(defun utl-refontify (&rest _)
+(defun al/refontify (&rest _)
   "Refontify the current buffer."
   (jit-lock-refontify))
 
@@ -92,7 +92,7 @@ With prefix, prompt for directory as well."
 ;;; Spelling and languages
 
 ;;;###autoload
-(defun utl-set-isearch-input-method (input-method)
+(defun al/set-isearch-input-method (input-method)
   "Activate input method INPUT-METHOD in interactive search.
 See `set-input-method' for details."
   (set-input-method input-method)

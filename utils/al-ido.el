@@ -14,18 +14,18 @@
 
 ;; To activate the following code, add to .emacs:
 ;;
-;;   (setq completing-read-function 'utl-completing-read)
+;;   (setq completing-read-function 'al/completing-read)
 
-(defvar utl-ido-enable-replace-completing-read t
+(defvar al/ido-enable-replace-completing-read t
   "If non-nil, use `ido-completing-read' instead of `completing-read'.")
 
-(defun utl-completing-read (prompt collection &optional predicate
+(defun al/completing-read (prompt collection &optional predicate
                                    require-match initial-input
                                    hist def inherit-input-method)
   "Function for `completing-read-function' variable.
 Use `ido-completing-read' if possible."
   (let (choices)
-    (if (and utl-ido-enable-replace-completing-read
+    (if (and al/ido-enable-replace-completing-read
              (setq choices (all-completions "" collection predicate)))
         ;; Match is never required because with requiring it's
         ;; not possible to select "#XXXXXX" with `read-color'.
@@ -35,20 +35,20 @@ Use `ido-completing-read' if possible."
                                require-match initial-input
                                hist def inherit-input-method))))
 
-(defun utl-ido-disable (fun &rest args)
+(defun al/ido-disable (fun &rest args)
   "Disable `ido-completing-read' for FUN.
 This function is intended to be used as an 'around' advice for
 FUN, for example:
 
-  (advice-add 'org-set-tags :around #'utl-ido-disable)"
-  (let (utl-ido-enable-replace-completing-read)
+  (advice-add 'org-set-tags :around #'al/ido-disable)"
+  (let (al/ido-enable-replace-completing-read)
     (apply fun args)))
 
 
 (defvar ido-rotate-temp)
 
 ;;;###autoload
-(defun utl-ido-set-current-directory (dir)
+(defun al/ido-set-current-directory (dir)
   "Change the current ido working directory to DIR."
   (interactive)
   (ido-set-current-directory dir)
@@ -58,7 +58,7 @@ FUN, for example:
   (exit-minibuffer))
 
 ;;;###autoload
-(defun utl-ido-copy-current-item ()
+(defun al/ido-copy-current-item ()
   "Put the current ido item into `kill-ring'."
   (interactive)
   (kill-new (car ido-matches)))

@@ -7,18 +7,18 @@
 
 (require 'cl-lib)
 (require 'notifications)
-(require 'utl-notification)
+(require 'al-notification)
 
-(defvar utl-compilation-sound-success nil
+(defvar al/compilation-sound-success nil
   "Sound file for a successful compilation.")
 
-(defvar utl-compilation-sound-error nil
+(defvar al/compilation-sound-error nil
   "Sound file for a failed compilation.")
 
 (defvar exit-status)
 
 ;; Idea from <https://gist.github.com/jwiegley/fd78e747f27a90cb67a2>.
-(defun utl-compilation-notify (buffer reason)
+(defun al/compilation-notify (buffer reason)
   "Notify about the ended compilation in BUFFER.
 This function is intended to be used in
 `compilation-finish-functions'."
@@ -26,9 +26,9 @@ This function is intended to be used in
     (unless (eq major-mode 'grep-mode)
       (cl-multiple-value-bind (sound urgency)
           (if (= exit-status 0)
-              (list utl-compilation-sound-success 'normal)
-            (list utl-compilation-sound-error 'critical))
-        (and sound (utl-play-sound sound))
+              (list al/compilation-sound-success 'normal)
+            (list al/compilation-sound-error 'critical))
+        (and sound (al/play-sound sound))
         (notifications-notify
          :urgency urgency
          :title "Compilation finished"

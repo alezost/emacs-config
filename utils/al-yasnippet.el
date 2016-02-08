@@ -8,7 +8,7 @@
 (require 'yasnippet)
 
 ;;;###autoload
-(defun utl-yas-next-field-or-expand ()
+(defun al/yas-next-field-or-expand ()
   "Go to the next field if a snippet is in progress or perform an expand."
   (interactive)
   (if (yas--snippets-at-point 'all)
@@ -16,7 +16,7 @@
     (yas-expand)))
 
 ;;;###autoload
-(defun utl-yas-exit-and-expand ()
+(defun al/yas-exit-and-expand ()
   "Exit all snippets and expand a snippet before point."
   (interactive)
   (save-excursion (yas-exit-all-snippets))

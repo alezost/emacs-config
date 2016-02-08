@@ -8,7 +8,7 @@
 (require 'slime)
 
 ;;;###autoload
-(defun utl-slime-eval-dwim ()
+(defun al/slime-eval-dwim ()
   "Eval (with slime) last sexp or region if it is active."
   (interactive)
   (if (use-region-p)
@@ -18,7 +18,7 @@
 (defvar slime-repl-input-start-mark)
 
 ;;;###autoload
-(defun utl-slime-repl-kill-whole-line (arg)
+(defun al/slime-repl-kill-whole-line (arg)
   "Similar to `kill-whole-line', respecting slime-repl prompt."
   (interactive "p")
   (let ((prompt-pos (marker-position slime-repl-input-start-mark)))

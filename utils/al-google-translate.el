@@ -12,7 +12,7 @@
 
 ;;; Default UI
 
-(defun utl-%google-translate (override-p reverse-p)
+(defun al/%google-translate (override-p reverse-p)
   "Translate region or prompting text.
 Alternative to `%google-translate-query-translate' and
 `%google-translate-at-point'."
@@ -23,39 +23,39 @@ Alternative to `%google-translate-query-translate' and
      source-language target-language
      (if (use-region-p)
          (buffer-substring-no-properties (region-beginning) (region-end))
-       (utl-read-string
+       (al/read-string
         (format "Translate from %s to %s: "
                 (google-translate-language-display-name source-language)
                 (google-translate-language-display-name target-language))
         nil nil (current-word t t))))))
 
 ;;;###autoload
-(defun utl-google-translate (&optional override-p)
+(defun al/google-translate (&optional override-p)
   "Translate region or prompting text from auto detected language.
 For the meaning of OVERRIDE-P, see `google-translate-query-translate'."
   (interactive "P")
   (let ((google-translate-default-source-language "auto"))
-    (utl-%google-translate override-p nil)))
+    (al/%google-translate override-p nil)))
 
 ;;;###autoload
-(defun utl-google-translate-direct ()
+(defun al/google-translate-direct ()
   "Translate region or prompting text from source to target language.
 For details look at `google-translate-query-translate'."
   (interactive)
-  (utl-%google-translate nil nil))
+  (al/%google-translate nil nil))
 
 ;;;###autoload
-(defun utl-google-translate-reverse ()
+(defun al/google-translate-reverse ()
   "Translate region or prompting text from target to source language.
 For details look at `google-translate-query-translate'."
   (interactive)
-  (utl-%google-translate nil t))
+  (al/%google-translate nil t))
 
 
 ;;; Smooth UI
 
 ;;;###autoload
-(defun utl-google-translate-smooth-translate ()
+(defun al/google-translate-smooth-translate ()
   "Translate a text using translation directions.
 Similar to `google-translate-smooth-translate', but prompt for
 languages (if needed) before text."
@@ -83,12 +83,12 @@ languages (if needed) before text."
        text))))
 
 ;;;###autoload
-(defun utl-google-translate-using-languages (source target)
+(defun al/google-translate-using-languages (source target)
   "Translate a text using SOURCE and TARGET languages."
   (let ((google-translate-translation-directions-alist
          (list (cons source target)
                (cons target source))))
-    (utl-google-translate-smooth-translate)))
+    (al/google-translate-smooth-translate)))
 
 (provide 'al-google-translate)
 
