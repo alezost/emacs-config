@@ -56,7 +56,7 @@
   dictem-run-match)
 
 (with-eval-after-load 'dictem
-  (when (require 'utl-dictem nil t)
+  (when (require 'al-dictem nil t)
     (dictem-initialize)
     (advice-add 'dictem :override 'utl-dictem)
     (advice-add 'dictem-define-on-press
@@ -81,7 +81,7 @@
   (add-hook 'dictem-postprocess-show-info-hook
             'dictem-postprocess-definition-hyperlinks))
 
-(with-eval-after-load 'utl-dictem
+(with-eval-after-load 'al-dictem
   (setq utl-dictem-dicts
         '(nil "mueller7" "korolew_en-ru" "korolew_ru-en"
               "slovnyk_ru-en" "ushakov" "fd-eng-lat" "fd-lat-eng")))

@@ -264,7 +264,7 @@
    ("M-s" . imenus-exit-to-occur)))
 
 (al/bind-key "s-s" utl-imenus-search-elisp-dir)
-(with-eval-after-load 'utl-imenus
+(with-eval-after-load 'al-imenus
   (setq utl-imenus-elisp-dir al/emacs-init-dir))
 
 
@@ -414,7 +414,7 @@
   ;; inserting space after ":" (while completing ERC nicks).
   (setq pcomplete-suffix-list nil)
 
-  (when (require 'utl-pcomplete nil t)
+  (when (require 'al-pcomplete nil t)
     (al/add-hook-maybe '(shell-mode-hook eshell-mode-hook)
       'utl-pcomplete-no-space)))
 

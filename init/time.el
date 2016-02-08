@@ -81,7 +81,7 @@
   (al/add-hook-maybe 'calendar-mode-hook 'al/bar-cursor-type)
   (add-hook 'calendar-today-visible-hook 'calendar-mark-today))
 
-(with-eval-after-load 'utl-calendar
+(with-eval-after-load 'al-calendar
   (setq utl-calendar-date-display-form
         '((format "%s %.3s %2s" year monthname day))))
 
@@ -108,20 +108,20 @@
    appt-display-interval 1)
   (when (require 'sauron nil t)
     (add-to-list 'sauron-modules 'sauron-org))
-  (when (require 'utl-appt nil t)
+  (when (require 'al-appt nil t)
     (advice-add 'appt-display-message
       :override 'utl-appt-display-message)))
 (al/eval-after-init
   (when (string= server-name "server")
     (appt-activate)))
 
-(with-eval-after-load 'utl-appt
+(with-eval-after-load 'al-appt
   (setq
    utl-appt-notify-normal-sound (al/sound-dir-file "drums.wav")
    utl-appt-notify-urgent-sound (al/sound-dir-file "bell.oga")))
 
-(al/autoload "utl-notification" utl-play-sound)
-(with-eval-after-load 'utl-notification
+(al/autoload "al-notification" utl-play-sound)
+(with-eval-after-load 'al-notification
   (setq
    utl-sound-file (al/sound-dir-file "alarm.wav")
    utl-timer-format "%M min %S sec"))

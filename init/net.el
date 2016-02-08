@@ -106,7 +106,7 @@
     "Alist of auxiliary keys for `w3m-mode-map'.")
   (al/bind-keys-from-vars 'w3m-mode-map 'al/w3m-keys)
 
-  (when (require 'utl-w3m nil t)
+  (when (require 'al-w3m nil t)
     (utl-w3m-bind-number-keys 'utl-w3m-switch-to-buffer)
     (utl-w3m-bind-number-keys 'utl-w3m-kill-buffer "k")))
 
@@ -117,18 +117,18 @@
   (al/bind-keys-from-vars 'w3m-form-input-select-keymap
     '(al/lazy-moving-keys al/w3m-form-keys)))
 
-(with-eval-after-load 'utl-w3m
+(with-eval-after-load 'al-w3m
   (setq
    utl-w3m-search-link-depth 20
    utl-w3m-search-re "[^[:alnum:]]*\\<%s\\>"))
 
 (with-eval-after-load 'browse-url
-  (when (require 'utl-browse-url nil t)
+  (when (require 'al-browse-url nil t)
     (setq browse-url-browser-function 'utl-choose-browser)
     (advice-add 'browse-url-default-browser
       :override 'utl-browse-url-conkeror)))
 
-(with-eval-after-load 'utl-browse-url
+(with-eval-after-load 'al-browse-url
   (setcar (cl-find-if (lambda (spec)
                         (string= "conkeror" (cadr spec)))
                       utl-browser-choices)
@@ -161,7 +161,7 @@
  ("n"   . gnus-msg-mail))
 
 (with-eval-after-load 'gnus
-  (require 'utl-gnus nil t)
+  (require 'al-gnus nil t)
   (setq
    gnus-select-method '(nnml "")
    gnus-secondary-select-methods
@@ -380,7 +380,7 @@
    ("u" . shr-browse-url)
    ("c" . shr-copy-url)))
 
-(with-eval-after-load 'utl-gnus
+(with-eval-after-load 'al-gnus
   (setq utl-atom2rss-file (al/emacs-data-dir-file "atom2rss.xsl"))
   (advice-add 'mm-url-insert
     :after #'utl-convert-atom-to-rss)
@@ -506,7 +506,7 @@
         (al/bind-local-keys-from-vars 'al/slime-keys)))))
   (al/add-hook-maybe 'erc-join-hook 'al/erc-channel-config)
 
-  (when (require 'utl-erc nil t)
+  (when (require 'al-erc nil t)
     (when (utl-znc-running-p)
       (setq erc-server "localhost"
             erc-port 32456))
@@ -560,7 +560,7 @@
   (define-key erc-list-menu-sort-button-map
     [header-line mouse-2] 'erc-list-menu-sort-by-column))
 
-(with-eval-after-load 'utl-erc
+(with-eval-after-load 'al-erc
   (setq
    utl-erc-log-excluded-regexps
    '("\\`#archlinux\\'" "\\`#emacs\\'" "\\`#freenode\\'" "\\`#znc\\'")
@@ -605,7 +605,7 @@
 (with-eval-after-load 'net-utils
   (setq ping-program-options '("-c" "3")))
 
-(with-eval-after-load 'utl-net
+(with-eval-after-load 'al-net
   (setq
    utl-net-hosts '("zeus" "hyperion" "192.168.1.1" "10.11.149.1"
                    "10.10.0.1" "google.com" "ya.ru")

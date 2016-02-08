@@ -18,7 +18,7 @@
 
 ;;; External processes
 
-(with-eval-after-load 'utl-process
+(with-eval-after-load 'al-process
   (defun al/set-zathura-theme (name)
     (make-symbolic-link name (al/config-dir-file "zathura/theme") t))
 
@@ -42,7 +42,7 @@
 (al/bind-keys-from-vars 'minibuffer-local-map 'al/minibuffer-keys)
 
 (with-eval-after-load 'minibuffer
-  (when (require 'utl-ido nil t)
+  (when (require 'al-ido nil t)
     (advice-add 'read-file-name-default :around #'utl-ido-disable)))
 
 (with-eval-after-load 'ido
@@ -98,7 +98,7 @@
     '(al/ido-file-dir-keys al/ido-common-keys))
 
   (al/add-hook-maybe 'ido-minibuffer-setup-hook 'al/no-truncate-lines)
-  (when (require 'utl-ido nil t)
+  (when (require 'al-ido nil t)
     (setq completing-read-function #'utl-completing-read))
 
   (ido-everywhere))
@@ -305,7 +305,7 @@
     '(al/eshell-bind-keys al/eshell-set-paragraph))
 
   (require 'tramp nil t)
-  (when (require 'utl-eshell nil t)
+  (when (require 'al-eshell nil t)
     (setq
      eshell-prompt-function 'utl-eshell-prompt
      eshell-prompt-regexp utl-eshell-prompt-regexp)
@@ -363,7 +363,7 @@
 
 (with-eval-after-load 'man
   (setq Man-notify-method 'pushy)
-  (when (require 'utl-mode-line nil t)
+  (when (require 'al-mode-line nil t)
     (utl-mode-line-default-buffer-identification 'Man-mode))
 
   (defconst al/man-keys
@@ -431,7 +431,7 @@
   (al/clean-map 'sql-interactive-mode-map)
   (set-keymap-parent sql-interactive-mode-map comint-mode-map)
 
-  (when (require 'utl-sql nil t)
+  (when (require 'al-sql nil t)
     (advice-add 'sql-highlight-product
       :override 'utl-sql-highlight-product)
     (al/add-hook-maybe 'sql-interactive-mode-hook
@@ -446,7 +446,7 @@
 
 (with-eval-after-load 'mysql
   (setq mysql-user sql-user)
-  (when (require 'utl-mysql nil t)
+  (when (require 'al-mysql nil t)
     (advice-add 'mysql-shell-query
       :override 'utl-mysql-shell-query)))
 
@@ -457,7 +457,7 @@
    '("mysql" "information_schema" "performance_schema"))
   (require 'cl nil t))
 
-(with-eval-after-load 'utl-sql
+(with-eval-after-load 'al-sql
   (setq utl-sql-history-dir (al/emacs-data-dir-file "sql")))
 
 
@@ -633,7 +633,7 @@
   (al/bind-keys-from-vars 'diff-mode-map 'al/diff-keys))
 
 (with-eval-after-load 'ediff
-  (when (require 'utl-ediff nil t)
+  (when (require 'al-ediff nil t)
     (al/add-hook-maybe 'ediff-before-setup-hook
       'utl-ediff-save-window-configuration)
     (al/add-hook-maybe 'ediff-quit-hook

@@ -21,7 +21,7 @@
 (defun al/frame-visual-actions (&optional frame)
   "Perform some visual actions specific to a FRAME type."
   (when (and (display-graphic-p)
-             (require 'utl-font nil t))
+             (require 'al-font nil t))
     (set-frame-font (utl-first-existing-font) nil t)
     ;; Should be "solved": 武 (droid); 🐼, 😻, ⚽, ∵, ⸪ (symbola);
     ;; ࿌ (unifont); 🃜, 🜒, 🝖 (quivira).
@@ -107,7 +107,7 @@
 
 (al/eval-after-init
   (and (require 'alect-themes nil t)
-       (require 'utl-color nil t)
+       (require 'al-color nil t)
        (utl-load-theme 'alect-light)))
 
 

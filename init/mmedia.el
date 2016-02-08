@@ -94,7 +94,7 @@
 
   (setq emms-player-list '(emms-player-mplayer))
   (when (and (executable-find "mpv")
-             (require 'utl-emms-mpv nil t))
+             (require 'al-emms-mpv nil t))
     (utl-emms-mpv-add-simple-player)
     (push 'emms-player-mpv emms-player-list))
 
@@ -106,7 +106,7 @@
     'emms-last-played-update-current)
 
   (emms-status-mode)
-  (when (require 'utl-emms nil t)
+  (when (require 'al-emms nil t)
     (setq
      emms-mode-line-mode-line-function 'utl-emms-mode-line-song-string
      emms-track-description-function 'utl-emms-full-track-description)
@@ -143,7 +143,7 @@
 (al/autoload "emms-cue" emms-info-cueinfo)
 (al/autoload "emms-info-libtag" emms-info-libtag)
 
-(with-eval-after-load 'utl-emms
+(with-eval-after-load 'al-emms
   (setq
    utl-emms-notification-artist-format "<big>%s</big>"
    utl-emms-notification-title-format "<span foreground=\"yellow\">%s</span>"

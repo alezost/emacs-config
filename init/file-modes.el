@@ -40,7 +40,7 @@
 (setq org-export-backends
       '(ascii html icalendar latex odt texinfo man))
 (with-eval-after-load 'org
-  (require 'utl-org nil t)
+  (require 'al-org nil t)
   (setq
    org-imenu-depth 6
    org-completion-use-ido t
@@ -99,7 +99,7 @@
   (al/bind-keys-from-vars 'org-mode-map
     '(al/org-keys al/text-editing-keys))
 
-  (when (require 'utl-ido nil t)
+  (when (require 'al-ido nil t)
     (advice-add 'org-set-tags :around #'utl-ido-disable))
 
   (org-add-link-type "pdfview" 'org-pdfview-open 'org-pdfview-export))
@@ -122,7 +122,7 @@
    ("." . org-agenda-previous-line)
    ("e" . org-agenda-next-line)))
 
-(with-eval-after-load 'utl-org
+(with-eval-after-load 'al-org
   (org-add-link-type "emms" 'utl-org-emms-open)
   (al/add-hook-maybe 'org-store-link-functions
     'utl-org-emms-store-link))

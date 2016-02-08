@@ -178,7 +178,7 @@
   (al/modify-page-break-syntax scheme-mode-syntax-table)
   (al/add-hook-maybe 'scheme-mode-hook
     '(utl-imenu-add-sections guix-devel-mode))
-  (when (require 'utl-scheme nil t)
+  (when (require 'al-scheme nil t)
     (setq scheme-imenu-generic-expression
           utl-scheme-imenu-generic-expression)
     (advice-add 'scheme-indent-function
@@ -230,7 +230,7 @@
       al/no-syntactic-font-lock
       guix-build-log-minor-mode))
 
-  (when (require 'utl-geiser nil t)
+  (when (require 'al-geiser nil t)
     (setq geiser-repl-buffer-name-function
           #'utl-geiser-repl-buffer-name)))
 
@@ -291,11 +291,11 @@
     '(al/compilation-common-keys al/compilation-keys))
   (add-hook 'compilation-mode-hook 'hl-line-mode)
 
-  (when (require 'utl-compilation nil t)
+  (when (require 'al-compilation nil t)
     (al/add-hook-maybe 'compilation-finish-functions
       'utl-compilation-notify)))
 
-(with-eval-after-load 'utl-compilation
+(with-eval-after-load 'al-compilation
   (setq
    utl-compilation-sound-success (al/sound-dir-file "bell.oga")
    utl-compilation-sound-error (al/sound-dir-file "splat.wav")))

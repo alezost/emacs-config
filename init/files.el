@@ -97,7 +97,7 @@
  delete-old-versions t
  vc-make-backup-files t)
 
-(when (require 'utl-file nil t)
+(when (require 'al-file nil t)
   (setq backup-enable-predicate 'utl-backup-enable-predicate)
   (advice-add 'make-backup-file-name-1
     :override 'utl-make-backup-file-name-1))
@@ -178,11 +178,11 @@
 
   (al/add-hook-maybe 'dired-mode-hook 'hl-line-mode)
 
-  (when (require 'utl-mode-line nil t)
+  (when (require 'al-mode-line nil t)
     (utl-mode-line-default-buffer-identification 'dired-mode))
 
   (require 'dired-x nil t)
-  (when (require 'utl-dired nil t)
+  (when (require 'al-dired nil t)
     (advice-add 'dired-sort-set-mode-line
       :override 'utl-dired-sort-set-mode-line)))
 
@@ -209,7 +209,7 @@
   (al/bind-keys-from-vars 'dired-mode-map 'al/dired-keys t))
 
 (with-eval-after-load 'dired-aux
-  (when (require 'utl-dired nil t)
+  (when (require 'al-dired nil t)
     (advice-add 'dired-mark-read-file-name
       :override 'utl-dired-mark-read-file-name)))
 
@@ -274,7 +274,7 @@
    save-place-limit 999))
 (al/eval-after-init (require 'saveplace nil t))
 
-(with-eval-after-load 'utl-file
+(with-eval-after-load 'al-file
   (setq
    utl-ssh-default-user (list user-login-name "root" "lena")
    utl-ssh-default-host "hyperion"))
