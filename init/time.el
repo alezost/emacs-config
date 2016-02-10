@@ -120,7 +120,6 @@
    al/appt-notify-normal-sound (al/sound-dir-file "drums.wav")
    al/appt-notify-urgent-sound (al/sound-dir-file "bell.oga")))
 
-(al/autoload "al-notification" al/play-sound)
 (with-eval-after-load 'al-notification
   (setq
    al/sound-file (al/sound-dir-file "alarm.wav")

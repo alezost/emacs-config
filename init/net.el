@@ -537,11 +537,9 @@
 (with-eval-after-load 'erc-desktop-notifications
   (setq erc-notifications-icon "erc")
   (defun al/play-erc-sound (&rest _)
+    (require 'al-notification)
     (al/play-sound (al/sound-dir-file "chimes.wav")))
-  (al/with-check
-    :fun #'al/play-sound
-    (advice-add 'erc-notifications-notify
-      :before #'al/play-erc-sound)))
+  (advice-add 'erc-notifications-notify :before #'al/play-erc-sound))
 
 (with-eval-after-load 'erc-button
   (al/bind-keys
