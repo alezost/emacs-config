@@ -1,0 +1,67 @@
+# -*- mode: conf-space -*-
+
+
+### Arch Linux
+
+alias pac pacman $*
+alias pacq pacman -Q $*
+alias pacqm pacman -Qm
+alias pacqi pacman -Qi $*
+alias pacql pacman -Ql $*
+alias pacqo pacman -Qo $*
+alias pacqs pacman -Qs $*
+alias pacr sudo pacman -R $*
+alias pacs sudo pacman -S $*
+alias pacsi pacman -Si $*
+alias pacss pacman -Ss $*
+alias pacsuy sudo pacman -Suy $*
+alias pacu sudo pacman -U $*
+
+
+### Systemd
+
+alias sc sudo systemctl --no-pager --full $*
+alias scu systemctl --user --no-pager --full $*
+alias scd sudo systemctl daemon-reload
+alias scud systemctl --user daemon-reload
+alias scuenv systemctl --user --no-pager --full show-environment
+alias scenv systemctl --no-pager --full show-environment
+
+alias sapu systemd-analyze --user plot > /tmp/systemd-analyze-user.svg ; find-file /tmp/systemd-analyze-user.svg
+alias sap systemd-analyze plot > /tmp/systemd-analyze.svg ; find-file /tmp/systemd-analyze.svg
+alias sabu systemd-analyze --no-pager --user blame >> #<buffer *systemd-analyze-user*>
+alias sab systemd-analyze --no-pager blame >> #<buffer *systemd-analyze*>
+
+
+### Shepherd
+
+alias Herd sudo /run/current-system/profile/bin/herd $*
+alias doc     herd doc $*
+alias status  herd status $*
+alias stop    herd stop $*
+alias start   herd start $*
+alias restart herd restart $*
+alias Doc     Herd doc $*
+alias Status  Herd status $*
+alias Stop    Herd stop $*
+alias Start   Herd start $*
+alias Restart Herd restart $*
+
+
+### Misc
+
+alias f find-file $1
+alias i info $1
+alias m man $*
+alias p pgrep -l $*
+
+alias ll ls -lah $*
+alias lll ls -AlFh --group-directories-first $*
+
+alias where file-truename ${which $1}
+alias goto dired ${file-name-directory ${where $1}}
+alias g goto $1
+
+alias temperature sudo hddtemp /dev/sd[ab]
+alias texet mount /mnt/texet ; dired /mnt/texet
+alias gc guile-compile $*
