@@ -349,6 +349,10 @@
    :map gnus-dired-mode-map
    ("C-c a" . gnus-dired-attach)))
 
+(with-eval-after-load 'sendmail
+  (setq
+   send-mail-function 'smtpmail-send-it))
+
 (with-eval-after-load 'message
   (setq
    message-signature "Alex"
