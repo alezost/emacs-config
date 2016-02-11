@@ -1,0 +1,53 @@
+;;;; Emacs Bookmark Format Version 1 ;;;;
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("info-guix"
+ (position . 945)
+ (filename . "~/devel/guix/doc/guix.info")
+ (info-node . "Top")
+ (handler . Info-bookmark-jump))
+("info-shepherd"
+ (position . 1022)
+ (filename . "~/devel/shepherd/doc/shepherd.info")
+ (info-node . "Top")
+ (handler . Info-bookmark-jump))
+("info-stumpwm"
+ (position . 1200)
+ (filename . "~/devel/stumpwm/stumpwm.info")
+ (info-node . "Top")
+ (handler . Info-bookmark-jump))
+("my-guile-modules"
+ (filename . "~/progs/guile/modules/al/")
+ (position . 224))
+("my-guix-guile-modules"
+ (filename . "~/config/guix/modules/al/guix/")
+ (position . 222))
+("my-guix-system-config"
+ (filename . "~/config/guix/system-config/os-main.scm")
+ (position . 1))
+("eshell-aliases"
+ (filename . "~/config/emacs/data/eshell/alias")
+ (position . 28))
+("guix-packages"
+ (filename . "~/src/guix/gnu/packages/")
+ (position . 223))
+("nix-packages"
+ (filename . "~/src/nix-packages/pkgs/")
+ (position . 228))
+("arch-packages"
+ (filename . "~/src/arch-packages/")
+ (position . 228))
+("grub.cfg"
+ (filename . "/mnt/boot/grub/grub.cfg")
+ (position . 1811))
+("systemd-home"
+ (filename . "~/.config/systemd/user/")
+ (position . 222))
+("systemd-etc"
+ (filename . "/etc/systemd/system/")
+ (position . 203))
+("systemd-usr"
+ (filename . "/usr/lib/systemd/system/")
+ (position . 210))
+)
