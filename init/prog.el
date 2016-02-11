@@ -360,7 +360,9 @@
   )
 
 (with-eval-after-load 'magit-mode
-  (setq magit-save-repository-buffers nil)
+  (setq
+   magit-save-repository-buffers nil
+   magit-uniquify-buffer-names nil)
 
   (defconst al/magit-keys
     '(("<backtab>" . magit-section-cycle-global)
