@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# contributor: Alex Kost
+# name: lambda-interactive
+# key: li
+# --
+(lambda () (interactive) $0)

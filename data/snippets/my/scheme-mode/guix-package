@@ -1,0 +1,28 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# contributor: Alex Kost
+# name: guix-package
+# key: guix-package
+# key: gp
+# --
+(define-public ${1:`(utl-buffer-file-name)`}
+  (package
+    (name "$1")
+    (version "$2")
+    (source (origin
+              (method url-fetch)
+              (uri (string-append
+                    "$3"
+                    version "${4:.tar.gz}"))
+              (sha256
+               (base32
+                "$5"))))
+    (build-system gnu-build-system)
+    (native-inputs
+     \`(("pkg-config" ,pkg-config)))
+    (inputs
+     \`(("libx11" ,libx11)))
+    (home-page "$3")
+    (synopsis "$6")
+    (description
+     "$7")
+    (license license:${8:gpl2+})))

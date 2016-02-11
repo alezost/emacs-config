@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# contributor: Alex Kost
+# name: mode
+# key: mode
+# --
+-*- mode: $1; $0-*-

@@ -1,0 +1,10 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# contributor: Alex Kost
+# name: defmacro
+# key: defmacro
+# key: macro
+# key: mac
+# --
+(defmacro ${1:name} ($2)
+  "$3"
+  $0)

@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# contributor: Alex Kost
+# name: setq-local
+# key: setq-local
+# key: sl
+# --
+(setq-local $0)

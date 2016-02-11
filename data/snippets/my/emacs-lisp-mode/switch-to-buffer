@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# contributor: Alex Kost
+# name: switch-to-buffer
+# key: stb
+# --
+(switch-to-buffer $0)

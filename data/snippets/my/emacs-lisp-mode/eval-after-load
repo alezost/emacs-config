@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# contributor: Alex Kost
+# name: eval-after-load
+# key: eal
+# --
+(eval-after-load $1
+  '($0))

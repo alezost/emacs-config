@@ -1,0 +1,9 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# contributor: Alex Kost
+# name: defgroup
+# key: defgroup
+# key: group
+# --
+(defgroup ${1:name} nil
+  "$2"
+  :group '${3:parent})

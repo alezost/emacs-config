@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# contributor: Alex Kost
+# name: al-bind-keys
+# key: abind
+# --
+(al/bind-keys-from-vars ${1:'-mode-map} ${2:'al/-keys})

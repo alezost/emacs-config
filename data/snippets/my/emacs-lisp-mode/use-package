@@ -1,0 +1,12 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# contributor: Alex Kost
+# name: use-package
+# key: use
+# --
+(use-package $1
+  :defer t
+  :diminish ${2:" "}
+  :commands $3
+  :init $4
+  :config
+  $0)

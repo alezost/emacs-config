@@ -1,0 +1,11 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# contributor: Alex Kost
+# name: bind-keys
+# key: bind
+# --
+(bind-keys
+ :map $1-mode-map
+ :prefix-map $2-mode-map
+ :prefix-docstring "Map for $3."
+ :prefix "$4"
+ $0)

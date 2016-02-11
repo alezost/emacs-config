@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# contributor: Alex Kost
+# name: fun
+# key: fun
+# --
+(define (${1:name} ${2:args})
+  $0)

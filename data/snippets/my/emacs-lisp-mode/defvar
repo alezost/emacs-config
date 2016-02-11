@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# contributor: Alex Kost
+# name: defvar
+# key: defvar
+# key: var
+# --
+(defvar ${1:name} ${2:val}
+  "$0")

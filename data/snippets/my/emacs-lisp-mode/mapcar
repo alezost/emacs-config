@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# contributor: Alex Kost
+# name: mapcar
+# key: mapcar
+# key: mc
+# --
+(mapcar (lambda (${1:obj}) $2)
+        $0$1s)

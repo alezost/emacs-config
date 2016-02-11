@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# contributor: Alex Kost
+# name: use-modules
+# key: use-modules
+# key: use
+# --
+(use-modules (${1:srfi} $1-${2:1}))

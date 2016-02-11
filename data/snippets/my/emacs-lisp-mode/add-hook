@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# contributor: Alex Kost
+# name: add-hook
+# key: add-hook
+# key: ah
+# --
+(add-hook '$1-mode-hook
+          ${2:(lambda () ${3:(setq-local $0)})})

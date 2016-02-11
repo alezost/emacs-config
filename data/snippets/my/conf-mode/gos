@@ -1,0 +1,10 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# contributor: Alex Kost
+# name: gos
+# key: gos
+# --
+menuentry 'GNU Guix' --class guix --class gnu-linux --class gnu --class os {
+    search --set root --no-floppy --label guix
+    linux  /gnu/store/$1-system/kernel/bzImage  --root=guix  --system=/gnu/store/$1-system  --load=/gnu/store/$1-system/boot
+    initrd /gnu/store/$1-system/initrd
+}

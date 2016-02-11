@@ -1,0 +1,17 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# contributor: Alex Kost
+# name: sheader
+# key: sheader
+# --
+;;; ${1:`(utl-buffer-file-name)`}.el --- $2
+
+;; Author: `user-full-name` <`user-mail-address`>
+;; Created: `(format-time-string "%e %b %Y")`
+
+;;; Code:
+
+$0
+
+(provide '$1)
+
+;;; $1.el ends here

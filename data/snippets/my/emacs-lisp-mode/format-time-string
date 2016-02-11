@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# contributor: Alex Kost
+# name: format-time-string
+# key: fts
+# --
+(format-time-string ${1:"%Y-%b-%d, %A %T"} ${2:(current-time)})

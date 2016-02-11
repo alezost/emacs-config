@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# contributor: Alex Kost
+# name: string-to-number
+# key: stn
+# --
+(string-to-number $0)

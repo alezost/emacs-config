@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# contributor: Alex Kost
+# name: select
+# key: select
+# key: sel
+# key: s
+# --
+SELECT *$0 FROM $1 WHERE $2 GROUP BY $3 ORDER BY ${4:1} LIMIT $5;

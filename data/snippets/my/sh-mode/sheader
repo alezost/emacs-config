@@ -1,0 +1,13 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# contributor: Alex Kost
+# name: sheader
+# key: sheader
+# --
+#!/bin/sh
+
+# Author      : `user-full-name` <`user-mail-address`>
+# Created     : `(format-time-string "%e %b %Y")`
+# Description : $1
+# License     : GNU GPLv3
+
+$0

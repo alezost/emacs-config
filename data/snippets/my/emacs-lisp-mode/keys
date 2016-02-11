@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# contributor: Alex Kost
+# name: keys
+# key: keys
+# --
+(defconst al/$1-keys
+  '($2)
+  "Alist of auxiliary keys for `$1-mode-map'.")

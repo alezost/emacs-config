@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# contributor: Alex Kost
+#name: setq
+#key: setq
+#key: s
+# --
+(setq $0)

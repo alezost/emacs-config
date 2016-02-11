@@ -1,0 +1,23 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# contributor: Alex Kost
+# name: header
+# key: header
+# --
+#!/bin/bash
+
+# title       : ${1:`(utl-buffer-file-name)`}
+# date        : `(format-time-string "%Y-%m-%d")`
+# author      : aLexx
+# description : $2
+# license     : GNU GPLv3
+
+#### HELP MESSAGE ##############################################
+hlp='Usage: $1
+Description: $2.'
+
+if [ "\$1" = "-h" ] || [ "\$1" = "--help" ]; then
+    echo "$hlp"
+    exit 0
+fi
+################################################################
+

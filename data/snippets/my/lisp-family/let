@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# contributor: Alex Kost
+# name: let
+# key: let
+# key: l
+# --
+(let ($1)
+  $0)
