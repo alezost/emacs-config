@@ -580,6 +580,21 @@
         auto-mode-alist))
 
 
+;;; Debbugs
+
+(al/bind-keys
+ :prefix-map al/debbugs-map
+ :prefix-docstring "Map for debbugs."
+ :prefix "H-b"
+ ("H-b" . debbugs-gnu)
+ ("l"     (switch-to-buffer "*Emacs Bugs*"))
+ ("s"   . debbugs-gnu-search))
+
+(with-eval-after-load 'debbugs-gnu
+  (setq
+   debbugs-gnu-default-packages "guix"))
+
+
 ;;; Misc settings and packages
 
 (with-eval-after-load 'url
