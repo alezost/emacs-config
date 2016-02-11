@@ -3,6 +3,7 @@ tmp
 
 /data/auto-save*
 /data/backup
+/data/elpa
 /data/emms/*
 !/data/emms/streams
 /data/erc-log
@@ -17,6 +18,7 @@ tmp
 /data/geiser-history*
 /data/ido.last
 /data/org-id-locations
+/data/quelpa
 /data/recentf
 /data/save-places
 /data/smex-items

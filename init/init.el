@@ -335,6 +335,7 @@ If servers with all NAMES are running, do not start the server."
 (al/guix-set-load-path (al/src-dir-file "guix/emacs"))
 
 (setq
+ package-user-dir (al/emacs-data-dir-file "elpa")
  package-enable-at-startup nil
  guix-package-enable-at-startup nil)
 (unless al/pure-config?
@@ -346,7 +347,7 @@ If servers with all NAMES are running, do not start the server."
 (setq
  quelpa-upgrade-p t
  ;; quelpa dirs are used in several places of my config.
- quelpa-dir (expand-file-name "quelpa" user-emacs-directory)
+ quelpa-dir (al/emacs-data-dir-file "quelpa")
  quelpa-build-dir (expand-file-name "build" quelpa-dir))
 
 (defun al/emacs-repo (name)
