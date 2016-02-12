@@ -339,10 +339,11 @@ If servers with all NAMES are running, do not start the server."
  package-enable-at-startup nil
  guix-package-enable-at-startup nil)
 (unless al/pure-config?
-  (with-demoted-errors "ERROR during autoloading external packages: %S"
+  (with-demoted-errors "ERROR during autoloading ELPA packages: %S"
+    (package-initialize))
+  (with-demoted-errors "ERROR during autoloading Guix packages: %S"
     (when (require 'guix-emacs nil t)
-      (guix-emacs-autoload-packages (al/guix-profile "emacs")))
-    (package-initialize)))
+      (guix-emacs-autoload-packages (al/guix-profile "emacs")))))
 
 (setq
  quelpa-upgrade-p t
