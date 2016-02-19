@@ -82,11 +82,18 @@
 
 ;;; Backup and autosave
 
+(let ((dir (al/emacs-data-dir-file "auto-save")))
+  ;; Emacs does not create a directory of an autosave file and just
+  ;; complains when it doesn't exist.
+  (unless (file-exists-p dir)
+    (with-demoted-errors "ERROR during making auto-save directory: %S"
+      (mkdir dir t)))
+  (setq auto-save-file-name-transforms
+        `((".*" ,(file-name-as-directory dir) t))))
+
 (setq
  auto-save-list-file-prefix
  (al/emacs-data-dir-file "auto-save-list/.saves-")
- auto-save-file-name-transforms
- `((".*" ,(al/emacs-data-dir-file "auto-save/") t))
  backup-directory-alist
  `( ;;(,tramp-file-name-regexp . nil)
    (".*" . ,(al/emacs-data-dir-file "backup")))
