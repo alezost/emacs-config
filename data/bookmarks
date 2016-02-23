@@ -18,8 +18,8 @@
  (info-node . "Top")
  (handler . Info-bookmark-jump))
 ("my-guile-modules"
- (filename . "~/progs/guile/modules/al/")
- (position . 224))
+ (filename . "~/config/guile/modules/al/")
+ (position . 212))
 ("my-guix-guile-modules"
  (filename . "~/config/guix/modules/al/guix/")
  (position . 222))
