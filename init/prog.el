@@ -154,14 +154,15 @@
   (al/bind-keys-from-vars '(slime-mode-map slime-editing-map)))
 
 (with-eval-after-load 'slime-repl
-  (al/bind-keys
-   :map slime-repl-mode-map
-   ("C-k" . al/slime-repl-kill-whole-line)
-   ("M-." . slime-repl-previous-input)
-   ("M-e" . slime-repl-next-input)
-   ("M->" . slime-repl-previous-prompt)
-   ("M-E" . slime-repl-next-prompt)
-   ("M-r" . slime-repl-previous-matching-input)))
+  (defconst al/slime-repl-keys
+    '(("C-k" . al/slime-repl-kill-whole-line)
+      ("M-." . slime-repl-previous-input)
+      ("M-e" . slime-repl-next-input)
+      ("M->" . slime-repl-previous-prompt)
+      ("M-E" . slime-repl-next-prompt)
+      ("M-r" . slime-repl-previous-matching-input))
+    "Alist of auxiliary keys for `slime-repl-mode-map'.")
+  (al/bind-keys-from-vars 'slime-repl-mode-map 'al/slime-repl-keys))
 
 (with-eval-after-load 'slime-autodoc
   ;; `slime-autodoc-mode' binds some useless keys into "C-c C-d" prefix.
