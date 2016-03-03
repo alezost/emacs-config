@@ -206,7 +206,8 @@
    dired-omit-files "^\\..*"
    dired-omit-extensions nil
    dired-guess-shell-alist-user
-   `((,(al/file-regexp "jpg" "png" "gif" "tif" "tiff") "sxiv" "eog")
+   `((,(al/file-regexp "jpg" "png" "gif") "sxiv" "eog")
+     (,(al/file-regexp "tif" "tiff") "sxiv" "evince" "eog")
      (,(al/file-regexp "pdf") "zathura" "mupdf")
      (,(al/file-regexp "djvu" "djv") "zathura")
      (,(al/file-regexp "wav" "oga" "ogg")
