@@ -358,7 +358,6 @@ If servers with all NAMES are running, do not start the server."
 (defvar al/main-packages
   `((quelpa             :fetcher github :repo "quelpa/quelpa")
     (mwim               :fetcher git :url ,(al/emacs-repo "mwim"))
-    (utils              :fetcher git :url ,(al/emacs-repo "utils"))
     (alect-themes       :fetcher git :url ,(al/emacs-repo "alect-themes"))
     (dvorak-layouts     :fetcher git :url ,(al/emacs-repo "dvorak-layouts"))
     (dim                :fetcher git :url ,(al/emacs-repo "dim"))
