@@ -30,9 +30,6 @@
  ("z"     . al/router-get-log)
  ("u"     . browse-url-emacs)
  ("l"     . find-library)
- ("q"       (al/ido-find-file
-             (expand-file-name "package-build/recipes/"
-                               quelpa-build-dir)))
  ("e"       (al/ido-find-file al/emacs-dir))
  ("C-c"     (al/ido-find-file al/emacs-init-dir))
  ("C-s"     (find-file (al/emacs-init-dir-file "settings.el")))
@@ -53,6 +50,9 @@
  ("k"     . bookmark-delete)
  ("l"     . bookmark-bmenu-list)
  ("S"     . al/sr-toggle)
+ ("q"       (al/ido-find-file
+             (expand-file-name "package-build/recipes/"
+                               quelpa-build-dir)))
  ("h"       (al/ido-find-file "~"))
  ("d"       (al/ido-find-file al/journal-dir))
  ("w"       (al/ido-find-file al/download-dir))
