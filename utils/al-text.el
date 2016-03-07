@@ -388,9 +388,9 @@ the word.  It should accept a number of modified words as argument."
 (al/change-word-backward "capitalize" capitalize-word)
 (al/change-word-backward "upcase" upcase-word)
 
-;;;###autoload (autoload 'al/downcase-word-backward "al/text" nil t)
-;;;###autoload (autoload 'al/capitalize-word-backward "al/text" nil t)
-;;;###autoload (autoload 'al/upcase-word-backward "al/text" nil t)
+;;;###autoload (autoload 'al/downcase-word-backward "al-text" nil t)
+;;;###autoload (autoload 'al/capitalize-word-backward "al-text" nil t)
+;;;###autoload (autoload 'al/upcase-word-backward "al-text" nil t)
 
 
 ;;; Moving
