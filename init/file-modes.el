@@ -136,9 +136,11 @@
 
 (setq pdf-tools-handle-upgrades nil)
 
+(al/autoload "pdf-view" pdf-view-mode)
+(push '("\\.[pP][dD][fF]\\'" . pdf-view-mode)
+      auto-mode-alist)
+
 (with-eval-after-load 'pdf-view
-  (push '("\\.[pP][dD][fF]\\'" . pdf-view-mode)
-        auto-mode-alist)
   (al/bind-keys
    :map pdf-view-mode-map
    ("h" . pdf-view-previous-page-command))
@@ -232,14 +234,15 @@
   (push "-r200" doc-view-ghostscript-options) ; picture resolution
   )
 
+(push '("\\.mdown\\'" . markdown-mode)
+      auto-mode-alist)
+
 (with-eval-after-load 'markdown-mode
   (defconst al/markdown-keys
     '(("M->" . markdown-previous-link)
       ("M-E" . markdown-next-link))
     "Alist of auxiliary keys for `markdown-mode-map'.")
-  (al/bind-keys-from-vars 'markdown-mode-map 'al/markdown-keys)
-  (push '("\\.mdown\\'" . markdown-mode)
-        auto-mode-alist))
+  (al/bind-keys-from-vars 'markdown-mode-map 'al/markdown-keys))
 
 (with-eval-after-load 'tar-mode
   (setq tar-mode-show-date t)
