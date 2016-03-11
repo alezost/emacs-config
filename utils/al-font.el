@@ -30,7 +30,7 @@ If FONT-NAMES is nil, use `al/font-candidates'."
 ;; <http://www.emacswiki.org/emacs/FontSets> and
 ;; <http://paste.lisp.org/display/133488> for more information.
 
-(defun al/set-fontset (&optional name frame add &rest specs)
+(defun al/set-fontset (&optional name frame add specs)
   "Modify fontset NAME.
 Each specification from SPECS list has the following form:
 

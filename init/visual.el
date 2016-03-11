@@ -27,20 +27,20 @@
     ;; ࿌ (unifont); 🃜, 🜒, 🝖 (quivira).
     (al/set-fontset
      "fontset-default" nil nil
-     '("Symbola-12"
-       (#x2020  . #x24ff)
-       (#x2600  . #x27ff)
-       (#x2900  . #x29ff)
-       (#x2e00  . #x2e42)
-       (#x1d300 . #x1d371)
-       (#x1d400 . #x1d7ff)
-       (#x1f000 . #x1f1ff)
-       (#x1f300 . #x1f6ff))
-     '("Ubuntu Mono-12"
-       (?²      . ?³)
-       (?¼      . ?¾)
-       (#x2070  . #x208f))
-     '("Quivira-12" nil))))
+     '(("Symbola-12"
+        (#x2020  . #x24ff)
+        (#x2600  . #x27ff)
+        (#x2900  . #x29ff)
+        (#x2e00  . #x2e42)
+        (#x1d300 . #x1d371)
+        (#x1d400 . #x1d7ff)
+        (#x1f000 . #x1f1ff)
+        (#x1f300 . #x1f6ff))
+       ("Ubuntu Mono-12"
+        (?²      . ?³)
+        (?¼      . ?¾)
+        (#x2070  . #x208f))
+       ("Quivira-12" nil)))))
 
 (al/add-hook-maybe
     '(after-make-frame-functions window-setup-hook)
