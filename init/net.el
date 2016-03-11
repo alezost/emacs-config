@@ -591,6 +591,7 @@
  :prefix-docstring "Map for debbugs."
  :prefix "H-b"
  ("H-b" . debbugs-gnu)
+ ("n"   . debbugs-gnu-bugs)
  ("l"     (switch-to-buffer "*Emacs Bugs*"))
  ("s"   . debbugs-gnu-search))
 
