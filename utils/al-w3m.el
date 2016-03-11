@@ -109,10 +109,10 @@ To bind the keys, `bind-key' function is used."
         (prefix (and kbd-prefix (concat kbd-prefix " "))))
     `(progn
        ,@(mapcar (lambda (n)
-                   `(bind-key ,(concat prefix (number-to-string n))
-                              (lambda () (interactive)
-                                (funcall ,fun ,n))
-                              w3m-mode-map))
+                   `(al/bind-key ,(concat prefix (number-to-string n))
+                                 (lambda () (interactive)
+                                   (funcall ,fun ,n))
+                                 w3m-mode-map))
                  numbers))))
 
 (provide 'al-w3m)
