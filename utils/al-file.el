@@ -5,6 +5,29 @@
 
 ;;; Code:
 
+(defun al/add-to-auto-mode-alist (specs)
+  "Add SPECS to `auto-mode-alist'.
+Each specification from SPECS list may have one of the following forms:
+
+  (MODE-NAME . REGEXPS)
+  (MODE-NAME REGEXP-OR-LIST t)
+
+REGEXP-OR-LIST is either a regexp (string), or a list of regexps.
+For the first form, specifications are added at the beginning of
+`auto-mode-alist'; for the second form it is added at the end."
+  (cl-flet ((add (mode regexp &optional append?)
+              (add-to-list 'auto-mode-alist (cons regexp mode) append?)))
+    (dolist (spec specs)
+      (pcase spec
+        (`(,mode ,str-or-lst t)
+         (if (stringp str-or-lst)
+             (add mode str-or-lst t)
+           (dolist (regexp str-or-lst)
+             (add mode regexp t))))
+        (`(,mode . ,regexps)
+         (dolist (regexp regexps)
+           (add mode regexp)))))))
+
 ;;;###autoload
 (defun al/ido-find-file (&optional dir)
   "Similar to `ido-find-file', but start from DIR if it is non-nil."

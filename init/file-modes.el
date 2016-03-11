@@ -137,9 +137,6 @@
 (setq pdf-tools-handle-upgrades nil)
 
 (al/autoload "pdf-view" pdf-view-mode)
-(push '("\\.[pP][dD][fF]\\'" . pdf-view-mode)
-      auto-mode-alist)
-
 (with-eval-after-load 'pdf-view
   (al/bind-keys
    :map pdf-view-mode-map
@@ -193,31 +190,33 @@
 
 ;;; Misc settings and packages
 
-(setq auto-mode-alist
-      (append
-       '(("/etc/profile\\'" . sh-mode)
-         ("bashrc\\'"     . sh-mode)
-         ("\\.Xmodmap\\'" . conf-xdefaults-mode)
-         ("\\.rules\\'"   . conf-unix-mode)
-         ("\\.hwdb\\'"    . conf-unix-mode)
-         ("\\.cnf\\'"     . conf-unix-mode)
-         ("\\.map\\'"     . conf-unix-mode)
-         ("\\.inc\\'"     . conf-unix-mode)
-         ("\\.service\\'" . conf-unix-mode)
-         ("\\.target\\'"  . conf-unix-mode)
-         ("\\.socket\\'"  . conf-unix-mode)
-         ("\\.timer\\'"   . conf-unix-mode)
-         ("\\.mount\\'"   . conf-unix-mode)
-         ("\\.mailmap\\'" . conf-space-mode)
-         ("PKGBUILD\\'"   . pkgbuild-mode)
-         (".*tmwa-server-data/world/map/npc/.*txt\\'" . java-mode)
-         ("\\.typ\\'"     . gtypist-mode)
-         ("\\.plot\\'"    . gnuplot-mode)
-         ("\\.max\\'"     . maxima-mode))
-       auto-mode-alist))
-(add-to-list 'auto-mode-alist '("/var/log.*\\'" . syslog-mode) t)
-(add-to-list 'auto-mode-alist '(".*rc\\'" . conf-unix-mode) t)
-(add-to-list 'auto-mode-alist '("/etc/.*\\'" . conf-unix-mode) t)
+(when (require 'al-file nil t)
+  (al/add-to-auto-mode-alist
+   '((sh-mode "/etc/profile\\'"
+              "bashrc\\'")
+     (conf-xdefaults-mode "\\.Xmodmap\\'")
+     (conf-space-mode "\\.mailmap\\'")
+     (conf-unix-mode "\\.rules\\'"
+                     "\\.hwdb\\'"
+                     "\\.cnf\\'"
+                     "\\.map\\'"
+                     "\\.inc\\'"
+                     "\\.service\\'"
+                     "\\.target\\'"
+                     "\\.socket\\'"
+                     "\\.timer\\'"
+                     "\\.mount\\'")
+     (conf-unix-mode (".*rc\\'"
+                      "/etc/.*\\'")
+                     t)
+     (syslog-mode "/var/log.*\\'" t)
+     (pdf-view-mode "\\.[pP][dD][fF]\\'")
+     (markdown-mode "\\.mdown\\'")
+     (pkgbuild-mode "PKGBUILD\\'")
+     (java-mode ".*tmwa-server-data/world/map/npc/.*txt\\'")
+     (gtypist-mode "\\.typ\\'")
+     (gnuplot-mode "\\.plot\\'")
+     (maxima-mode "\\.max\\'"))))
 
 (with-eval-after-load 'image-mode
   (defconst al/image-keys
@@ -233,9 +232,6 @@
   (setq doc-view-cache-directory "~/.cache/docview")
   (push "-r200" doc-view-ghostscript-options) ; picture resolution
   )
-
-(push '("\\.mdown\\'" . markdown-mode)
-      auto-mode-alist)
 
 (with-eval-after-load 'markdown-mode
   (defconst al/markdown-keys
