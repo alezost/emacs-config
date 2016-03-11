@@ -218,6 +218,9 @@
      (gnuplot-mode "\\.plot\\'")
      (maxima-mode "\\.max\\'"))))
 
+(with-eval-after-load 'conf-mode
+  (al/add-hook-maybe 'conf-mode-hook 'hl-line-mode))
+
 (with-eval-after-load 'image-mode
   (defconst al/image-keys
     '(("C-a" . image-bol)
