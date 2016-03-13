@@ -41,7 +41,7 @@ This function is intended to be used as a substitution for
   (require 'info)
   (let* ((name (car args))
          (file (and (stringp name)
-                    (string-match "\\.info\\'" name)
+                    (string-match "\\.info" name)
                     (expand-file-name name))))
     (if (and file (file-exists-p file))
         (Info-find-node file "Top")
