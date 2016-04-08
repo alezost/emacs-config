@@ -41,9 +41,7 @@
 
 ;;; Guix
 
-(setq
- guix-default-profile al/guix-user-profile-dir
- guix-current-profile guix-default-profile)
+(setq guix-current-profile al/guix-user-profile-dir)
 (require 'guix-autoloads nil t)
 
 (al/bind-keys
