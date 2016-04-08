@@ -163,7 +163,7 @@
   (al/bind-keys-from-vars 'guix-build-log-common-map
     'al/guix-build-log-common-keys)
   (al/bind-keys-from-vars 'guix-build-log-mode-map
-    'al/guix-build-log-keys))
+    'al/guix-build-log-keys t))
 
 (with-eval-after-load 'guix-devel
   (defconst al/guix-devel-keys
