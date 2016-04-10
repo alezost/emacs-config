@@ -315,10 +315,7 @@
  ("c" . magit-show-commit)
  ("s" . magit-status)
  ("l" . magit-log-current)
- ("k" . (lambda () (interactive)
-          (let (github-browse-file-visit-url)
-            (github-browse-file))))
- ("g" . github-browse-file))
+ ("u" . github-browse-file))
 
 (defconst al/magit-common-keys
   '(("v"   . magit-git-command)
