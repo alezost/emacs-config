@@ -545,6 +545,12 @@
 
 (al/autoload "python" python-shell-switch-to-shell)
 (with-eval-after-load 'python
-  (setq python-shell-interpreter "ipython"))
+  (setq python-shell-interpreter "ipython")
+  (defconst al/python-keys
+    '(("C-v" . python-shell-send-region)
+      ("C-M-v" . python-shell-send-defun)
+      ("M-s-v" . python-shell-send-buffer))
+    "Alist of auxiliary keys for `python-mode-map'.")
+  (al/bind-keys-from-vars 'python-mode-map 'al/python-keys))
 
 ;;; prog.el ends here
