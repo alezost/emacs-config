@@ -378,8 +378,6 @@
     '(al/button-keys al/man-keys)))
 
 (with-eval-after-load 'info
-  (setq Info-additional-directory-list
-        (list (al/guix-user-profile-dir-file "share/info/")))
   (al/bind-keys
    :map Info-mode-map
    ("." . Info-prev-reference)
