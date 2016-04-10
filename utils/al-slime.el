@@ -27,6 +27,25 @@
       (kill-region prompt-pos
                    (progn (forward-line arg) (point))))))
 
+;;;###autoload
+(defun al/slime-stumpwm-connect (&optional display)
+  "Connect to a swank server running by StumpWM on DISPLAY.
+If DISPLAY is nil, use the current DISPLAY environment variable.
+With prefix, prompt for DISPLAY.
+
+The port of the running swank server is defined by adding DISPLAY
+number to `slime-port'.  See
+<https://github.com/alezost/stumpwm-config/blob/master/init.lisp>."
+  (interactive
+   (list (when current-prefix-arg
+           (read-string "Display: " (getenv "DISPLAY")))))
+  (let* ((display     (or display (getenv "DISPLAY")))
+         (display-num (if (string-match (rx ":" (group (+ digit)))
+                                        display)
+                          (string-to-number (match-string 1 display))
+                        0)))
+    (slime-connect slime-lisp-host (+ slime-port display-num))))
+
 (provide 'al-slime)
 
 ;;; al-slime.el ends here

@@ -136,8 +136,7 @@
  :prefix "M-L"
  ("l"   . slime-repl)
  ("M-L" . slime-repl)
- ("c"   . (lambda () (interactive)
-            (slime-connect slime-lisp-host slime-port)))
+ ("c"   . al/slime-stumpwm-connect)
  ("d"   . slime-disconnect)
  ("M-S" . slime)
  ("s"   . slime-selector))
