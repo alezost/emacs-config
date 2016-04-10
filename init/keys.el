@@ -351,6 +351,7 @@ VARS are variables with bindings supported by
  ("P" . paredit-mode)
  ("r" . rainbow-mode)
  ("l" . nlinum-mode)
+ ("s" . sh-mode)
  ("t" . toggle-truncate-lines)
  ("v" . view-mode)
  ("|" . indent-guide-mode))
