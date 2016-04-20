@@ -408,9 +408,7 @@
    magit-log-margin-spec '(25 1 magit-duration-spec)
    magit-reflog-arguments '("-n99")
    magit-log-arguments `(,@magit-reflog-arguments "--decorate")
-   magit-log-select-arguments magit-log-arguments
-   )
-  (magit-change-popup-key 'magit-log-popup :option ?m ?g) ; grep
+   magit-log-select-arguments magit-log-arguments)
   (magit-change-popup-key 'magit-log-popup :option ?G ?p) ; patch
 
   (defconst al/magit-log-select-keys
