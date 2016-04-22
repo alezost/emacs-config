@@ -25,4 +25,4 @@ tmp
 
 /init/custom.el
 /packages
-/utils/al-autoloads.el
+*-autoloads.el
