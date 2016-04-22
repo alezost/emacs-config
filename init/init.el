@@ -391,6 +391,7 @@ If servers with all NAMES are running, do not start the server."
                         :files ("yasnippet.el"))
 
     github-browse-file
+    (shift-number       :fetcher git :url ,(al/emacs-repo "shift-number"))
     (pathify            :fetcher git :url ,(al/emacs-repo "pathify"))
     (point-pos          :fetcher git :url ,(al/emacs-repo "point-pos"))
     (web-search         :fetcher git :url ,(al/emacs-repo "web-search"))

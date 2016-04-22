@@ -147,8 +147,8 @@
  ("C-H-M-a" (align-regexp (region-beginning) (region-end)
                           "\\(\\s-*\\)(("))
  ("M-%" . ispell-complete-word)
- ("M-_" . al/number-down)
- ("M-+" . al/number-up)
+ ("M-_" . shift-number-down)
+ ("M-+" . shift-number-up)
 
  ("M-/"   . dabbrev-expand)
  ("C-M-/" . hippie-expand)

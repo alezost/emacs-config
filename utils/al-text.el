@@ -306,42 +306,6 @@ Like `dabbrev-expand' but use word symbols only."
   (let ((dabbrev-abbrev-char-regexp "\\sw"))
     (dabbrev-expand arg)))
 
-;;; Change number at point
-
-(defvar al/number-re "\\<\\([0-9]+\\)\\>"
-  "Regexp for `al/number-change' functions.
-First parenthesized expression must match the number.")
-
-(defun al/number-change (n)
-  "Change the number at the point by N.
-If no number at the point, search forward til the end of the line."
-  (save-excursion
-    (or (org-in-regexp al/number-re)
-        (re-search-forward al/number-re (line-end-position) t)
-        (error "No number in the current line"))
-    (let* ((beg     (match-beginning 1))
-           (end     (match-end       1))
-           (old-num (string-to-number
-                     (buffer-substring-no-properties beg end)))
-           (new-num (+ old-num n)))
-      (delete-region beg end)
-      (insert (number-to-string new-num))
-      (message "Number %d was changed to number %d" old-num new-num))))
-
-;;;###autoload
-(defun al/number-up (&optional arg)
-  "Increase the number at the point by one.
-With prefix ARG, change that many numbers."
-  (interactive "p")
-  (al/number-change arg))
-
-;;;###autoload
-(defun al/number-down (&optional arg)
-  "Decrease the number at the point by one.
-With prefix ARG, change that many numbers."
-  (interactive "p")
-  (al/number-change (- arg)))
-
 
 ;;; Changing the case of previous word(s)
 
