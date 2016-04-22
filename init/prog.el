@@ -383,6 +383,7 @@
 
 (with-eval-after-load 'magit-popup
   (setq
+   magit-popup-display-buffer-action '((display-buffer-at-bottom))
    magit-popup-show-common-commands nil
    magit-popup-use-prefix-argument 'default)
 
