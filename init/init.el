@@ -1,6 +1,6 @@
 ;;; init.el --- Init file   -*- lexical-binding: t -*-
 
-;; Copyright © 2012-2015 Alex Kost
+;; Copyright © 2012-2016 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -176,6 +176,14 @@ FILE may omit an extension.  See `load' for details."
   "Load FILE from `al/emacs-init-dir'."
   (al/load (al/emacs-init-dir-file file)))
 
+(defun al/subdirs (directory)
+  "Return list of DIRECTORY sub-directories."
+  (cl-remove-if (lambda (file)
+                  (or (string-match-p (rx "/." string-end) file)
+                      (string-match-p (rx "/.." string-end) file)
+                      (not (file-directory-p file))))
+                (directory-files directory 'full-name nil 'no-sort)))
+
 (defun al/add-hook-maybe (hooks functions &optional append local)
   "Add all bound FUNCTIONS to all HOOKS.
 Both HOOKS and FUNCTIONS may be single variables or lists of those."
@@ -266,22 +274,32 @@ Also it (default syntax) breaks `indent-guide-mode'."
 
 ;;; Autoloading utils
 
-(defvar al/autoloads-file
-  (al/emacs-utils-dir-file "al-autoloads.el"))
+(defun al/autoloads-file (directory)
+  "Return the name of 'autoloads' file for DIRECTORY."
+  (let* ((dir  (expand-file-name directory))
+         (base (file-name-nondirectory (directory-file-name dir))))
+    (expand-file-name (concat base "-autoloads.el") dir)))
 
-(defun al/update-autoloads ()
-  "Update the contents of `al/autoloads-file'."
-  (interactive)
+(defun al/update-autoloads (&rest dirs)
+  "Update the contents of 'autoloads' files for all DIRS.
+Interactively, update autoloads from `al/emacs-utils-dir'.  With
+prefix, update autoloads from all `al/emacs-my-packages-dir'
+sub-directories."
+  (interactive
+   (if current-prefix-arg
+       (al/subdirs al/emacs-my-packages-dir)
+     (list al/emacs-utils-dir)))
   (require 'autoload)
-  (let ((generated-autoload-file al/autoloads-file))
-    (update-directory-autoloads al/emacs-utils-dir)))
+  (dolist (dir dirs)
+    (let ((generated-autoload-file (al/autoloads-file dir)))
+      (update-directory-autoloads dir))))
 
-(unless (file-exists-p al/autoloads-file)
-  (with-demoted-errors "ERROR during generating autoloads: %S"
-    (al/update-autoloads)))
-
-(al/add-to-load-path-maybe al/emacs-utils-dir)
-(al/load al/autoloads-file)
+(let ((auto-file (al/autoloads-file al/emacs-utils-dir)))
+  (unless (file-exists-p auto-file)
+    (with-demoted-errors "ERROR during generating utils autoloads: %S"
+      (al/update-autoloads al/emacs-utils-dir)))
+  (al/add-to-load-path-maybe al/emacs-utils-dir)
+  (al/load auto-file))
 
 
 ;;; Server
