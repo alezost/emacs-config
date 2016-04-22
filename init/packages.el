@@ -186,7 +186,6 @@
  ("m"     . aurel-maintainer-search)
  ("I"     . aurel-installed-packages))
 
-(al/add-my-package-to-load-path-maybe "aurel")
 (with-eval-after-load 'aurel
   (setq
    aurel-download-directory (al/src-dir-file "abs")

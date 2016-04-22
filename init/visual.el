@@ -92,7 +92,6 @@
   (advice-add 'custom-theme-set-variables
     :around #'al/fix-custom-variables-bug))
 
-(al/add-my-package-to-load-path-maybe "alect-themes")
 (with-eval-after-load 'alect-themes
   (setq
    alect-display-class '((class color) (min-colors 256))
@@ -131,7 +130,6 @@
   "Mode line construct for displaying `server-name' if server is running.")
 (put 'al/mode-server 'risky-local-variable t)
 
-(al/add-my-package-to-load-path-maybe "dim")
 (when (require 'dim nil t)
   (dim-major-names
    '((emacs-lisp-mode            "EL")

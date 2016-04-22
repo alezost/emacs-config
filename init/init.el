@@ -162,10 +162,6 @@ If VAL is a list, call FUNCTION on each element of the list."
       :dir dir
       (push dir load-path))))
 
-(defun al/add-my-package-to-load-path-maybe (name)
-  "Add directory with my package NAME (if it exists) to `load-path'."
-  (al/add-to-load-path-maybe (al/emacs-my-packages-dir-file name)))
-
 (defun al/load (file)
   "Load FILE.
 FILE may omit an extension.  See `load' for details."
@@ -361,7 +357,13 @@ If servers with all NAMES are running, do not start the server."
     (package-initialize))
   (with-demoted-errors "ERROR during autoloading Guix packages: %S"
     (when (require 'guix-emacs nil t)
-      (guix-emacs-autoload-packages (al/guix-profile "emacs")))))
+      (guix-emacs-autoload-packages (al/guix-profile "emacs"))))
+  (when (file-exists-p al/emacs-my-packages-dir)
+    (with-demoted-errors "ERROR during autoloading my packages: %S"
+      (let ((dirs (al/subdirs al/emacs-my-packages-dir)))
+        (setq load-path (append dirs load-path))
+        (dolist (dir dirs)
+          (al/load (al/autoloads-file dir)))))))
 
 (setq
  quelpa-upgrade-p t

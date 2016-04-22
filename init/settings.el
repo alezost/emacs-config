@@ -480,7 +480,6 @@
  ("i" . journal-insert-block)
  ("t"   (find-file (al/journal-dir-file "tags"))))
 
-(al/add-my-package-to-load-path-maybe "journal")
 (with-eval-after-load 'journal
   (setq
    org-id-files (al/with-check
@@ -505,13 +504,11 @@
 (al/autoload "darts-value"
   darts-throw-string-to-points
   darts-throw-string-to-code)
-(al/add-my-package-to-load-path-maybe "darts-value")
 
 (al/autoload "darts-daydata"
   darts-day-template
   darts-day-select)
 
-(al/add-my-package-to-load-path-maybe "darts-daydata")
 (with-eval-after-load 'darts-daydata
   :config
   (setq

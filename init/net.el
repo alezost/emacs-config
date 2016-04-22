@@ -640,7 +640,6 @@
    ("q" . debpaste-quit-buffers)
    ("K" . debpaste-kill-all-buffers))
 
-(al/add-my-package-to-load-path-maybe "debpaste")
 (with-eval-after-load 'debpaste
   (setq
    debpaste-user-name "alezost"
@@ -656,7 +655,6 @@
   web-search-multitran
   web-search-ej)
 
-(al/add-my-package-to-load-path-maybe "web-search")
 (with-eval-after-load 'web-search
   :config
   (web-search-add-engine
@@ -696,7 +694,6 @@
  ("A" . echo-msk-browse-online-audio)
  ("v" . echo-msk-browse-online-video))
 
-(al/add-my-package-to-load-path-maybe "echo-msk")
 (with-eval-after-load 'echo-msk
   (when (require 'dvorak-russian-computer nil t)
     (setq echo-msk-input-method "dvorak-russian-computer")))

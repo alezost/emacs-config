@@ -247,14 +247,12 @@
  ("C-M-S-g" . point-pos-goto)
  ("C-M-S-h" . point-pos-previous)
  ("C-M-S-n" . point-pos-next))
-(al/add-my-package-to-load-path-maybe "point-pos")
 
 (al/bind-key* "C-M-s-m" imenu)
 (with-eval-after-load 'imenu
   (setq imenu-space-replacement nil))
 
 (al/bind-key* "C-M-m" imenus)
-(al/add-my-package-to-load-path-maybe "imenus")
 (with-eval-after-load 'imenus
   (setq imenus-delimiter " ⇨ ")
   (al/bind-keys

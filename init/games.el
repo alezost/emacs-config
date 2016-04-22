@@ -115,7 +115,6 @@
    ("e"   . snake-move-down)
    ("SPC" . snake-pause-game)))
 
-(al/add-my-package-to-load-path-maybe "mana")
 (with-eval-after-load 'mana
   (setq mana-character (rot13 "wbuanguna")))
 
