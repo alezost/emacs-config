@@ -1,6 +1,6 @@
 ;;; visual.el --- Visual settings: fonts, themes, mode-line, …  -*- lexical-binding: t -*-
 
-;; Copyright © 2012-2015 Alex Kost
+;; Copyright © 2012-2016 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -14,6 +14,8 @@
 
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+(require 'al-key)
 
 
 ;;; Frame specific settings
