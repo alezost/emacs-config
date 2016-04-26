@@ -41,7 +41,9 @@
 
 ;;; Guix
 
-(setq guix-current-profile al/guix-user-profile-dir)
+(setq
+ guix-current-profile al/guix-user-profile-dir
+ guix-directory (al/src-dir-file "guix"))
 (require 'guix-autoloads nil t)
 
 (al/bind-keys
@@ -78,7 +80,6 @@
 
 (with-eval-after-load 'guix-base
   (setq
-   guix-directory (al/src-dir-file "guix")
    guix-operation-option-separator "  │  ")
   (when (display-graphic-p)
     (setq
