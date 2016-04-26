@@ -54,6 +54,16 @@
 (al/file-accessors "echo-download" (al/download-dir-file "echo"))
 
 
+;;; Required utils
+
+(push al/emacs-utils-dir load-path)
+(require 'al-misc)
+
+(defun al/init-load (file)
+  "Load FILE from `al/emacs-init-dir'."
+  (al/load (al/emacs-init-dir-file file)))
+
+
 ;;; Guix stuff
 
 (al/file-accessors "guix-profile" "~/.guix-profiles")
@@ -71,144 +81,6 @@
 
 
 ;;; Auxiliary functions and macros
-
-(defun al/warning (format-string &rest args)
-  "Display a warning message."
-  (apply #'message
-         (concat "WARNING: " format-string)
-         args))
-
-(defun al/p (predicate val &optional message)
-  "Return non-nil if PREDICATE returns non-nil on VAL.
-Otherwise display warning MESSAGE on VAL and return nil."
-  (or (funcall predicate val)
-      (progn (and message (al/warning message val))
-             nil)))
-
-(defun al/every (predicate vals &optional message)
-  "Return non-nil if PREDICATE returns non-nil on each element of VALS.
-If VALS is not a list, call PREDICATE on this value."
-  (if (and (listp vals)
-           (not (functionp vals))) ; to avoid treating "(lambda …)" as list
-      (cl-every (lambda (val)
-                  (al/p predicate val message))
-                vals)
-    (al/p predicate vals message)))
-
-(defun al/function? (object)
-  "Non-nil if OBJECT is a function or a list of functions."
-  (al/every #'functionp object
-            "Unknown function '%S'."))
-
-(defun al/bound? (object)
-  "Non-nil if OBJECT is a bound symbol or a list of bound symbols."
-  (al/every #'boundp object
-            "Symbol '%S' is not bound."))
-
-(defun al/file? (object)
-  "Non-nil if OBJECT is an existing file or a list of directories."
-  (al/every #'file-exists-p object
-            "File '%s' does not exist."))
-
-(defun al/directory? (object)
-  "Non-nil if OBJECT is an existing directory or a list of directories."
-  (al/every #'file-directory-p object
-            "Directory '%s' does not exist."))
-
-(defmacro al/with-check (&rest body)
-  "Call rest of BODY if all checks are passed successfully.
-
-BODY should start with checks (keyword arguments).  The following
-keywords are available: `:fun'/`:var'/`:file'/`:dir'.  Each
-keyword argument may be an object or a list of objects.  These
-objects are checkced to be a proper function / a bound symbol /
-an existing file / an existing directory.
-
-Return nil if checks are not passed."
-  (declare (indent 0) (debug (name body)))
-  (let (fun var file dir)
-
-    (while (keywordp (car body))
-      (pcase (pop body)
-        (`:fun  (setq fun  (pop body)))
-        (`:var  (setq var  (pop body)))
-	(`:file (setq file (pop body)))
-	(`:dir  (setq dir  (pop body)))
-	(_ (pop body))))
-
-    `(when (and ,(or (null fun)  `(al/function?  ,fun))
-                ,(or (null var)  `(al/bound?     ,var))
-                ,(or (null file) `(al/file?      ,file))
-                ,(or (null dir)  `(al/directory? ,dir)))
-       ,@body)))
-
-(defun al/funcall-or-dolist (val function)
-  "Call FUNCTION on VAL if VAL is not a list.
-If VAL is a list, call FUNCTION on each element of the list."
-  (declare (indent 1))
-  (if (listp val)
-      (dolist (v val)
-        (funcall function v))
-    (funcall function val)))
-
-(defun al/list-maybe (obj)
-  "Return OBJ if it is a list, or a list with OBJ otherwise."
-  (if (listp obj) obj (list obj)))
-
-(defun al/add-to-load-path-maybe (&rest dirs)
-  "Add existing directories from DIRS to `load-path'."
-  (dolist (dir dirs)
-    (al/with-check
-      :dir dir
-      (push dir load-path))))
-
-(defun al/load (file)
-  "Load FILE.
-FILE may omit an extension.  See `load' for details."
-  (or (load file 'noerror)
-      (al/warning "Failed to load '%s'." file)))
-
-(defun al/init-load (file)
-  "Load FILE from `al/emacs-init-dir'."
-  (al/load (al/emacs-init-dir-file file)))
-
-(defun al/subdirs (directory)
-  "Return list of DIRECTORY sub-directories."
-  (cl-remove-if (lambda (file)
-                  (or (string-match-p (rx "/." string-end) file)
-                      (string-match-p (rx "/.." string-end) file)
-                      (not (file-directory-p file))))
-                (directory-files directory 'full-name nil 'no-sort)))
-
-(defun al/add-hook-maybe (hooks functions &optional append local)
-  "Add all bound FUNCTIONS to all HOOKS.
-Both HOOKS and FUNCTIONS may be single variables or lists of those."
-  (declare (indent 1))
-  (al/funcall-or-dolist functions
-    (lambda (fun)
-      (al/with-check
-        :fun fun
-        (al/funcall-or-dolist hooks
-          (lambda (hook)
-            (add-hook hook fun append local)))))))
-
-(defun al/add-after-init-hook (functions)
-  "Add functions to `after-init-hook'.
-See `al/add-hook-maybe'."
-  (al/add-hook-maybe 'after-init-hook functions))
-
-(defmacro al/eval-after-init (&rest body)
-  "Add to `after-init-hook' a `lambda' expression with BODY."
-  (declare (indent 0))
-  `(add-hook 'after-init-hook (lambda () ,@body)))
-
-(defmacro al/autoload (file &rest symbols)
-  "Autoload (unquoted) SYMBOLS from file as interactive commands."
-  (declare (indent 1))
-  `(progn
-     ,@(mapcar (lambda (symbol)
-                 `(autoload ',symbol ,file nil t))
-               symbols)))
 
 (defmacro al/modify-syntax (table-name &rest specs)
   "Update syntax table according to SPECS.
@@ -294,7 +166,6 @@ sub-directories."
   (unless (file-exists-p auto-file)
     (with-demoted-errors "ERROR during generating utils autoloads: %S"
       (al/update-autoloads al/emacs-utils-dir)))
-  (al/add-to-load-path-maybe al/emacs-utils-dir)
   (al/load auto-file))
 
 
