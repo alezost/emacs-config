@@ -1,7 +1,19 @@
 ;;; al-dired.el --- Additional functionality for dired
 
-;; Author: Alex Kost <alezost@gmail.com>
-;; Created: 8 Nov 2012
+;; Copyright © 2012-2016 Alex Kost
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Code:
 
@@ -56,7 +68,7 @@ If ARG is non-nil, do not use human readable format (size in bytes)."
       (message "Size of all marked files: %s"
                (progn
                  (re-search-backward "\\(^.+\\)[[:blank:]]*total$")
-                  (match-string 1))))))
+                 (match-string 1))))))
 
 (defun al/dired-stat (&optional arg)
   "Call `stat' program on marked files in dired mode.
@@ -107,7 +119,7 @@ With prefix (if ARG is non-nil), use the next ARG files instead."
                   (t dired-actual-switches))))))
 
 (defun al/dired-mark-read-file-name (prompt dir op-symbol arg files
-                                             &optional default)
+                                            &optional default)
   "Replacement for `dired-mark-read-file-name'.
 Use default destination file in a prompt instead of a destination
 directory."

@@ -1,7 +1,19 @@
 ;;; al-appt.el --- Additional functionality for appointments
 
-;; Author: Alex Kost <alezost@gmail.com>
-;; Created: 17 Dec 2014
+;; Copyright © 2014-2016 Alex Kost
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Code:
 
@@ -41,7 +53,7 @@ Use `al/appt-notify-normal-sound'."
   "Notify about an appointment in an urgent way.
 Use `al/appt-notify-urgent-sound'."
   (al/appt-notify-sound-message al/appt-notify-urgent-sound
-                                 string))
+                                string))
 
 (defun al/appt-display-message (strings mins)
   "Notify about an appointment if needed.
