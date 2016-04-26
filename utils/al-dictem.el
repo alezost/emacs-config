@@ -18,7 +18,7 @@
 ;;; Code:
 
 (require 'dictem)
-(require 'al-misc)
+(require 'al-read)
 
 (defun al/dictem ()
   "Same as `dictem' but do not use other window for a dictem buffer."

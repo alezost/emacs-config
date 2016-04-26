@@ -54,22 +54,6 @@
   (interactive)
   (al/next-link t))
 
-(defun al/read-string (prompt &optional initial-input history
-                              default-value inherit-input-method)
-  "Similar to `read-string', but put DEFAULT-VALUE in the prompt."
-  (let (prompt-beg prompt-end)
-    (if (string-match "^\\(.*\\)\\(:\\s-*\\)$" prompt)
-        (setq prompt-beg (match-string 1 prompt)
-              prompt-end (match-string 2 prompt))
-      (setq prompt-beg prompt
-            prompt-end ": "))
-    (read-string
-     (if default-value
-         (format "%s (%s)%s" prompt-beg default-value prompt-end)
-       (concat prompt-beg prompt-end))
-     initial-input history
-     default-value inherit-input-method)))
-
 ;;;###autoload
 (defun al/create-tags (shell-cmd)
   "Create tags file using shell command SHELL-CMD.

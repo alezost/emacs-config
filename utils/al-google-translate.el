@@ -19,7 +19,7 @@
 
 (require 'google-translate-default-ui)
 (require 'google-translate-smooth-ui)
-(require 'al-misc)
+(require 'al-read)
 
 
 ;;; Default UI
