@@ -143,6 +143,14 @@
     (append al/guix-list-key-vars '(al/guix-generation-list-keys))
     t))
 
+(with-eval-after-load 'guix-ui-license
+  (defconst al/guix-license-list-keys
+    '(("M-d" . guix-license-list-edit))
+    "Alist of auxiliary keys for `guix-license-list-mode-map'.")
+  (al/bind-keys-from-vars 'guix-license-list-mode-map
+    (append al/guix-list-key-vars '(al/guix-license-list-keys))
+    t))
+
 (with-eval-after-load 'guix-utils
   (setq
    guix-find-file-function #'org-open-file))
