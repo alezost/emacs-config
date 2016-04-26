@@ -46,7 +46,7 @@ windows."
 (defun al/switch-windows ()
   "Switch current and previous windows (show switched buffers)."
   (interactive)
-  (and (null (one-window-p))
+  (unless (one-window-p)
     (let ((cur-buffer (current-buffer)))
       (other-window -1)
       (switch-to-buffer cur-buffer)
@@ -73,7 +73,7 @@ The variable CURRENT-FRAME affects nothing, it is used for
 
 
 ;; Update WINDOWS_NUM property for a stumpwm command, see
-;; <https://github.com/alezost/stumpwmrc/blob/master/utils.lisp>.
+;; <https://github.com/alezost/stumpwm-config/blob/master/utils.lisp>.
 ;; Intended to be used with:
 ;; (add-hook 'window-configuration-change-hook 'al/set-windows-num-property)
 ;;;###autoload
