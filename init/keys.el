@@ -187,7 +187,10 @@ VARS are variables with bindings supported by
 
 (al/bind-keys
  :map ctl-x-map
- ("A"   . al/update-autoloads)
+ ("A"     (apply #'al/update-autoloads
+                 (if current-prefix-arg
+                     (al/subdirs al/emacs-my-packages-dir)
+                   (list al/emacs-utils-dir))))
  ("C"   . save-buffers-kill-emacs)
  ("C-8" . insert-char))
 

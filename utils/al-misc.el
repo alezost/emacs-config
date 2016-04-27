@@ -153,6 +153,19 @@ See `al/add-hook-maybe'."
                  `(autoload ',symbol ,file nil t))
                symbols)))
 
+(defun al/autoloads-file (directory)
+  "Return the name of 'autoloads' file for DIRECTORY."
+  (let* ((dir  (expand-file-name directory))
+         (base (file-name-nondirectory (directory-file-name dir))))
+    (expand-file-name (concat base "-autoloads.el") dir)))
+
+(defun al/update-autoloads (&rest dirs)
+  "Update the contents of 'autoloads' files for all DIRS."
+  (require 'autoload)
+  (dolist (dir dirs)
+    (let ((generated-autoload-file (al/autoloads-file dir)))
+      (update-directory-autoloads dir))))
+
 (provide 'al-misc)
 
 ;;; al-misc.el ends here

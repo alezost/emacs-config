@@ -142,26 +142,6 @@ Also it (default syntax) breaks `indent-guide-mode'."
 
 ;;; Autoloading utils
 
-(defun al/autoloads-file (directory)
-  "Return the name of 'autoloads' file for DIRECTORY."
-  (let* ((dir  (expand-file-name directory))
-         (base (file-name-nondirectory (directory-file-name dir))))
-    (expand-file-name (concat base "-autoloads.el") dir)))
-
-(defun al/update-autoloads (&rest dirs)
-  "Update the contents of 'autoloads' files for all DIRS.
-Interactively, update autoloads from `al/emacs-utils-dir'.  With
-prefix, update autoloads from all `al/emacs-my-packages-dir'
-sub-directories."
-  (interactive
-   (if current-prefix-arg
-       (al/subdirs al/emacs-my-packages-dir)
-     (list al/emacs-utils-dir)))
-  (require 'autoload)
-  (dolist (dir dirs)
-    (let ((generated-autoload-file (al/autoloads-file dir)))
-      (update-directory-autoloads dir))))
-
 (let ((auto-file (al/autoloads-file al/emacs-utils-dir)))
   (unless (file-exists-p auto-file)
     (with-demoted-errors "ERROR during generating utils autoloads: %S"
