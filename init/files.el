@@ -284,7 +284,7 @@
    save-place-limit 999))
 (al/eval-after-init (require 'saveplace nil t))
 
-(with-eval-after-load 'al-file
+(with-eval-after-load 'al-file-cmd
   (setq
    al/ssh-default-user (list user-login-name "root" "lena")
    al/ssh-default-host "hyperion"))
