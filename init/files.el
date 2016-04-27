@@ -106,7 +106,7 @@
  delete-old-versions t
  vc-make-backup-files t)
 
-(when (require 'al-file nil t)
+(when (require 'al-backup nil t)
   (setq backup-enable-predicate 'al/backup-enable-predicate)
   (advice-add 'make-backup-file-name-1
     :override 'al/make-backup-file-name-1))
