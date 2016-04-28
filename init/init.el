@@ -15,6 +15,8 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+(setq load-prefer-newer t)
+
 (defvar al/emacs-trunk?
   (not (version< emacs-version "25.0.50"))
   "Non-nil, if current Emacs is the latest development build.")
@@ -106,8 +108,6 @@
 
 (defvar al/pure-config? (getenv "EMPURE")
   "Non-nil, if external packages should not be loaded.")
-
-(setq load-prefer-newer t)
 
 (defun al/guix-set-load-path (dir)
   (al/with-check
