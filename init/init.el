@@ -15,6 +15,10 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+(defvar al/emacs-trunk?
+  (not (version< emacs-version "25.0.50"))
+  "Non-nil, if current Emacs is the latest development build.")
+
 
 ;;; Location of various files
 
@@ -80,13 +84,6 @@
   (al/guix-profile-dir-file (concat name "/" name)))
 
 (al/file-accessors "guix-user-profile" (al/guix-profile "main"))
-
-
-;;; Auxiliary functions and macros
-
-(defsubst al/emacs-trunk-p ()
-  "Return non-nil, if current Emacs is the latest development build."
-  (not (version< emacs-version "25.0.50")))
 
 
 ;;; Autoloading utils
