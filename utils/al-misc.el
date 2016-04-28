@@ -115,14 +115,6 @@ FILE may omit an extension.  See `load' for details."
   (or (load file 'noerror)
       (al/warning "Failed to load '%s'." file)))
 
-(defun al/subdirs (directory)
-  "Return list of DIRECTORY sub-directories."
-  (cl-remove-if (lambda (file)
-                  (or (string-match-p (rx "/." string-end) file)
-                      (string-match-p (rx "/.." string-end) file)
-                      (not (file-directory-p file))))
-                (directory-files directory 'full-name nil 'no-sort)))
-
 (defun al/add-hook-maybe (hooks functions &optional append local)
   "Add all bound FUNCTIONS to all HOOKS.
 Both HOOKS and FUNCTIONS may be single variables or lists of those."

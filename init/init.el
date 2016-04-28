@@ -57,6 +57,7 @@
 ;;; Required utils
 
 (push al/emacs-utils-dir load-path)
+(require 'al-file)
 (require 'al-misc)
 
 (defun al/init-load (file)

@@ -17,6 +17,14 @@
 
 ;;; Code:
 
+(defun al/subdirs (directory)
+  "Return list of DIRECTORY sub-directories."
+  (cl-remove-if (lambda (file)
+                  (or (string-match-p (rx "/." string-end) file)
+                      (string-match-p (rx "/.." string-end) file)
+                      (not (file-directory-p file))))
+                (directory-files directory 'full-name nil 'no-sort)))
+
 (defun al/add-to-auto-mode-alist (specs)
   "Add SPECS to `auto-mode-alist'.
 Each specification from SPECS list may have one of the following forms:
