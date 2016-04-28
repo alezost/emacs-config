@@ -1,4 +1,4 @@
-;;; al-text.el --- Additional functionality for working with text
+;;; al-text-cmd.el --- Various interactive commands for working with text
 
 ;; Copyright © 2013-2016 Alex Kost
 
@@ -16,8 +16,6 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Code:
-
-(require 'cl-macs)
 
 
 ;;; Searching and replacing
@@ -414,6 +412,6 @@ move to end of next one."
   (when (memq major-mode al/check-parens-modes)
     (check-parens)))
 
-(provide 'al-text)
+(provide 'al-text-cmd)
 
-;;; al-text.el ends here
+;;; al-text-cmd.el ends here
