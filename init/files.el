@@ -206,17 +206,18 @@
   (setq
    ;; Do not show "hidden" files only.
    dired-omit-files "^\\..*"
-   dired-omit-extensions nil
-   dired-guess-shell-alist-user
-   `((,(al/file-regexp "jpg" "png" "gif") "sxiv" "eog")
-     (,(al/file-regexp "tif" "tiff") "sxiv" "evince" "eog")
-     (,(al/file-regexp "pdf") "zathura" "mupdf")
-     (,(al/file-regexp "djvu" "djv") "zathura")
-     (,(al/file-regexp "wav" "oga" "ogg")
-      "play -q" "aplay" "mplayer -really-quiet" "mpv --really-quiet")
-     (,(al/file-regexp "odt" "doc") "lowriter")))
+   dired-omit-extensions nil)
   ;; Do not rebind my keys!!
-  (al/bind-keys-from-vars 'dired-mode-map 'al/dired-keys t))
+  (al/bind-keys-from-vars 'dired-mode-map 'al/dired-keys t)
+  (when (require 'al-file nil t)
+    (setq dired-guess-shell-alist-user
+          `((,(al/file-regexp "jpg" "png" "gif") "sxiv" "eog")
+            (,(al/file-regexp "tif" "tiff") "sxiv" "evince" "eog")
+            (,(al/file-regexp "pdf") "zathura" "mupdf")
+            (,(al/file-regexp "djvu" "djv") "zathura")
+            (,(al/file-regexp "wav" "oga" "ogg")
+             "play -q" "aplay" "mplayer -really-quiet" "mpv --really-quiet")
+            (,(al/file-regexp "odt" "doc") "lowriter")))))
 
 (with-eval-after-load 'dired-aux
   (when (require 'al-dired nil t)

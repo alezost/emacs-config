@@ -17,6 +17,11 @@
 
 ;;; Code:
 
+(defun al/file-regexp (&rest extensions)
+  "Return regexp to match file name by EXTENSIONS."
+  (rx-to-string `(and "." (or ,@extensions) string-end)
+                'no-group))
+
 (defun al/subdirs (directory)
   "Return list of DIRECTORY sub-directories."
   (cl-remove-if (lambda (file)
