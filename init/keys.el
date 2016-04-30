@@ -93,83 +93,8 @@
     ("M-e" . next-history-element))
   "Alist of auxiliary keys for minibuffer modes.")
 
-(defconst al/default-keys-variables
-  '(al/free-moving-keys al/free-editing-keys al/free-important-keys)
-  "Default list of variables used by `al/bind-keys-from-vars'.")
-
-
-;;; Binding keys from maps
-
-(defun al/bind-keys-to-map (key-specs map-var)
-  "Bind all keys from KEY-SPECS in MAP-VAR.
-KEY-SPECS is an alist of keybinding strings and functions (the
-same as the rest of arguments taken by `al/bind-keys').
-MAP-VAR is a variable with keymap."
-  (al/with-check
-    :var map-var
-    (dolist (spec key-specs)
-      (let ((key (car spec))
-            (cmd (cdr spec)))
-        (eval `(al/bind-key ,key ,cmd ,map-var))))))
-
-(defun al/keys-from-vars (vars)
-  "Return list of key binding specifications from variables VARS.
-For the meaning of values of VARS, see `al/bind-keys-from-vars'.
-Returning value is an alist of keys and functions with removed
-key duplicates (rightmost values retain)."
-  (let* ((vars (cl-remove-if-not #'al/bound? vars))
-         (keys-raw (apply #'append
-                          (mapcar #'symbol-value vars)))
-         (keys (mapcar #'al/list-maybe keys-raw)))
-    (cl-remove-duplicates
-     keys
-     :test (lambda (obj1 obj2)
-             (string= (car obj1) (car obj2))))))
-
-(defun al/bind-keys-from-vars (map-vars &optional key-vars no-default)
-  "Bind all keys from KEY-VARS in all maps from MAP-VARS.
-
-MAP-VARS is a variable or a list of variables with keymaps.
-
-KEY-VARS is a variable or a list of variables with bindings.
-Each variable should contain a list of key bindings
-specifications.  Each spec should be either a cons of a key
-string and a function, or a key string (the bound function is nil
-in the latter case).
-
-Variables from `al/default-keys-variables' are also used for
-binding, unless NO-DEFAULT is non-nil.  The bindings from
-KEY-VARS have a priority over the bindings from these variables."
-  (declare (indent 1))
-  (let* ((key-vars (append (unless no-default al/default-keys-variables)
-                           (al/list-maybe key-vars)))
-         (specs (al/keys-from-vars key-vars)))
-    (al/funcall-or-dolist map-vars
-      (lambda (map-var)
-        (al/bind-keys-to-map specs map-var)))))
-
-
-(defun al/clean-map (map-var)
-  "Remove all key bindings from MAP-VAR variable with keymap."
-  (al/with-check
-    :var map-var
-    (setcdr (symbol-value map-var) nil)))
-
-
-;;; Binding buffer local keys
-
-;; Idea from <http://www.emacswiki.org/emacs/BufferLocalKeys>.
-
-(defvar-local al/local-map nil
-  "Local keymap used by `al/bind-local-keys-from-vars'.")
-
-(defun al/bind-local-keys-from-vars (&rest vars)
-  "Bind all keys from variables VARS locally in the current buffer.
-VARS are variables with bindings supported by
-`al/bind-keys-from-vars'."
-  (setq al/local-map (copy-keymap (current-local-map)))
-  (use-local-map al/local-map)
-  (al/bind-keys-from-vars 'al/local-map vars t))
+(setq al/default-keys-variables
+      '(al/free-moving-keys al/free-editing-keys al/free-important-keys))
 
 
 ;;; Hydra
