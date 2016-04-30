@@ -40,6 +40,87 @@
    ("d" . package-menu-mark-delete)
    ("z" . package-menu-mark-unmark)))
 
+(setq
+ quelpa-upgrade-p t
+ ;; Quelpa dirs are used in several places of my config.
+ quelpa-dir (al/emacs-data-dir-file "quelpa")
+ quelpa-build-dir (expand-file-name "build" quelpa-dir))
+
+(with-eval-after-load 'al-quelpa
+  (defun al/emacs-repo (name)
+    "Return git url of a repository with my package NAME."
+    (concat "https://gitlab.com/alezost-emacs/" name ".git"))
+
+  (setq
+   al/main-packages
+   `((quelpa             :fetcher github :repo "quelpa/quelpa")
+     (mwim               :fetcher git :url ,(al/emacs-repo "mwim"))
+     (alect-themes       :fetcher git :url ,(al/emacs-repo "alect-themes"))
+     (dvorak-layouts     :fetcher git :url ,(al/emacs-repo "dvorak-layouts"))
+     (dim                :fetcher git :url ,(al/emacs-repo "dim"))
+     (insert-pair        :fetcher git :url ,(al/emacs-repo "insert-pair"))
+     (imenus             :fetcher git :url ,(al/emacs-repo "imenus"))
+     smex
+     smartparens
+     elisp-slime-nav
+     hydra
+     (yasnippet          :fetcher github :repo "capitaomorte/yasnippet"
+                         :files ("yasnippet.el"))
+
+     github-browse-file
+     (shift-number       :fetcher git :url ,(al/emacs-repo "shift-number"))
+     (pathify            :fetcher git :url ,(al/emacs-repo "pathify"))
+     (point-pos          :fetcher git :url ,(al/emacs-repo "point-pos"))
+     (web-search         :fetcher git :url ,(al/emacs-repo "web-search"))
+     (text-search        :fetcher git :url ,(al/emacs-repo "text-search"))
+     (echo-msk           :fetcher git :url ,(al/emacs-repo "echo-msk"))
+     (darts-value        :fetcher git :url ,(al/emacs-repo "darts-value"))
+     (debpaste           :fetcher git :url ,(al/emacs-repo "debpaste"))
+     (aurel              :fetcher git :url ,(al/emacs-repo "aurel"))
+     (make-color         :fetcher git :url ,(al/emacs-repo "make-color"))
+     (pretty-sha-path    :fetcher git :url ,(al/emacs-repo "pretty-sha-path"))
+     (date-at-point      :fetcher git :url ,(al/emacs-repo "date-at-point"))
+     (journal            :fetcher git :url ,(al/emacs-repo "journal"))
+     pcmpl-args
+     org-pdfview
+     (dictem             :fetcher github :repo "cheusov/dictem")
+     google-translate
+     (emms-status        :fetcher git :url ,(al/emacs-repo "emms-status"))
+     emms-player-simple-mpv
+     browse-kill-ring
+     outline-magic
+     markdown-mode
+     syslog-mode
+     (mysql              :fetcher github :repo "haxney/mysql")
+     (sql-completion     :fetcher github :repo "emacsmirror/sql-completion")
+     sauron
+     erc-hl-nicks
+     (erc-view-log       :fetcher github :repo "alezost/erc-view-log"
+                         :branch "general-regexps")
+     hl-todo)
+
+   al/extra-packages
+   `(indent-guide
+     mentor
+     pkgbuild-mode
+
+     ;; With the MELPA's 'magit' package recipe, magit repo will be
+     ;; downloaded 4 times to build the magit package itself and its
+     ;; dependencies (git-commit, magit-popup and with-editor).  So
+     ;; install everything in one piece.
+     (magit              :fetcher github :repo "magit/magit"
+                         :files ("lisp/*.el" "Documentation/*.texi"))
+
+     (rainbow-mode       :fetcher url :url "http://git.savannah.gnu.org/cgit/emacs/elpa.git/plain/packages/rainbow-mode/rainbow-mode.el")
+     (sunrise-commander  :fetcher github :repo "escherdragon/sunrise-commander")
+     (typing-practice    :fetcher url :url "https://raw.github.com/mebubo/dotfiles/master/.emacs.d/site-lisp/typing-practice.el")
+     (mana               :fetcher git :url ,(al/emacs-repo "mana"))
+     (ducpel             :fetcher git :url ,(al/emacs-repo "ducpel")
+                         :files ("*.el"))
+     typing-game
+     (sokoban            :fetcher github :repo "leoliu/sokoban"
+                         :files ("*.el" "sokoban.levels")))))
+
 
 ;;; Guix
 

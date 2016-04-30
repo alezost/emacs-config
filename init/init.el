@@ -121,6 +121,7 @@
  package-user-dir (al/emacs-data-dir-file "elpa")
  package-enable-at-startup nil
  guix-package-enable-at-startup nil)
+
 (unless al/pure-config?
   (with-demoted-errors "ERROR during autoloading ELPA packages: %S"
     (package-initialize))
@@ -133,136 +134,6 @@
         (setq load-path (append dirs load-path))
         (dolist (dir dirs)
           (al/load (al/autoloads-file dir)))))))
-
-(setq
- quelpa-upgrade-p t
- ;; quelpa dirs are used in several places of my config.
- quelpa-dir (al/emacs-data-dir-file "quelpa")
- quelpa-build-dir (expand-file-name "build" quelpa-dir))
-
-(defun al/emacs-repo (name)
-  "Return git url of a repository with my package NAME."
-  (concat "https://gitlab.com/alezost-emacs/" name ".git"))
-
-(defvar al/main-packages
-  `((quelpa             :fetcher github :repo "quelpa/quelpa")
-    (mwim               :fetcher git :url ,(al/emacs-repo "mwim"))
-    (alect-themes       :fetcher git :url ,(al/emacs-repo "alect-themes"))
-    (dvorak-layouts     :fetcher git :url ,(al/emacs-repo "dvorak-layouts"))
-    (dim                :fetcher git :url ,(al/emacs-repo "dim"))
-    (insert-pair        :fetcher git :url ,(al/emacs-repo "insert-pair"))
-    (imenus             :fetcher git :url ,(al/emacs-repo "imenus"))
-    smex
-    smartparens
-    elisp-slime-nav
-    hydra
-    (yasnippet          :fetcher github :repo "capitaomorte/yasnippet"
-                        :files ("yasnippet.el"))
-
-    github-browse-file
-    (shift-number       :fetcher git :url ,(al/emacs-repo "shift-number"))
-    (pathify            :fetcher git :url ,(al/emacs-repo "pathify"))
-    (point-pos          :fetcher git :url ,(al/emacs-repo "point-pos"))
-    (web-search         :fetcher git :url ,(al/emacs-repo "web-search"))
-    (text-search        :fetcher git :url ,(al/emacs-repo "text-search"))
-    (echo-msk           :fetcher git :url ,(al/emacs-repo "echo-msk"))
-    (darts-value        :fetcher git :url ,(al/emacs-repo "darts-value"))
-    (debpaste           :fetcher git :url ,(al/emacs-repo "debpaste"))
-    (aurel              :fetcher git :url ,(al/emacs-repo "aurel"))
-    (make-color         :fetcher git :url ,(al/emacs-repo "make-color"))
-    (pretty-sha-path    :fetcher git :url ,(al/emacs-repo "pretty-sha-path"))
-    (date-at-point      :fetcher git :url ,(al/emacs-repo "date-at-point"))
-    (journal            :fetcher git :url ,(al/emacs-repo "journal"))
-    pcmpl-args
-    org-pdfview
-    (dictem             :fetcher github :repo "cheusov/dictem")
-    google-translate
-    (emms-status        :fetcher git :url ,(al/emacs-repo "emms-status"))
-    emms-player-simple-mpv
-    browse-kill-ring
-    outline-magic
-    markdown-mode
-    syslog-mode
-    (mysql              :fetcher github :repo "haxney/mysql")
-    (sql-completion     :fetcher github :repo "emacsmirror/sql-completion")
-    sauron
-    erc-hl-nicks
-    (erc-view-log       :fetcher github :repo "alezost/erc-view-log"
-                        :branch "general-regexps")
-    hl-todo)
-  "Main packages that should be installed in a common way.")
-
-(defvar al/extra-packages
-  `(indent-guide
-    mentor
-    pkgbuild-mode
-
-    ;; With the MELPA's 'magit' package recipe, magit repo will be
-    ;; downloaded 4 times to build the magit package itself and its
-    ;; dependencies (git-commit, magit-popup and with-editor).  So
-    ;; install everything in one piece.
-    (magit              :fetcher github :repo "magit/magit"
-                        :files ("lisp/*.el" "Documentation/*.texi"))
-
-    (rainbow-mode       :fetcher url :url "http://git.savannah.gnu.org/cgit/emacs/elpa.git/plain/packages/rainbow-mode/rainbow-mode.el")
-    (sunrise-commander  :fetcher github :repo "escherdragon/sunrise-commander")
-    (typing-practice    :fetcher url :url "https://raw.github.com/mebubo/dotfiles/master/.emacs.d/site-lisp/typing-practice.el")
-    (mana               :fetcher git :url ,(al/emacs-repo "mana"))
-    (ducpel             :fetcher git :url ,(al/emacs-repo "ducpel")
-                        :files ("*.el"))
-    typing-game
-    (sokoban            :fetcher github :repo "leoliu/sokoban"
-                        :files ("*.el" "sokoban.levels")))
-  "Packages that I use from rarely to never.")
-
-(defun al/all-packages ()
-  "Return all package recipes I use."
-  (append al/main-packages
-          al/extra-packages))
-
-(defun al/package-name (name-or-recipe)
-  "Return package name (symbol) by NAME-OR-RECIPE."
-  (if (listp name-or-recipe)
-      (car name-or-recipe)
-    name-or-recipe))
-
-(defun al/package-recipe (name-or-recipe)
-  "Return package recipe by NAME-OR-RECIPE."
-  (if (listp name-or-recipe)
-      name-or-recipe
-    (cl-find-if (lambda (recipe)
-                  (eq name-or-recipe (al/package-name recipe)))
-                (al/all-packages))))
-
-(defun al/read-package-name ()
-  "Prompt for and return a package name (symbol)."
-  (let ((names (mapcar (lambda (recipe)
-                         (symbol-name (al/package-name recipe)))
-                       (al/all-packages))))
-    (intern (completing-read "Update/install: " names nil t))))
-
-(defun al/quelpa (&rest recipes)
-  "Install/update packages using RECIPES.
-
-Each recipe from RECIPES should be either a MELPA package
-name (symbol) or a full recipe (list).
-
-Interactively, prompt for a package to update/install.
-
-With \\[universal-argument], update all packages except `al/extra-packages'.
-With \\[universal-argument] \\[universal-argument], update all packages."
-  (interactive
-   (cond ((equal current-prefix-arg '(4))
-          al/main-packages)
-         ((equal current-prefix-arg '(16))
-          (al/all-packages))
-         (t (list (al/package-recipe (al/read-package-name))))))
-  (unless (fboundp 'quelpa)
-    (with-temp-buffer
-      (url-insert-file-contents
-       "https://raw.github.com/quelpa/quelpa/master/bootstrap.el")
-      (eval-buffer)))
-  (mapc #'quelpa recipes))
 
 (defun al/package-installed-p (fun package &rest args)
   "Do not check the version of a built-in package.
