@@ -1,4 +1,4 @@
-;;; al-elpa.el --- Additional functionality for elpa and friends
+;;; al-package-cmd.el --- Interactive commands related to Emacs package system
 
 ;; Copyright © 2013-2016 Alex Kost
 
@@ -18,6 +18,7 @@
 ;;; Code:
 
 (require 'cl-lib)
+(require 'package)
 
 (defvar al/package-archives
   '(("gnu"          . "http://elpa.gnu.org/packages/")
@@ -26,8 +27,6 @@
     ("melpa-stable" . "http://stable.melpa.org/packages/"))
   "Alist of package archives used by `al/add-package-archive'.
 This variable has the same form as `package-archives'.")
-
-(defvar package-archives)
 
 ;;;###autoload
 (defun al/add-package-archive (name)
@@ -58,6 +57,6 @@ remove all archives (i.e., set it to nil)."
                            package-archives)))
   (pp-eval-expression 'package-archives))
 
-(provide 'al-elpa)
+(provide 'al-package-cmd)
 
-;;; al-elpa.el ends here
+;;; al-package-cmd.el ends here
