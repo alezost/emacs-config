@@ -108,7 +108,7 @@
      org-pdfview
      (dictem             :fetcher github :repo "cheusov/dictem")
      google-translate
-     (emms-status        :fetcher git :url ,(al/emacs-repo "emms-status"))
+     (emms-state         :fetcher git :url ,(al/emacs-repo "emms-state"))
      emms-player-simple-mpv
      browse-kill-ring
      outline-magic

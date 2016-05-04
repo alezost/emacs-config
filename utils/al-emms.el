@@ -112,7 +112,7 @@ Intended to be used for `emms-track-description-function'."
 
 ;;; Notifications
 
-(require 'emms-status)
+(require 'emms-state)
 (require 'notifications)
 (require 'xml)
 
@@ -168,11 +168,11 @@ Intended to be used for `emms-track-description-function'."
   (interactive)
   (let ((track (emms-playlist-current-selected-track)))
     (when track
-      (let ((state (emms-status-state))
-            (time (concat emms-status-current-playing-time
-                          (and emms-status-total-playing-time
+      (let ((state (emms-state))
+            (time (concat emms-state-current-playing-time
+                          (and emms-state-total-playing-time
                                (concat " ("
-                                       emms-status-total-playing-time
+                                       emms-state-total-playing-time
                                        ")")))))
         (notifications-notify
          :app-name "emms"

@@ -31,7 +31,7 @@
  ("SPC" . emms-pause)
  ("M-SPC" . emms-stop)
  ("s" . emms-show)
- ("m" . emms-status-toggle-mode-line)
+ ("m" . emms-state-toggle-mode-line)
  ("n" . al/emms-notification-mode)
  ("b" . emms-browser)
  ("l" . emms)
@@ -107,7 +107,8 @@
   (al/add-hook-maybe 'emms-player-started-hook
     'emms-last-played-update-current)
 
-  (emms-status-mode)
+  (when (require 'emms-state nil t)
+    (emms-state-mode))
   (when (require 'al-emms nil t)
     (setq
      emms-mode-line-mode-line-function 'al/emms-mode-line-song-string
