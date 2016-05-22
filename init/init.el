@@ -127,7 +127,9 @@
     (package-initialize))
   (with-demoted-errors "ERROR during autoloading Guix packages: %S"
     (when (require 'guix-emacs nil t)
-      (guix-emacs-autoload-packages (al/guix-profile "emacs"))))
+      (apply #'guix-emacs-autoload-packages
+             (mapcar #'al/guix-profile
+                     '("emacs" "main" "misc")))))
   (when (file-exists-p al/emacs-my-packages-dir)
     (with-demoted-errors "ERROR during autoloading my packages: %S"
       (let ((dirs (al/subdirs al/emacs-my-packages-dir)))
