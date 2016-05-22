@@ -534,6 +534,12 @@
     '(al/prog-keys al/c-base-keys)))
 
 (with-eval-after-load 'js
+  (defconst al/js-keys
+    '(("M-d" . js-find-symbol)
+      ("C-c M-v" . js-eval)
+      ("C-M-v" . js-eval-defun))
+    "Alist of auxiliary keys for `js-mode-map'.")
+  (al/bind-keys-from-vars 'js-mode-map 'al/js-keys)
   (defun al/js-delimiter ()
     (setq-local al/delimiter
                 (concat (make-string 64 ?/) "\n///")))
