@@ -162,6 +162,9 @@
  ("m"   . gnus-msg-mail)
  ("n"   . gnus-msg-mail))
 
+(with-eval-after-load 'nntp
+  (setq nntp-connection-timeout 10))
+
 (with-eval-after-load 'gnus
   (require 'al-gnus nil t)
   (setq
