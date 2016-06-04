@@ -462,7 +462,8 @@
    erc-paranoid t
    erc-autojoin-channels-alist
    '(("freenode.net" "#emacs" "#erc" "#gnus" "#scheme" "#guile" "#guix"
-      "#geiser" "#conkeror" "#stumpwm" "#org-mode")))
+      "#geiser" "#conkeror" "#stumpwm" "#org-mode"
+      "#themanaworld" "#tmw-town")))
 
   (defun al/erc-quit-part-reason (&rest _)
     (concat "I live in GuixSD <http://www.gnu.org/s/guix>"
