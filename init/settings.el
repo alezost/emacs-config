@@ -576,6 +576,11 @@
    (concat server-temp-file-regexp
            "\\|COMMIT_EDITMSG\\|git-rebase-todo")))
 
+;; Default value of `tramp-ssh-controlmaster-options' variable slows
+;; down loading tramp significantly.  This should be set before tramp
+;; was loaded.
+(setq tramp-ssh-controlmaster-options "")
+
 (with-eval-after-load 'tramp-sh
   (push 'tramp-own-remote-path tramp-remote-path)
   (push "LC_ALL=en_US.UTF-8" tramp-remote-process-environment)
