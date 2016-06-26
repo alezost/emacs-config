@@ -489,7 +489,10 @@
 
   (defconst al/git-commit-keys
     '(("M->" . git-commit-prev-message)
-      ("M-E" . git-commit-next-message))
+      ("M-E" . git-commit-next-message)
+      ("C-c C-a" . al/git-commit-co-authored)
+      ("C-c C-r" . git-commit-reported)
+      ("C-c S" . git-commit-suggested))
     "Alist of auxiliary keys for `git-commit-mode-map'.")
   (al/bind-keys-from-vars 'git-commit-mode-map 'al/git-commit-keys))
 
