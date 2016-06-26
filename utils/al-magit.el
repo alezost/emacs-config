@@ -18,6 +18,7 @@
 ;;; Code:
 
 (require 'ido)
+(require 'git-commit)
 
 ;;;###autoload
 (defun al/magit-ido-switch-buffer ()
@@ -26,6 +27,12 @@
   ;; The code is taken from <https://github.com/magit/magit/issues/1532>.
   (ido-buffer-internal ido-default-buffer-method
                        nil "Magit buffer: " nil "*magit: "))
+
+;;;###autoload
+(defun al/git-commit-co-authored (name mail)
+  "Insert a header acknowledging that you have co-authored the commit."
+  (interactive (git-commit-self-ident))
+  (git-commit-insert-header "Co-authored-by" name mail))
 
 (provide 'al-magit)
 
