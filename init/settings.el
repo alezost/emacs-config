@@ -353,8 +353,22 @@
 (with-eval-after-load 'help
   (al/bind-keys
    :map help-map
-   ("R"   (info "elisp"))
-   ("A" . apropos)))
+   ("A" . apropos))
+  (al/bind-keys
+   :map help-map
+   :prefix-map al/info-map
+   :prefix-docstring "Map to display info manuals."
+   :prefix "i"
+   ("i" (info "dir"))
+   ("e" (info "elisp"))
+   ("g" (info "guile"))
+   ("x" (info "guix"))
+   ("t" (info "texinfo")))
+
+  ;; Rebinding keys in `help-map' does not simply work: after evaluating
+  ;; the code above, "C-h i" is still bound to `info'; resetting
+  ;; `help-command' helps.
+  (fset 'help-command help-map))
 
 (with-eval-after-load 'help-mode
   (al/bind-keys
