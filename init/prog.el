@@ -214,6 +214,7 @@
 
 (with-eval-after-load 'geiser-repl
   (setq
+   geiser-repl-skip-version-check-p t
    geiser-repl-use-other-window t
    geiser-repl-history-filename (al/emacs-data-dir-file "geiser-history"))
 
