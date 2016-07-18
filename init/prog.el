@@ -466,10 +466,10 @@
 (with-eval-after-load 'magit-blame
   (setq magit-blame-time-format "%F")
   (defconst al/magit-blame-keys
-    '(("M-." . magit-blame-previous-chunk)
-      ("M-e" . magit-blame-next-chunk)
-      (">"   . magit-blame-previous-chunk-same-commit)
-      ("E"   . magit-blame-next-chunk-same-commit)
+    '(("."   . magit-blame-previous-chunk)
+      ("e"   . magit-blame-next-chunk)
+      ("M-." . magit-blame-previous-chunk-same-commit)
+      ("M-e" . magit-blame-next-chunk-same-commit)
       ("M-k" . magit-blame-copy-hash))
     "Alist of auxiliary keys for `magit-blame-mode-map'.")
   (al/bind-keys-from-vars 'magit-blame-mode-map
