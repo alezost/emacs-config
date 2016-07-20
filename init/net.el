@@ -314,6 +314,7 @@
 (with-eval-after-load 'gnus-art
   (setq
    gnus-unbuttonized-mime-types '("text/plain")
+   gnus-blocked-images "githubusercontent"
    gnus-prompt-before-saving t
    gnus-default-article-saver 'gnus-summary-save-in-mail
    ;; `gnus-article-save-directory' is placed in "gnus.el" actually, but
