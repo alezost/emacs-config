@@ -151,7 +151,8 @@
    ;; Do not ask about version difference.
    slime-protocol-version 'ignore)
 
-  (al/bind-keys-from-vars 'slime-parent-map 'al/slime-keys)
+  (al/bind-keys-from-vars 'slime-parent-map
+    '(al/free-misc-keys al/slime-keys))
   (al/bind-keys-from-vars '(slime-mode-map slime-editing-map)))
 
 (with-eval-after-load 'slime-repl
