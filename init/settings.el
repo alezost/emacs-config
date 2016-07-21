@@ -196,10 +196,10 @@
 (push ".*\\.el\\.gz$" same-window-regexps)
 
 (al/bind-keys
- ("<H-XF86AudioRaiseVolume>"   (enlarge-window 1))
- ("<H-XF86AudioLowerVolume>"   (enlarge-window -1))
- ("<C-H-XF86AudioRaiseVolume>" (enlarge-window 1 t))
- ("<C-H-XF86AudioLowerVolume>" (enlarge-window -1 t))
+ ("<H-XF86AudioRaiseVolume>"   (enlarge-window 1 t))
+ ("<H-XF86AudioLowerVolume>"   (enlarge-window -1 t))
+ ("<M-H-XF86AudioRaiseVolume>" (enlarge-window 1))
+ ("<M-H-XF86AudioLowerVolume>" (enlarge-window -1))
  ("H-o" . other-window)
  ("H-M-o" . al/switch-windows)
  ("H-M-q" (quit-window nil (previous-window)))
