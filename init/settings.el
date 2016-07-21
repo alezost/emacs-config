@@ -363,6 +363,9 @@
    ("e" (info "elisp"))
    ("g" (info "guile"))
    ("x" (info "guix"))
+   ("m" (info "make"))
+   ("am" (info "automake"))
+   ("ac" (info "autoconf"))
    ("t" (info "texinfo")))
 
   ;; Rebinding keys in `help-map' does not simply work: after evaluating
