@@ -57,9 +57,9 @@
    org-link-escape-chars '(?\[ ?\] ?\; ?\= ?\+)
    org-ellipsis " […]"
    org-file-apps
-   '(("\\.mm\\'" . default)
+   `(("\\.mm\\'" . default)
      ("\\.x?html?\\'" al/choose-browser file)
-     ("\\.png\\'" . "sxiv %s")
+     (,(al/file-regexp "jpg" "png" "gif") . "sxiv %s")
      ("\\.pdf\\'" . "zathura %s")
      ("\\.djvu\\'" . "zathura %s")
      ("\\.pdf::\\([0-9]+\\)\\'" . "zathura --page %1 %s")
