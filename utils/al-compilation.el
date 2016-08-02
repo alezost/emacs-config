@@ -19,7 +19,7 @@
 
 (require 'cl-lib)
 (require 'notifications)
-(require 'al-notification)
+(require 'al-sound)
 
 (defvar al/compilation-sound-success nil
   "Sound file for a successful compilation.")

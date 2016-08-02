@@ -21,30 +21,9 @@
 (require 'notifications)
 (require 'al-file)
 
-
-;;; Playing sounds
-
 (defvar al/notification-sound
   (al/file-if-exists "/usr/share/sounds/freedesktop/stereo/bell.oga")
   "Default notification sound used by `al/timer-set'.")
-
-(defvar al/play-sound-program (executable-find "play")
-  "Default program for playing a sound.
-Used by `al/play-sound'.
-If nil, use `play-sound-file'.")
-
-(defvar al/play-sound-args (and al/play-sound-program '("-q"))
-  "List of default arguments for `al/play-sound-program'.")
-
-;;;###autoload
-(defun al/play-sound (file)
-  "Play audio FILE with `al/play-sound-program'."
-  (if al/play-sound-program
-      (apply #'start-process
-             al/play-sound-program nil al/play-sound-program
-             (append al/play-sound-args (list file)))
-    (with-demoted-errors "ERROR during playing sound: %S"
-      (play-sound-file file))))
 
 
 ;;; Timers

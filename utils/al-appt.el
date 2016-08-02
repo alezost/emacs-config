@@ -17,7 +17,7 @@
 
 ;;; Code:
 
-(require 'al-notification)
+(require 'al-sound)
 
 (defvar al/appt-actions
   '((5 . al/appt-notify-normal)
