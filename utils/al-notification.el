@@ -19,12 +19,14 @@
 
 (require 'timer)
 (require 'notifications)
+(require 'al-file)
 
 
 ;;; Playing sounds
 
-(defvar al/sound-file nil
-  "Default sound file for `al/play-sound'.")
+(defvar al/notification-sound
+  (al/file-if-exists "/usr/share/sounds/freedesktop/stereo/bell.oga")
+  "Default notification sound used by `al/timer-set'.")
 
 (defvar al/sound-program (executable-find "play")
   "Default program for playing a sound.
@@ -37,10 +39,8 @@ If nil, use `play-sound-file'.")
 (declare-function al/start-process "al/process" (program &rest args))
 
 ;;;###autoload
-(defun al/play-sound (&optional file)
-  "Play audio FILE with `al/sound-program'.
-If FILE is nil, use `al/sound-file'."
-  (or file (setq file al/sound-file))
+(defun al/play-sound (file)
+  "Play audio FILE with `al/sound-program'."
   (if al/sound-program
       (progn
         (require 'al-process)
@@ -72,7 +72,8 @@ With prefix, prompt for the number of seconds."
   (setq al/timer
         (run-at-time seconds nil
                      (lambda (msg)
-                       (al/play-sound)
+                       (when al/notification-sound
+                         (al/play-sound al/notification-sound))
                        (notifications-notify :title "Timer" :body msg))
                      msg))
   (message "The timer has been set on %s."

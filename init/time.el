@@ -123,9 +123,10 @@
    al/appt-notify-urgent-sound (al/sound-dir-file "bell.oga")))
 
 (with-eval-after-load 'al-notification
-  (setq
-   al/sound-file (al/sound-dir-file "alarm.wav")
-   al/timer-format "%M min %S sec"))
+  (setq al/timer-format "%M min %S sec")
+  (when (require 'al-file nil t)
+    (al/setq-file
+     al/notification-sound (al/sound-dir-file "alarm.wav"))))
 
 (with-eval-after-load 'notifications
   ;; XXX Remove when dunst will support icons.
