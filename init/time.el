@@ -32,7 +32,7 @@
  ("a n" . appt-add)
  ("a k" . appt-delete)
  ("M-T"   (al/timer-set "Tea!!" 180))
- ("T"     (al/timer-set "Break!!" (* 45 60)))
+ ("T"     (al/timer-set "Break!!" (* 15 60)))
  ("t n" . al/timer-set)
  ("t t" . al/timer-remaining-time)
  ("t k" . al/timer-cancel))
