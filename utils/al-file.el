@@ -17,6 +17,28 @@
 
 ;;; Code:
 
+(defun al/file-if-exists (file)
+  "Return FILE if it exists, or nil."
+  (and (file-exists-p file) file))
+
+(defmacro al/setq-file (&rest body)
+  "Like `setq' but for setting to file name values.
+Check each file, and if it exists set the variable accordingly.
+Example:
+
+  (al/setq-file v1 \"/foo\"
+                v2 \"/tmp\")
+
+v2 will be set, while v1 will not."
+  `(progn
+     ,@(cl-loop for lst on body by #'cddr
+                collect
+                (let ((var  (car lst))
+                      (file (cadr lst)))
+                  `(let ((file ,file))
+                     (when (file-exists-p file)
+                       (setq ,var file)))))))
+
 (defun al/file-regexp (&rest extensions)
   "Return regexp to match file name by EXTENSIONS."
   (rx-to-string `(and "." (or ,@extensions) string-end)
