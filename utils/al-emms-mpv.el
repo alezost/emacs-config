@@ -61,7 +61,7 @@ COMMAND is what may be put in mpv conf-file, e.g.: 'cycle mute',
     (concat "\\`\\(http\\|mms\\)://\\|"
             (emms-player-simple-regexp
              "ogg" "mp3" "wav" "mpg" "mpeg" "wmv" "wma"
-             "mov" "avi" "divx" "ogm" "ogv" "asf" "mkv"
+             "mov" "avi" "divx" "oga" "ogm" "ogv" "asf" "mkv"
              "rm" "rmvb" "mp4" "flac" "vob" "m4a" "ape"
              "flv" "webm"))
     "mpv" "--no-terminal")
