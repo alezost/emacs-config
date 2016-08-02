@@ -36,18 +36,15 @@ If nil, use `play-sound-file'.")
 (defvar al/sound-args (and al/sound-program '("-q"))
   "List of default arguments for `al/sound-program'.")
 
-(declare-function al/start-process "al/process" (program &rest args))
-
 ;;;###autoload
 (defun al/play-sound (file)
-  "Play audio FILE with `al/sound-program'."
-  (if al/sound-program
-      (progn
-        (require 'al-process)
-        (apply #'al/start-process
-               al/sound-program
-               (append al/sound-args (list file))))
-    (play-sound-file file)))
+  "Play audio FILE with `al/play-sound-program'."
+  (if al/play-sound-program
+      (apply #'start-process
+             al/play-sound-program nil al/play-sound-program
+             (append al/play-sound-args (list file)))
+    (with-demoted-errors "ERROR during playing sound: %S"
+      (play-sound-file file))))
 
 
 ;;; Timers
