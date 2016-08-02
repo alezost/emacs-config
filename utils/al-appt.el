@@ -18,6 +18,7 @@
 ;;; Code:
 
 (require 'al-sound)
+(require 'al-file)
 
 (defvar al/appt-actions
   '((5 . al/appt-notify-normal)
@@ -27,11 +28,13 @@ Each function is called with an appointment string when the
 according number of minutes is left.")
 
 (defvar al/appt-notify-normal-sound
-  "/usr/share/sounds/freedesktop/stereo/bell.oga"
+  (al/file-if-exists
+   "/usr/share/sounds/freedesktop/stereo/bell.oga")
   "Audio file used by `al/appt-notify-normal'.")
 
 (defvar al/appt-notify-urgent-sound
-  "/usr/share/sounds/freedesktop/stereo/complete.oga"
+  (al/file-if-exists
+   "/usr/share/sounds/freedesktop/stereo/complete.oga")
   "Audio file used by `al/appt-notify-urgent'.")
 
 (defun al/appt-notify-sound (sound)

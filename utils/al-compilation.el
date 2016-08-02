@@ -20,11 +20,16 @@
 (require 'cl-lib)
 (require 'notifications)
 (require 'al-sound)
+(require 'al-file)
 
-(defvar al/compilation-sound-success nil
+(defvar al/compilation-sound-success
+  (al/file-if-exists
+   "/usr/share/sounds/freedesktop/stereo/complete.oga")
   "Sound file for a successful compilation.")
 
-(defvar al/compilation-sound-error nil
+(defvar al/compilation-sound-error
+  (al/file-if-exists
+   "/usr/share/sounds/freedesktop/stereo/suspend-error.oga")
   "Sound file for a failed compilation.")
 
 (defvar exit-status)

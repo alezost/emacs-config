@@ -118,9 +118,10 @@
     (appt-activate)))
 
 (with-eval-after-load 'al-appt
-  (setq
-   al/appt-notify-normal-sound (al/sound-dir-file "drums.wav")
-   al/appt-notify-urgent-sound (al/sound-dir-file "bell.oga")))
+  (when (require 'al-file nil t)
+    (al/setq-file
+     al/appt-notify-normal-sound (al/sound-dir-file "drums.wav")
+     al/appt-notify-urgent-sound (al/sound-dir-file "bell.oga"))))
 
 (with-eval-after-load 'al-notification
   (setq al/timer-format "%M min %S sec")
