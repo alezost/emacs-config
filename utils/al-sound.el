@@ -17,6 +17,9 @@
 
 ;;; Code:
 
+
+;;; Playing sound
+
 (defvar al/play-sound-program (executable-find "play")
   "Default program for playing a sound.
 Used by `al/play-sound'.
@@ -35,6 +38,37 @@ If nil, use `play-sound-file'.")
     (with-demoted-errors "ERROR during playing sound: %S"
       (play-sound-file file))))
 
+
+;;; Setting sound
+
+;; This following code is used to set sound parameters (volume and
+;; muteness).  It looks mostly like a wrapper around 'amixer' command,
+;; except that 'osd-sound' is called instead.
+;;
+;; This 'osd-sound' is a simple shell script that sends some Guile
+;; expression to Guile-Daemon <https://github.com/alezost/guile-daemon>.
+;; 2 things eventually happen: amixer is called and the sound value is
+;; displayed in OSD.
+;;
+;; 'osd-sound' script can be found in my Guile-Daemon config:
+;; <https://github.com/alezost/guile-daemon-config/blob/master/scripts/osd-sound>.
+
+(defvar al/sound-program "osd-sound"
+  "Name of a program to be called with amixer arguments.")
+
+(defun al/sound-call (&rest args)
+  "Execute `al/sound-program' using amixer ARGS."
+  (apply #'start-process
+         al/sound-program nil al/sound-program args))
+
+;;;###autoload
+(defun al/set-sound (&rest args)
+  "Set sound value for 'Master' simple control.
+ARGS are the rest amixer arguments after 'sset Master'."
+  (interactive
+   (split-string (read-string (concat al/sound-program " sset Master "))
+                 " "))
+  (apply #'al/sound-call "sset" "Master" args))
 
 (provide 'al-sound)
 
