@@ -255,6 +255,10 @@
   (al/bind-keys-from-vars 'geiser-doc-mode-map
     '(al/button-keys al/geiser-keys al/geiser-doc-keys)))
 
+(with-eval-after-load 'al-geiser
+  (setq al/geiser-sockets
+        '("~/.config/guile-daemon/run/socket")))
+
 
 ;;; Compilation, Makefile
 

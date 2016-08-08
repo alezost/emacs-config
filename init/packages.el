@@ -184,6 +184,13 @@
 (with-eval-after-load 'guix-external
   (setq guix-guile-program "guile"))
 
+(with-eval-after-load 'guix-backend
+  (when (require 'al-geiser nil t)
+    (defun al/geiser-add-guix-socket ()
+      (cl-pushnew guix-repl-current-socket al/geiser-sockets
+                  :test #'string=))
+    (add-hook 'guix-after-start-repl-hook 'al/geiser-add-guix-socket)))
+
 (with-eval-after-load 'guix-base
   (setq
    guix-operation-option-separator "  │  ")

@@ -65,6 +65,22 @@ This function refers to `geiser-doc-symbol-at-point' as
   "Return buffer name of Geiser REPL for IMPL."
   (format "*%s*" (geiser-repl--repl-name impl)))
 
+
+;;; Connecting to pre-defined sockets
+
+(defvar al/geiser-sockets nil
+  "List of Guile's socket files used by `al/geiser-socket-connect'.")
+
+;;;###autoload
+(defun al/geiser-socket-connect (socket)
+  "Connect Geiser to Guile's SOCKET file.
+Interactively, prompt for SOCKET using completions from
+`al/geiser-sockets'."
+  (interactive
+   (list (expand-file-name
+          (completing-read "Socket: " al/geiser-sockets))))
+  (geiser-connect-local 'guile socket))
+
 (provide 'al-geiser)
 
 ;;; al-geiser.el ends here

@@ -234,7 +234,7 @@
  ("g"   . (lambda (arg) (interactive "P")
             (let (geiser-repl-use-other-window)
               (switch-to-guile arg))))
- ("G"     (geiser-connect-local 'guile guix-repl-current-socket))
+ ("G"   . al/geiser-socket-connect)
  ("P"   . run-python)
  ("p"   . python-shell-switch-to-shell)
  ("L"   . lua-start-process)
