@@ -48,6 +48,20 @@ Gnus buffer is selected using IDO."
      	(switch-to-buffer (completing-read "Gnus buffer: " gnus-bufs))
       (gnus))))
 
+(defvar al/gnus-unbuttonized-mime-types-original
+  gnus-unbuttonized-mime-types)
+
+;;;###autoload
+(defun al/gnus-summary-toggle-display-buttonized ()
+  "Toggle the buttonizing of the article buffer."
+  (interactive)
+  (setq gnus-unbuttonized-mime-types
+        (if (setq gnus-inhibit-mime-unbuttonizing
+                  (not gnus-inhibit-mime-unbuttonizing))
+            al/gnus-unbuttonized-mime-types-original
+          '(".*/.*")))
+  (gnus-summary-show-article))
+
 
 ;;; Switching gnus and non-gnus window configurations
 
