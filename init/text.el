@@ -212,7 +212,9 @@
  ("r"   . query-replace-regexp)
  ("R"   . replace-regexp))
 
-(setq isearch-allow-scroll t)
+(setq
+ isearch-allow-scroll t
+ isearch-lax-whitespace nil)
 (al/bind-keys
  :map isearch-mode-map
  ("M-s" . isearch-query-replace)
