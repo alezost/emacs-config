@@ -19,24 +19,18 @@
 
 (require 'emms)
 
-(defvar al/emms-seek-seconds 60
-  "The number of seconds to seek forward or backward.
-Used as a default value by `al/emms-seek-forward' and
-`al/emms-seek-backward'.")
-
-(defun al/emms-seek-forward (&optional seconds)
+(defun al/emms-seek-forward (seconds)
   "Seek by SECONDS forward.
-If SECONDS is nil, use `al/emms-seek-seconds'.
 Interactively, define SECONDS with a numeric prefix."
   (interactive "p")
   (when emms-player-playing-p
-    (emms-player-seek (or seconds al/emms-seek-seconds))))
+    (emms-player-seek seconds)))
 
-(defun al/emms-seek-backward (&optional seconds)
+(defun al/emms-seek-backward (seconds)
   "Seek by SECONDS backward.
-See `al/emms-seek-forward' for details."
+Interactively, define SECONDS with a numeric prefix."
   (interactive "p")
-  (al/emms-seek-forward (- (or seconds al/emms-seek-seconds))))
+  (al/emms-seek-forward (- seconds)))
 
 (defun al/emms-seek-to (seconds)
   "Seek the current player to SECONDS.
