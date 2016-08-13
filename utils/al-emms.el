@@ -19,8 +19,6 @@
 
 (require 'emms)
 
-(defvar emms-playing-time-string)
-
 (defvar al/emms-seek-seconds 60
   "The number of seconds to seek forward or backward.
 Used as a default value by `al/emms-seek-forward' and
