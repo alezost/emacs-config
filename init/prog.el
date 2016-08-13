@@ -196,7 +196,8 @@
     ("M-d"   . geiser-edit-symbol-at-point)
     ("C-M-d" . al/geiser-doc-map)
     ("C-c a" . geiser-autodoc-mode)
-    ("C-c j" . switch-to-geiser-module))
+    ("C-c j" . switch-to-geiser-module)
+    ("C-c C-j" . geiser-mode-switch-to-repl-and-enter))
   "Alist of auxiliary keys for geiser modes.")
 
 (with-eval-after-load 'geiser-mode
