@@ -70,13 +70,13 @@
 
 (defvar calculate-lisp-indent-last-sexp)
 
-;; The following code of `al/scheme-indent-function' is taken from
+;; The following code of `al/scheme-indent-function' originates from
 ;; <http://www.netris.org/~mhw/scheme-indent-function.el>.
 
 (defun al/scheme-indent-function (indent-point state)
   "Scheme mode function for the value of the variable `lisp-indent-function'.
 This function is the same as `scheme-indent-function' except it
-indents property lists properly."
+indents property lists properly and names starting with 'default'."
   (let ((normal-indent (current-column)))
     (goto-char (1+ (elt state 1)))
     (parse-partial-sexp (point) calculate-lisp-indent-last-sexp 0 t)
@@ -104,7 +104,10 @@ indents property lists properly."
         (cond ((or (eq method 'defun)
                    (and (null method)
                         (> (length function) 3)
-                        (string-match "\\`def" function)))
+                        ;; The original regexp is "\\`def" but it will
+                        ;; mess indentation with such names as
+                        ;; 'default-...'.
+                        (string-match "\\`define" function)))
                (lisp-indent-defform state indent-point))
               ;; This next cond clause is the only change -mhw
               ((and (null method)
