@@ -194,6 +194,22 @@ Intended to be used for `emms-mode-line-mode-line-function'."
           (funcall al/emms-mode-line-song-function
                    (emms-playlist-current-selected-track))))
 
+
+;;; Misc
+
+(declare-function wget "wget" t)
+
+;;;###autoload
+(defun al/emms-playlist-wget ()
+  "Run `wget' on the URL track at point."
+  (interactive)
+  (let* ((track (emms-playlist-track-at))
+         (type  (emms-track-get track 'type))
+         (url   (emms-track-get track 'name)))
+    (unless (eq type 'url)
+      (user-error "Current track is not of 'url' type."))
+    (wget url)))
+
 (provide 'al-emms)
 
 ;;; al-emms.el ends here

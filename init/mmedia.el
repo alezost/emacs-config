@@ -122,6 +122,7 @@
       ("S"   . emms-stop)
       ("u"   . emms-playlist-mode-play-smart)
       ("j"   . emms-playlist-mode-goto-dired-at-point)
+      ("w"   . al/emms-playlist-wget)
       ("C-j" . emms-playlist-mode-insert-newline)
       ("C-k"   (beginning-of-line) (emms-playlist-mode-kill-entire-track))
       ("C-t" . emms-playlist-mode-kill)
