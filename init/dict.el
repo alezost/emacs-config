@@ -40,6 +40,15 @@
  ("g"   (let ((google-translate-translation-directions-alist nil))
           (al/google-translate-smooth-translate))))
 
+(al/bind-keys
+ :prefix-map al/spell-map
+ :prefix-docstring "Map for flyspell and friends."
+ :prefix "H-s"
+ ("r" . flyspell-region)
+ ("b" . flyspell-buffer)
+ ("n" . flyspell-goto-next-error)
+ ("H-n" . flyspell-goto-next-error))
+
 
 ;;; Misc settings and packages
 
