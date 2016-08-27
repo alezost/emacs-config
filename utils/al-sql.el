@@ -18,7 +18,10 @@
 ;;; Code:
 
 (require 'sql)
-(require 'cl-macs)
+
+
+;;; SQL passwords from .authinfo
+
 (require 'auth-source)
 
 ;;;###autoload
