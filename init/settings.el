@@ -463,7 +463,8 @@
   (defconst al/sql-keys
     '(("C-v"   . sql-send-region)
       ("C-M-v" . sql-send-paragraph)
-      ("M-s-v" . sql-send-buffer))
+      ("M-s-v" . sql-send-buffer)
+      ("C-c C-z" . al/sql-switch-to-repl))
     "Alist of auxiliary keys for `sql-mode'.")
   (al/bind-keys-from-vars 'sql-mode-map 'al/sql-keys)
 

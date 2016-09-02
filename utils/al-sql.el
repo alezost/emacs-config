@@ -19,6 +19,15 @@
 
 (require 'sql)
 
+;;;###autoload
+(defun al/sql-switch-to-repl ()
+  "Switch to SQLi buffer."
+  (interactive)
+  (unless (and sql-buffer
+               (buffer-live-p (get-buffer sql-buffer)))
+    (sql-set-sqli-buffer))
+  (pop-to-buffer sql-buffer))
+
 
 ;;; SQL passwords from .authinfo
 
