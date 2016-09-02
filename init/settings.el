@@ -460,11 +460,12 @@
     (setq sql-password nil)))
 
 (with-eval-after-load 'sql
-  (al/bind-keys
-   :map sql-mode-map
-   ("C-v"   . sql-send-region)
-   ("C-M-v" . sql-send-paragraph)
-   ("M-s-v" . sql-send-buffer))
+  (defconst al/sql-keys
+    '(("C-v"   . sql-send-region)
+      ("C-M-v" . sql-send-paragraph)
+      ("M-s-v" . sql-send-buffer))
+    "Alist of auxiliary keys for `sql-mode'.")
+  (al/bind-keys-from-vars 'sql-mode-map 'al/sql-keys)
 
   ;; I just can't stand the default key bindings.
   (al/clean-map 'sql-interactive-mode-map)
