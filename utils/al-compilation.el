@@ -32,8 +32,6 @@
    "/usr/share/sounds/freedesktop/stereo/suspend-error.oga")
   "Sound file for a failed compilation.")
 
-(defvar exit-status)
-
 ;; Idea from <https://gist.github.com/jwiegley/fd78e747f27a90cb67a2>.
 (defun al/compilation-notify (buffer reason)
   "Notify about the ended compilation in BUFFER.
@@ -42,7 +40,10 @@ This function is intended to be used in
   (with-current-buffer buffer
     (unless (eq major-mode 'grep-mode)
       (cl-multiple-value-bind (sound urgency)
-          (if (= exit-status 0)
+          ;; `compilation-start' calls `compilation-handle-exit' with
+          ;; "finished" message if exit status is 0.  Is there a better
+          ;; way to get exit status?
+          (if (string-match "\\`finished" reason)
               (list al/compilation-sound-success 'normal)
             (list al/compilation-sound-error 'critical))
         (and sound (al/play-sound sound))
