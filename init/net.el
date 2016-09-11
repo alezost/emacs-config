@@ -196,6 +196,7 @@
    gnus-activate-foreign-newsgroups gnus-activate-level)
 
   (setq
+   gnus-large-newsgroup 400
    gnus-treat-display-smileys nil
    mm-text-html-renderer 'gnus-w3m
    mm-inline-text-html-with-images t
