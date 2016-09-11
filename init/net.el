@@ -276,7 +276,8 @@
    gnus-killed-mark ?✗)
 
   (defconst al/gnus-summary-keys
-    '(("."     . gnus-summary-prev-article)
+    '("x" ; disable `gnus-summary-limit-to-unread'
+      ("."     . gnus-summary-prev-article)
       ("e"     . gnus-summary-next-article)
       (">"     . gnus-summary-prev-unread-article)
       ("E"     . gnus-summary-next-unread-article)
