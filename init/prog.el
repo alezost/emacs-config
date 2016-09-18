@@ -102,6 +102,10 @@
    ("l" . debugger-toggle-locals)
    ("f" . debugger-list-functions)))
 
+(with-eval-after-load 'dash
+  ;; Highlight `dash' keywords.
+  (dash-enable-font-lock))
+
 
 ;;; SLIME
 
