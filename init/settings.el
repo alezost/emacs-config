@@ -151,7 +151,7 @@
  ("h"   (switch-to-buffer "*Help*"))
  ("s"   (switch-to-buffer "*scratch*"))
  ("w" . al/switch-to-w3m)
- ("m" . man)
+ ("m" . woman)
  ("k"   (kill-buffer nil))
  ("8" . al/switch-to-characters))
 
@@ -395,6 +395,16 @@
     "Alist of auxiliary keys for `Man-mode'.")
   (al/bind-keys-from-vars 'Man-mode-map
     '(al/button-keys al/man-keys)))
+
+(with-eval-after-load 'woman
+  (setq
+   woman-fill-column (default-value 'fill-column)
+   woman-default-indent 4)
+
+  (defconst al/woman-keys
+    '(("M-h" . WoMan-previous-manpage))
+    "Alist of auxiliary keys for `woman-mode'.")
+  (al/bind-keys-from-vars 'woman-mode-map 'al/woman-keys))
 
 (with-eval-after-load 'info
   ;; `Info-additional-directory-list' is USELESS as it is appended to
