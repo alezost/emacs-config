@@ -75,8 +75,6 @@
   (al/bind-keys
    ("M-."   . previous-line)
    ("M-e"   . next-line)
-   ("M-a"   . mwim-beginning-of-code-or-line)
-   ("M-i"   . mwim-end-of-code-or-line)
    ("M->"   . scroll-down-command)
    ("M-E"   . scroll-up-command)
    ("C-x a" . beginning-of-buffer)
