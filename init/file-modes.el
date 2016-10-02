@@ -98,8 +98,7 @@
       ("C-c C-t" . org-cut-special)
       ("C-c C-y" . org-paste-special))
     "Alist of auxiliary keys for `org-mode-map'.")
-  (al/bind-keys-from-vars 'org-mode-map
-    '(al/org-keys al/text-editing-keys))
+  (al/bind-keys-from-vars 'org-mode-map 'al/org-keys)
 
   (when (require 'al-ido nil t)
     (advice-add 'org-set-tags :around #'al/ido-disable))

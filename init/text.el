@@ -65,8 +65,8 @@
 
 (if al/mwim-exists?
     (al/bind-keys
-     ("C-a" . mwim-beginning-of-code-or-line)
-     ("C-п" . mwim-end-of-code-or-line))
+     ("C-a" . mwim-beginning)
+     ("C-п" . mwim-end))
   (al/bind-keys
    ("C-a" . beginning-of-line)
    ("C-п" . end-of-line)))
@@ -82,8 +82,8 @@
    ("C-M-i" . complete-symbol))
   (if al/mwim-exists?
       (al/bind-keys
-       ("M-a" . mwim-beginning-of-code-or-line)
-       ("M-i" . mwim-end-of-code-or-line))
+       ("M-a" . mwim-beginning)
+       ("M-i" . mwim-end))
     (al/bind-keys
      ("M-a" . beginning-of-line)
      ("M-i" . end-of-line))))
@@ -344,7 +344,11 @@
     abbrev-mode
     al/no-syntactic-font-lock
     al/show-trailing-whitespace))
-(al/bind-keys-from-vars 'text-mode-map 'al/text-editing-keys)
+
+(with-eval-after-load 'mwim
+  (setq
+   mwim-beginning-of-line-function #'beginning-of-visual-line
+   mwim-end-of-line-function #'end-of-visual-line))
 
 (with-eval-after-load 'abbrev
   (define-abbrev-table 'global-abbrev-table

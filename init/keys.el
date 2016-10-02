@@ -77,12 +77,6 @@
     ("DEL" . scroll-down-command))
   "Alist of auxiliary keys for lazy scrolling.")
 
-(defconst al/text-editing-keys
-  (when al/mwim-exists?
-    '(("C-a" . mwim-beginning-of-line-or-code)
-      ("C-п" . mwim-end-of-line-or-code)))
-  "Alist of auxiliary keys for editing in text modes.")
-
 (defconst al/button-keys
   '(("." . backward-button)
     ("e" . forward-button))

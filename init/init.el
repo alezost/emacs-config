@@ -152,7 +152,7 @@ symbols)."
                 name-str))))
 
 (al/define-package-exists hydra defhydra)
-(al/define-package-exists mwim mwim-beginning-of-code-or-line)
+(al/define-package-exists mwim mwim-beginning)
 
 
 ;;; Loading the rest config
