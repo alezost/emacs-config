@@ -266,7 +266,7 @@
 (al/bind-key "s-s" al/imenus-search-elisp-directories)
 (with-eval-after-load 'al-imenus
   (setq al/imenus-elisp-directories
-        (list al/emacs-init-dir)))
+        (list al/emacs-init-dir al/emacs-utils-dir)))
 
 
 ;;; Killing and yanking
