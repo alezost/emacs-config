@@ -263,9 +263,10 @@
    ("C-s" . imenus-exit-to-isearch)
    ("M-s" . imenus-exit-to-occur)))
 
-(al/bind-key "s-s" al/imenus-search-elisp-dir)
+(al/bind-key "s-s" al/imenus-search-elisp-directories)
 (with-eval-after-load 'al-imenus
-  (setq al/imenus-elisp-dir al/emacs-init-dir))
+  (setq al/imenus-elisp-directories
+        (list al/emacs-init-dir)))
 
 
 ;;; Killing and yanking

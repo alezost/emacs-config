@@ -18,25 +18,27 @@
 ;;; Code:
 
 (require 'imenus)
+(require 'cl-lib)
 
 
 ;;; Searching/"imenu"-ing elisp files
 
-(defvar al/imenus-elisp-dir user-emacs-directory
-  "Directory used by `al/imenus-search-elisp-dir'.")
+(defvar al/imenus-elisp-directories (list user-emacs-directory)
+  "List of directories used by `al/imenus-search-elisp-directories'.")
 
 (defvar al/imenus-elisp-re "^[^.].*\\.el\\'"
-  "Regexp for files to search from `al/imenus-elisp-dir'.")
+  "Regexp for files to search in `al/imenus-elisp-directories'.")
 
 (defvar al/imenus-elisp-prompt "Search elisp files: "
-  "Prompt used by `al/imenus-search-elisp-dir'.")
+  "Prompt used by `al/imenus-search-elisp-directories'.")
 
 ;;;###autoload
-(defun al/imenus-search-elisp-dir ()
-  "Perform `imenus' on elisp files from `al/imenus-elisp-dir'."
+(defun al/imenus-search-elisp-directories ()
+  "Perform `imenus' on elisp files from `al/imenus-elisp-directories'."
   (interactive)
-  (let ((files (directory-files al/imenus-elisp-dir
-                                t al/imenus-elisp-re)))
+  (let ((files (cl-mapcan (lambda (dir)
+                            (directory-files dir t al/imenus-elisp-re))
+                          al/imenus-elisp-directories)))
     (imenus-files files nil al/imenus-elisp-prompt)))
 
 (provide 'al-imenus)
