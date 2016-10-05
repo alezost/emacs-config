@@ -71,7 +71,13 @@
 
 (with-eval-after-load 'ielm
   (setq ielm-prompt "EL> ")
-  (al/bind-keys-from-vars 'ielm-map)
+  (defconst al/ielm-keys
+    '("C-j"
+      ("RET" . ielm-send-input))
+    "Alist of auxiliary keys for `ielm-map'.")
+  (al/bind-keys-from-vars 'ielm-map
+    '(al/lisp-shared-keys al/ielm-keys)
+    t)
   (al/add-hook-maybe 'ielm-mode-hook 'al/no-truncate-lines))
 
 ;; XXX delete (In 25.1 there is `global-eldoc-mode' enabled by default).
