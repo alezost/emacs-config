@@ -108,6 +108,15 @@
    ("l" . debugger-toggle-locals)
    ("f" . debugger-list-functions)))
 
+(with-eval-after-load 'ert
+  (defconst al/ert-results-keys
+    '(("RET" . ert-results-describe-test-at-point)
+      ("g" . ert-results-rerun-all-tests)
+      ("h" . ert-results-previous-test))
+    "Alist of auxiliary keys for `ert-results-mode-map'.")
+  (al/bind-keys-from-vars 'ert-results-mode-map
+    '(al/button-keys al/ert-results-keys)))
+
 (with-eval-after-load 'dash
   ;; Highlight `dash' keywords.
   (dash-enable-font-lock))
