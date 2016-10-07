@@ -78,6 +78,8 @@
       ("M-d"    . ido-edit-input)
       ("M-k"    . al/ido-copy-current-item)
       ("M-s"    . ido-select-text)
+      ;; C-j is unbound in `minibuffer-local-map'
+      ("C-j"    . ido-select-text)
       "SPC")
     "Alist of auxiliary keys for `ido-common-completion-map'.")
   (defconst al/ido-file-dir-keys

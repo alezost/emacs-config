@@ -83,7 +83,8 @@
   "Alist of auxiliary keys for modes with buttons.")
 
 (defconst al/minibuffer-keys
-  '(("M-." . previous-history-element)
+  '("C-j" ; to insert newlines during evaluating expressions
+    ("M-." . previous-history-element)
     ("M-e" . next-history-element))
   "Alist of auxiliary keys for minibuffer modes.")
 
