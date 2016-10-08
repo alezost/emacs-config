@@ -362,6 +362,7 @@
    :prefix-docstring "Map to display info manuals."
    :prefix "i"
    ("i" (info "dir"))
+   ("c" (info "cl"))
    ("e" (info "elisp"))
    ("g" (info "guile"))
    ("x" (info "guix"))
