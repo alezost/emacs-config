@@ -124,7 +124,7 @@
    dired-recursive-deletes 'always)
 
   (defconst al/dired-keys
-    '("c"
+    '("c" "M-$"
       ("SPC"   . al/dired-get-size)
       ("N"     . dired-create-directory)
       ("M"     . al/dired-man-or-chmod)
