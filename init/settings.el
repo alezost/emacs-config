@@ -190,12 +190,24 @@
   'al/set-windows-num-property)
 
 ;; Open some buffers in the same window.
-(setq same-window-buffer-names
-      '("*Colors*" "*Faces*" "*Character List*" "*Character Set List*"
-        "*Proced*" "*Google Translate*" "*Help*" "*Apropos" "*Messages*"
-        "*Personal Keybindings*" "*YASnippet tables*" "*Occur*"
-        "*Process List*"))
-(push ".*\\.el\\.gz$" same-window-regexps)
+(setq
+ same-window-buffer-names
+ '("*Apropos"
+   "*Character List*"
+   "*Character Set List*"
+   "*Colors*"
+   "*Faces*"
+   "*Google Translate*"
+   "*Help*"
+   "*Messages*"
+   "*Occur*"
+   "*Personal Keybindings*"
+   "*Proced*"
+   "*Process List*"
+   "*YASnippet tables*")
+ same-window-regexps
+ '(".*\\.el\\.gz$"
+   "shell\\*"))
 
 (al/bind-keys
  ("<H-XF86AudioRaiseVolume>"   (enlarge-window 1 t))
