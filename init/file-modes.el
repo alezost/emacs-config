@@ -47,7 +47,7 @@
    org-imenu-depth 6
    org-completion-use-ido t
    org-confirm-elisp-link-function nil
-   ;; org-src-fontify-natively t
+   org-src-fontify-natively t
    org-return-follows-link t
    org-startup-folded "showall"
    org-tags-column -54
@@ -74,10 +74,6 @@
      (">" . (org-speed-move-safe 'org-backward-heading-same-level))
      ("E" . (org-speed-move-safe 'org-forward-heading-same-level))
      ("n" . org-narrow-to-subtree)))
-
-  ;; XXX Something in org fontifying is broken in emacs > 25.0
-  (when (version< emacs-version "25")
-    (setq org-src-fontify-natively t))
 
   (defconst al/org-keys
     '("<C-tab>"
