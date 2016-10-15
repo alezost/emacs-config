@@ -280,11 +280,10 @@
    recentf-save-file (al/emacs-data-dir-file "recentf")))
 
 (with-eval-after-load 'saveplace
-  (setq-default save-place t)
   (setq
    save-place-file (al/emacs-data-dir-file "save-places")
    save-place-limit 999))
-(al/eval-after-init (require 'saveplace nil t))
+(al/add-after-init-hook 'save-place-mode)
 
 (with-eval-after-load 'al-file-cmd
   (setq
