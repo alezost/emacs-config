@@ -76,9 +76,7 @@
    ("i d" . al/diary-insert-entry))
 
   ;; Do not ruin the mode-line.
-  (if (version< emacs-version "25")
-      (advice-add 'calendar-update-mode-line :override 'ignore)
-    (setq calendar-mode-line-format nil))
+  (setq calendar-mode-line-format nil)
 
   (al/add-hook-maybe 'calendar-mode-hook 'al/bar-cursor-type)
   (add-hook 'calendar-today-visible-hook 'calendar-mark-today))

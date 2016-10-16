@@ -45,14 +45,6 @@ ARG is passed to `pp-eval-last-sexp'."
       (eval-region (region-beginning) (region-end))
     (pp-eval-last-sexp arg)))
 
-;; From <http://www.emacswiki.org/emacs/ElDoc>.
-;;;###autoload
-(defun al/eldoc-argument-list (string)
-  "Fontify STRING for use with `eldoc-mode'.
-This function is suitable for `eldoc-argument-case' variable."
-  (propertize (upcase string)
-              'face 'font-lock-variable-name-face))
-
 ;;;###autoload
 (defun al/indent-sexp (&optional no-offset pp)
   "Indent each line of the list starting just after point.

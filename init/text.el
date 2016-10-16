@@ -280,11 +280,8 @@
  select-active-regions nil)
 
 ;; Use PRIMARY instead of CLIPBOARD.
-(if (version< emacs-version "25")
-    (setq x-select-enable-primary t
-          x-select-enable-clipboard nil)
-  (setq select-enable-primary t
-        select-enable-clipboard nil))
+(setq select-enable-primary t
+      select-enable-clipboard nil)
 
 (al/bind-key "C-H-y" browse-kill-ring)
 (with-eval-after-load 'browse-kill-ring

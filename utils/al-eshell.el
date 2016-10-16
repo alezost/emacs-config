@@ -80,7 +80,7 @@ This function is intended to be used as a substitution for
           (eshell/whoami)
           (al/with-face "@"
                         'escape-glyph)
-          system-name
+          (system-name)
           (al/with-face (abbreviate-file-name (eshell/pwd))
                         'dired-directory)
           (al/with-face (if (= (user-uid) 0) "#" "$")

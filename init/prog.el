@@ -48,26 +48,22 @@
     '(("<C-M-tab>" . al/indent-sexp))
     "Alist of auxiliary keys for `lisp-mode-shared-map'.")
   (al/bind-keys-from-vars 'lisp-mode-shared-map 'al/lisp-shared-keys)
+  (al/bind-keys-from-vars 'lisp-mode-map)
+
+  (al/add-hook-maybe 'lisp-mode-hook 'al/imenu-add-sections)
+  (al/modify-page-break-syntax lisp--mode-syntax-table))
+
+(with-eval-after-load 'elisp-mode
   (al/bind-keys-from-vars
       '(emacs-lisp-mode-map
-        lisp-interaction-mode-map
-        lisp-mode-map))
+        lisp-interaction-mode-map))
 
-  ;; XXX In 25.1 `emacs-lisp-mode-hook',
-  ;; `emacs-lisp-mode-syntax-table', … are placed in elisp-mode.el
-  (al/add-hook-maybe 'lisp-mode-hook 'al/imenu-add-sections)
   (al/add-hook-maybe
       '(emacs-lisp-mode-hook
         lisp-interaction-mode-hook)
     '(al/imenu-add-sections
       al/imenu-add-use-package
-      al/imenu-add-eval-after-load))
-
-  (if (version< emacs-version "25")
-      (progn
-        (al/modify-page-break-syntax emacs-lisp-mode-syntax-table)
-        (al/modify-page-break-syntax lisp-mode-syntax-table))
-    (al/modify-page-break-syntax lisp--mode-syntax-table)))
+      al/imenu-add-eval-after-load)))
 
 (with-eval-after-load 'ielm
   (setq ielm-prompt "EL> ")
@@ -80,17 +76,7 @@
     t)
   (al/add-hook-maybe 'ielm-mode-hook 'al/no-truncate-lines))
 
-;; XXX delete (In 25.1 there is `global-eldoc-mode' enabled by default).
-(when (version< emacs-version "25")
-  (al/add-hook-maybe
-      '(emacs-lisp-mode-hook
-        lisp-interaction-mode-hook
-        ielm-mode-hook)
-    'eldoc-mode))
-
 (with-eval-after-load 'eldoc
-  (when (version< emacs-version "25")
-    (setq eldoc-argument-case 'al/eldoc-argument-list))
   (setq eldoc-idle-delay 0.3))
 
 (with-eval-after-load 'edebug
