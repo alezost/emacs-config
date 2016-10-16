@@ -18,7 +18,7 @@
 (setq load-prefer-newer t)
 
 (defvar al/emacs-trunk?
-  (not (version< emacs-version "25.0.50"))
+  (not (version< emacs-version "26.0.50"))
   "Non-nil, if current Emacs is the latest development build.")
 
 
