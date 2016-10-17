@@ -58,7 +58,7 @@ alias p pgrep -l $*
 alias ll ls -lah $*
 alias lll ls -AlFh --group-directories-first $*
 
-alias where file-truename ${which $1}
+alias where file-truename ${*which $1}
 alias goto dired ${file-name-directory ${where $1}}
 alias g goto $1
 
