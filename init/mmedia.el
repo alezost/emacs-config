@@ -160,7 +160,7 @@
 (al/autoload "emms-cue" emms-info-cueinfo)
 (al/autoload "emms-info-libtag" emms-info-libtag)
 
-(with-eval-after-load 'al-emms
+(with-eval-after-load 'al-emms-notification
   (setq
    al/emms-notification-artist-format "<big>%s</big>"
    al/emms-notification-title-format "<span foreground=\"yellow\">%s</span>"
