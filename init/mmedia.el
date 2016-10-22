@@ -80,7 +80,6 @@
   (require 'emms-bookmarks)
   (require 'emms-last-played)
   (require 'emms-metaplaylist-mode)
-  (require 'emms-stream-info)
   (require 'emms-history)
   (require 'emms-i18n)
   (require 'emms-cache)
