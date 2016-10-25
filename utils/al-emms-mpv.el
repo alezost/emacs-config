@@ -64,6 +64,8 @@ I.e., wait for the result of FN and return it."
   (interactive)
   (al/emms-mpv-run-command "cycle fullscreen"))
 
+(defvar emms-playing-time)
+
 (defun al/emms-mpv-sync-playing-time ()
   "Synchronize `emms-playing-time' with the real time reported by mpv."
   (interactive)
@@ -119,6 +121,12 @@ I.e., wait for the result of FN and return it."
   (al/emms-mpv-call-with-metadata
    (lambda (data)
      (pp-display-expression data "*EMMS track metadata*"))))
+
+;; Silence compiler.  The following variables are defined by
+;; `define-emms-simple-player-mpv' macro.
+(defvar emms-player-mpv)
+(defvar emms-player-mpv-command-name)
+(defvar emms-player-mpv-parameters)
 
 (defun al/emms-mpv-add-simple-player ()
   "Generate `emms-player-mpv' player."
