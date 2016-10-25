@@ -17,6 +17,9 @@
 
 ;;; Code:
 
+(require 'package)
+(require 'al-quelpa)
+
 (defun al/package-installed-p (fun package &rest args)
   "Do not check the version of a built-in package.
 Some built-in packages (e.g., `org', `erc') do not have 'Version'
