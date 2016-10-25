@@ -34,6 +34,8 @@
 (defvar al/timer-format "%M:%S"
   "Format string for the time message.")
 
+(declare-function al/play-sound "al-sound" (file))
+
 ;;;###autoload
 (defun al/timer-set (msg seconds)
   "Notify with a sound and a message MSG in some SECONDS.
@@ -48,7 +50,8 @@ With prefix, prompt for the number of seconds."
   (setq al/timer
         (run-at-time seconds nil
                      (lambda (msg)
-                       (when al/notification-sound
+                       (when (and al/notification-sound
+                                  (require 'al-sound nil t))
                          (al/play-sound al/notification-sound))
                        (notifications-notify :title "Timer" :body msg))
                      msg))
