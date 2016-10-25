@@ -60,6 +60,25 @@ With prefix, prompt for the number of seconds."
   (emms-playlist-current-select-first)
   (emms-start))
 
+(declare-function al/emms-mpv-playing-radio? "al-emms-mpv" ())
+(declare-function al/emms-mpv-show-radio-description "al-emms-mpv" (track))
+(declare-function al/emms-mpv-show-metadata "al-emms-mpv" (track))
+
+;;;###autoload
+(defun al/emms-show (&optional arg)
+  "Describe the current EMMS track in the minibuffer.
+If ARG is specified, show metadata of the track."
+  (interactive "P")
+  (require 'al-emms-mpv)
+  (cond (arg
+         (al/emms-mpv-show-metadata))
+        ((al/emms-mpv-playing-radio?)
+         (al/emms-mpv-show-radio-description))
+        (t
+         (message (format emms-show-format
+                          (emms-track-description
+                           (emms-playlist-current-selected-track)))))))
+
 
 ;;; Track description
 

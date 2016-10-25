@@ -19,6 +19,16 @@
 
 (require 'emms-player-simple-mpv)
 
+(defun al/emms-mpv-playing-radio? ()
+  "Return non-nil, if current player is 'mpv' and current track
+type is 'url' or 'streamlist'."
+  (and emms-player-playing-p
+       (eq (emms-player-get emms-player-playing-p 'start)
+           'emms-player-mpv-start)
+       (memq (emms-track-get (emms-playlist-current-selected-track)
+                             'type)
+             '(url streamlist))))
+
 (defun al/emms-mpv-run-command (command)
   "Run mpv COMMAND for the current EMMS mpv process.
 COMMAND is what may be put in mpv conf-file, e.g.: 'cycle mute',
@@ -68,6 +78,47 @@ I.e., wait for the result of FN and return it."
                     emms-playing-time sec)
            (setq emms-playing-time sec))
        (message "mpv refuses to report about playing time")))))
+
+(defun al/emms-mpv-call-with-metadata (function)
+  "Call FUNCTION on the metadata of the current track."
+  (emms-player-simple-mpv-tq-enqueue
+   '("get_property" "metadata")
+   nil
+   (lambda (_ answer)
+     (if (emms-player-simple-mpv-tq-success-p answer)
+         (funcall function
+                  (emms-player-simple-mpv-tq-assq-v 'data answer))
+       (message "mpv refuses to return metadata")))))
+
+;;;###autoload
+(defun al/emms-mpv-show-radio-description ()
+  "Display a message about the current radio (url or streamlist) TRACK."
+  (interactive)
+  (al/emms-mpv-call-with-metadata
+   (lambda (data)
+     (let ((name        (cdr (assq 'icy-name data)))
+           (title       (cdr (assq 'icy-title data)))
+           (description (cdr (assq 'icy-description data))))
+       (message
+        (mapconcat #'identity
+                   ;; Remove nils and empty strings.
+                   (cl-remove-if (lambda (elt)
+                                   (or (null elt)
+                                       (and (stringp elt)
+                                            (string= elt ""))))
+                                 (list title name description))
+                   "\n"))))))
+
+(declare-function pp-display-expression "pp" (expression buffer-name))
+
+;;;###autoload
+(defun al/emms-mpv-show-metadata ()
+  "Display metadata of the current TRACK."
+  (interactive)
+  (require 'pp)
+  (al/emms-mpv-call-with-metadata
+   (lambda (data)
+     (pp-display-expression data "*EMMS track metadata*"))))
 
 (defun al/emms-mpv-add-simple-player ()
   "Generate `emms-player-mpv' player."

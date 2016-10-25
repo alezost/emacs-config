@@ -30,7 +30,7 @@
  :prefix "C-ь"
  ("SPC" . emms-pause)
  ("M-SPC" . emms-stop)
- ("s" . emms-show)
+ ("s" . al/emms-show)
  ("m" . emms-state-toggle-mode-line)
  ("n" . al/emms-notification-mode)
  ("b" . emms-browser)
