@@ -17,6 +17,8 @@
 
 ;;; Code:
 
+(require 'pcomplete)
+
 (defun al/pcomplete-no-space ()
   "Do not terminate a completion with space in the current buffer."
   (setq-local pcomplete-termination-string ""))
