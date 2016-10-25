@@ -123,6 +123,8 @@ Intended to be used for `emms-track-description-function'."
 
 ;;; Mode line
 
+(require 'emms-mode-line)
+
 (defvar al/emms-mode-line-song-function
   'al/emms-short-track-description
   "Default function used in `al/emms-mode-line-song-string'.")
