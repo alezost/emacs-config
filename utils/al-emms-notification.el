@@ -1,4 +1,4 @@
-;;; al-emms-notification.el --- EMMS notifications
+;;; al-emms-notification.el --- EMMS notifications  -*- lexical-binding: t -*-
 
 ;; Copyright © 2013-2016 Alex Kost
 
@@ -21,52 +21,68 @@
 (require 'emms-state)
 (require 'notifications)
 (require 'xml)
+(require 'al-emms)
+(require 'al-emms-mpv)
 
 (defvar al/emms-notification-artist-format "%s")
 (defvar al/emms-notification-title-format "%s")
 (defvar al/emms-notification-album-format "%s")
 (defvar al/emms-notification-year-format "%s")
 
-(defun al/emms-notification-track-property
-    (track property &optional format-str)
-  "Return TRACK PROPERTY formatted with FORMAT-STR."
-  (let* ((val (emms-track-get track property))
-         (val (and (stringp val)
-                   (xml-escape-string val))))
-    (and val
-         (if format-str
-             (format format-str val)
-           val))))
+(defun al/emms-notification-format (value &optional format-str)
+  "Return VALUE (string or nil) formatted with FORMAT-STR."
+  (when (stringp value)
+    (let ((val (xml-escape-string value)))
+      (if format-str
+          (format format-str val)
+        val))))
 
-(defun al/emms-notification-track-description (track)
-  "Return description of TRACK suitable for (dunst) notifications."
-  (let ((artist   (al/emms-notification-track-property
-                   track 'info-artist
-                   al/emms-notification-artist-format))
-        (title    (al/emms-notification-track-property
-                   track 'info-title
-                   al/emms-notification-title-format))
-        (tracknum (al/emms-notification-track-property
-                   track 'info-tracknumber))
-        (album    (al/emms-notification-track-property
-                   track 'info-album
-                   al/emms-notification-album-format))
-        (year     (al/emms-notification-track-property
-                   track 'info-year
-                   al/emms-notification-year-format)))
-    (let* ((title (or title
-                      (emms-track-simple-description track)))
-           (title (if tracknum
-                      (format "%02d. %s"
-                              (string-to-number tracknum) title)
-                    title))
-           (album (cond ((and album year)
-                         (format "%s – %s" year album))
-                        (year  (format "%s" year))
-                        (album (format "%s" album)))))
+(defun al/emms-notification-track-name (&optional artist title album
+                                                  year track-number)
+  "Return track description suitable for (dunst) notifications."
+  (let ((artist   (al/emms-notification-format
+                   artist al/emms-notification-artist-format))
+        (title    (al/emms-notification-format
+                   title al/emms-notification-title-format))
+        (album    (al/emms-notification-format
+                   album al/emms-notification-album-format))
+        (year     (al/emms-notification-format
+                   year al/emms-notification-year-format)))
+    (let ((title (if track-number
+                     (format "%02d. %s"
+                             (string-to-number track-number) title)
+                   title))
+          (album (cond ((and album year)
+                        (format "%s – %s" year album))
+                       (year  (format "%s" year))
+                       (album (format "%s" album)))))
       (mapconcat #'identity
                  (delq nil (list artist title album))
                  "\n"))))
+
+(defun al/emms-notification-radio-description (metadata)
+  "Return description of TRACK ."
+  (cl-multiple-value-bind (artist title)
+      (al/emms-split-track-name (cdr (assq 'icy-title metadata)))
+    (al/emms-notification-track-name
+     artist title (cdr (assq 'icy-name metadata)))))
+
+(defun al/emms-notification-track-description (track)
+  "Return description of TRACK suitable for (dunst) notifications."
+  (al/emms-notification-track-name
+   (emms-track-get track 'info-artist)
+   (or (emms-track-get track 'info-title)
+       (emms-track-simple-description track))
+   (emms-track-get track 'info-album)
+   (emms-track-get track 'info-year)
+   (emms-track-get track 'info-tracknumber)))
+
+(defun al/emms-notification-notify (state time string)
+  "Notify about STATE, TIME and STRING using `notifications-notify'."
+  (notifications-notify
+   :app-name "emms"
+   :title (format "%s  %s" state time)
+   :body string))
 
 ;;;###autoload
 (defun al/emms-notify ()
@@ -80,10 +96,15 @@
                                (concat " ("
                                        emms-state-total-playing-time
                                        ")")))))
-        (notifications-notify
-         :app-name "emms"
-         :title (format "%s  %s" state time)
-         :body (al/emms-notification-track-description track))))))
+        (if (al/emms-mpv-playing-radio?)
+            (al/emms-mpv-call-with-metadata
+             (lambda (data)
+               (al/emms-notification-notify
+                state time
+                (al/emms-notification-radio-description data))))
+          (al/emms-notification-notify
+           state time
+           (al/emms-notification-track-description track)))))))
 
 ;;;###autoload
 (define-minor-mode al/emms-notification-mode

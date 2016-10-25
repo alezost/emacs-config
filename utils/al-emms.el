@@ -150,6 +150,18 @@ Intended to be used for `emms-mode-line-mode-line-function'."
       (user-error "Current track is not of 'url' type."))
     (wget url)))
 
+(defvar al/emms-split-track-regexp
+  (rx (group (+? any))
+      " - "
+      (group (+ any)))
+  "Regexp used by `al/emms-split-track-name'.")
+
+(defun al/emms-split-track-name (name)
+  "Assuming NAME is \"ARTIST - TITLE\" string, return (ALIST TITLE) list."
+  (string-match al/emms-split-track-regexp name)
+  (list (match-string 1 name)
+        (match-string 2 name)))
+
 (provide 'al-emms)
 
 ;;; al-emms.el ends here
