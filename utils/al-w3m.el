@@ -91,7 +91,7 @@ Same as `w3m-wget' but works."
 (defun al/w3m-buffer-number-action (function buffer-number)
   "Call FUNCTION on a w3m buffer with BUFFER-NUMBER.
 Buffers are enumerated from 1."
-  (let ((buf (nth (- arg 1) (w3m-list-buffers))))
+  (let ((buf (nth (- buffer-number 1) (w3m-list-buffers))))
     (and buf (funcall function buf))))
 
 ;;;###autoload
