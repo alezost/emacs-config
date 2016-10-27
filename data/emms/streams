@@ -4,23 +4,23 @@
  ("Вести FM" "mms://live.rfn.ru/vesti_fm" 1 url)
  ("Venice Classic Radio" "http://174.36.206.197:8000" 1 url)
  ("SomaFM: Boot Liquor"
-  "http://www.somafm.com/bootliquor.pls" 1 streamlist)
+  "http://somafm.com/bootliquor.pls" 1 streamlist)
  ("SomaFM: Beatblender"
- "http://www.somafm.com/beatblender.pls" 1 streamlist)
+  "http://somafm.com/beatblender.pls" 1 streamlist)
  ("SomaFM: Secret Agent"
-  "http://www.somafm.com/secretagent.pls" 1 streamlist)
+  "http://somafm.com/secretagent.pls" 1 streamlist)
  ("SomaFM: Seven Inch Soul"
-  "http://www.somafm.com/7soul.pls" 1 streamlist)
+  "http://somafm.com/7soul.pls" 1 streamlist)
  ("SomaFM: Groove Salad"
-  "http://www.somafm.com/groovesalad.pls" 1 streamlist)
+  "http://somafm.com/groovesalad.pls" 1 streamlist)
  ("SomaFM: Drone Zone"
-  "http://www.somafm.com/dronezone.pls" 1 streamlist)
+  "http://somafm.com/dronezone.pls" 1 streamlist)
  ("SomaFM: Tag's Trance"
-  "http://www.somafm.com/tagstrance.pls" 1 streamlist)
+  "http://somafm.com/tagstrance.pls" 1 streamlist)
  ("SomaFM: Indie Pop Rocks"
-  "http://www.somafm.com/indiepop.pls" 1 streamlist)
+  "http://somafm.com/indiepop.pls" 1 streamlist)
  ("SomaFM: Doomed"
-  "http://www.somafm.com/doomed.pls" 1 streamlist)
+  "http://somafm.com/doomed.pls" 1 streamlist)
  ("idobi Radio"
   "http://www.idobi.com/radio/iradio.pls" 1 streamlist)
  ("radio.wazee - Modern Alternative Rock"
