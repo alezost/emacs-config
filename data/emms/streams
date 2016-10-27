@@ -3,6 +3,12 @@
 (("Эхо Москвы" "http://81.19.85.197/echo.mp3" 1 url)
  ("Вести FM" "mms://live.rfn.ru/vesti_fm" 1 url)
  ("Venice Classic Radio" "http://174.36.206.197:8000" 1 url)
+ ("SomaFM: Lush"
+  "http://somafm.com/lush.pls" 1 streamlist)
+ ("SomaFM: Left Coast 70s"
+  "http://somafm.com/seventies.pls" 1 streamlist)
+ ("SomaFM: Thistle"
+  "http://somafm.com/thistle.pls" 1 streamlist)
  ("SomaFM: Boot Liquor"
   "http://somafm.com/bootliquor.pls" 1 streamlist)
  ("SomaFM: Beatblender"
