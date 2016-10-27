@@ -2,18 +2,7 @@
 
 (("Эхо Москвы" "http://81.19.85.197/echo.mp3" 1 url)
  ("Вести FM" "mms://live.rfn.ru/vesti_fm" 1 url)
- ("BBC Radio 1" "mms://wmlive.bbc.net.uk/wms/bbc_ami/radio1/radio1_bb_live_int_eq1_sl0?BBC-UID=e44a970b22ffbda06a4e058b91802eba1c90682640d091dff269e685b0547800&SSO2-UID=" 1 url)
- ("BBC Radio 2" "mms://wmlive.bbc.net.uk/wms/bbc_ami/radio2/radio2_bb_live_int_eq1_sl0?BBC-UID=e44a970b22ffbda06a4e058b91802eba1c90682640d091dff269e685b0547800&SSO2-UID=" 1 url)
- ("BBC Radio 3" "mms://wmlive.bbc.net.uk/wms/bbc_ami/radio3/radio3_bb_live_int_eq1_sl0?BBC-UID=e44a970b22ffbda06a4e058b91802eba1c90682640d091dff269e685b0547800&SSO2-UID=" 1 url)
- ("BBC Radio 4" "mms://wmlive.bbc.net.uk/wms/bbc_ami/radio4/radio4_bb_live_int_eq1_sl0?BBC-UID=e44a970b22ffbda06a4e058b91802eba1c90682640d091dff269e685b0547800&SSO2-UID=" 1 url)
- ("BBC Radio 5" "mms://wmlive.bbc.net.uk/wms/bbc_ami/radio5/radio5_bb_live_int_eq1_sl0?BBC-UID=e44a970b22ffbda06a4e058b91802eba1c90682640d091dff269e685b0547800&SSO2-UID=" 1 url)
- ("BBC World Service" "mms://a973.l3944038972.c39440.g.lm.akamaistream.net/D/973/39440/v0001/reflector:38972" 1 url)
  ("Venice Classic Radio" "http://174.36.206.197:8000" 1 url)
- ("SKY.fm, Mostly Classical"
-  ;; moved to http://pub7.radiotunes.com:80/radiotunes_classical
-  "http://www.sky.fm/mp3/classical.pls" 1 streamlist)
- ("SKY.fm, Jazz"
-  "http://www.sky.fm/mp3/jazz.pls" 1 streamlist)
  ("SomaFM: Boot Liquor"
   "http://www.somafm.com/bootliquor.pls" 1 streamlist)
  ("SomaFM: Beatblender"
