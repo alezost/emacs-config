@@ -143,27 +143,20 @@ notification for an audio track."
                 emms-playing-time sec)
        (setq emms-playing-time sec)))))
 
-;; Silence compiler.  The following variables are defined by
-;; `define-emms-simple-player-mpv' macro.
-(defvar emms-player-mpv)
-(defvar emms-player-mpv-command-name)
-(defvar emms-player-mpv-parameters)
+(define-emms-simple-player-mpv mpv
+  '(file url streamlist playlist)
+  (concat "\\`\\(http\\|mms\\)://\\|"
+          (emms-player-simple-regexp
+           "ogg" "mp3" "wav" "mpg" "mpeg" "wmv" "wma"
+           "mov" "avi" "divx" "oga" "ogm" "ogv" "asf" "mkv"
+           "rm" "rmvb" "mp4" "flac" "vob" "m4a" "ape"
+           "flv" "webm"))
+  "mpv" "--no-terminal")
 
-(defun al/emms-mpv-add-simple-player ()
-  "Generate `emms-player-mpv' player."
-  (define-emms-simple-player-mpv mpv
-    '(file url streamlist playlist)
-    (concat "\\`\\(http\\|mms\\)://\\|"
-            (emms-player-simple-regexp
-             "ogg" "mp3" "wav" "mpg" "mpeg" "wmv" "wma"
-             "mov" "avi" "divx" "oga" "ogm" "ogv" "asf" "mkv"
-             "rm" "rmvb" "mp4" "flac" "vob" "m4a" "ape"
-             "flv" "webm"))
-    "mpv" "--no-terminal")
-  (emms-player-simple-mpv-add-to-converters
-   'emms-player-mpv "." '(playlist)
-   (lambda (track-name)
-     (format "--playlist=%s" track-name))))
+(emms-player-simple-mpv-add-to-converters
+ 'emms-player-mpv "." '(playlist)
+ (lambda (track-name)
+   (format "--playlist=%s" track-name)))
 
 (provide 'al-emms-mpv)
 

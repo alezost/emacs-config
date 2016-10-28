@@ -96,7 +96,6 @@
   (setq emms-player-list '(emms-player-mplayer))
   (when (and (executable-find "mpv")
              (require 'al-emms-mpv nil t))
-    (al/emms-mpv-add-simple-player)
     (push 'emms-player-mpv emms-player-list))
 
   ;; Do not add `emms-cache-save' to `kill-emacs-hook'.
