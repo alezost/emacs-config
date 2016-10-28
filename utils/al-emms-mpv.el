@@ -43,6 +43,13 @@ If there is no such PROPERTY, call FALLBACK function without arguments."
            (funcall fallback)
          (message "mpv refuses to return '%s' property" property))))))
 
+(defun al/emms-mpv-call-with-metadata (function)
+  "Call FUNCTION on the metadata of the current mpv track."
+  (al/emms-mpv-call-with-property
+   "metadata"
+   (lambda (value)
+     (funcall function value))))
+
 (defun al/emms-mpv-run-command (command)
   "Run mpv COMMAND for the current EMMS mpv process.
 COMMAND is what may be put in mpv conf-file, e.g.: 'cycle mute',
@@ -74,6 +81,34 @@ I.e., wait for the result of FN and return it."
   (al/emms-mpv-call-with-property property
    (lambda (value)
      (message "Property value: %S" value))))
+
+(declare-function pp-display-expression "pp" (expression buffer-name))
+
+(defun al/emms-mpv-show-metadata ()
+  "Display metadata of the current TRACK."
+  (interactive)
+  (require 'pp)
+  (al/emms-mpv-call-with-metadata
+   (lambda (data)
+     (pp-display-expression data "*EMMS track metadata*"))))
+
+(defun al/emms-mpv-show-radio-description ()
+  "Display a message about the current radio (url or streamlist) TRACK."
+  (interactive)
+  (al/emms-mpv-call-with-metadata
+   (lambda (data)
+     (let ((name        (cdr (assq 'icy-name data)))
+           (title       (cdr (assq 'icy-title data)))
+           (description (cdr (assq 'icy-description data))))
+       (message
+        (mapconcat #'identity
+                   ;; Remove nils and empty strings.
+                   (cl-remove-if (lambda (elt)
+                                   (or (null elt)
+                                       (and (stringp elt)
+                                            (string= elt ""))))
+                                 (list title name description))
+                   "\n"))))))
 
 (declare-function al/emms-notify "al-emms-notification" ())
 
@@ -107,43 +142,6 @@ notification for an audio track."
        (message "Old playing time: %d; new time: %d"
                 emms-playing-time sec)
        (setq emms-playing-time sec)))))
-
-(defun al/emms-mpv-call-with-metadata (function)
-  "Call FUNCTION on the metadata of the current track."
-  (al/emms-mpv-call-with-property
-   "metadata"
-   (lambda (value)
-     (funcall function value))))
-
-;;;###autoload
-(defun al/emms-mpv-show-radio-description ()
-  "Display a message about the current radio (url or streamlist) TRACK."
-  (interactive)
-  (al/emms-mpv-call-with-metadata
-   (lambda (data)
-     (let ((name        (cdr (assq 'icy-name data)))
-           (title       (cdr (assq 'icy-title data)))
-           (description (cdr (assq 'icy-description data))))
-       (message
-        (mapconcat #'identity
-                   ;; Remove nils and empty strings.
-                   (cl-remove-if (lambda (elt)
-                                   (or (null elt)
-                                       (and (stringp elt)
-                                            (string= elt ""))))
-                                 (list title name description))
-                   "\n"))))))
-
-(declare-function pp-display-expression "pp" (expression buffer-name))
-
-;;;###autoload
-(defun al/emms-mpv-show-metadata ()
-  "Display metadata of the current TRACK."
-  (interactive)
-  (require 'pp)
-  (al/emms-mpv-call-with-metadata
-   (lambda (data)
-     (pp-display-expression data "*EMMS track metadata*"))))
 
 ;; Silence compiler.  The following variables are defined by
 ;; `define-emms-simple-player-mpv' macro.
