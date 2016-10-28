@@ -29,6 +29,20 @@ type is 'url' or 'streamlist'."
                              'type)
              '(url streamlist))))
 
+(defun al/emms-mpv-call-with-property (property function &optional fallback)
+  "Call FUNCTION on the value of PROPERTY of the current mpv track.
+If there is no such PROPERTY, call FALLBACK function without arguments."
+  (emms-player-simple-mpv-tq-enqueue
+   (list "get_property" property)
+   nil
+   (lambda (_ answer)
+     (if (emms-player-simple-mpv-tq-success-p answer)
+         (funcall function
+                  (emms-player-simple-mpv-tq-assq-v 'data answer))
+       (if fallback
+           (funcall fallback)
+         (message "mpv refuses to return '%s' property" property))))))
+
 (defun al/emms-mpv-run-command (command)
   "Run mpv COMMAND for the current EMMS mpv process.
 COMMAND is what may be put in mpv conf-file, e.g.: 'cycle mute',
@@ -69,28 +83,20 @@ I.e., wait for the result of FN and return it."
 (defun al/emms-mpv-sync-playing-time ()
   "Synchronize `emms-playing-time' with the real time reported by mpv."
   (interactive)
-  (emms-player-simple-mpv-tq-enqueue
-   '("get_property" "time-pos")
-   nil
-   (lambda (_ ans-ls)
-     (if (emms-player-simple-mpv-tq-success-p ans-ls)
-         (let ((sec (round (emms-player-simple-mpv-tq-assq-v
-                            'data ans-ls))))
-           (message "Old playing time: %d; new time: %d"
-                    emms-playing-time sec)
-           (setq emms-playing-time sec))
-       (message "mpv refuses to report about playing time")))))
+  (al/emms-mpv-call-with-property
+   "time-pos"
+   (lambda (value)
+     (let ((sec (round value)))
+       (message "Old playing time: %d; new time: %d"
+                emms-playing-time sec)
+       (setq emms-playing-time sec)))))
 
 (defun al/emms-mpv-call-with-metadata (function)
   "Call FUNCTION on the metadata of the current track."
-  (emms-player-simple-mpv-tq-enqueue
-   '("get_property" "metadata")
-   nil
-   (lambda (_ answer)
-     (if (emms-player-simple-mpv-tq-success-p answer)
-         (funcall function
-                  (emms-player-simple-mpv-tq-assq-v 'data answer))
-       (message "mpv refuses to return metadata")))))
+  (al/emms-mpv-call-with-property
+   "metadata"
+   (lambda (value)
+     (funcall function value))))
 
 ;;;###autoload
 (defun al/emms-mpv-show-radio-description ()
