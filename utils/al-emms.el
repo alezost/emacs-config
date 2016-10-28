@@ -61,8 +61,8 @@ With prefix, prompt for the number of seconds."
   (emms-start))
 
 (declare-function al/emms-mpv-playing-radio? "al-emms-mpv" ())
-(declare-function al/emms-mpv-show-radio-description "al-emms-mpv" (track))
-(declare-function al/emms-mpv-show-metadata "al-emms-mpv" (track))
+(declare-function al/emms-mpv-show-radio-description "al-emms-mpv" ())
+(declare-function al/emms-mpv-show-metadata "al-emms-mpv" ())
 
 ;;;###autoload
 (defun al/emms-show (&optional arg)
