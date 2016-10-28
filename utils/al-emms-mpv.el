@@ -75,10 +75,20 @@ I.e., wait for the result of FN and return it."
    (lambda (value)
      (message "Property value: %S" value))))
 
+(declare-function al/emms-notify "al-emms-notification" ())
+
 (defun al/emms-mpv-show-progress ()
-  "Show progress in the OSD of the current video."
+  "Notify about the current mpv track.
+Show progress in the OSD if video is playing, or display
+notification for an audio track."
   (interactive)
-  (al/emms-mpv-run-command "show_progress"))
+  (al/emms-mpv-call-with-property
+   "video-codec"
+   (lambda (_)
+     (al/emms-mpv-run-command "show_progress"))
+   (lambda ()
+     (require 'al-emms-notification)
+     (al/emms-notify))))
 
 (defun al/emms-mpv-toggle-fullscreen ()
   "Toggle fullscreen."
