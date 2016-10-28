@@ -68,6 +68,13 @@ I.e., wait for the result of FN and return it."
       (sleep-for 0.1))
     result))
 
+(defun al/emms-mpv-show-property (property)
+  "Display PROPERTY of the current TRACK."
+  (interactive "smpv property: ")
+  (al/emms-mpv-call-with-property property
+   (lambda (value)
+     (message "Property value: %S" value))))
+
 (defun al/emms-mpv-show-progress ()
   "Show progress in the OSD of the current video."
   (interactive)
