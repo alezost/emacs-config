@@ -135,7 +135,7 @@
 (when (require 'dim nil t)
   (dim-major-names
    '((emacs-lisp-mode            "EL")
-     (emacs-lisp-byte-code-mode  "EL-byte")
+     (elisp-byte-code-mode       "EL-byte")
      (lisp-interaction-mode      "ELi")
      (inferior-emacs-lisp-mode   "EL>")
      (lisp-mode                  "CL")
