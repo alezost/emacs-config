@@ -312,36 +312,25 @@
   (setq
    aurel-download-directory (al/src-dir-file "abs")
    aurel-aur-user-name "alezost"
-   aurel-list-buffer-name "*aur-list*"
-   aurel-info-buffer-name "*aur-info*"
-   aurel-date-format "%d-%b-%Y %T"
-   aurel-empty-string "–"
    aurel-aur-user-package-info-check t
    aurel-info-aur-user-string "——————————————————————————————————————\n"
    aurel-info-installed-package-string aurel-info-aur-user-string
    aurel-debug-level 9
-   aurel-list-column-format
-   '((name 20 t)
-     (version 9 t)
-     (installed-version 9 t)
-     (maintainer 13 t)
-     (votes 5 aurel-list-sort-by-votes)
-     (description 30 nil))
-   aurel-list-column-name-alist
+   aurel-list-format
+   '((name aurel-list-get-name 20 t)
+     (version nil 9 t)
+     (installed-version nil 9 t)
+     (maintainer aurel-list-get-maintainer 13 t)
+     (votes nil 8 bui-list-sort-numerically-4 :right-align t)
+     (description nil 30 nil))
+   aurel-list-titles
    '((votes . "V.")
      (version . "Ver.")
      (installed-version . "Inst.")))
-
-  (al/bind-keys
-   :map aurel-list-mode-map
-   ("u" . aurel-list-describe-package)
-   ("," . aurel-history-back)
-   ("p" . aurel-history-forward)
-   ("z" . aurel-list-unmark)
-   ("Z" . aurel-list-unmark-all))
-  (al/bind-keys
-   :map aurel-info-mode-map
-   ("," . aurel-history-back)
-   ("p" . aurel-history-forward)))
+  (defconst al/aurel-filter-keys
+    ;; Default `aurel-enable-filter' was left for backward compatibility.
+    '(("f" . bui-enable-filter))
+    "Alist of auxiliary keys for `aurel-filter-map'.")
+  (al/bind-keys-from-vars 'aurel-filter-map 'al/aurel-filter-keys))
 
 ;;; packages.el ends here
