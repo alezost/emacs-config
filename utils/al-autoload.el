@@ -17,6 +17,11 @@
 
 ;;; Code:
 
+(defvar al/autoloads-regexp
+  (rx (group (* any) "-autoloads")
+      ".el" (zero-or-one "c") string-end)
+  "Regexp to match Emacs 'autoloads' file.")
+
 (defmacro al/autoload (file &rest symbols)
   "Autoload (unquoted) SYMBOLS from file as interactive commands."
   (declare (indent 1))
@@ -30,6 +35,17 @@
   (let* ((dir  (expand-file-name directory))
          (base (file-name-nondirectory (directory-file-name dir))))
     (expand-file-name (concat base "-autoloads.el") dir)))
+
+(defun al/find-autoloads (directory)
+  "Return a list of Emacs 'autoloads' files in DIRECTORY.
+The files in the list do not have extensions (.el, .elc)."
+  (cl-remove-duplicates
+   (delq nil
+        (mapcar (lambda (file)
+                  (when (string-match al/autoloads-regexp file)
+                    (match-string 1 file)))
+                (directory-files directory 'full-name nil 'no-sort)))
+   :test #'string=))
 
 (defun al/update-autoloads (&rest dirs)
   "Update the contents of 'autoloads' files for all DIRS."
