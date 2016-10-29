@@ -281,6 +281,10 @@
 
 (with-eval-after-load 'saveplace
   (setq
+   save-place-ignore-files-regexp
+   (rx-to-string `(or (and string-start "/gnu")
+                      (regexp ,save-place-ignore-files-regexp))
+                 'no-group)
    save-place-file (al/emacs-data-dir-file "save-places")
    save-place-limit 999))
 (al/add-after-init-hook 'save-place-mode)
