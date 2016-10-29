@@ -107,6 +107,10 @@
   ;; Highlight `dash' keywords.
   (dash-enable-font-lock))
 
+(with-eval-after-load 'pp
+  (when (require 'al-pp nil t)
+    (advice-add 'pp-display-expression :after 'al/pp-enable-undo)))
+
 
 ;;; SLIME
 
