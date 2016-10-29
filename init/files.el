@@ -286,7 +286,12 @@
                       (regexp ,save-place-ignore-files-regexp))
                  'no-group)
    save-place-file (al/emacs-data-dir-file "save-places")
-   save-place-limit 999))
+   save-place-limit 999)
+
+  (remove-hook 'dired-initial-position-hook #'save-place-dired-hook)
+  (when (require 'al-saveplace nil t)
+    (advice-add 'save-places-to-alist
+      :override #'al/save-places-to-alist)))
 (al/add-after-init-hook 'save-place-mode)
 
 (with-eval-after-load 'al-file-cmd
