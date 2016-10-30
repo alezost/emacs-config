@@ -49,7 +49,10 @@
 
 (with-eval-after-load 'ido
   (setq
-   ido-use-virtual-buffers t
+   ;; Not using virtual buffers because
+   ;; `ido-add-virtual-buffers-to-list' blatantly enables
+   ;; `recentf-mode'.
+   ido-use-virtual-buffers nil
    ;; Disable auto searching for files unless called explicitly.
    ido-auto-merge-delay-time 999
    ido-enable-last-directory-history t
