@@ -148,6 +148,7 @@
  :prefix "C-b"
  ("C-b" . ido-switch-buffer)
  ("r" . rename-buffer)
+ ("c" . clone-buffer)
  ("n" . info)
  ("b" . al/buffer-name-to-kill-ring)
  ("f" . al/file-name-to-kill-ring)
