@@ -63,6 +63,7 @@
 ;;; Required utils
 
 (push al/emacs-utils-dir load-path)
+(require 'al-autoload)
 (require 'al-file)
 (require 'al-misc)
 (require 'al-text)
