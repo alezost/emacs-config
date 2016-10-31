@@ -62,9 +62,7 @@ If ARG is non-nil, prompt for a date."
   "Insert the clipboard contents.
 It doesn't destroy what you paste with \\[yank]."
   (interactive)
-  (let ((clp (if (version< emacs-version "25")
-                 (x-selection-value-internal 'CLIPBOARD)
-               (gui--selection-value-internal 'CLIPBOARD))))
+  (let ((clp (gui--selection-value-internal 'CLIPBOARD)))
     (if clp
         (insert clp)
       (message "Clipboard is empty."))))
