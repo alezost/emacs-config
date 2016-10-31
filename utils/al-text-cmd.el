@@ -47,6 +47,8 @@ the search from the beginning of the buffer if it did not succeed."
   (interactive)
   (insert al/delimiter))
 
+(declare-function org-read-date "org" t)
+
 ;;;###autoload
 (defun al/insert-date (&optional arg)
   "Insert date at point.
@@ -54,7 +56,8 @@ If ARG is nil, use current date.
 If ARG is non-nil, prompt for a date."
   (interactive "P")
   (insert (if arg
-              (org-read-date)
+              (progn (require 'org)
+                     (org-read-date))
             (format-time-string "%Y-%m-%d"))))
 
 ;;;###autoload
@@ -220,10 +223,13 @@ With argument ARG, do this that many times."
   (interactive "p")
   (al/save-sexp (- (or arg 1))))
 
+(declare-function org-link-unescape "org" (str))
+
 ;;;###autoload
 (defun al/decode-region (beg end)
   "Replace selected text hexified by a browser with decoded one."
   (interactive "r")
+  (require 'org)
   (let ((str (org-link-unescape
               (buffer-substring-no-properties beg end))))
     (delete-region beg end)
