@@ -349,18 +349,19 @@ Resulting function `al/NAME-word-backward' will be added to
 Function FUN is called in body of the resulting function for updating
 the word.  It should accept a number of modified words as argument."
   (let ((fun-name (intern (concat "al/" name "-word-backward"))))
-    (add-to-list 'al/word-seq-functions fun-name)
-    `(defun ,fun-name (arg)
-       ,(concat (capitalize name)
-                " previous word (or ARG words), do not move the point.\n"
-                "Multiple calls will change previous words sequentially.")
-       (interactive "p")
-       (save-excursion
-         (when (memq last-command al/word-seq-functions)
-           (goto-char al/word-position))
-         (backward-word arg)
-         (setq al/word-position (point))
-         (,fun arg)))))
+    `(progn
+       (cl-pushnew ',fun-name al/word-seq-functions)
+       (defun ,fun-name (arg)
+         ,(concat (capitalize name)
+                  " previous word (or ARG words), do not move the point.\n"
+                  "Multiple calls will change previous words sequentially.")
+         (interactive "p")
+         (save-excursion
+           (when (memq last-command al/word-seq-functions)
+             (goto-char al/word-position))
+           (backward-word arg)
+           (setq al/word-position (point))
+           (,fun arg))))))
 
 (al/change-word-backward "downcase" downcase-word)
 (al/change-word-backward "capitalize" capitalize-word)
