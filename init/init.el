@@ -133,10 +133,13 @@
                      '("emacs" "main" "misc")))))
   (when (file-exists-p al/emacs-my-packages-dir)
     (with-demoted-errors "ERROR during autoloading my packages: %S"
-      (let ((dirs (al/subdirs al/emacs-my-packages-dir)))
-        (setq load-path (append dirs load-path))
-        (dolist (dir dirs)
-          (al/load (al/autoloads-file dir)))))))
+      (dolist (dir (al/subdirs al/emacs-my-packages-dir))
+        (let* ((elisp-dir (expand-file-name "elisp" dir))
+               (dir (if (file-exists-p elisp-dir)
+                        elisp-dir
+                      dir)))
+          (push dir load-path)
+          (mapc #'al/load (al/find-autoloads dir)))))))
 
 
 ;;; Code for optional dependencies on external packages
