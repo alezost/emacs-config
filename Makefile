@@ -59,8 +59,7 @@ all: $(UTILS_ELCS)
 
 %.elc: %.el
 	@printf "Compiling $<\n"
-	@$(EMACS_BATCH) -f batch-byte-compile $< ; \
-	true  # to ignore possible compilation error and proceed with making
+	-@$(EMACS_BATCH) -f batch-byte-compile $< ;
 
 # This target is not very useful actually: compiling init files brings
 # tons of garbage warnings because 'with-eval-after-load' wraps lambda
