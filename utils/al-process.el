@@ -44,11 +44,12 @@ Interactively prompt for PROCESS name."
 (defun al/process-is-program (args name)
   "Return non-nil, if process defined by ARGS has program NAME."
   (let ((prog (car args)))
-    (or (string= prog name)
-        (and (string-match-p "sh\\'" prog) ; if it is bash/sh/...
-             (string= (cl-second args) "-c")
-             (string-match-p (regexp-quote name)
-                             (cl-third args))))))
+    (when prog
+      (or (string= prog name)
+          (and (string-match-p "sh\\'" prog) ; if it is bash/sh/...
+               (string= (cl-second args) "-c")
+               (string-match-p (regexp-quote name)
+                               (cl-third args)))))))
 
 
 ;; Hooks for starting/calling processes
