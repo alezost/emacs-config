@@ -271,6 +271,7 @@
       ("M->" . comint-previous-prompt)
       ("M-E" . comint-next-prompt)
       ("C-c c" . compilation-shell-minor-mode)
+      ("C-c o" . al/comint-toggle-move-point)
       ("C-c C-d" (process-send-eof))
       ("TAB" . completion-at-point)
       ("RET" . al/comint-send-input-maybe)

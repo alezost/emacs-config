@@ -44,9 +44,6 @@ input is not forced to begin with the current input."
   (interactive "p")
   (al/comint-previous-matching-input-from-input (- arg)))
 
-
-;;; Input (command) line
-
 (defun al/comint-input-at-point ()
   "Return comint input from the current input (command) line.
 Return nil, if the current line is not the input line."
@@ -71,6 +68,16 @@ You don't want to do \"\\[al/comint-send-input-maybe]\" here"))
               (delete-region prompt (point-max))
               (insert input)))))
       (comint-send-input))))
+
+;;;###autoload
+(defun al/comint-toggle-move-point ()
+  "Toggle moving point to the end of comint output."
+  (interactive)
+  (let ((default (default-value 'comint-move-point-for-output)))
+    (setq-local comint-move-point-for-output
+                (if (eq default comint-move-point-for-output)
+                    (not default)
+                  default))))
 
 (provide 'al-comint)
 
