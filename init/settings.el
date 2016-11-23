@@ -260,7 +260,7 @@
  ("x"   . guix-switch-to-repl))
 
 (with-eval-after-load 'comint
-  (setq comint-move-point-for-output t
+  (setq comint-move-point-for-output 'this
         comint-password-prompt-regexp
         (rx-to-string `(or (and bol "Password")
                            (regex ,comint-password-prompt-regexp))))
