@@ -27,9 +27,9 @@ EMACS = emacs
 MY_INIT_DIR = $(CURDIR)/init
 MY_UTILS_DIR = $(CURDIR)/utils
 MY_ELPA_DIR = $(CURDIR)/packages
+EMACS_ELPA_DIR = $(CURDIR)/data/elpa
 GUIX_DIR = $(HOME)/.guix-profiles/emacs/emacs/share/emacs/site-lisp
 GUIX_ELPA_DIR = $(GUIX_DIR)/guix.d
-EMACS_ELPA_DIR = $(HOME)/.emacs.d/elpa
 
 L_dirs = $(shell find -L $(1) -mindepth 1 -maxdepth 1 -type d	\
                  -exec echo -L {} \;)
