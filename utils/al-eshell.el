@@ -6,12 +6,12 @@
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
 ;; (at your option) any later version.
-
+;;
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-
+;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -19,6 +19,7 @@
 
 (require 'em-dirs)
 (require 'em-unix)
+(require 'em-prompt)
 
 (defun al/eshell-kill-whole-line (arg)
   "Similar to `kill-whole-line', but respect eshell prompt."
@@ -85,6 +86,33 @@ This function is intended to be used as a substitution for
                         'dired-directory)
           (al/with-face (if (= (user-uid) 0) "#" "$")
                         'comint-highlight-prompt)))
+
+
+;;; Input (command) line
+
+(defun al/eshell-input-at-point ()
+  "Return eshell input from the current input (command) line.
+Return nil, if the current line is not the input line."
+  (when (save-excursion
+          (beginning-of-line)
+          (looking-at eshell-prompt-regexp))
+    (buffer-substring-no-properties
+     (save-excursion (eshell-bol) (point))
+     (line-end-position))))
+
+;;;###autoload
+(defun al/eshell-send-input-maybe ()
+  "Call `eshell-send-input' if the point is on the command line."
+  (interactive)
+  (when (< (point) eshell-last-output-end)
+    (let ((input (al/eshell-input-at-point)))
+      (if (null input)
+          (user-error (substitute-command-keys "\
+You don't want to do \"\\[al/eshell-send-input-maybe]\" here"))
+        (goto-char eshell-last-output-end)
+        (delete-region eshell-last-output-end (point-max))
+        (insert input))))
+  (eshell-send-input))
 
 
 ;;; History

@@ -303,6 +303,7 @@
 
   (defconst al/eshell-keys
     '(("<M-tab>" . eshell-complete-lisp-symbol)
+      ("RET" . al/eshell-send-input-maybe)
       ("C-a" . eshell-bol)
       ("C-k" . al/eshell-kill-whole-line)
       ("M-." . eshell-previous-input)
