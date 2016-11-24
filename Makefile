@@ -31,7 +31,8 @@ EMACS_ELPA_DIR = $(CURDIR)/data/elpa
 GUIX_DIR = $(HOME)/.guix-profiles/emacs/emacs/share/emacs/site-lisp
 GUIX_ELPA_DIR = $(GUIX_DIR)/guix.d
 
-L_dirs = $(shell find -L $(1) -mindepth 1 -maxdepth 1 -type d	\
+L_dirs = $(shell test -d $(1) &&				\
+                 find -L $(1) -mindepth 1 -maxdepth 1 -type d	\
                  -exec echo -L {} \;)
 
 LOAD_PATH =					\
