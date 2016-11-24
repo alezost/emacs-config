@@ -6,20 +6,26 @@
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
 ;; (at your option) any later version.
-
+;;
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-
+;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Code:
 
+(require 'cl-lib)
+
 (defun al/file-if-exists (file)
   "Return FILE if it exists, or nil."
   (and (file-exists-p file) file))
+
+(defun al/first-existing-file (&rest file-names)
+  "Return the first existing file from FILE-NAMES."
+  (cl-find-if #'file-exists-p file-names))
 
 (defmacro al/setq-file (&rest body)
   "Like `setq' but for setting to file name values.
