@@ -149,7 +149,9 @@
 
 (setq
  guix-current-profile al/guix-user-profile-dir
- guix-directory (al/src-dir-file "guix"))
+ guix-directory (al/first-existing-file
+                 (al/src-dir-file "guix")
+                 (al/devel-dir-file "guix")))
 (require 'guix-autoloads nil t)
 
 (al/bind-keys
