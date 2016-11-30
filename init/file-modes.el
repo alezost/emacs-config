@@ -111,7 +111,7 @@
 (with-eval-after-load 'org-capture
   (setq org-capture-templates
         '(("n" "notes" entry (file org-default-notes-file)
-           "* %T\n  %?\n"))))
+           "* %T\n   %?\n"))))
 
 (with-eval-after-load 'org-agenda
   (al/bind-keys
