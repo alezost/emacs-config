@@ -6,12 +6,12 @@
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
 ;; (at your option) any later version.
-
+;;
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-
+;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -86,18 +86,17 @@ message for a case when FUN does not return a string."
 
 ;;; Switching to some buffers
 
-(defun al/switch-to-buffer-or-funcall (buffer &optional fun)
-  "Switch to the buffer BUFFER-OR-NAME or call a function FUN.
-BUFFER-OR-NAME can be a string, a buffer object or a function
-returning one of those.  If there is no such buffer, call a
-function FUN if it is specified."
-  (let ((buf (if (functionp buffer)
-                 (funcall buffer)
-               buffer)))
-    (if (and buf
-             (setq buf (get-buffer buf)))
-        (switch-to-buffer buf)
-      (and fun (funcall fun)))))
+(defun al/switch-to-buffer-or-funcall (buffer &optional function)
+  "Switch to BUFFER or call FUNCTION.
+BUFFER can be nil, a string, a buffer object or a function
+returning one of those.  If there is no such buffer, call
+FUNCTION if it is specified."
+  (let ((buffer (if (functionp buffer)
+                    (funcall buffer)
+                  buffer)))
+    (if buffer
+        (switch-to-buffer buffer)
+      (when function (funcall function)))))
 
 ;;;###autoload
 (defun al/switch-to-characters (&optional charset)
