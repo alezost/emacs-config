@@ -82,9 +82,16 @@
   (file-exists-p al/guix-system-profile-dir)
   "Non-nil, if current OS is GuixSD.")
 
+(defvar al/guix-profile-names
+  '("emacs" "fonts" "games" "build" "guile" "misc" "main"))
+
 (defun al/guix-profile (name)
   "Return file name of my guix profile with NAME."
   (al/guix-profile-dir-file (concat name "/" name)))
+
+(defun al/guix-profiles ()
+  "Return a list of all my guix profiles."
+  (mapcar #'al/guix-profile al/guix-profile-names))
 
 (al/file-accessors "guix-user-profile" (al/guix-profile "main"))
 
