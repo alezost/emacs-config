@@ -20,6 +20,18 @@
 (require 'cl-lib)
 (require 'w3m)
 (require 'wget nil t)
+(require 'al-buffer)
+
+;;;###autoload
+(defun al/switch-to-w3m ()
+  "Switch to the `w3m' buffer."
+  (interactive)
+  (al/switch-to-buffer-or-funcall
+   (lambda ()
+     (if (fboundp 'w3m-alive-p)
+         (w3m-alive-p)
+       (error "w3m is not running")))
+   #'w3m))
 
 
 ;;; Go to the next/previous link

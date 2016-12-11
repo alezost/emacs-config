@@ -116,38 +116,6 @@ If CHARSET is nil, use `unicode-bmp'.  With prefix, use `unicode-smp'."
   (al/switch-to-buffer-or-funcall
    "*Packages*" #'list-packages))
 
-(declare-function w3m "w3m" t)
-
-;;;###autoload
-(defun al/switch-to-w3m ()
-  "Switch to the `w3m' buffer."
-  (interactive)
-  (al/switch-to-buffer-or-funcall
-   (lambda ()
-     (if (fboundp 'w3m-alive-p)
-         (w3m-alive-p)
-       (error "w3m is not running")))
-   #'w3m))
-
-(defvar aurel-list-buffer-name)
-(defvar aurel-info-buffer-name)
-
-;;;###autoload
-(defun al/switch-to-aurel-list ()
-  "Switch to the `aurel-list-buffer-name' buffer."
-  (interactive)
-  (al/switch-to-buffer-or-funcall
-   aurel-list-buffer-name
-   (lambda () (call-interactively 'aurel-package-search))))
-
-;;;###autoload
-(defun al/switch-to-aurel-info ()
-  "Switch to the `aurel-info-buffer-name' buffer."
-  (interactive)
-  (al/switch-to-buffer-or-funcall
-   aurel-info-buffer-name
-   (lambda () (call-interactively 'aurel-package-info))))
-
 (provide 'al-buffer)
 
 ;;; al-buffer.el ends here
