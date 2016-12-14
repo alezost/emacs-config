@@ -32,7 +32,6 @@
  ("r"   . al/remove-package-archive))
 
 (with-eval-after-load 'package
-  (require 'al-package nil t)
   (setq package-archives nil)
   (al/bind-keys
    :map package-menu-mode-map
@@ -40,28 +39,6 @@
    ("i" . package-menu-mark-install)
    ("d" . package-menu-mark-delete)
    ("z" . package-menu-mark-unmark)))
-
-(with-eval-after-load 'al-package
-  (setq
-   al/ignored-packages
-   '( ;; Installed via Guix:
-     pdf-tools
-     emms
-     geiser
-     magit
-     ;; Redundant dependencies of magit:
-     magit-popup git-commit with-editor))
-
-  (advice-add 'package-installed-p
-    :around #'al/package-installed-p)
-  (advice-add 'quelpa-package-install
-    :around #'al/quelpa-package-install)
-  (advice-add 'package-compute-transaction
-    :around #'al/package-compute-transaction)
-  (advice-add 'package-generate-description-file
-    :around #'al/package-generate-description-file)
-  (advice-add 'package-build--write-pkg-file
-    :around #'al/package-build--write-pkg-file))
 
 (setq
  quelpa-upgrade-p t

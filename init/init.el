@@ -132,6 +132,27 @@
 
 (unless al/pure-config?
   (with-demoted-errors "ERROR during autoloading ELPA packages: %S"
+    (when (require 'al-package nil t)
+      (setq
+       al/ignored-packages
+       '( ;; Installed via Guix:
+         pdf-tools
+         emms
+         geiser
+         magit
+         ;; Redundant dependencies of magit:
+         magit-popup git-commit with-editor))
+
+      (advice-add 'package-installed-p
+        :around #'al/package-installed-p)
+      (advice-add 'quelpa-package-install
+        :around #'al/quelpa-package-install)
+      (advice-add 'package-compute-transaction
+        :around #'al/package-compute-transaction)
+      (advice-add 'package-generate-description-file
+        :around #'al/package-generate-description-file)
+      (advice-add 'package-build--write-pkg-file
+        :around #'al/package-build--write-pkg-file))
     (package-initialize))
   (with-demoted-errors "ERROR during autoloading Guix packages: %S"
     (when (require 'al-guix-autoload nil t)
