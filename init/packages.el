@@ -129,7 +129,6 @@
  guix-directory (al/first-existing-file
                  (al/src-dir-file "guix")
                  (al/devel-dir-file "guix")))
-(require 'guix-autoloads nil t)
 
 (al/bind-keys
  :prefix-map al/guix-map

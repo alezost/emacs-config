@@ -117,14 +117,6 @@
 (defvar al/pure-config? (getenv "EMPURE")
   "Non-nil, if external packages should not be loaded.")
 
-(defun al/guix-set-load-path (dir)
-  (al/with-check
-    :dir dir
-    (al/add-to-load-path-maybe dir)
-    (setq guix-load-path dir)))
-(al/guix-set-load-path (al/devel-dir-file "guix/emacs"))
-(al/guix-set-load-path (al/src-dir-file "guix/emacs"))
-
 (setq
  package-user-dir (al/emacs-data-dir-file "elpa")
  package-enable-at-startup nil
