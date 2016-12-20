@@ -266,12 +266,6 @@
   (al/bind-keys-from-vars 'guix-build-log-mode-map
     'al/guix-build-log-keys t))
 
-(with-eval-after-load 'guix-devel
-  (defconst al/guix-devel-keys
-    '(("d" . guix-devel-download-package-source))
-    "Alist of auxiliary keys for `guix-devel-keys-map'.")
-  (al/bind-keys-from-vars 'guix-devel-keys-map 'al/guix-devel-keys))
-
 
 ;;; Aurel
 
