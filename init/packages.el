@@ -160,43 +160,33 @@
                              guix-current-profile)))
  ("u"   . al/guix-commit-url))
 
+(defconst al/guix-list-keys
+  '(("i" . bui-list-describe))
+  "Alist of auxiliary keys for guix list maps.")
+
+(defconst al/guix-list-key-vars
+  '(al/lazy-moving-keys
+    al/tabulated-list-keys
+    al/bui-list-keys
+    al/guix-list-keys))
+
 (with-eval-after-load 'guix-external
   (setq guix-guile-program "guile"))
 
-(with-eval-after-load 'guix-backend
+(with-eval-after-load 'guix-repl
   (when (require 'al-geiser nil t)
     (defun al/geiser-add-guix-socket ()
       (cl-pushnew guix-repl-current-socket al/geiser-sockets
                   :test #'string=))
-    (add-hook 'guix-after-start-repl-hook 'al/geiser-add-guix-socket)))
+    (add-hook 'guix-repl-after-start-hook 'al/geiser-add-guix-socket)))
 
-(with-eval-after-load 'guix-base
+(with-eval-after-load 'guix-misc
   (setq
    guix-operation-option-separator "  │  ")
   (when (display-graphic-p)
     (setq
      guix-operation-option-false-string "☐"
      guix-operation-option-true-string  "☑")))
-
-(with-eval-after-load 'guix-buffer
-  (defconst al/guix-buffer-keys
-    '(("," . guix-history-back)
-      ("p" . guix-history-forward))
-    "Alist of auxiliary keys for `guix-buffer-map'.")
-  (al/bind-keys-from-vars 'guix-buffer-map 'al/guix-buffer-keys t))
-
-(with-eval-after-load 'guix-list
-  (defconst al/guix-list-keys
-    '(("u" . guix-list-describe)
-      ("z" . guix-list-unmark)
-      ("Z" . guix-list-unmark-all))
-    "Alist of auxiliary keys for `guix-list-mode-map'.")
-  (al/bind-keys-from-vars 'guix-list-mode-map 'al/guix-list-keys t)
-  (defconst al/guix-list-key-vars
-    '(al/lazy-moving-keys
-      al/tabulated-list-keys
-      al/guix-buffer-keys
-      al/guix-list-keys)))
 
 (with-eval-after-load 'guix-ui
   (defconst al/guix-ui-keys
