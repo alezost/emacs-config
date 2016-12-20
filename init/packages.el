@@ -209,10 +209,16 @@
    guix-package-list-type 'package)
 
   (defconst al/guix-package-list-keys
-    '(("M-d" . guix-package-list-edit))
+    '(("M-d" . guix-package-list-edit)
+      ("I"   . guix-package-list-mark-install)
+      ("D"   . guix-package-list-mark-delete)
+      ("U"   . guix-package-list-mark-upgrade))
     "Alist of auxiliary keys for `guix-package-list-mode-map'.")
   (defconst al/guix-output-list-keys
-    '(("M-d" . guix-output-list-edit))
+    '(("M-d" . guix-output-list-edit)
+      ("I"   . guix-output-list-mark-install)
+      ("D"   . guix-output-list-mark-delete)
+      ("U"   . guix-output-list-mark-upgrade))
     "Alist of auxiliary keys for `guix-output-list-mode-map'.")
   (al/bind-keys-from-vars 'guix-package-list-mode-map
     (append al/guix-list-key-vars '(al/guix-package-list-keys))
@@ -227,7 +233,8 @@
    guix-generation-output-name-width 40)
 
   (defconst al/guix-generation-list-keys
-    '(("E" . guix-generation-list-ediff))
+    '(("E" . guix-generation-list-ediff)
+      ("D" . guix-generation-list-mark-delete))
     "Alist of auxiliary keys for `guix-generation-list-mode-map'.")
   (al/bind-keys-from-vars 'guix-generation-list-mode-map
     (append al/guix-list-key-vars '(al/guix-generation-list-keys))
