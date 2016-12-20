@@ -237,6 +237,10 @@
     (append al/guix-list-key-vars '(al/guix-license-list-keys))
     t))
 
+(with-eval-after-load 'guix-ui-profile
+  (setq guix-profiles
+        (cons guix-system-profile (al/guix-profiles))))
+
 (with-eval-after-load 'guix-utils
   (setq
    guix-find-file-function #'org-open-file))
