@@ -625,7 +625,6 @@
 ;;; Misc settings and packages
 
 (setq
- gc-cons-threshold 4000000
  password-cache-expiry (* 24 60 60)
  line-number-display-limit-width 9999
  echo-keystrokes 0.2

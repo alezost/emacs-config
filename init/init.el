@@ -15,6 +15,9 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+;; Hacks to reduce the startup time:
+;; <https://www.reddit.com/r/emacs/comments/3kqt6e/2_easy_little_known_steps_to_speed_up_emacs_start/>
+(setq gc-cons-threshold (expt 2 24)) ; 16 MiB
 (setq load-prefer-newer t)
 
 (defvar al/emacs-trunk?
@@ -188,5 +191,7 @@
 ;; (setq custom-file "/tmp/custom.el")
 (setq custom-file (al/emacs-init-dir-file "custom.el"))
 (al/eval-after-init (load custom-file 'noerror))
+
+(message "Garbage collected %d times." gcs-done)
 
 ;;; init.el ends here
