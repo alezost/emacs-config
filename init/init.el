@@ -129,6 +129,8 @@
        al/ignored-packages
        '( ;; Installed via Guix:
          pdf-tools
+         bui
+         dash
          emms
          geiser
          magit
