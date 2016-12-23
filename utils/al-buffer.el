@@ -91,9 +91,10 @@ message for a case when FUN does not return a string."
 BUFFER can be nil, a string, a buffer object or a function
 returning one of those.  If there is no such buffer, call
 FUNCTION if it is specified."
-  (let ((buffer (if (functionp buffer)
-                    (funcall buffer)
-                  buffer)))
+  (let* ((buffer (if (functionp buffer)
+                     (funcall buffer)
+                   buffer))
+         (buffer (and buffer (get-buffer buffer))))
     (if buffer
         (switch-to-buffer buffer)
       (when function (funcall function)))))
