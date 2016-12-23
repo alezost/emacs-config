@@ -143,10 +143,8 @@
         :around #'al/quelpa-package-install)
       (advice-add 'package-compute-transaction
         :around #'al/package-compute-transaction)
-      (advice-add 'package-generate-description-file
-        :around #'al/package-generate-description-file)
-      (advice-add 'package-build--write-pkg-file
-        :around #'al/package-build--write-pkg-file))
+      (advice-add 'package-activate-1
+        :around #'al/package-activate-1))
     (package-initialize))
   (with-demoted-errors "ERROR during autoloading Guix packages: %S"
     (when (require 'al-guix-autoload nil t)

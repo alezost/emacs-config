@@ -67,10 +67,10 @@ This function is intendend to be used as an 'around' advice for
 ;; - `quelpa-package-install' and `package-compute-transaction': to
 ;; avoid building/installing unneeded dependencies;
 ;;
-;; - `package-generate-description-file' and
-;; `package-build-write-pkg-file': to remove unneeded dependencies from
-;; a generated "…-pkg.el" file, thus to make sure startup activation
-;; will not complain about missing packages.
+;; - `package-activate-1': to ignore unneeded dependencies from a
+;; generated "…-pkg.el" file, thus to make sure startup activation will
+;; not complain about missing packages.  Obviously this function should
+;; be advised before `package-initialize' is called.
 
 (defun al/quelpa-package-install (fun package &rest args)
   "Do not install PACKAGE if it is one of `al/ignored-packages'.
@@ -91,23 +91,13 @@ This function is intendend to be used as an 'around' advice for
          (al/remove-ignored-packages requirements)
          args))
 
-(defun al/package-generate-description-file (fun pkg-desc pkg-file
-                                                 &rest args)
+(defun al/package-activate-1 (fun pkg-desc &rest args)
   "Reduce requirements from PKG-DESC by excluding `al/ignored-packages'.
 This function is intendend to be used as an 'around' advice for
-`package-generate-description-file'."
+`package-activate-1'."
   (setf (package-desc-reqs pkg-desc)
         (al/remove-ignored-packages (package-desc-reqs pkg-desc)))
-  (apply fun pkg-desc pkg-file args))
-
-(defun al/package-build--write-pkg-file (fun pkg-file pkg-info
-                                             &rest args)
-  "Reduce requirements from PKG-INFO by excluding `al/ignored-packages'.
-This function is intendend to be used as an 'around' advice for
-`package-build--write-pkg-file'."
-  (let ((new-reqs (al/remove-ignored-packages (aref pkg-info 1))))
-    (aset pkg-info 1 new-reqs)
-    (apply fun pkg-file pkg-info args)))
+  (apply fun pkg-desc args))
 
 (provide 'al-package)
 
