@@ -63,19 +63,6 @@
 (al/file-accessors "echo-download" (al/download-dir-file "echo"))
 
 
-;;; Required utils
-
-(push al/emacs-utils-dir load-path)
-(require 'al-autoload)
-(require 'al-file)
-(require 'al-misc)
-(require 'al-text)
-
-(defun al/init-load (file)
-  "Load FILE from `al/emacs-init-dir'."
-  (al/load (al/emacs-init-dir-file file)))
-
-
 ;;; Guix stuff
 
 (al/file-accessors "guix-profile" "~/.guix-profiles")
@@ -99,94 +86,98 @@
 (al/file-accessors "guix-user-profile" (al/guix-profile "main"))
 
 
-;;; Autoloading utils
-
-(let ((auto-file (al/autoloads-file al/emacs-utils-dir)))
-  (unless (file-exists-p auto-file)
-    (with-demoted-errors "ERROR during generating utils autoloads: %S"
-      (al/update-autoloads al/emacs-utils-dir)))
-  (al/load auto-file))
-
-
-;;; Server
-
-(with-demoted-errors "ERROR during server start: %S"
-  (require 'al-server)
-  (al/server-named-start "server-emms" "server"))
-
-
-;;; External packages
+;;; (Auto)loading various files
 
 (defvar al/pure-config? (getenv "EMPURE")
   "Non-nil, if external packages should not be loaded.")
 
 (setq
  package-user-dir (al/emacs-data-dir-file "elpa")
- package-enable-at-startup nil
- guix-package-enable-at-startup nil)
+ package-enable-at-startup nil)
 
-(unless al/pure-config?
-  (with-demoted-errors "ERROR during autoloading ELPA packages: %S"
-    (when (require 'al-package nil t)
-      (setq
-       al/ignored-packages
-       '( ;; Installed via Guix:
-         pdf-tools
-         bui
-         dash
-         emms
-         geiser
-         magit
-         ;; Redundant dependencies of magit:
-         magit-popup git-commit with-editor))
+(push al/emacs-utils-dir load-path)
 
-      (advice-add 'package-installed-p
-        :around #'al/package-installed-p)
-      (advice-add 'quelpa-package-install
-        :around #'al/quelpa-package-install)
-      (advice-add 'package-compute-transaction
-        :around #'al/package-compute-transaction)
-      (advice-add 'package-activate-1
-        :around #'al/package-activate-1))
-    (package-initialize))
-  (with-demoted-errors "ERROR during autoloading Guix packages: %S"
-    (when (require 'al-guix-autoload nil t)
-      (apply #'al/guix-autoload-emacs-packages
-             (mapcar #'al/guix-profile
-                     '("emacs" "main" "misc")))))
-  (when (file-exists-p al/emacs-my-packages-dir)
-    (with-demoted-errors "ERROR during autoloading my packages: %S"
-      (dolist (dir (al/subdirs al/emacs-my-packages-dir))
-        (let* ((elisp-dir (expand-file-name "elisp" dir))
-               (dir (if (file-exists-p elisp-dir)
-                        elisp-dir
-                      dir)))
-          (push dir load-path)
-          (mapc #'al/load (al/find-autoloads dir)))))))
+(let (file-name-handler-alist)
+  ;; Loading my utils required for the rest config.
+  (require 'al-autoload)
+  (require 'al-file)
+  (require 'al-misc)
+  (require 'al-text)
 
-
-;;; Code for optional dependencies on external packages
+  ;; Autoloading my utils.
+  (let ((auto-file (al/autoloads-file al/emacs-utils-dir)))
+    (unless (file-exists-p auto-file)
+      (with-demoted-errors "ERROR during generating utils autoloads: %S"
+        (al/update-autoloads al/emacs-utils-dir)))
+    (al/load auto-file))
 
-(al/define-package-exists hydra defhydra)
-(al/define-package-exists mwim mwim-beginning)
+  ;; Autoloading external packages.
+  (unless al/pure-config?
+    (with-demoted-errors "ERROR during autoloading ELPA packages: %S"
+      (when (require 'al-package nil t)
+        (setq
+         al/ignored-packages
+         '( ;; Installed via Guix:
+           pdf-tools
+           bui
+           dash
+           emms
+           geiser
+           magit
+           ;; Redundant dependencies of magit:
+           magit-popup git-commit with-editor))
 
-
-;;; Loading the rest config
+        (advice-add 'package-installed-p
+          :around #'al/package-installed-p)
+        (advice-add 'quelpa-package-install
+          :around #'al/quelpa-package-install)
+        (advice-add 'package-compute-transaction
+          :around #'al/package-compute-transaction)
+        (advice-add 'package-activate-1
+          :around #'al/package-activate-1))
+      (package-initialize))
+    (with-demoted-errors "ERROR during autoloading Guix packages: %S"
+      (when (require 'al-guix-autoload nil t)
+        (apply #'al/guix-autoload-emacs-packages
+               (mapcar #'al/guix-profile
+                       '("emacs" "main" "misc")))))
+    (when (file-exists-p al/emacs-my-packages-dir)
+      (with-demoted-errors "ERROR during autoloading my packages: %S"
+        (dolist (dir (al/subdirs al/emacs-my-packages-dir))
+          (let* ((elisp-dir (expand-file-name "elisp" dir))
+                 (dir (if (file-exists-p elisp-dir)
+                          elisp-dir
+                        dir)))
+            (push dir load-path)
+            (mapc #'al/load (al/find-autoloads dir)))))))
 
-(mapc #'al/init-load
-      '("keys"
-        "text"
-        "packages"
-        "settings"
-        "files"
-        "prog"
-        "time"
-        "file-modes"
-        "mmedia"
-        "net"
-        "dict"
-        "visual"
-        "games"))
+  (with-demoted-errors "ERROR during server start: %S"
+    (require 'al-server)
+    (al/server-named-start "server-emms" "server"))
+
+  ;; Code for optional dependencies on external packages.
+  (al/define-package-exists hydra defhydra)
+  (al/define-package-exists mwim mwim-beginning)
+
+  (defun al/init-load (file)
+    "Load FILE from `al/emacs-init-dir'."
+    (al/load (al/emacs-init-dir-file file)))
+
+  ;; Loading the rest config files.
+  (mapc #'al/init-load
+        '("keys"
+          "text"
+          "packages"
+          "settings"
+          "files"
+          "prog"
+          "time"
+          "file-modes"
+          "mmedia"
+          "net"
+          "dict"
+          "visual"
+          "games")))
 
 ;; (setq custom-file "/tmp/custom.el")
 (setq custom-file (al/emacs-init-dir-file "custom.el"))
