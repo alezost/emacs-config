@@ -6,12 +6,12 @@
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
 ;; (at your option) any later version.
-
+;;
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-
+;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -77,6 +77,37 @@ with \\[universal-argument] \\[universal-argument] prompt for a default host as 
   (with-current-buffer
       (find-file-noselect (format "/ssh:%s@%s:/" user host))
     (ido-find-file)))
+
+
+;;; Files in PATH
+
+(defvar al/path-completions nil
+  "List of names of executable files from PATH.")
+
+(defun al/refresh-path-completions ()
+  "Refresh `al/path-completions'."
+  (interactive)
+  (let ((regexp (rx "." (zero-or-one ".") "/")))
+    (setq al/path-completions
+          (sort (locate-file-completion-table
+                 exec-path exec-suffixes ""
+                 (lambda (name)
+                   (not (string-match-p regexp name)))
+                 t)
+                #'string<))))
+
+;;;###autoload
+(defun al/find-file-in-path (file)
+  "Edit executable FILE found in PATH environment variable."
+  (interactive
+   (progn
+     (unless al/path-completions
+       (al/refresh-path-completions))
+     (list (completing-read "Find PATH file: "
+                            al/path-completions))))
+  (let ((file (executable-find file)))
+    (when file
+      (find-file file))))
 
 (provide 'al-file-cmd)
 
