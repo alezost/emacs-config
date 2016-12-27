@@ -99,8 +99,7 @@
    alect-display-class '((class color) (min-colors 256))
    alect-overriding-faces
    '((hl-line ((((type graphic)) :background bg)
-               (t :background unspecified)))
-     (sauron-header-face ((t :foreground unspecified)))))
+               (t :background unspecified)))))
   (when al/emacs-trunk?
     (push '(fringe ((((class color) (min-colors 256))
                      :foreground gray :background bg+2)))
