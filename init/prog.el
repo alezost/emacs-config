@@ -325,6 +325,16 @@
 (setq vc-handled-backends nil)
 (setq magit-auto-revert-mode nil)
 
+;; By default, when `with-editor' library is loaded, it runs
+;; "<emacsclient> --version" shell command HUNDREDS of times (for any
+;; possible name of <emacsclient> executable in all dirs from PATH).
+;; This happens during initializing `with-editor-emacsclient-executable'
+;; variable (when `with-editor-locate-emacsclient' is called).
+(setq with-editor-emacsclient-executable nil)
+(with-eval-after-load 'with-editor
+  (setq with-editor-emacsclient-executable
+        (expand-file-name "emacsclient" invocation-directory)))
+
 (al/bind-keys
  :prefix-map al/magit-map
  :prefix-docstring "Map for magit and git stuff."
