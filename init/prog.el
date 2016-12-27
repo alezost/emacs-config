@@ -267,6 +267,17 @@
         '("~/.config/guile-daemon/run/socket")))
 
 
+;;; GDB, GUD
+
+(with-eval-after-load 'gud
+  (defun al/gud-bind-keys ()
+    (al/bind-keys-from-vars 'gud-mode-map 'al/comint-keys))
+  ;; GUD binds its keys inside `gdb' and `gud-gdb' commands.
+  (al/add-hook-maybe '(gdb-mode-hook
+                       gud-gdb-mode-hook)
+    'al/gud-bind-keys))
+
+
 ;;; Compilation, Makefile
 
 (with-eval-after-load 'make-mode
