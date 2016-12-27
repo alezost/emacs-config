@@ -252,9 +252,6 @@
   (setq-default geiser-scheme-implementation 'guile)
   (setq geiser-active-implementations '(guile)))
 
-(with-eval-after-load 'geiser-guile
-  (setq geiser-guile-binary '("guile" "--no-auto-compile")))
-
 (with-eval-after-load 'geiser-doc
   (defconst al/geiser-doc-keys
     '((","   . geiser-doc-previous)
