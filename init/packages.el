@@ -177,7 +177,9 @@
     (defun al/geiser-add-guix-socket ()
       (cl-pushnew guix-repl-current-socket al/geiser-sockets
                   :test #'string=))
-    (add-hook 'guix-repl-after-start-hook 'al/geiser-add-guix-socket)))
+    (add-hook 'guix-repl-after-start-hook 'al/geiser-add-guix-socket)
+    (remove-hook 'guix-repl-after-operation-hook
+                 'guix-repl-autoload-emacs-packages-maybe)))
 
 (with-eval-after-load 'guix-misc
   (setq
