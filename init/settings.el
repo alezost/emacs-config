@@ -200,6 +200,7 @@
    "*Character List*"
    "*Character Set List*"
    "*Colors*"
+   "*Diff*"
    "*Faces*"
    "*Google Translate*"
    "*Help*"
@@ -208,6 +209,7 @@
    "*Personal Keybindings*"
    "*Proced*"
    "*Process List*"
+   "*Shadows*"
    "*YASnippet tables*")
  same-window-regexps
  '(".*\\.el\\.gz$"
