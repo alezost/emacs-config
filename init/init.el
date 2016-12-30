@@ -177,11 +177,8 @@
           "net"
           "dict"
           "visual"
-          "games")))
-
-;; (setq custom-file "/tmp/custom.el")
-(setq custom-file (al/emacs-init-dir-file "custom.el"))
-(al/eval-after-init (load custom-file 'noerror))
+          "games"
+          "custom")))
 
 (message "Garbage collected %d times." gcs-done)
 
