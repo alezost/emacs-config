@@ -98,7 +98,9 @@
               "slovnyk_ru-en" "ushakov" "fd-eng-lat" "fd-lat-eng")))
 
 (with-eval-after-load 'google-translate-core-ui
-  (setq google-translate-show-phonetic t))
+  (setq
+   google-translate-show-phonetic t
+   google-translate-listen-button-label "Listen"))
 
 (with-eval-after-load 'google-translate-smooth-ui
   (when (require 'dvorak-russian-computer nil t)
