@@ -220,6 +220,7 @@
 
 (with-eval-after-load 'guix-ui-generation
   (setq
+   guix-generation-list-show-single t
    guix-generation-packages-update-buffer nil
    guix-generation-output-name-width 40)
 
