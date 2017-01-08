@@ -233,6 +233,14 @@
     (append al/guix-list-key-vars '(al/guix-generation-list-keys))
     t))
 
+(with-eval-after-load 'guix-ui-location
+  (defconst al/guix-location-list-keys
+    '(("M-d" . guix-location-list-edit))
+    "Alist of auxiliary keys for `guix-location-list-mode-map'.")
+  (al/bind-keys-from-vars 'guix-location-list-mode-map
+    (append al/guix-list-key-vars '(al/guix-location-list-keys))
+    t))
+
 (with-eval-after-load 'guix-ui-license
   (defconst al/guix-license-list-keys
     '(("M-d" . guix-license-list-edit))
