@@ -1,6 +1,6 @@
 ;;; al-file.el --- Additional functionality for working with files
 
-;; Copyright © 2016 Alex Kost
+;; Copyright © 2016–2017 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -22,6 +22,10 @@
 (defun al/file-if-exists (file)
   "Return FILE if it exists, or nil."
   (and (file-exists-p file) file))
+
+(defun al/existing-files (&rest file-names)
+  "Return a list of existing files from FILE-NAMES."
+  (delq nil (mapcar #'al/file-if-exists file-names)))
 
 (defun al/first-existing-file (&rest file-names)
   "Return the first existing file from FILE-NAMES."
