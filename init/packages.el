@@ -192,7 +192,7 @@
 
 (with-eval-after-load 'guix-ui
   (defconst al/guix-ui-keys
-    '(("P"   (message "%s" (guix-ui-current-profile))))
+    '(("M-P" (message "%s" (guix-ui-current-profile))))
     "Alist of auxiliary keys for `guix-ui-map'.")
   (al/bind-keys-from-vars 'guix-ui-map 'al/guix-ui-keys t))
 
