@@ -65,11 +65,6 @@
    '("\n─► " "" "\n   " "\n   ..." "[" "]" " [No match]" " [Matched]"
      " [Not readable]" " [Too big]" " [Confirm]" "\n─► " " ◄─"))
 
-  ;; Generate ido keymaps only once: `ido-init-completion-maps' is
-  ;; called every time an ido command is invoked.  (XXX fixed in 25.1)
-  (ido-init-completion-maps)
-  (advice-add 'ido-init-completion-maps :override 'ignore)
-
   (defconst al/ido-common-keys
     '(("C-l"    . ido-toggle-ignore)
       ("C-M-l"  . ido-toggle-regexp)
