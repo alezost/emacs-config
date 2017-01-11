@@ -114,13 +114,13 @@
 (al/bind-key "M-t" execute-extended-command ctl-x-map)
 (if (fboundp 'smex)
     (progn
-      (setq smex-save-file (al/emacs-data-dir-file "smex-items"))
       (al/bind-key "C-M-t" smex-major-mode-commands)
       (al/bind-key* "M-t" smex))
   (al/bind-key* "M-t" execute-extended-command))
 
 (with-eval-after-load 'smex
   (setq
+   smex-save-file (al/emacs-data-dir-file "smex-items")
    smex-history-length 32
    smex-prompt-string
    (concat (key-description (where-is-internal 'smex nil t))
