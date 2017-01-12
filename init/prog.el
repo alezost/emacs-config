@@ -317,7 +317,12 @@
   (al/bind-keys-from-vars
       '(compilation-mode-map compilation-minor-mode-map)
     '(al/compilation-common-keys al/compilation-keys))
-  (add-hook 'compilation-mode-hook 'hl-line-mode)
+
+  ;; TODO Move it somewhere.
+  (defun al/hl-line-mode ()
+    (unless (memq major-mode '(grep-mode))
+      (hl-line-mode)))
+  (add-hook 'compilation-mode-hook 'al/hl-line-mode)
 
   (when (require 'al-compilation nil t)
     (al/add-hook-maybe 'compilation-finish-functions
