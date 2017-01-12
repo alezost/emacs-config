@@ -380,7 +380,8 @@
     ("M-e" . magit-section-forward-sibling))
   "Alist of auxiliary keys for moving by magit sections.")
 
-(al/autoload "magit" ido-enter-magit-status)
+;; TODO Remove (it will be autoloaded in the next release after Magit 2.10.0).
+(al/autoload "magit-extras" ido-enter-magit-status)
 (with-eval-after-load 'magit
   (setq
    magit-status-buffer-name-format   "*magit: %a*"
@@ -449,9 +450,12 @@
   (advice-add 'magit-refresh-popup-buffer
     :after #'al/beginning-of-buffer))
 
+;; `magit-log-margin' should be set before magit is loaded, as
+;; the other margins are defined from this one.
+(setq magit-log-margin '(t age-abbreviated magit-log-margin-width t 20))
+
 (with-eval-after-load 'magit-log
   (setq
-   magit-log-margin-spec '(25 1 magit-duration-spec)
    magit-reflog-arguments '("-n99")
    magit-log-arguments `(,@magit-reflog-arguments "--decorate")
    magit-log-select-arguments magit-log-arguments)
