@@ -43,9 +43,9 @@
 
 (al/bind-keys-from-vars 'minibuffer-local-map 'al/minibuffer-keys)
 
-(with-eval-after-load 'minibuffer
-  (when (require 'al-ido nil t)
-    (advice-add 'read-file-name-default :around #'al/ido-disable)))
+(when (require 'al-minibuffer nil t)
+  (setq completing-read-function #'al/completing-read)
+  (advice-add 'read-file-name-default :around #'al/complete-default))
 
 (with-eval-after-load 'ido
   (setq
@@ -100,8 +100,6 @@
     '(al/ido-file-dir-keys al/ido-common-keys))
 
   (al/add-hook-maybe 'ido-minibuffer-setup-hook 'al/no-truncate-lines)
-  (when (require 'al-ido nil t)
-    (setq completing-read-function #'al/completing-read))
 
   (ido-everywhere))
 (al/add-after-init-hook 'ido-mode)
