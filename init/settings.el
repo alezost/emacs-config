@@ -137,7 +137,10 @@
       ("M-." . ivy-previous-history-element)
       ("M-e" . ivy-next-history-element))
     "Alist of auxiliary keys for `ivy-minibuffer-map'.")
-  (al/bind-keys-from-vars 'ivy-minibuffer-map 'al/ivy-minibuffer-keys))
+  (al/bind-keys-from-vars 'ivy-minibuffer-map 'al/ivy-minibuffer-keys)
+
+  (when (require 'al-ivy nil t)
+    (setq ivy-format-function 'al/ivy-format-function)))
 
 (with-eval-after-load 'counsel
   (define-key counsel-mode-map [remap switch-to-buffer]
