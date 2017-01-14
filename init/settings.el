@@ -132,7 +132,8 @@
    ivy-extra-directories nil)
 
   (defconst al/ivy-minibuffer-keys
-    '(("RET" . ivy-alt-done)
+    '(("TAB" . al/ivy-partial)
+      ("RET" . ivy-alt-done)
       ("C-j" . ivy-immediate-done)
       ("M-." . ivy-previous-history-element)
       ("M-e" . ivy-next-history-element))

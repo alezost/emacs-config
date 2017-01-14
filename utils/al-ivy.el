@@ -34,6 +34,17 @@ This function is suitable for `ivy-format-function'."
    candidates
    "\n"))
 
+;;;###autoload
+(defun al/ivy-partial ()
+  "Complete the current candidate."
+  (interactive)
+  ;; Remove potential trailing slash.
+  (let ((new (if (string-match "\\(.*\\)/\\'" ivy--current)
+                 (match-string 1 ivy--current)
+               ivy--current)))
+    (delete-region (minibuffer-prompt-end) (point-max))
+    (insert new)))
+
 (provide 'al-ivy)
 
 ;;; al-ivy.el ends here
