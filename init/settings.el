@@ -136,7 +136,8 @@
       ("RET" . ivy-alt-done)
       ("C-j" . ivy-immediate-done)
       ("M-." . ivy-previous-history-element)
-      ("M-e" . ivy-next-history-element))
+      ("M-e" . ivy-next-history-element)
+      ("M-k" . al/ivy-copy-current-item))
     "Alist of auxiliary keys for `ivy-minibuffer-map'.")
   (al/bind-keys-from-vars 'ivy-minibuffer-map 'al/ivy-minibuffer-keys)
 

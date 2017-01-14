@@ -45,6 +45,12 @@ This function is suitable for `ivy-format-function'."
     (delete-region (minibuffer-prompt-end) (point-max))
     (insert new)))
 
+;;;###autoload
+(defun al/ivy-copy-current-item ()
+  "Put the current ivy item into `kill-ring'."
+  (interactive)
+  (kill-new ivy--current))
+
 (provide 'al-ivy)
 
 ;;; al-ivy.el ends here
