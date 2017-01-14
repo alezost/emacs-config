@@ -1,6 +1,6 @@
 ;;; al-file-cmd.el --- Interactive commands for working with files
 
-;; Copyright © 2012-2016 Alex Kost
+;; Copyright © 2012–2017 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -17,12 +17,18 @@
 
 ;;; Code:
 
+(declare-function counsel-find-file "counsel" t)
+
 ;;;###autoload
-(defun al/ido-find-file (&optional dir)
-  "Similar to `ido-find-file', but start from DIR if it is non-nil."
+(defun al/find-file (&optional dir)
+  "Find file starting from DIR if it is non-nil.
+Call either `counsel-find-file' or `ido-find-file'."
   (interactive)
-  (let ((default-directory (or dir default-directory)))
-    (ido-find-file)))
+  (let ((default-directory (file-name-as-directory
+                            (or dir default-directory))))
+    (if (fboundp 'counsel-find-file)
+        (counsel-find-file)
+      (ido-find-file))))
 
 ;;;###autoload
 (defun al/sudo-find-file (&optional arg)

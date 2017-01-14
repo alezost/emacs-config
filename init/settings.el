@@ -37,10 +37,11 @@
 
 ;;; Minibuffer, ido, smex
 
+(al/bind-key* "M-t" execute-extended-command)
+
 (setq enable-recursive-minibuffers t)
 
 (al/add-hook-maybe 'minibuffer-setup-hook 'al/hbar-cursor-type)
-
 (al/bind-keys-from-vars 'minibuffer-local-map 'al/minibuffer-keys)
 
 (when (require 'al-minibuffer nil t)
@@ -102,14 +103,6 @@
   (al/add-hook-maybe 'ido-minibuffer-setup-hook 'al/no-truncate-lines)
 
   (ido-everywhere))
-(al/add-after-init-hook 'ido-mode)
-
-(al/bind-key "M-t" execute-extended-command ctl-x-map)
-(if (fboundp 'smex)
-    (progn
-      (al/bind-key "C-M-t" smex-major-mode-commands)
-      (al/bind-key* "M-t" smex))
-  (al/bind-key* "M-t" execute-extended-command))
 
 (with-eval-after-load 'smex
   (setq
@@ -128,6 +121,41 @@
   (advice-add 'smex-prepare-ido-bindings
     :override 'al/smex-prepare-ido-bindings))
 
+(with-eval-after-load 'ivy
+  (setq
+   ;; Since I don't use `ivy-mode' (as it sets
+   ;; `completing-read-function'), set `completion-in-region-function'
+   ;; manually.
+   completion-in-region-function 'ivy-completion-in-region
+   ivy-sort-max-size 1000
+   ivy-wrap t
+   ivy-extra-directories nil)
+
+  (defconst al/ivy-minibuffer-keys
+    '(("RET" . ivy-alt-done)
+      ("C-j" . ivy-immediate-done)
+      ("M-." . ivy-previous-history-element)
+      ("M-e" . ivy-next-history-element))
+    "Alist of auxiliary keys for `ivy-minibuffer-map'.")
+  (al/bind-keys-from-vars 'ivy-minibuffer-map 'al/ivy-minibuffer-keys))
+
+(with-eval-after-load 'counsel
+  (define-key counsel-mode-map [remap switch-to-buffer]
+    'ivy-switch-buffer)
+
+  (defconst al/counsel-describe-keys
+    '(("M-d" . counsel-find-symbol))
+    "Alist of auxiliary keys for `counsel-describe-map'.")
+  (al/bind-keys-from-vars 'counsel-describe-map
+    'al/counsel-describe-keys)
+
+  (defconst al/counsel-find-file-keys
+    '(("M-h"   (ivy--cd "~/")))
+    "Alist of auxiliary keys for `counsel-find-file-map'.")
+  (al/bind-keys-from-vars 'counsel-find-file-map
+    'al/counsel-find-file-keys))
+(al/add-after-init-hook 'counsel-mode)
+
 
 ;;; Working with buffers: ibuffer, uniquify, …
 
@@ -139,7 +167,7 @@
  :prefix-map al/buffer-map
  :prefix-docstring "Map for managing/switching to buffers."
  :prefix "C-b"
- ("C-b" . ido-switch-buffer)
+ ("C-b" . switch-to-buffer)
  ("r" . rename-buffer)
  ("c" . clone-buffer)
  ("n" . info)

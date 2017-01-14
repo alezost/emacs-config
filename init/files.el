@@ -1,6 +1,6 @@
 ;;; files.el --- Working with files; dired, sunrise-commander, …
 
-;; Copyright © 2014-2016 Alex Kost
+;; Copyright © 2014–2017 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -26,21 +26,21 @@
  :prefix-map al/find-file-map
  :prefix-docstring "Map for finding files."
  :prefix "C-f"
- ("C-f"   . ido-find-file)
+ ("C-f"   . find-file)
  ("p"     . al/find-file-in-path)
  ("S"     . al/sudo-find-file)
  ("h"     . al/ssh-find-file)
  ("z"     . al/router-get-log)
  ("u"     . browse-url-emacs)
  ("l"     . find-library)
- ("e"       (al/ido-find-file al/emacs-dir))
- ("C-c"     (al/ido-find-file al/emacs-init-dir))
+ ("e"       (al/find-file al/emacs-dir))
+ ("C-c"     (al/find-file al/emacs-init-dir))
  ("C-s"     (find-file (al/emacs-init-dir-file "settings.el")))
  ("k"       (find-file (al/emacs-init-dir-file "keys.el")))
  ("i"       (find-file (al/emacs-init-dir-file "init.el")))
  ("t"       (find-file (al/emacs-init-dir-file "text.el")))
  ("v"       (find-file (al/emacs-init-dir-file "visual.el")))
- ("c"       (al/ido-find-file (al/emacs-my-packages-dir-file "alect-themes")))
+ ("c"       (al/find-file (al/emacs-my-packages-dir-file "alect-themes")))
  ("C-M-c"   (find-file (al/emacs-my-packages-dir-file
                         "alect-themes/alect-themes.el"))))
 
@@ -53,25 +53,25 @@
  ("k"     . bookmark-delete)
  ("l"     . bookmark-bmenu-list)
  ("S"     . al/sr-toggle)
- ("q"       (al/ido-find-file
+ ("q"       (al/find-file
              (expand-file-name "package-build/recipes/"
                                quelpa-build-dir)))
- ("h"       (al/ido-find-file "~"))
- ("d"       (al/ido-find-file al/journal-dir))
- ("w"       (al/ido-find-file al/download-dir))
+ ("h"       (al/find-file "~"))
+ ("d"       (al/find-file al/journal-dir))
+ ("w"       (al/find-file al/download-dir))
  ("e"       (find-file al/echo-download-dir))
- ("M-n"     (al/ido-find-file al/notes-dir))
- ("t"       (al/ido-find-file al/tmp-dir))
- ("m"       (al/ido-find-file al/music-dir))
- ("p"       (al/ido-find-file al/progs-dir))
- ("b"       (al/ido-find-file (al/config-dir-file "shell")))
- ("g"       (al/ido-find-file (al/config-dir-file "guile")))
- ("M-c"     (al/ido-find-file al/config-dir))
+ ("M-n"     (al/find-file al/notes-dir))
+ ("t"       (al/find-file al/tmp-dir))
+ ("m"       (al/find-file al/music-dir))
+ ("p"       (al/find-file al/progs-dir))
+ ("b"       (al/find-file (al/config-dir-file "shell")))
+ ("g"       (al/find-file (al/config-dir-file "guile")))
+ ("M-c"     (al/find-file al/config-dir))
  ("C-M-c"   (find-file (al/config-dir-file "config.scm")))
- ("M-g"     (al/ido-find-file al/guix-profile-dir))
- ("c"       (al/ido-find-file (al/config-dir-file "conkeror")))
- ("s"       (al/ido-find-file (al/config-dir-file "stumpwm")))
- ("v"       (al/ido-find-file "/var/log")))
+ ("M-g"     (al/find-file al/guix-profile-dir))
+ ("c"       (al/find-file (al/config-dir-file "conkeror")))
+ ("s"       (al/find-file (al/config-dir-file "stumpwm")))
+ ("v"       (al/find-file "/var/log")))
 
 (al/bind-keys
  :prefix-map al/grep-find-map

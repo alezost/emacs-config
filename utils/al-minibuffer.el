@@ -21,10 +21,15 @@
 ;; fallback to `completing-read-default' came from
 ;; <http://www.emacswiki.org/emacs/InteractivelyDoThings#toc15>.
 
-(defvar al/completing-read-engine 'ido
+(defvar al/completing-read-engine
+  (if (boundp 'ivy-mode)
+      'ivy
+    'ido)
   "Engine used by `al/completing-read'.
-Can be either `ido' or nil (to fallback to
+Can be either `ivy', `ido' or nil (to fallback to
 `completing-read-default').")
+
+(declare-function ivy-completing-read "ivy" t)
 
 (defun al/completing-read (prompt collection &optional predicate
                                   require-match initial-input
@@ -34,12 +39,22 @@ Use completion engine depending on `al/completing-read-engine'."
   ;; Match is never required in the following calls, otherwise it's not
   ;; possible to select "#XXXXXX" with `read-color'.
   (cl-case al/completing-read-engine
+    (ivy
+     (ivy-completing-read prompt collection predicate
+                          nil initial-input
+                          hist def inherit-input-method))
     (ido
      (ido-completing-read prompt (all-completions "" collection predicate)
                           nil nil initial-input hist def))
-    (t (completing-read-default prompt collection predicate
+    (t
+     ;; `minibuffer-complete' (bound to TAB in minibuffer prompt) calls
+     ;; `completion-in-region', so return
+     ;; `completion-in-region-function' to default value (in particular,
+     ;; ivy changes it).
+     (let ((completion-in-region-function 'completion--in-region))
+       (completing-read-default prompt collection predicate
                                 nil initial-input
-                                hist def inherit-input-method))))
+                                hist def inherit-input-method)))))
 
 (defun al/complete-default (fun &rest args)
   "Use `completing-read-default' for FUN.
