@@ -155,7 +155,8 @@
     'al/counsel-describe-keys)
 
   (defconst al/counsel-find-file-keys
-    '(("M-h"   (ivy--cd "~/")))
+    '(("M-h"   (ivy--cd "~/"))
+      ("M-m" . al/ivy-magit-status))
     "Alist of auxiliary keys for `counsel-find-file-map'.")
   (al/bind-keys-from-vars 'counsel-find-file-map
     'al/counsel-find-file-keys))

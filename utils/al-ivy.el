@@ -51,6 +51,22 @@ This function is suitable for `ivy-format-function'."
   (interactive)
   (kill-new ivy--current))
 
+(declare-function magit-status "magit" t)
+
+;;;###autoload
+(defun al/ivy-magit-status ()
+  "Run `magit-status' from the current ivy find file prompt.
+It uses the currently specified directory or the current
+completion directory if there is some input."
+  (interactive)
+  (ivy-exit-with-action
+   (lambda (_)
+     (let ((default-directory
+             (if (string= "" ivy-text)
+                 ivy--directory
+               (expand-file-name ivy--current ivy--directory))))
+       (magit-status)))))
+
 (provide 'al-ivy)
 
 ;;; al-ivy.el ends here
