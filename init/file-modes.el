@@ -187,6 +187,13 @@
 
 ;;; Misc settings and packages
 
+;; `normal-mode' should always be called with t argument, otherwise
+;; it simply ignores the value of `enable-local-variables' and sets
+;; it to t.
+(defun al/fix-normal-mode (&rest _)
+  (list t))
+(advice-add 'normal-mode :filter-args #'al/fix-normal-mode)
+
 (when (require 'al-file nil t)
   (al/add-to-auto-mode-alist
    '((sh-mode "/etc/profile\\'"
