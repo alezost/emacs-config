@@ -1,6 +1,6 @@
 ;;; al-buffer.el --- Additional functionality for working with buffers
 
-;; Copyright © 2013-2016 Alex Kost
+;; Copyright © 2013–2017 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -85,6 +85,38 @@ message for a case when FUN does not return a string."
 
 
 ;;; Switching to some buffers
+
+(require 'al-minibuffer)
+
+(defvar ivy-switch-buffer-map)
+(defvar ido-default-buffer-method)
+(declare-function ivy-read "ivy" t)
+(declare-function ido-buffer-internal "ido" t)
+
+;;;###autoload
+(cl-defun al/switch-buffer (prompt &key buffers initial-input)
+  "Switch to a buffer using `al/completing-read-engine'.
+Specifying BUFFERS is not supported by `ido' engine."
+  (interactive (list "Switch to buffer: "))
+  (cond
+   ((and (eq 'ivy al/completing-read-engine)
+         (require 'ivy nil t))
+    (ivy-read prompt
+              (or buffers 'internal-complete-buffer)
+              :initial-input initial-input
+              :matcher 'ivy--switch-buffer-matcher
+              :preselect (unless initial-input
+                           (buffer-name (other-buffer (current-buffer))))
+              :action 'ivy--switch-buffer-action
+              :keymap ivy-switch-buffer-map
+              :caller 'ivy-switch-buffer))
+   ((and (null buffers)
+         (eq 'ido al/completing-read-engine)
+         (require 'ido nil t))
+    (ido-buffer-internal ido-default-buffer-method
+                         nil prompt nil initial-input))
+   (t
+    (completing-read-default prompt buffers nil nil initial-input))))
 
 (defun al/switch-to-buffer-or-funcall (buffer &optional function)
   "Switch to BUFFER or call FUNCTION.

@@ -354,7 +354,7 @@
  :prefix-map al/magit-map
  :prefix-docstring "Map for magit and git stuff."
  :prefix "M-m"
- ("M-m" . al/magit-ido-switch-buffer)
+ ("M-m" . al/magit-switch-buffer)
  ("b" . magit-blame-popup)
  ("c" . magit-show-commit)
  ("s" . magit-status)

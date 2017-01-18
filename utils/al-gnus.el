@@ -1,17 +1,17 @@
-;;; al-gnus.el --- Additional functionality for Gnus   -*- lexical-binding: t -*-
+;;; al-gnus.el --- Additional functionality for Gnus  -*- lexical-binding: t -*-
 
-;; Copyright © 2013-2016 Alex Kost
+;; Copyright © 2013–2017 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
 ;; (at your option) any later version.
-
+;;
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-
+;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -19,6 +19,7 @@
 
 (require 'gnus-sum)
 (require 'gnus-art)
+(require 'al-buffer)
 (require 'al-misc)  ; for al/xor
 
 (defun al/gnus-buffer-names ()
@@ -39,14 +40,14 @@
     (gnus)))
 
 ;;;###autoload
-(defun al/gnus-ido-switch-buffer ()
-  "Switch to gnus buffer, or start gnus if not already started.
-Gnus buffer is selected using IDO."
+(defun al/gnus-switch-buffer ()
+  "Switch to a gnus buffer."
   (interactive)
-  (let ((gnus-bufs (al/gnus-buffer-names)))
-    (if gnus-bufs
-     	(switch-to-buffer (completing-read "Gnus buffer: " gnus-bufs))
-      (gnus))))
+  (let ((buffers (al/gnus-buffer-names)))
+    (if buffers
+     	(al/switch-buffer "Gnus buffer: "
+                          :buffers buffers)
+      (user-error "No Gnus buffers"))))
 
 (defvar al/gnus-unbuttonized-mime-types-original
   gnus-unbuttonized-mime-types)

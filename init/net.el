@@ -158,7 +158,7 @@
  :prefix "M-g"
  ("M-g" . al/gnus-switch-win-config)
  ("g"   . al/gnus-switch-to-group-buffer)
- ("b"   . al/gnus-ido-switch-buffer)
+ ("b"   . al/gnus-switch-buffer)
  ("m"   . gnus-msg-mail)
  ("n"   . gnus-msg-mail))
 
