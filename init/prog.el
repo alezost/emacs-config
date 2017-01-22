@@ -32,7 +32,7 @@
  ("C-M-v" . eval-defun)
  ("M-s-v" . eval-buffer)
  ("C-d"   . elisp-slime-nav-describe-elisp-thing-at-point)
- ("M-d"   . elisp-slime-nav-find-elisp-thing-at-point))
+ ("M-d"   . xref-find-definitions))
 (al/bind-keys
  :prefix-map al/doc-map
  :prefix-docstring "Map for documentation/finding definitions."
@@ -556,6 +556,17 @@
 
 
 ;;; Misc settings and packages
+
+(with-eval-after-load 'xref
+  (setq xref-backend-functions '(elisp--xref-backend))
+  (defconst al/xref-buffer-keys
+    '(("." . xref-prev-line)
+      ("e" . xref-next-line)
+      ("u" . xref-goto-xref)
+      ("d" . xref-show-location-at-point))
+    "Alist of auxiliary keys for `xref--xref-buffer-mode-map'.")
+  (al/bind-keys-from-vars 'xref--xref-buffer-mode-map
+    'al/xref-buffer-keys))
 
 (with-eval-after-load 'prog-mode
   (al/add-hook-maybe 'prog-mode-hook
