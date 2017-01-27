@@ -164,7 +164,8 @@
  ("u"   . al/guix-commit-url))
 
 (defconst al/guix-list-keys
-  '(("i" . bui-list-describe))
+  '(("i" . bui-list-describe)
+    ("S" . guix-package-list-size))
   "Alist of auxiliary keys for guix list maps.")
 
 (defconst al/guix-list-key-vars
