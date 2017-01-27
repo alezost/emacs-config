@@ -1,6 +1,6 @@
 ;;; packages.el --- Emacs packages and interfaces to other package systems
 
-;; Copyright © 2014-2017 Alex Kost
+;; Copyright © 2014–2017 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -131,14 +131,14 @@
                      (al/devel-dir-file "guix"))
                     guix-directory))
 
+(al/bind-key "H-M-x" guix-extended-command)
 (al/bind-keys
  :prefix-map al/guix-map
  :prefix-docstring "Map for guix."
  :prefix "H-x"
  ("H-x" . guix)
  ("e"   . guix-edit)
- ("b"   . guix-build-log-minor-mode)
- ("B"   . guix-build-log-mode)
+ ("b"   . guix-switch-to-buffer)
  ("P"   . guix-prettify-mode)
  ("z"   . guix-switch-to-repl)
  ("C-n" . guix-packages-by-name)
@@ -149,7 +149,10 @@
  ("I"   . guix-installed-packages)
  ("O"   . guix-obsolete-packages)
  ("G"   . guix-generations)
- ("p"   . guix-set-current-profile)
+ ("a"   . guix-about)
+ ("h"   . guix-help)
+ ("p"   . guix-profiles)
+ ("H-p" . guix-set-current-profile)
  ("i"     (switch-to-buffer (guix-package-info-buffer-name
                              guix-current-profile)))
  ("C-п"   (switch-to-buffer (guix-generation-info-buffer-name
