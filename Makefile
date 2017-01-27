@@ -59,7 +59,8 @@ all: $(UTILS_ELCS)
 
 %.elc: %.el
 	@printf "Compiling $<\n"
-	-@$(EMACS_BATCH) -f batch-byte-compile $< ;
+	-@$(EMACS_BATCH) --eval "(setq load-prefer-newer t)" \
+	-f batch-byte-compile $< ;
 
 # This target is not very useful actually: compiling init files brings
 # tons of garbage warnings because 'with-eval-after-load' wraps lambda
