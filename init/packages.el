@@ -257,11 +257,6 @@
   (setq
    guix-find-file-function #'org-open-file))
 
-(with-eval-after-load 'guix-prettify
-  (setq
-   guix-prettify-regexp (rx "/" (or "store" "nar" "log")
-                            "/" (group (= 32 alnum)))
-   guix-prettify-regexp-group 1))
 (al/add-after-init-hook 'global-guix-prettify-mode)
 
 (with-eval-after-load 'guix-build-log
