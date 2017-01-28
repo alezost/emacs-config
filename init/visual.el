@@ -220,6 +220,7 @@
      (view-mode                  " 👀"           view)
      (eldoc-mode                 ""             eldoc)
      (edebug-mode                " 🔧"           edebug)
+     (counsel-mode               ""             counsel)
 
      (gnus-topic-mode            " T"           gnus-topic)
      (gnus-dired-mode            " 𝗚"           gnus-dired)
