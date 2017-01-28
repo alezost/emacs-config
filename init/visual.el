@@ -173,12 +173,12 @@
      (gnus-summary-mode          "𝗚Sum")
      (gnus-article-mode          "𝗚Art")
 
-     (guix-package-info-mode     "γ🄷p")
-     (guix-output-info-mode      "γ🄷o")
-     (guix-generation-info-mode  "γ🄷g")
-     (guix-package-list-mode     "γ🗋p")
-     (guix-output-list-mode      "γ🗋o")
-     (guix-generation-list-mode  "γ🗋g")
+     (guix-package-info-mode     "γ🄷pkg")
+     (guix-generation-info-mode  "γ🄷gen")
+     (guix-package-list-mode     "γ🗋pkg")
+     (guix-output-list-mode      "γ🗋out")
+     (guix-generation-list-mode  "γ🗋gen")
+     (guix-profile-list-mode     "γ🗋prof")
      (guix-build-log-mode        "γ🄻")
 
      (magit-status-mode          "µStatus")
