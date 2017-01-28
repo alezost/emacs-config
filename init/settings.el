@@ -127,7 +127,13 @@
    ;; `completing-read-function'), set `completion-in-region-function'
    ;; manually.
    completion-in-region-function 'ivy-completion-in-region
+   ;; Do not exit from minibuffer when there is nothing to delete.
+   ivy-on-del-error-function 'ignore
+   ivy-initial-inputs-alist nil
+   ivy-sort-functions-alist nil
+   ivy-sort-matches-functions-alist nil
    ivy-sort-max-size 1000
+   ivy-re-builders-alist '((t . ivy--regex-fuzzy))
    ivy-wrap t
    ivy-extra-directories nil)
 
