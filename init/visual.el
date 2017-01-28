@@ -25,11 +25,11 @@
   (when (and (display-graphic-p)
              (require 'al-font nil t))
     (set-frame-font (al/first-existing-font) nil t)
-    ;; Should be "solved": 武 (droid); 🐼, 😻, ⚽, ∵, ⸪ (symbola);
+    ;; Should be "solved": 武; 🐼, 😻, ⚽, 💩, ∵, ⸪ (symbola);
     ;; ࿌ (unifont); 🃜, 🜒, 🝖 (quivira).
     (al/set-fontset
      "fontset-default" nil nil
-     '(("Symbola-12"
+     '(("Symbola"
         (#x2020  . #x24ff)
         (#x2600  . #x27ff)
         (#x2900  . #x29ff)
@@ -38,11 +38,11 @@
         (#x1d400 . #x1d7ff)
         (#x1f000 . #x1f1ff)
         (#x1f300 . #x1f6ff))
-       ("Ubuntu Mono-12"
+       ("Ubuntu Mono"
         (?²      . ?³)
         (?¼      . ?¾)
         (#x2070  . #x208f))
-       ("Quivira-12" nil)))))
+       ("Quivira" nil)))))
 
 (al/add-hook-maybe
     '(after-make-frame-functions window-setup-hook)
