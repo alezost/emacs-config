@@ -374,7 +374,8 @@
     ("DEL" . magit-diff-show-or-scroll-down))
   "Alist of auxiliary keys for scrolling magit diff in other window.")
 (defconst al/magit-moving-keys
-  '(("."   . magit-section-backward)
+  '((">"   . magit-section-up)
+    ("."   . magit-section-backward)
     ("e"   . magit-section-forward)
     ("M-." . magit-section-backward-sibling)
     ("M-e" . magit-section-forward-sibling))
