@@ -249,6 +249,10 @@
 
 ;;; Misc settings and packages
 
+(al/with-check
+  :var 'completion-ignored-extensions
+  (push ".go" completion-ignored-extensions))
+
 (setq
  directory-free-space-args "-Ph"
  grep-command "grep -nHi -e "
