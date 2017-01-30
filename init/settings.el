@@ -166,7 +166,16 @@
     "Alist of auxiliary keys for `counsel-find-file-map'.")
   (al/bind-keys-from-vars 'counsel-find-file-map
     'al/counsel-find-file-keys))
-(al/add-after-init-hook 'counsel-mode)
+
+(al/eval-after-init
+  (cond
+   ((fboundp 'counsel-mode)
+    (counsel-mode))
+   ((fboundp 'smex)
+    (al/bind-key "C-M-t" smex-major-mode-commands)
+    (al/bind-key* "M-t" smex)))
+  (unless (boundp 'ivy-mode)
+    (ido-mode)))
 
 
 ;;; Working with buffers: ibuffer, uniquify, …
