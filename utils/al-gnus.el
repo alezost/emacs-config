@@ -293,6 +293,27 @@ This function is intendend to be used as an 'around' advice for
               :around #'al/gnus-agent-mode-line-string)"
   (apply fun (al/gnus-plugged-status string) args))
 
+
+;;; Miscellaneous
+
+;;;###autoload
+(defun al/gnus-group-next-unread-group (n)
+  "Go to next N'th unread newsgroup.
+This is the same as `gnus-group-next-unread-group' except it
+doesn't honor `gnus-group-goto-unread'."
+  (interactive "p")
+  (let ((gnus-group-goto-unread t))
+    (gnus-group-next-unread-group n)))
+
+;;;###autoload
+(defun al/gnus-group-prev-unread-group (n)
+  "Go to previous N'th unread newsgroup.
+This is the same as `gnus-group-prev-unread-group' except it
+doesn't honor `gnus-group-goto-unread'."
+  (interactive "p")
+  (al/gnus-group-next-unread-group (- n)))
+
+
 (provide 'al-gnus)
 
 ;;; al-gnus.el ends here

@@ -231,11 +231,12 @@
 ;; "gnus-group.el"/"gnus-sum.el"/"gnus-art.el".
 
 (with-eval-after-load 'gnus-group
+  (setq gnus-group-goto-unread nil)
   (defconst al/gnus-group-keys
     '(("." . gnus-group-prev-group)
       ("e" . gnus-group-next-group)
-      (">" . gnus-group-prev-unread-group)
-      ("E" . gnus-group-next-unread-group)
+      (">" . al/gnus-group-prev-unread-group)
+      ("E" . al/gnus-group-next-unread-group)
       ("u" . gnus-group-read-group)
       ("U" . gnus-group-unsubscribe-current-group)
       ("m" . gnus-group-mark-group)
