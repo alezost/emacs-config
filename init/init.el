@@ -1,6 +1,6 @@
 ;;; init.el --- Init file  -*- lexical-binding: t -*-
 
-;; Copyright © 2012-2016 Alex Kost
+;; Copyright © 2012–2017 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -179,6 +179,8 @@
           "visual"
           "games"
           "custom")))
+
+(setq custom-file (al/emacs-init-dir-file "custom.el"))
 
 (message "Garbage collected %d times." gcs-done)
 
