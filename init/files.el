@@ -261,6 +261,13 @@
  ;; enable-local-eval nil
  )
 
+(with-eval-after-load "mule-cmds" ; there is no `mule-cmds' feature
+  (defconst al/mule-keys
+    '(("d" (revert-buffer-with-coding-system 'cp855))
+      ("w" (revert-buffer-with-coding-system 'cp1251)))
+    "Alist of auxiliary keys for `mule-keymap'.")
+  (al/bind-keys-from-vars 'mule-keymap 'al/mule-keys))
+
 (with-eval-after-load 'bookmark
   (setq
    bookmark-save-flag 1
