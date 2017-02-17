@@ -18,7 +18,45 @@
 ;;; Code:
 
 (require 'ivy)
+(require 'al-imenu)
 
+(defvar al/ivy-flx-enabled? (require 'flx nil t))
+
+(defun al/ivy-imenu-sort (name candidates)
+  "Re-sort CANDIDATES, an `imenu' index that contains NAME.
+Put `al/imenu-eval-after-load-group' and
+`al/imenu-sections-group' groups in the beginning."
+  ;; The code originates from `ivy-sort-function-buffer'.
+  (if (< (length name) 2)
+      candidates
+    (let* ((candidates (if al/ivy-flx-enabled?
+                           (ivy--flx-sort name candidates)
+                         candidates))
+           (after-load-re (rx-to-string
+                           `(and string-start
+                                 ,al/imenu-eval-after-load-group)
+                           t))
+           (section-re (rx-to-string
+                        `(and string-start
+                              ,al/imenu-sections-group)
+                        t))
+           after-load-res
+           section-res
+           rest)
+      (dolist (s candidates)
+        (cond
+         ((string-match-p after-load-re s)
+          (push s after-load-res))
+         ((string-match-p section-re s)
+          (push s section-res))
+         (t
+          (push s rest))))
+      (nconc
+       (nreverse after-load-res)
+       (nreverse section-res)
+       (nreverse rest)))))
+
+
 (defvar al/ivy-format-selected "─► ")
 (defvar al/ivy-format-other "   ")
 

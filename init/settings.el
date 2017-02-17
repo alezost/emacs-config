@@ -131,7 +131,7 @@
    ivy-on-del-error-function 'ignore
    ivy-initial-inputs-alist nil
    ivy-sort-functions-alist nil
-   ivy-sort-matches-functions-alist nil
+   ivy-sort-matches-functions-alist '((t . nil))
    ivy-sort-max-size 1000
    ivy-re-builders-alist '((t . ivy--regex-fuzzy))
    ivy-wrap t
@@ -148,7 +148,9 @@
   (al/bind-keys-from-vars 'ivy-minibuffer-map 'al/ivy-minibuffer-keys)
 
   (when (require 'al-ivy nil t)
-    (setq ivy-format-function 'al/ivy-format-function)))
+    (setq ivy-format-function 'al/ivy-format-function)
+    (push '(imenus . al/ivy-imenu-sort)
+          ivy-sort-matches-functions-alist)))
 
 (with-eval-after-load 'counsel
   (define-key counsel-mode-map [remap switch-to-buffer]
