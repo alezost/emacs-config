@@ -356,7 +356,7 @@
  :prefix "M-m"
  ("M-m" . al/magit-switch-buffer)
  ("b" . magit-blame-popup)
- ("c" . magit-show-commit)
+ ("c" . al/magit-show-commit)
  ("s" . magit-status)
  ("l" . magit-log-current)
  ("u" . github-browse-file))

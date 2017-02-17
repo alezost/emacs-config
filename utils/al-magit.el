@@ -17,6 +17,7 @@
 
 ;;; Code:
 
+(require 'magit-diff)
 (require 'git-commit)
 (require 'al-buffer)
 
@@ -32,6 +33,12 @@
   "Insert a header acknowledging that you have co-authored the commit."
   (interactive (git-commit-self-ident))
   (git-commit-insert-header "Co-authored-by" name mail))
+
+;;;###autoload
+(defun al/magit-show-commit (commit)
+  "Like `magit-show-commit' but always prompt for COMMIT."
+  (interactive (list (magit-read-branch-or-commit "Show commit")))
+  (magit-show-commit commit))
 
 (provide 'al-magit)
 
