@@ -257,11 +257,12 @@
 (al/bind-key* "C-M-m" imenus)
 (with-eval-after-load 'imenus
   (setq imenus-delimiter " ⇨ ")
-  (al/bind-keys
-   :map imenus-minibuffer-map
-   ("C-r" . imenus-rescan)
-   ("C-s" . imenus-exit-to-isearch)
-   ("M-s" . imenus-exit-to-occur)))
+
+  (defconst al/imenus-keys
+    '(("C-r" . imenus-rescan)
+      ("C-s" . imenus-exit-to-isearch)
+      ("M-s" . imenus-exit-to-occur)))
+  (al/bind-keys-from-vars 'imenus-minibuffer-map 'al/imenus-keys))
 
 (al/bind-key "s-s" al/imenus-search-elisp-directories)
 (with-eval-after-load 'al-imenus
