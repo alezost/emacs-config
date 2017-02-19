@@ -600,8 +600,8 @@
 (al/bind-keys
  :prefix-map al/debbugs-map
  :prefix-docstring "Map for debbugs."
- :prefix "H-b"
- ("H-b" . debbugs-gnu)
+ :prefix "M-B"
+ ("M-B" . debbugs-gnu)
  ("n"   . debbugs-gnu-bugs)
  ("l"     (switch-to-buffer "*Emacs Bugs*"))
  ("s"   . debbugs-gnu-search))
