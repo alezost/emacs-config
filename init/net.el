@@ -608,7 +608,12 @@
 
 (with-eval-after-load 'debbugs-gnu
   (setq debbugs-gnu-default-packages '("guix-patches"))
-  (push "guix-patches" debbugs-gnu-all-packages))
+  (push "guix-patches" debbugs-gnu-all-packages)
+
+  (defconst al/debbugs-gnu-keys
+    '(("u" . debbugs-gnu-select-report))
+    "Alist of auxiliary keys for `debbugs-gnu-mode-map'.")
+  (al/bind-keys-from-vars 'debbugs-gnu-mode-map 'al/debbugs-gnu-keys))
 
 
 ;;; Misc settings and packages
