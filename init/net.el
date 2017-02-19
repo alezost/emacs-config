@@ -607,8 +607,8 @@
  ("s"   . debbugs-gnu-search))
 
 (with-eval-after-load 'debbugs-gnu
-  (setq
-   debbugs-gnu-default-packages "guix"))
+  (setq debbugs-gnu-default-packages '("guix-patches"))
+  (push "guix-patches" debbugs-gnu-all-packages))
 
 
 ;;; Misc settings and packages
