@@ -101,15 +101,17 @@ Specifying BUFFERS is not supported by `ido' engine."
   (cond
    ((and (eq 'ivy al/completing-read-engine)
          (require 'ivy nil t))
-    (ivy-read prompt
-              (or buffers 'internal-complete-buffer)
-              :initial-input initial-input
-              :matcher 'ivy--switch-buffer-matcher
-              :preselect (unless initial-input
-                           (buffer-name (other-buffer (current-buffer))))
-              :action 'ivy--switch-buffer-action
-              :keymap ivy-switch-buffer-map
-              :caller 'ivy-switch-buffer))
+    ;; Disable flx match, as I prefer to sort buffers chronologically.
+    (let (ivy--flx-featurep)
+      (ivy-read prompt
+                (or buffers 'internal-complete-buffer)
+                :initial-input initial-input
+                :matcher 'ivy--switch-buffer-matcher
+                :preselect (unless initial-input
+                             (buffer-name (other-buffer (current-buffer))))
+                :action 'ivy--switch-buffer-action
+                :keymap ivy-switch-buffer-map
+                :caller 'ivy-switch-buffer)))
    ((and (null buffers)
          (eq 'ido al/completing-read-engine)
          (require 'ido nil t))
