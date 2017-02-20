@@ -141,6 +141,7 @@
     '(("TAB" . al/ivy-partial)
       ("RET" . ivy-alt-done)
       ("C-j" . ivy-immediate-done)
+      ("C-l" . ivy-toggle-ignore)
       ("M-." . ivy-previous-history-element)
       ("M-e" . ivy-next-history-element)
       ("M-k" . al/ivy-copy-current-item))
