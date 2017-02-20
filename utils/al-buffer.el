@@ -104,7 +104,7 @@ Specifying BUFFERS is not supported by `ido' engine."
     ;; Disable flx match, as I prefer to sort buffers chronologically.
     (let (ivy--flx-featurep)
       (ivy-read prompt
-                (or buffers 'internal-complete-buffer)
+                (or buffers (mapcar #'buffer-name (buffer-list)))
                 :initial-input initial-input
                 :matcher 'ivy--switch-buffer-matcher
                 :preselect (unless initial-input
