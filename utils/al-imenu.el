@@ -1,21 +1,28 @@
 ;;; al-imenu.el --- Additional functionality for imenu
 
-;; Copyright © 2014-2016 Alex Kost
+;; Copyright © 2014–2017 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
 ;; (at your option) any later version.
-
+;;
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-
+;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Code:
+
+(cl-defun al/add-to-imenu (regexp &key (index 1) title append)
+  "Add REGEXP with INDEX and TITLE to `imenu-generic-expression'.
+If APPEND is nil, add the new element at the end."
+  (add-to-list 'imenu-generic-expression
+               (list title regexp index)
+               append))
 
 
 ;;; Lisp sections
@@ -38,10 +45,9 @@ If nil, put the entries in a top level.  See MENU-TITLE in
 (defun al/imenu-add-sections (&optional regexp)
   "Add REGEXP as a \"Sections\" element to `imenu-generic-expression'.
 If REGEXP is nil, use `al/imenu-sections-re'."
-  (add-to-list
-   'imenu-generic-expression
-   (list al/imenu-sections-group (or regexp al/imenu-sections-re) 1)
-   t))
+  (al/add-to-imenu (or regexp al/imenu-sections-re)
+                   :title al/imenu-sections-group
+                   :append t))
 
 
 ;;; JS sections
@@ -98,9 +104,8 @@ If nil, put the entries in a top level.  See MENU-TITLE in
 ;;;###autoload
 (defun al/imenu-add-use-package ()
   "Add `al/imenu-use-package-re' to `imenu-generic-expression'."
-  (add-to-list
-   'imenu-generic-expression
-   (list al/imenu-use-package-group al/imenu-use-package-re 1)))
+  (al/add-to-imenu al/imenu-use-package-re
+                   :title al/imenu-use-package-group))
 
 
 ;;; (with-)eval-after-load entries
@@ -118,11 +123,8 @@ entries in imenu.")
 ;;;###autoload
 (defun al/imenu-add-eval-after-load ()
   "Add `al/imenu-eval-after-load-re' to `imenu-generic-expression'."
-  (add-to-list
-   'imenu-generic-expression
-   (list al/imenu-eval-after-load-group
-         al/imenu-eval-after-load-re
-         1)))
+  (al/add-to-imenu al/imenu-eval-after-load-re
+                   :title al/imenu-eval-after-load-group))
 
 (provide 'al-imenu)
 
