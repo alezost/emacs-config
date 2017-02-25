@@ -52,7 +52,9 @@
   (al/bind-keys-from-vars 'lisp-mode-shared-map 'al/lisp-shared-keys)
   (al/bind-keys-from-vars 'lisp-mode-map)
 
-  (al/add-hook-maybe 'lisp-mode-hook 'al/imenu-add-sections)
+  (al/add-hook-maybe 'lisp-mode-hook
+    '(al/imenu-add-sections
+      al/lisp-add-defcommand-to-imenu))
   (al/modify-page-break-syntax lisp--mode-syntax-table))
 
 (with-eval-after-load 'elisp-mode

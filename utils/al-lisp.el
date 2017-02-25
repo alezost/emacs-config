@@ -17,6 +17,8 @@
 
 ;;; Code:
 
+(require 'al-imenu)
+
 
 ;;; Highlighting "defcommand" (used by StumpWM)
 
@@ -40,6 +42,12 @@ Call this function once!"
    `((,al/lisp-defcommand-regexp
       (1 font-lock-keyword-face)
       (2 font-lock-function-name-face nil t)))))
+
+(defun al/lisp-add-defcommand-to-imenu ()
+  "Add 'defcommand' entries to `imenu-generic-expression'.
+This function is intended to be added to `lisp-mode-hook'."
+  (al/add-to-imenu al/lisp-defcommand-regexp
+                   :index 2))
 
 (provide 'al-lisp)
 
