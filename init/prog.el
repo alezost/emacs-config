@@ -160,6 +160,14 @@
    ;; Do not ask about version difference.
    slime-protocol-version 'ignore)
 
+  (defconst al/slime-xref-keys
+    '(("." . slime-xref-prev-line)
+      ("e" . slime-xref-next-line)
+      ("u" . slime-goto-xref)
+      ("d" . slime-show-xref))
+    "Alist of auxiliary keys for `slime-xref-mode'.")
+  (al/bind-keys-from-vars 'slime-xref-mode-map 'al/slime-xref-keys)
+
   (al/bind-keys-from-vars 'slime-parent-map
     '(al/free-misc-keys al/slime-keys))
   (al/bind-keys-from-vars '(slime-mode-map slime-editing-map)))
