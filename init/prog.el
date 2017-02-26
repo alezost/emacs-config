@@ -43,7 +43,9 @@
  ("b" . describe-personal-keybindings))
 
 (with-eval-after-load 'lisp-mode
-  ;; (setq lisp-indent-function 'common-lisp-indent-function)
+  (when (require 'al-lisp nil t)
+    (al/lisp-add-defcommand-font-lock-keywords))
+
   (defconst al/lisp-shared-keys
     '(("<C-M-tab>" . al/indent-sexp))
     "Alist of auxiliary keys for `lisp-mode-shared-map'.")
