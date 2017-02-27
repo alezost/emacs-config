@@ -1,17 +1,17 @@
-;;; al-scheme.el --- Additional functionality for scheme mode
+;;; al-scheme.el --- Additional functionality for `scheme-mode'
 
-;; Copyright © 2015-2016 Alex Kost
+;; Copyright © 2015–2017 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
 ;; (at your option) any later version.
-
+;;
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-
+;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -65,7 +65,7 @@
           (zero-or-one "(")
           (group (one-or-more (or word (syntax symbol)))))
      1))
-  "Improved substitution of `scheme-imenu-generic-expression'.")
+  "Improved substitution for `scheme-imenu-generic-expression'.")
 
 
 (defvar calculate-lisp-indent-last-sexp)
@@ -121,6 +121,32 @@ indents property lists properly and names starting with 'default'."
                                      indent-point normal-indent))
               (method
                (funcall method state indent-point normal-indent)))))))
+
+
+;;; Docstrings highlighting
+
+;; Although `scheme-mode' has all the functionality to highlight
+;; docstrings properly (with `font-lock-doc-face', not with
+;; `font-lock-string-face'!), it doesn't do it.  The only missing thing
+;; needed to fix it, is setting `font-lock-syntactic-face-function'.
+
+;; XXX This is definitely an Emacs bug, and I should report about it!  I
+;; think it was introduced by
+;; <http://git.savannah.gnu.org/cgit/emacs.git/commit/?id=0a5cfeeecb9e1038f9df3b34b61b797e56213a7b>.
+
+;; Another miss is that "scheme.el" contains "docstring rules" only for
+;; `define' and `lambda*', while there are other things to highlight:
+
+(put 'define* 'scheme-doc-string-elt 2)
+(put 'lambda* 'scheme-doc-string-elt 2)
+(put 'case-lambda 'scheme-doc-string-elt 1)
+(put 'case-lambda* 'scheme-doc-string-elt 1)
+
+(defun al/scheme-fix-docstring-font-lock ()
+  "Fix highlighting of the Scheme docstrings.
+This function is intended to be added to `scheme-mode-hook'."
+  (setq-local font-lock-syntactic-face-function
+              'lisp-font-lock-syntactic-face-function))
 
 (provide 'al-scheme)
 

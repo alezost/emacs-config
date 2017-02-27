@@ -198,15 +198,18 @@
 ;;; Scheme, geiser
 
 (with-eval-after-load 'scheme
-  (put 'plist-new 'scheme-indent-function 1)
-  (al/modify-page-break-syntax scheme-mode-syntax-table)
-  (al/add-hook-maybe 'scheme-mode-hook
-    '(al/imenu-add-sections guix-devel-mode))
   (when (require 'al-scheme nil t)
     (setq scheme-imenu-generic-expression
           al/scheme-imenu-generic-expression)
     (advice-add 'scheme-indent-function
-      :override 'al/scheme-indent-function)))
+      :override 'al/scheme-indent-function))
+
+  (put 'plist-new 'scheme-indent-function 1)
+  (al/modify-page-break-syntax scheme-mode-syntax-table)
+  (al/add-hook-maybe 'scheme-mode-hook
+    '(al/imenu-add-sections
+      al/scheme-fix-docstring-font-lock
+      guix-devel-mode)))
 
 (defconst al/geiser-keys
   '(("C-v"   . al/geiser-eval-dwim)
