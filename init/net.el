@@ -646,15 +646,16 @@
    al/router-log-path "~/docs/net/RT_G32.log/"))
 
 (al/bind-keys
-   :prefix-map al/debpaste-map
-   :prefix-docstring "Map for debpaste."
-   :prefix "C-H-p"
-   ("s" . debpaste-paste-region)
-   ("r" . debpaste-display-paste)
-   ("S" . debpaste-display-posted-info-in-buffer)
-   ("R" . debpaste-display-received-info-in-buffer)
-   ("q" . debpaste-quit-buffers)
-   ("K" . debpaste-kill-all-buffers))
+ :prefix-map al/debpaste-map
+ :prefix-docstring "Map for debpaste."
+ :prefix "C-H-p"
+ ("s" . debpaste-paste-region)
+ ("r" . debpaste-display-paste)
+ ("S" . debpaste-display-posted-info-in-buffer)
+ ("R" . debpaste-display-received-info-in-buffer)
+ ("d" . debpaste-delete-paste)
+ ("q" . debpaste-quit-buffers)
+ ("K" . debpaste-kill-all-buffers))
 
 (with-eval-after-load 'debpaste
   (setq
