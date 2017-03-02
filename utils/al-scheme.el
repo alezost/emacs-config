@@ -141,6 +141,8 @@ indents property lists properly and names starting with 'default'."
 (put 'lambda* 'scheme-doc-string-elt 2)
 (put 'case-lambda 'scheme-doc-string-elt 1)
 (put 'case-lambda* 'scheme-doc-string-elt 1)
+(put 'define-syntax-rule 'scheme-doc-string-elt 2)
+(put 'syntax-rules 'scheme-doc-string-elt 2)
 
 (defun al/scheme-fix-docstring-font-lock ()
   "Fix highlighting of the Scheme docstrings.
