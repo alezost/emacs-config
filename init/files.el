@@ -261,6 +261,15 @@
  ;; enable-local-eval nil
  )
 
+(with-eval-after-load 'mailcap
+  ;; Use "sxiv" instead of "display" to open image files.  Actually,
+  ;; (mailcap-add "image/.*" "sxiv %s") can be used, but it adds the
+  ;; entry to the beginning of "image" alist, while I want to fallback
+  ;; to "sxiv" as it is done with "display".
+  (let* ((image-alist   (cdr (assoc "image" mailcap-mime-data)))
+         (display-alist (cdr (assoc ".*" image-alist))))
+    (setcdr (assq 'viewer display-alist) "sxiv %s")))
+
 (with-eval-after-load "mule-cmds" ; there is no `mule-cmds' feature
   (defconst al/mule-keys
     '(("d" (revert-buffer-with-coding-system 'cp855))
