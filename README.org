@@ -49,6 +49,12 @@ Anyway here is what makes this hell so warm and comfortable for me.
   in a way that will break your system, and you'll have to fix your
   config without using it.
 
+- My Emacs start time is always less than a second according to =M-x
+  emacs-init-time= (actually, I have this value in my
+  =initial-scratch-message= so I know the init time very well), because
+  I don't =require= packages without a reason as some people do.
+  Instead I use =with-eval-after-load= everywhere.
+
 ** Files
 
 As you can see, this repository consists of the following directories:
