@@ -78,14 +78,10 @@
   (defconst al/org-keys
     '("<C-tab>"
       ("<M-tab>" . pcomplete)
-      ("M->" . org-previous-link)
-      ("M-E" . org-next-link)
+      ("M->" . outline-previous-visible-heading)
+      ("M-E" . outline-next-visible-heading)
       ("M-O" . org-backward-sentence)
       ("M-U" . org-forward-sentence)
-      ("C-M-H-o" . org-backward-element)
-      ("C-M-H-u" . org-forward-element)
-      ("C-M-H-." . org-up-element)
-      ("C-M-H-e" . org-down-element)
       ("<C-kp-enter>" . al/org-table-next-column)
       ("<M-kp-enter>" . al/org-table-kill-rows-recalculate)
       ("<C-M-kp-enter>" . al/org-table-next-table)
