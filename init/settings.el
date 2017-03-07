@@ -265,13 +265,18 @@
  ("<H-XF86AudioLowerVolume>"   (enlarge-window -1 t))
  ("<M-H-XF86AudioRaiseVolume>" (enlarge-window 1))
  ("<M-H-XF86AudioLowerVolume>" (enlarge-window -1))
- ("H-o" . other-window)
- ("H-M-o" . al/switch-windows)
+ ("H-o" . al/other-window)
+ ("H-M-o" . al/switch-or-next-window)
  ("H-M-q" (quit-window nil (previous-window)))
  ("H-O" . al/switch-to-minibuffer)
  ("H-1" . delete-other-windows)
  ("H-2" . al/make-vertical-windows)
  ("H-3" . al/make-horizontal-windows))
+
+(al/bind-keys
+ :map ctl-x-map
+ ("o"   . al/other-window)
+ ("M-o" . other-window))
 
 (setq
  winner-dont-bind-my-keys t
