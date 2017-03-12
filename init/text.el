@@ -142,6 +142,7 @@
  ("C-M-y" . al/insert-clipboard)
 
  ("C-j" . newline-and-indent)
+ ("M-J"   (delete-indentation -1))
  ("<S-backspace>" . delete-region)
  ("H-M-a" . align-regexp)
  ("C-H-M-a" (align-regexp (region-beginning) (region-end)
