@@ -77,9 +77,9 @@ This function is suitable for `ivy-format-function'."
   "Complete the current candidate."
   (interactive)
   ;; Remove potential trailing slash.
-  (let ((new (if (string-match "\\(.*\\)/\\'" ivy--current)
-                 (match-string 1 ivy--current)
-               ivy--current)))
+  (let ((new (if (string-match "\\(.*\\)/\\'" (ivy-state-current ivy-last))
+                 (match-string 1 (ivy-state-current ivy-last))
+               (ivy-state-current ivy-last))))
     (delete-region (minibuffer-prompt-end) (point-max))
     (insert new)))
 
@@ -87,7 +87,7 @@ This function is suitable for `ivy-format-function'."
 (defun al/ivy-copy-current-item ()
   "Put the current ivy item into `kill-ring'."
   (interactive)
-  (kill-new ivy--current))
+  (kill-new (ivy-state-current ivy-last)))
 
 (declare-function magit-status "magit" t)
 
@@ -102,7 +102,8 @@ completion directory if there is some input."
      (let ((default-directory
              (if (string= "" ivy-text)
                  ivy--directory
-               (expand-file-name ivy--current ivy--directory))))
+               (expand-file-name (ivy-state-current ivy-last)
+                                 ivy--directory))))
        (magit-status)))))
 
 (provide 'al-ivy)
