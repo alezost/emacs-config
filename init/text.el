@@ -241,6 +241,11 @@
  :prefix-map al/point-pos-map
  :prefix-docstring "Map for point-pos."
  :prefix "M-Z"
+ ("M-S" . point-pos-save)
+ ("M-D" . point-pos-delete)
+ ("M-G" . point-pos-goto)
+ ("M-H" . point-pos-previous)
+ ("M-N" . point-pos-next)
  ("s" . point-pos-save)
  ("d" . point-pos-delete)
  ("g" . point-pos-goto)
