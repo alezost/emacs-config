@@ -1,4 +1,4 @@
-;;; file-modes.el --- Modes for various file types
+;;; file-modes.el --- Modes for various file types  -*- lexical-binding: t -*-
 
 ;; Copyright © 2014–2017 Alex Kost
 
@@ -97,9 +97,30 @@
 
   (org-add-link-type "pdfview" 'org-pdfview-open 'org-pdfview-export))
 
-(al/eval-after-init
-  (when (string= server-name "server")
-    (require 'org-protocol nil t)))
+(defun al/autoload-org-protocol (fun files &rest args)
+  "Load `org-protocol' if needed.
+`org' is huge and loading it during emacs start is wasteful, but
+it is needed to use `org-protocol', isn't it?  Not necessarily:
+this function makes it possible to avoid requiring `org-protocol'
+\(thus the whole `org') in the emacs config file.
+
+Making this function an 'after' advice for `server-visit-files',
+will do the right thing."
+  (if (and (null (featurep 'org-protocol))
+           (cl-find-if (lambda (spec)
+                         ;; SPEC is (FILENAME . FILEPOS).
+                         (string-match "org-protocol:/" (car spec)))
+                       files))
+      (if (require 'org-protocol nil t)
+          ;; `server-visit-files' can't be called as is here, because
+          ;; `org-protocol' has just been loaded and the protocol advice
+          ;; is not active yet, so call `server-visit-files' outside
+          ;; this body.
+          (apply #'run-with-idle-timer .1 nil
+                 #'server-visit-files files args)
+        (message "`org-protocol' has not been loaded!"))
+    (apply fun files args)))
+(advice-add 'server-visit-files :around #'al/autoload-org-protocol)
 
 (with-eval-after-load 'org-src
   (push '("shell" . shell-script) org-src-lang-modes))
