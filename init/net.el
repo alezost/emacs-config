@@ -603,7 +603,7 @@
  :prefix "M-B"
  ("M-B" . debbugs-gnu)
  ("n"   . debbugs-gnu-bugs)
- ("l"     (switch-to-buffer "*Emacs Bugs*"))
+ ("b"     (switch-to-buffer "*Guix-Patches Bugs*"))
  ("s"   . debbugs-gnu-search))
 
 (with-eval-after-load 'debbugs-gnu
