@@ -56,6 +56,19 @@ Put `al/imenu-eval-after-load-group' and
        (nreverse section-res)
        (nreverse rest)))))
 
+(defun al/ivy-add-prompt-count (prompt)
+  "Substitution for `ivy-add-prompt-count'.
+The problem with that `ivy-add-prompt-count' is that it doesn't
+respect \"%\" character, i.e. when PROMPT contains \"%\", it will
+not be replaced with \"%%\", and later `ivy--insert-prompt' will
+fail trying to `format' a string with unexpected \"%\" signs."
+  (if (string-match-p "%.*d" ivy-count-format)
+      (concat ivy-count-format
+              (if (string-match "%" prompt)
+                  (replace-match "%%" t nil prompt)
+                prompt))
+    prompt))
+
 
 (defvar al/ivy-format-selected "─► ")
 (defvar al/ivy-format-other "   ")

@@ -151,7 +151,9 @@
   (when (require 'al-ivy nil t)
     (setq ivy-format-function 'al/ivy-format-function)
     (push '(imenus . al/ivy-imenu-sort)
-          ivy-sort-matches-functions-alist)))
+          ivy-sort-matches-functions-alist)
+    (advice-add 'ivy-add-prompt-count
+      :override 'al/ivy-add-prompt-count)))
 
 (with-eval-after-load 'counsel
   (define-key counsel-mode-map [remap switch-to-buffer]
