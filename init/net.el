@@ -410,11 +410,43 @@
 
 ;;; ERC
 
-(setq erc-modules
-      '(truncate keep-place log pcomplete netsplit button match
-                 notifications track completion readonly networks ring autojoin
-                 noncommands irccontrols move-to-prompt stamp menu list))
-(setq erc-log-channels-directory (al/emacs-data-dir-file "erc-log"))
+(setq
+ erc-modules
+ '(autojoin
+   button
+   completion
+   irccontrols
+   keep-place
+   list
+   log
+   match
+   menu
+   move-to-prompt
+   netsplit
+   networks
+   noncommands
+   notifications
+   pcomplete
+   readonly
+   ring
+   stamp
+   track
+   truncate)
+ ;; Set `erc-autojoin-channels-alist' in the top level so that it can be
+ ;; changed before loading ERC.
+ erc-autojoin-channels-alist
+ '(("freenode.net"
+    "#emacs"
+    "#erc"
+    "#gnus"
+    "#scheme"
+    "#guile"
+    "#guix"
+    "#geiser"
+    "#conkeror"
+    "#stumpwm"
+    "#org-mode"))
+ erc-log-channels-directory (al/emacs-data-dir-file "erc-log"))
 
 (al/bind-keys*
  :prefix-map al/erc-map
@@ -467,11 +499,7 @@
    erc-timestamp-intangible nil
    erc-keywords '("theme" "color" "dvorak" "sql" "guix" "game")
    erc-log-file-coding-system 'utf-8
-   erc-paranoid t
-   erc-autojoin-channels-alist
-   '(("freenode.net" "#emacs" "#erc" "#gnus" "#scheme" "#guile" "#guix"
-      "#geiser" "#conkeror" "#stumpwm" "#org-mode"
-      "#themanaworld" "#lgn")))
+   erc-paranoid t)
 
   (defun al/erc-quit-part-reason (&rest _)
     (concat "I live in GuixSD <http://www.gnu.org/s/guix>"
