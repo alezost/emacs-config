@@ -137,6 +137,36 @@ notification for an audio track."
   (interactive)
   (al/emms-mpv-run-command '("cycle" "fullscreen")))
 
+(defun al/emms-mpv-speed-normal ()
+  "Change speed to normal."
+  (interactive)
+  (al/emms-mpv-run-command
+   ;; Unlike "add" or "multiply", "set" requires a string, not a number!
+   '("set" "speed" "1")
+   nil
+   (lambda (_closure _answer)
+     (al/emms-mpv-show-property "speed"))))
+
+(defun al/emms-mpv-speed-up (&optional value)
+  "Increase playback speed by VALUE (0.1 by default).
+Interactively with prefix, prompt for VALUE."
+  (interactive
+   (when current-prefix-arg
+     (list (read-number "Increase speed by: " 0.1))))
+  (al/emms-mpv-run-command
+   (list "add" "speed" (number-to-string (or value 0.1)))
+   nil
+   (lambda (_closure _answer)
+     (al/emms-mpv-show-property "speed"))))
+
+(defun al/emms-mpv-speed-down (&optional value)
+  "Decrease playback speed by VALUE (0.1 by default).
+Interactively with prefix, prompt for VALUE."
+  (interactive
+   (when current-prefix-arg
+     (list (read-number "Decrease speed by: " 0.1))))
+  (al/emms-mpv-speed-up (- (or value 0.1))))
+
 (defvar emms-playing-time)
 
 (defun al/emms-mpv-sync-playing-time ()
