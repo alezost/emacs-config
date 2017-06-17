@@ -132,6 +132,11 @@ notification for an audio track."
      (require 'al-emms-notification)
      (al/emms-notify))))
 
+(defun al/emms-mpv-show-osd-text (text)
+  "Display TEXT in OSD."
+  (interactive "sShow OSD text: ")
+  (al/emms-mpv-run-command (list "show-text" text)))
+
 (defun al/emms-mpv-toggle-fullscreen ()
   "Toggle fullscreen."
   (interactive)
