@@ -50,15 +50,22 @@ If there is no such PROPERTY, call FALLBACK function without arguments."
    (lambda (value)
      (funcall function value))))
 
-(defun al/emms-mpv-run-command (command)
+(defun al/emms-mpv-run-command (command &optional closure function)
   "Run mpv COMMAND for the current EMMS mpv process.
-COMMAND is what may be put in mpv conf-file, e.g.: 'cycle mute',
-'show_text ${playback-time}', etc."
-  (interactive "sRun mpv command: ")
-  (when (emms-player-simple-mpv-playing-p)
-    (tq-enqueue emms-player-simple-mpv--tq
-                (concat command "\n")   ; newline is vital
-                "" nil #'ignore)))
+This is a wrapper for `emms-player-simple-mpv-tq-enqueue' (just
+to make CLOSURE and FUNCTION optional arguments).
+
+Command is what may be put in mpv conf-file, except it
+should be a list of values, e.g.:
+
+  (\"cycle\" \"mute\")
+  (\"show_text\" \"${playback-time}\")
+  (\"add\" \"speed\" 0.2)"
+  (emms-player-simple-mpv-tq-enqueue
+   ;; OSD prefixes are disabled for JSON API by default:
+   ;; <https://github.com/mpv-player/mpv/issues/4517>.
+   (cons "osd-auto" command)
+   closure (or function #'ignore)))
 
 (defun al/emms-mpv-tq-enqueue-sync (com-ls closure fn
                                            &optional delay-question)
@@ -120,7 +127,7 @@ notification for an audio track."
   (al/emms-mpv-call-with-property
    "video-codec"
    (lambda (_)
-     (al/emms-mpv-run-command "show_progress"))
+     (al/emms-mpv-run-command '("show-progress")))
    (lambda ()
      (require 'al-emms-notification)
      (al/emms-notify))))
@@ -128,7 +135,7 @@ notification for an audio track."
 (defun al/emms-mpv-toggle-fullscreen ()
   "Toggle fullscreen."
   (interactive)
-  (al/emms-mpv-run-command "cycle fullscreen"))
+  (al/emms-mpv-run-command '("cycle" "fullscreen")))
 
 (defvar emms-playing-time)
 
