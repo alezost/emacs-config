@@ -1,6 +1,6 @@
 ;;; al-emms-mpv.el --- Additional functionality for using EMMS with mpv  -*- lexical-binding: t -*-
 
-;; Copyright © 2015-2016 Alex Kost
+;; Copyright © 2015–2017 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -80,7 +80,7 @@ I.e., wait for the result of FN and return it."
   (interactive "smpv property: ")
   (al/emms-mpv-call-with-property property
    (lambda (value)
-     (message "Property value: %S" value))))
+     (message "mpv %s: %S" property value))))
 
 (declare-function pp-display-expression "pp" (expression buffer-name))
 
