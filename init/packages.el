@@ -36,8 +36,9 @@
   (al/bind-keys
    :map package-menu-mode-map
    ("u" . package-menu-describe-package)
-   ("i" . package-menu-mark-install)
-   ("d" . package-menu-mark-delete)
+   ("I" . package-menu-mark-install)
+   ("D" . package-menu-mark-delete)
+   ("^" . package-menu-mark-upgrades)
    ("z" . package-menu-mark-unmark)))
 
 (setq
