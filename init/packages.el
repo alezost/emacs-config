@@ -204,6 +204,13 @@
   (setq
    guix-package-list-type 'package)
 
+  (defconst al/guix-package-info-keys
+    '(("M-d" . guix-package-info-edit)
+      ("I"   . guix-package-info-install)
+      ("D"   . guix-package-info-delete)
+      ("U"   . guix-package-info-upgrade)
+      ("S"   . guix-package-info-size))
+    "Ainfo of auxiliary keys for `guix-package-info-mode-map'.")
   (defconst al/guix-package-list-keys
     '(("M-d" . guix-package-list-edit)
       ("I"   . guix-package-list-mark-install)
@@ -216,6 +223,9 @@
       ("D"   . guix-output-list-mark-delete)
       ("U"   . guix-output-list-mark-upgrade))
     "Alist of auxiliary keys for `guix-output-list-mode-map'.")
+  (al/bind-keys-from-vars 'guix-package-info-mode-map
+    '(al/button-keys al/guix-package-info-keys)
+    t)
   (al/bind-keys-from-vars 'guix-package-list-mode-map
     (append al/guix-list-key-vars '(al/guix-package-list-keys))
     t)
