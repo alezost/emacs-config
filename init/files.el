@@ -154,7 +154,7 @@
       ("C-d"   . dired-find-file-other-window)
       ("C-l"   . dired-omit-mode)
       ("c 0"   . al/default-directory-to-kill-ring)
-      ("c RET"   (dired-copy-filename-as-kill 0))
+      ("c RET"   (al/dired-copy-filename-as-kill 0))
       ("r"     . dired-do-query-replace-regexp)
       ("C-ь p" . emms-play-dired)
       ("C-ь a" . emms-add-dired))

@@ -1,17 +1,17 @@
 ;;; al-dired.el --- Additional functionality for dired
 
-;; Copyright © 2012-2016 Alex Kost
+;; Copyright © 2012–2017 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
 ;; (at your option) any later version.
-
+;;
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-
+;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -77,6 +77,29 @@ With prefix (if ARG is non-nil), use the next ARG files instead."
   (dired-do-shell-command
    "stat" nil
    (dired-get-marked-files t arg)))
+
+(defun al/dired-copy-filename-as-kill (&optional arg)
+  "Copy names of marked (or next ARG) files into the kill ring.
+This function is similar to `dired-copy-filename-as-kill',
+except it wraps file names into double quotes."
+  (interactive "P")
+  (let ((string
+         (concat "\""
+                 (mapconcat
+                  #'identity
+                  (if arg
+                      (cond ((zerop (prefix-numeric-value arg))
+                             (dired-get-marked-files))
+                            ((consp arg)
+                             (dired-get-marked-files t))
+                            (t
+                             (dired-get-marked-files
+                              'no-dir (prefix-numeric-value arg))))
+                    (dired-get-marked-files 'no-dir))
+                  "\" \"")
+                 "\"")))
+    (kill-new string)
+    (message "%s" string)))
 
 (defun al/man-file-p (file)
   "Return non-nil, if FILE is a Man-file."
