@@ -81,23 +81,20 @@ With prefix (if ARG is non-nil), use the next ARG files instead."
 (defun al/dired-copy-filename-as-kill (&optional arg)
   "Copy names of marked (or next ARG) files into the kill ring.
 This function is similar to `dired-copy-filename-as-kill',
-except it wraps file names into double quotes."
+except it quotes file names for a shell."
   (interactive "P")
-  (let ((string
-         (concat "\""
-                 (mapconcat
-                  #'identity
-                  (if arg
-                      (cond ((zerop (prefix-numeric-value arg))
-                             (dired-get-marked-files))
-                            ((consp arg)
-                             (dired-get-marked-files t))
-                            (t
-                             (dired-get-marked-files
-                              'no-dir (prefix-numeric-value arg))))
-                    (dired-get-marked-files 'no-dir))
-                  "\" \"")
-                 "\"")))
+  (let ((string (mapconcat
+                 #'shell-quote-argument
+                 (if arg
+                     (cond ((zerop (prefix-numeric-value arg))
+                            (dired-get-marked-files))
+                           ((consp arg)
+                            (dired-get-marked-files t))
+                           (t
+                            (dired-get-marked-files
+                             'no-dir (prefix-numeric-value arg))))
+                   (dired-get-marked-files 'no-dir))
+                 " ")))
     (kill-new string)
     (message "%s" string)))
 
