@@ -149,7 +149,7 @@
       ("T"     . dired-do-touch)
       ("z"     . dired-unmark)
       ("Z"     . dired-unmark-all-marks)
-      ("b"       (dired-mark-extension "elc"))
+      ("b"       (dired-mark-extension '("elc" "go")))
       ("d"     . dired-display-file)
       ("C-d"   . dired-find-file-other-window)
       ("C-l"   . dired-omit-mode)
