@@ -219,6 +219,7 @@
     ("C-d"   . geiser-doc-symbol-at-point)
     ("M-d"   . geiser-edit-symbol-at-point)
     ("C-M-d" . al/geiser-doc-map)
+    ("C-c l" . al/geiser-add-to-load-path)
     ("C-c a" . geiser-autodoc-mode)
     ("C-c j" . switch-to-geiser-module)
     ("C-c C-j" . geiser-mode-switch-to-repl-and-enter))
