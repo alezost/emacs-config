@@ -127,10 +127,6 @@
     (al/setq-file
      al/notification-sound (al/sound-dir-file "alarm.wav"))))
 
-(with-eval-after-load 'notifications
-  ;; XXX Remove when dunst will support icons.
-  (setq notifications-application-icon ""))
-
 (al/bind-keys
  ("C-c s" . al/sauron-toggle-hide-show)
  ("C-c S" . al/sauron-restart))
