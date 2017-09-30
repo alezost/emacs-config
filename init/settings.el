@@ -170,7 +170,11 @@
       ("M-m" . al/ivy-magit-status))
     "Alist of auxiliary keys for `counsel-find-file-map'.")
   (al/bind-keys-from-vars 'counsel-find-file-map
-    'al/counsel-find-file-keys))
+    'al/counsel-find-file-keys)
+
+  (when (require 'al-file nil t)
+    (setq counsel-find-file-ignore-regexp
+          (al/file-regexp "elc" "go"))))
 
 (al/eval-after-init
   (cond
