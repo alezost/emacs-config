@@ -636,7 +636,6 @@
 
 (with-eval-after-load 'debbugs-gnu
   (setq debbugs-gnu-default-packages '("guix-patches"))
-  (push "guix-patches" debbugs-gnu-all-packages)
 
   (defconst al/debbugs-gnu-keys
     '(("u" . debbugs-gnu-select-report))
