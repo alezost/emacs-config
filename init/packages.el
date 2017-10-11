@@ -92,6 +92,7 @@
      outline-magic
      markdown-mode
      syslog-mode
+     list-environment
      (mysql              :fetcher github :repo "haxney/mysql")
      (sql-completion     :fetcher github :repo "emacsmirror/sql-completion")
      sauron

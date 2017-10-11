@@ -259,6 +259,7 @@
    "*Occur*"
    "*Personal Keybindings*"
    "*Proced*"
+   "*Process-Environment*"
    "*Process List*"
    "*Shadows*"
    "*YASnippet tables*")

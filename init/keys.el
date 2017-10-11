@@ -144,6 +144,7 @@
  ("C-="           (describe-char (point)))
  ("C-c r"       . revert-buffer)
  ("C-c p"       . list-processes)
+ ("C-c e"       . list-environment)
  ("C-c k"       . al/kill-process))
 
 (defalias 'ctl-x-r-prefix ctl-x-r-map)
