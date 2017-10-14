@@ -421,6 +421,7 @@
 (with-eval-after-load 'magit-mode
   (setq
    magit-save-repository-buffers nil
+   magit-use-sticky-arguments nil
    magit-uniquify-buffer-names nil)
 
   (defconst al/magit-keys
