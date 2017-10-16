@@ -23,7 +23,7 @@
 ("my-guix-guile-modules"
  (filename . "~/config/guix/modules/al/guix/")
  (position . 222))
-("my-guix-system-config"
+("my-guix-os-config"
  (filename . "~/config/guix/system-config/os-main.scm")
  (position . 1))
 ("eshell-aliases"
