@@ -464,6 +464,14 @@
 
 (with-eval-after-load 'man
   (setq Man-notify-method 'pushy)
+  (when (require 'al-file nil t)
+    (setq Man-header-file-path
+          (append (delq nil
+                        (mapcar (lambda (p)
+                                  (al/file-if-exists
+                                   (expand-file-name "include" p)))
+                                (al/guix-profiles)))
+                  Man-header-file-path)))
   (when (require 'al-mode-line nil t)
     (al/mode-line-default-buffer-identification 'Man-mode))
 
