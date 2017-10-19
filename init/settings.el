@@ -543,17 +543,15 @@
 ;;; SQL
 
 (setq
- sql-product 'mysql
+ sql-product 'postgres
  sql-database "darts"
  sql-user user-login-name)
 (defun al/sql-connect (conn)
   (let ((sql-connection-alist
-         `((darts (sql-product 'mysql)
+         `((darts (sql-product 'postgres)
                   (sql-server "")
                   (sql-database "darts")
-                  (sql-user ,user-login-name)
-                  (sql-password ,(al/sql-password-from-auth-source
-                                  "sql-darts" user-login-name)))
+                  (sql-user ,user-login-name))
            (paste (sql-product 'postgres)
                   (sql-server "")
                   (sql-database "paste")
