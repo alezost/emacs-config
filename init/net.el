@@ -289,6 +289,7 @@
       ("z"     . gnus-summary-clear-mark-forward)
       ("u"     . gnus-summary-scroll-up)
       ("C-t"   . gnus-summary-mark-region-as-read)
+      ("h"     . gnus-summary-toggle-header)
       ("b"     . al/gnus-summary-toggle-display-buttonized)
       ("v"     . gnus-article-view-part)
       ("V"     . gnus-mime-view-all-parts)
