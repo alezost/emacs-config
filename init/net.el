@@ -369,7 +369,7 @@
    message-send-mail-function 'smtpmail-send-it
    message-citation-line-function 'message-insert-formatted-citation-line
    message-citation-line-format "%N (%Y-%m-%d %H:%M %z) wrote:\n")
-
+  (al/bind-keys-from-vars 'message-mode-map)
   (al/modify-syntax message-mode-syntax-table
     (?' "'   ")
     (?\" "\"   ")))
