@@ -257,6 +257,7 @@
  directory-free-space-args "-Ph"
  grep-command "grep -nHi -e "
  enable-local-variables :safe
+ enable-dir-local-variables nil
  ;; safe-local-variable-values '((lexical-binding . t))
  ;; enable-local-eval nil
  )
