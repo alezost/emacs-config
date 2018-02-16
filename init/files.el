@@ -1,6 +1,6 @@
 ;;; files.el --- Working with files; dired, sunrise-commander, …
 
-;; Copyright © 2014–2017 Alex Kost
+;; Copyright © 2014–2018 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -54,8 +54,7 @@
  ("l"     . bookmark-bmenu-list)
  ("S"     . al/sr-toggle)
  ("q"       (al/find-file
-             (expand-file-name "package-build/recipes/"
-                               quelpa-build-dir)))
+             (al/src-dir-file "emacs/melpa/recipes")))
  ("h"       (al/find-file "~"))
  ("d"       (al/find-file al/journal-dir))
  ("w"       (al/find-file al/download-dir))
