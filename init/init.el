@@ -1,6 +1,6 @@
 ;;; init.el --- Init file  -*- lexical-binding: t -*-
 
-;; Copyright © 2012–2017 Alex Kost
+;; Copyright © 2012–2018 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -139,8 +139,7 @@
     (with-demoted-errors "ERROR during autoloading Guix packages: %S"
       (when (require 'al-guix-autoload nil t)
         (apply #'al/guix-autoload-emacs-packages
-               (mapcar #'al/guix-profile
-                       '("emacs" "main" "misc")))))
+               (al/guix-profiles))))
     (when (file-exists-p al/emacs-my-packages-dir)
       (with-demoted-errors "ERROR during autoloading my packages: %S"
         (dolist (dir (al/subdirs al/emacs-my-packages-dir))
