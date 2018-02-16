@@ -1,6 +1,6 @@
 ;;; visual.el --- Visual settings: fonts, themes, mode-line, …  -*- lexical-binding: t -*-
 
-;; Copyright © 2012–2017 Alex Kost
+;; Copyright © 2012–2018 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -272,7 +272,7 @@
  `((-3 ,(propertize "%P" 'face 'font-lock-builtin-face)))
 
  mode-line-modes
- (let ((recursive-edit-help-echo "Recursive edit: C-M-c to get out")
+ (let ((recursive-edit-help-echo "Recursive edit")
        (mode-help-echo (concat "Mode actions:\n"
                                "mouse-1: Show menu\n"
                                "mouse-2: Show help\n"

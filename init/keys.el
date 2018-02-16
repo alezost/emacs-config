@@ -1,6 +1,6 @@
 ;;; keys.el --- Miscellaneous global key bindings and relative settings
 
-;; Copyright © 2013–2017 Alex Kost
+;; Copyright © 2013–2018 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -132,6 +132,7 @@
  ("s-0"           (set-input-method "greek"))
  ("s-M-7"         (ispell-change-dictionary "en"))
  ("s-M-8"         (ispell-change-dictionary "ru-yeyo"))
+ ("C-M-c"       . calc)
 
  ("<f4>"        . kmacro-end-or-call-macro)
  ("<XF86New>"   . kmacro-end-or-call-macro)
