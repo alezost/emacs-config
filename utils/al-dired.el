@@ -1,6 +1,6 @@
 ;;; al-dired.el --- Additional functionality for dired
 
-;; Copyright © 2012–2017 Alex Kost
+;; Copyright © 2012–2018 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -137,17 +137,6 @@ except it quotes file names for a shell."
                     dired-sort-by-date-regexp dired-actual-switches)
                    "date")
                   (t dired-actual-switches))))))
-
-(defun al/dired-mark-read-file-name (prompt dir op-symbol arg files
-                                            &optional default)
-  "Replacement for `dired-mark-read-file-name'.
-Use default destination file in a prompt instead of a destination
-directory."
-  (dired-mark-pop-up
-   nil op-symbol files
-   (function read-file-name)
-   (format prompt (dired-mark-prompt arg files))
-   (or default dir) default))
 
 (provide 'al-dired)
 

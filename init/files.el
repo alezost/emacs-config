@@ -221,11 +221,6 @@
              "play -q" "aplay" "mplayer -really-quiet" "mpv --really-quiet")
             (,(al/file-regexp "odt" "doc") "lowriter")))))
 
-(with-eval-after-load 'dired-aux
-  (when (require 'al-dired nil t)
-    (advice-add 'dired-mark-read-file-name
-      :override 'al/dired-mark-read-file-name)))
-
 (with-eval-after-load 'wdired
   (al/bind-keys-from-vars 'wdired-mode-map)
   (when (require 'dim nil t)
