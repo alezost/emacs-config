@@ -1,6 +1,6 @@
 ;;; net.el --- Browsing, mail, chat, network utils; w3m, wget, …
 
-;; Copyright © 2014–2017 Alex Kost
+;; Copyright © 2014–2018 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -579,7 +579,6 @@
         (assq-delete-all 'erc after-load-alist)))
 
 (with-eval-after-load 'erc-desktop-notifications
-  (setq erc-notifications-icon "erc")
   (defun al/play-erc-sound (&rest _)
     (require 'al-sound)
     (al/play-sound (al/sound-dir-file "chimes.wav")))
