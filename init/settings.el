@@ -1,6 +1,6 @@
 ;;; settings.el --- Miscellaneous settings
 
-;; Copyright © 2012–2017 Alex Kost
+;; Copyright © 2012–2018 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -45,8 +45,7 @@
 (al/bind-keys-from-vars 'minibuffer-local-map 'al/minibuffer-keys)
 
 (when (require 'al-minibuffer nil t)
-  (setq completing-read-function #'al/completing-read)
-  (advice-add 'read-file-name-default :around #'al/complete-default))
+  (setq completing-read-function #'al/completing-read))
 
 (with-eval-after-load 'ido
   (setq
