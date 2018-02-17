@@ -1,6 +1,6 @@
 ;;; packages.el --- Emacs packages and interfaces to other package systems
 
-;; Copyright © 2014–2017 Alex Kost
+;; Copyright © 2014–2018 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -153,6 +153,7 @@
  ("G"   . guix-generations)
  ("a"   . guix-about)
  ("h"   . guix-help)
+ ("H"   . guix-hash)
  ("p"   . guix-profiles)
  ("H-p" . guix-set-current-profile)
  ("i"     (switch-to-buffer (guix-package-info-buffer-name
