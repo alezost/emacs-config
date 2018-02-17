@@ -190,13 +190,14 @@
 
 (al/bind-keys*
  ("M-b" . mode-line-other-buffer)
- ("C-M-b" . ibuffer))
+ ("C-M-b" (find-file (al/notes-dir-file "bookmarks.org"))))
 
 (al/bind-keys*
  :prefix-map al/buffer-map
  :prefix-docstring "Map for managing/switching to buffers."
  :prefix "C-b"
  ("C-b" . al/switch-buffer)
+ ("M-b" . ibuffer)
  ("r" . rename-buffer)
  ("c" . clone-buffer)
  ("n" . info)
