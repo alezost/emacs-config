@@ -732,6 +732,9 @@
   ;; http://comments.gmane.org/gmane.emacs.gnus.general/83413
   (setq gnutls-min-prime-bits nil))
 
+(with-eval-after-load 'calc
+  (setq calc-angle-mode 'rad))
+
 (with-eval-after-load 'picture
   (al/bind-keys
    :map picture-mode-map
