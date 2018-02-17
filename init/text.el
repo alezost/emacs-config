@@ -1,6 +1,6 @@
 ;;; text.el --- Working with text: editing, searching, …
 
-;; Copyright © 2014–2017 Alex Kost
+;; Copyright © 2014–2018 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -354,9 +354,16 @@
     al/show-trailing-whitespace))
 
 (with-eval-after-load 'mwim
-  (setq
-   mwim-beginning-of-line-function #'beginning-of-visual-line
-   mwim-end-of-line-function #'end-of-visual-line))
+  (defun al/mwim-set-default (var fun)
+    (set var
+         (cl-substitute-if
+          `(t . ,fun)
+          (lambda (assoc) (eq t (car assoc)))
+          (symbol-value var))))
+  (al/mwim-set-default 'mwim-beginning-of-line-function
+                       'beginning-of-visual-line)
+  (al/mwim-set-default 'mwim-end-of-line-function
+                       'end-of-visual-line))
 
 (with-eval-after-load 'abbrev
   (define-abbrev-table 'global-abbrev-table
