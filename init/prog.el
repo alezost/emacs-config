@@ -1,6 +1,6 @@
 ;;; prog.el --- Programming modes and tools
 
-;; Copyright © 2014–2017 Alex Kost
+;; Copyright © 2014–2018 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -76,8 +76,7 @@
       ("RET" . ielm-send-input))
     "Alist of auxiliary keys for `ielm-map'.")
   (al/bind-keys-from-vars 'ielm-map
-    '(al/lisp-shared-keys al/ielm-keys)
-    t)
+    '(al/lisp-shared-keys al/comint-keys al/ielm-keys))
   (al/add-hook-maybe 'ielm-mode-hook 'al/no-truncate-lines))
 
 (with-eval-after-load 'eldoc
