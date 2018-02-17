@@ -320,9 +320,12 @@
 
 (with-eval-after-load 'comint
   (setq comint-move-point-for-output 'this
+        comint-buffer-maximum-size 5000
         comint-password-prompt-regexp
         (rx-to-string `(or (and bol "Password")
                            (regex ,comint-password-prompt-regexp))))
+  (al/add-hook-maybe 'comint-output-filter-functions
+    'comint-truncate-buffer)
 
   (defconst al/comint-keys
     '(("M-." . comint-previous-input)
