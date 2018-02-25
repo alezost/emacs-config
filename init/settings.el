@@ -739,16 +739,17 @@
   (setq calc-angle-mode 'rad))
 
 (with-eval-after-load 'picture
-  (al/bind-keys
-   :map picture-mode-map
-   ("M-O" . picture-movement-left)
-   ("M-U" . picture-movement-right)
-   ("M->" . picture-movement-up)
-   ("M-E" . picture-movement-down)
-   ("M-<" . picture-movement-nw)
-   ("M-P" . picture-movement-ne)
-   ("M-Q" . picture-movement-sw)
-   ("M-K" . picture-movement-se)))
+  (defconst al/picture-keys
+    '(("M-O" . picture-movement-left)
+      ("M-U" . picture-movement-right)
+      ("M->" . picture-movement-up)
+      ("M-E" . picture-movement-down)
+      ("M-<" . picture-movement-nw)
+      ("M-P" . picture-movement-ne)
+      ("M-Q" . picture-movement-sw)
+      ("M-K" . picture-movement-se))
+    "Alist of auxiliary keys for `picture-mode-map'.")
+  (al/bind-keys-from-vars 'picture-mode-map 'al/picture-keys))
 
 (with-eval-after-load 'hexl
   (al/bind-keys
