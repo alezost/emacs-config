@@ -1,6 +1,6 @@
 ;;; file-modes.el --- Modes for various file types  -*- lexical-binding: t -*-
 
-;; Copyright © 2014–2017 Alex Kost
+;; Copyright © 2014–2018 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -123,6 +123,9 @@ will do the right thing."
 (advice-add 'server-visit-files :around #'al/autoload-org-protocol)
 
 (with-eval-after-load 'org-src
+  (al/bind-keys
+   :map org-src-mode-map
+   ("C-c C-c" . org-edit-src-exit))
   (push '("shell" . shell-script) org-src-lang-modes))
 
 (with-eval-after-load 'org-capture
