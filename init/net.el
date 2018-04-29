@@ -35,7 +35,8 @@
  :prefix "M-S"
  ("M-S" . web-search)
  ("d"   . web-search-duckduckgo)
- ("y"   . web-search-yandex)
+ ("Y"   . web-search-yandex)
+ ("y"   . web-search-youtube)
  ("g"   . web-search-github)
  ("G"   . web-search-google)
  ("w e" . web-search-wikipedia-en)
@@ -692,6 +693,7 @@
 
 (al/autoload "web-search"
   web-search-yandex
+  web-search-youtube
   web-search-ipduh
   web-search-ip-address
   web-search-wikipedia-ru
@@ -718,6 +720,9 @@
   (web-search-add-engine
    'wikipedia-ru "Wikipedia (russian)"
    "http://ru.wikipedia.org/w/index.php?search=%s")
+  (web-search-add-engine
+   'youtube "Youtube"
+   "http://www.youtube.com/results?search_query=%s&search=Search")
   (web-search-add-engine
    'arch-package "Arch Packages"
    "https://www.archlinux.org/packages/?sort=&q=%s&maintainer=&flagged=")
