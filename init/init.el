@@ -20,10 +20,6 @@
 (setq gc-cons-threshold (expt 2 24)) ; 16 MiB
 (setq load-prefer-newer t)
 
-(defvar al/emacs-trunk?
-  (not (version< emacs-version "26.0.50"))
-  "Non-nil, if current Emacs is the latest development build.")
-
 
 ;;; Location of various files
 

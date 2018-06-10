@@ -99,11 +99,7 @@
    alect-display-class '((class color) (min-colors 256))
    alect-overriding-faces
    '((hl-line ((((type graphic)) :background bg)
-               (t :background unspecified)))))
-  (when al/emacs-trunk?
-    (push '(fringe ((((class color) (min-colors 256))
-                     :foreground gray :background bg+2)))
-          alect-overriding-faces)))
+               (t :background unspecified))))))
 
 (al/eval-after-init
   (and (require 'alect-themes nil t)
