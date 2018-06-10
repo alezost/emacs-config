@@ -146,8 +146,8 @@
  ("C-n" . guix-packages-by-name)
  ("n"   . guix-search-by-name)
  ("r"   . guix-search-by-regexp)
- ("A"   . guix-all-available-packages)
- ("N"   . guix-newest-available-packages)
+ ("A"   . guix-all-packages)
+ ("N"   . guix-newest-packages)
  ("I"   . guix-installed-packages)
  ("O"   . guix-obsolete-packages)
  ("G"   . guix-generations)
@@ -250,12 +250,34 @@
     (append al/guix-list-key-vars '(al/guix-generation-list-keys))
     t))
 
-(with-eval-after-load 'guix-ui-location
-  (defconst al/guix-location-list-keys
-    '(("M-d" . guix-location-list-edit))
-    "Alist of auxiliary keys for `guix-location-list-mode-map'.")
-  (al/bind-keys-from-vars 'guix-location-list-mode-map
-    (append al/guix-list-key-vars '(al/guix-location-list-keys))
+(with-eval-after-load 'guix-ui-service
+  (defconst al/guix-service-info-keys
+    '(("M-d" . guix-service-info-edit))
+    "Alist of auxiliary keys for `guix-service-info-mode-map'.")
+  (defconst al/guix-service-list-keys
+    '(("M-d" . guix-service-list-edit))
+    "Alist of auxiliary keys for `guix-service-list-mode-map'.")
+  (al/bind-keys-from-vars 'guix-service-info-mode-map
+    '(al/button-keys al/guix-service-info-keys)
+    t)
+  (al/bind-keys-from-vars 'guix-service-list-mode-map
+    (append al/guix-list-key-vars '(al/guix-service-list-keys))
+    t))
+
+(with-eval-after-load 'guix-ui-package-location
+  (defconst al/guix-package-location-list-keys
+    '(("M-d" . guix-package-location-list-edit))
+    "Alist of auxiliary keys for `guix-package-location-list-mode-map'.")
+  (al/bind-keys-from-vars 'guix-package-location-list-mode-map
+    (append al/guix-list-key-vars '(al/guix-package-location-list-keys))
+    t))
+
+(with-eval-after-load 'guix-ui-service-location
+  (defconst al/guix-service-location-list-keys
+    '(("M-d" . guix-service-location-list-edit))
+    "Alist of auxiliary keys for `guix-service-location-list-mode-map'.")
+  (al/bind-keys-from-vars 'guix-service-location-list-mode-map
+    (append al/guix-list-key-vars '(al/guix-service-location-list-keys))
     t))
 
 (with-eval-after-load 'guix-ui-license
