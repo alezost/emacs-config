@@ -129,8 +129,8 @@
 (setq
  guix-current-profile al/guix-user-profile-dir
  guix-directory (or (al/first-existing-file
-                     (al/src-dir-file "guix")
-                     (al/devel-dir-file "guix"))
+                     (al/devel-dir-file "guix")
+                     (al/src-dir-file "guix"))
                     guix-directory))
 
 (al/bind-key "H-M-x" guix-extended-command)
