@@ -1,6 +1,6 @@
 ;;; al-quelpa.el --- Additional functionality for Quelpa
 
-;; Copyright © 2014-2016 Alex Kost
+;; Copyright © 2014-2016, 2018 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -71,7 +71,7 @@ With \\[universal-argument] \\[universal-argument], update all packages."
   (unless (fboundp 'quelpa)
     (with-temp-buffer
       (url-insert-file-contents
-       "https://raw.github.com/quelpa/quelpa/master/bootstrap.el")
+       "https://framagit.org/steckerhalter/quelpa/raw/master/bootstrap.el")
       (eval-buffer)))
   (mapc #'quelpa recipes))
 
