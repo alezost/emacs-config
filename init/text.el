@@ -325,6 +325,7 @@
 ;;; Misc settings and packages
 
 (setq-default
+ major-mode 'text-mode
  truncate-lines t
  indent-tabs-mode nil
  fill-column 72)
