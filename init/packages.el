@@ -126,12 +126,11 @@
 
 ;;; Guix
 
-(setq
- guix-current-profile al/guix-user-profile-dir
- guix-directory (or (al/first-existing-file
-                     (al/devel-dir-file "guix")
-                     (al/src-dir-file "guix"))
-                    guix-directory))
+(setq guix-current-profile al/guix-user-profile-dir)
+
+(let ((dir (al/devel-dir-file "guix")))
+  (when (file-exists-p dir)
+    (setq guix-load-path dir)))
 
 (al/bind-key "H-M-x" guix-extended-command)
 (al/bind-keys
