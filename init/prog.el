@@ -245,7 +245,7 @@
    geiser-repl-history-filename (al/emacs-data-dir-file "geiser-history"))
 
   (defconst al/geiser-repl-keys
-    '(("RET" . al/geiser-repl-enter-dwim)
+    '(([return] . al/geiser-repl-enter-dwim)
       ("C-k" . al/geiser-repl-kill-whole-line)
       ("C-a" . geiser-repl--bol)
       ("C-c C-d" . geiser-repl-exit)
