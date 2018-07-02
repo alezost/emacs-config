@@ -1,6 +1,6 @@
 ;;; al-geiser.el --- Additional functionality for geiser
 
-;; Copyright © 2014–2017 Alex Kost
+;; Copyright © 2014–2018 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -61,7 +61,7 @@ ARG is passed to `geiser-eval-last-sexp'."
 Substitution for `geiser-repl--maybe-send'."
   (interactive)
   (cond ((< (point) (geiser-repl--last-prompt-start))
-         (if (geiser-repl--is-history-input)
+         (if (geiser-repl--is-input)
              (geiser-repl--grab-input)
            (ignore-errors (compile-goto-error))))
         (t
