@@ -1,17 +1,17 @@
 ;;; al-key.el --- Additional functionality for working with key bindings
 
-;; Copyright © 2013-2016 Alex Kost
+;; Copyright © 2013–2016, 2018 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
 ;; (at your option) any later version.
-
+;;
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-
+;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -47,7 +47,7 @@
 (defmacro al/bind-key (key-name command &optional keymap)
   "Bind KEY-NAME to COMMAND in KEYMAP.
 
-KEY-NAME should be a string taken by `read-kbd-macro'.
+KEY-NAME should be a string or a vector taken by `define-key'.
 
 COMMAND may be either:
 
@@ -61,11 +61,15 @@ Examples:
 
   (al/bind-key \"C-f\" nil)
   (al/bind-key \"C-j\" newline lisp-mode-map)
+  (al/bind-key [return] newline-and-indent lisp-mode-shared-map)
   (al/bind-key \"C-s-b\" ((backward-word) (backward-char)))"
   (let ((command (al/key-command command))
         (key-var (make-symbol "key"))
         (map-var (make-symbol "map")))
-    `(let* ((,key-var (read-kbd-macro ,key-name))
+    `(let* ((,key-var ,key-name)
+            (,key-var (if (stringp ,key-var)
+                          (read-kbd-macro ,key-var)
+                        ,key-var))
             (,map-var (or ,keymap global-map)))
        ,(if command
             `(define-key ,map-var ,key-var ,command)
@@ -150,7 +154,7 @@ key duplicates (rightmost values retain)."
     (cl-remove-duplicates
      keys
      :test (lambda (obj1 obj2)
-             (string= (car obj1) (car obj2))))))
+             (equal (car obj1) (car obj2))))))
 
 (defun al/bind-keys-from-vars (map-vars &optional key-vars no-default)
   "Bind all keys from KEY-VARS in all maps from MAP-VARS.
