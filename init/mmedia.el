@@ -1,6 +1,6 @@
 ;;; mmedia.el --- Using multimedia stuff inside Emacs
 
-;; Copyright © 2014–2017 Alex Kost
+;; Copyright © 2014–2018 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
 (al/bind-keys
  :prefix-map al/emms-map
  :prefix-docstring "Map for EMMS."
- :prefix "C-ь"
+ :prefix [ctrl-m]
  ("SPC" . emms-pause)
  ("M-SPC" . emms-stop)
  ("s" . al/emms-show)

@@ -155,8 +155,8 @@
       ("c 0"   . al/default-directory-to-kill-ring)
       ("c RET"   (al/dired-copy-filename-as-kill 0))
       ("r"     . dired-do-query-replace-regexp)
-      ("C-ь p" . emms-play-dired)
-      ("C-ь a" . emms-add-dired))
+      ("<ctrl-m> p" . emms-play-dired)
+      ("<ctrl-m> a" . emms-add-dired))
     "Alist of auxiliary keys for `dired-mode'.")
   (al/bind-keys-from-vars 'dired-mode-map 'al/dired-keys)
 

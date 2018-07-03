@@ -157,8 +157,8 @@
  ("H-p" . guix-set-current-profile)
  ("i"     (switch-to-buffer (guix-package-info-buffer-name
                              guix-current-profile)))
- ("C-п"   (switch-to-buffer (guix-generation-info-buffer-name
-                             guix-current-profile)))
+ ("<ctrl-i>" (switch-to-buffer (guix-generation-info-buffer-name
+                                guix-current-profile)))
  ("l"     (switch-to-buffer (guix-package-list-buffer-name
                              guix-current-profile)))
  ("C-l"   (switch-to-buffer (guix-generation-list-buffer-name

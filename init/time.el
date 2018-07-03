@@ -1,17 +1,17 @@
 ;;; time.el --- Time, calendar, diary, appointments, notifications, …
 
-;; Copyright © 2014-2016 Alex Kost
+;; Copyright © 2014–2016, 2018 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
 ;; (at your option) any later version.
-
+;;
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-
+;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -63,7 +63,7 @@
    ("z"   . calendar-unmark)
    ("l"   . holidays)
    ("C-a" . calendar-beginning-of-week)
-   ("C-п" . calendar-end-of-week)
+   ("<ctrl-i>" . calendar-end-of-week)
    ("M-o" . calendar-backward-month)
    ("M-u" . calendar-forward-month)
    ("M-." . calendar-scroll-right-three-months)

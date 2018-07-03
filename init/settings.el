@@ -416,7 +416,7 @@
   (defconst al/widget-field-keys
     '(("<M-tab>" . widget-complete)
       ("M-<" . widget-kill-line)
-      ("C-п" . widget-end-of-line)
+      ("<ctrl-i>" . widget-end-of-line)
       ("C-k"   (beginning-of-line) (widget-kill-line)))
     "Alist of auxiliary keys for modes with widget fields.")
   (al/bind-keys-from-vars 'widget-keymap 'al/widget-button-keys t)

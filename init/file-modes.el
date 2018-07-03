@@ -248,7 +248,7 @@ will do the right thing."
 (with-eval-after-load 'image-mode
   (defconst al/image-keys
     '(("C-a" . image-bol)
-      ("C-п" . image-eol)
+      ("<ctrl-i>" . image-eol)
       ("h"   . image-previous-file)
       ("H"   . image-previous-frame)
       ("N"   . image-next-frame))

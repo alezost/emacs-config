@@ -25,8 +25,8 @@
   (keyboard-translate ?\C-x ?\C-t)
   (keyboard-translate ?\C-t ?\C-x)
   (when (display-graphic-p)
-    (keyboard-translate ?\C-m ?\C-ь)
-    (keyboard-translate ?\C-i ?\C-п)))
+    (keyboard-translate ?\C-m 'ctrl-m)
+    (keyboard-translate ?\C-i 'ctrl-i)))
 
 (al/add-hook-maybe
     '(after-make-frame-functions window-setup-hook)
@@ -41,7 +41,7 @@
     "C-." "M-." "C-M-." "M->"
     "C-e" "M-e" "C-M-e" "M-E"
     "C-a" "M-a" "C-M-a" "M-A"
-    "C-п" "M-i" "C-M-i" "M-I")
+    "<ctrl-i>" "M-i" "C-M-i" "M-I")
   "Alist of moving keys that should be unbound.")
 
 (defconst al/free-editing-keys

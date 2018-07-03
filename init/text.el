@@ -66,10 +66,10 @@
 (if al/mwim-exists?
     (al/bind-keys
      ("C-a" . mwim-beginning)
-     ("C-п" . mwim-end))
+     ("<ctrl-i>" . mwim-end))
   (al/bind-keys
    ("C-a" . beginning-of-line)
-   ("C-п" . end-of-line)))
+   ("<ctrl-i>" . end-of-line)))
 
 (unless (display-graphic-p)
   (al/bind-keys

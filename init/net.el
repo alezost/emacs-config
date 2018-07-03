@@ -73,8 +73,8 @@
 
   (defconst al/w3m-keys
     '("c" "u" "k" "M-s"
-      ("C-ь a"       (emms-add-url (w3m-anchor)))
-      ("C-ь p"       (emms-play-url (w3m-anchor)))
+      ("<ctrl-m> a"  (emms-add-url (w3m-anchor)))
+      ("<ctrl-m> p"  (emms-play-url (w3m-anchor)))
       ("i"         . w3m-toggle-inline-images)
       ("I"         . w3m-toggle-inline-image)
       ("b"         . w3m-bookmark-view)
@@ -299,8 +299,8 @@
       ("U"     . al/gnus-summary-browse-link-url)
       ("a"     . al/gnus-summary-emms-add-url)
       ("p"     . al/gnus-summary-emms-play-url)
-      ("C-ь a" . al/gnus-summary-emms-add-url)
-      ("C-ь p" . al/gnus-summary-emms-play-url)
+      ("<ctrl-m> a" . al/gnus-summary-emms-add-url)
+      ("<ctrl-m> p" . al/gnus-summary-emms-play-url)
       ("w"       (wget (al/gnus-summary-find-mm-url)))
       ("`"       (web-search-ej (al/gnus-summary-find-url-by-re
                                  al/ej-url-re 1))))
