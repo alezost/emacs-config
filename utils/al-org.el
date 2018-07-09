@@ -21,6 +21,21 @@
 (require 'org)
 (require 'org-table)
 
+(defun al/org-set-link-description (fun link &optional description)
+  "Call FUN with LINK and fixed DESCRIPTION.
+This function is intended to be used as an 'around' advice for
+`org-make-link-string':
+
+  (advice-add 'org-make-link-string
+              :around #'al/org-set-link-description)
+
+If DESCRIPTION is the same as LINK, then it is ignored (FUN is
+called with LINK only)."
+  (if (and description
+           (string= link description))
+      (funcall fun link)
+    (funcall fun link description)))
+
 (defun al/org-get-time-stamp (time &optional with-hm)
   "Return org time stamp string from TIME (iso or system format).
 WITH-HM means use the stamp format that includes the time of the day."

@@ -42,7 +42,9 @@
 (setq org-export-backends
       '(ascii html icalendar latex odt texinfo man))
 (with-eval-after-load 'org
-  (require 'al-org nil t)
+  (when (require 'al-org nil t)
+    (advice-add 'org-make-link-string
+      :around #'al/org-set-link-description))
   (setq
    org-imenu-depth 6
    org-completion-use-ido t
