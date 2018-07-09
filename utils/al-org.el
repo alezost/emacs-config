@@ -17,7 +17,7 @@
 
 ;;; Code:
 
-(require 'al-text)
+(require 'al-text-cmd)
 (require 'org)
 (require 'org-table)
 
