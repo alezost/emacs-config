@@ -80,6 +80,7 @@
   (defconst al/org-keys
     '("<C-tab>"
       ("<M-tab>" . pcomplete)
+      ("<M-return>" . org-meta-return)
       ("M->" . outline-previous-visible-heading)
       ("M-E" . outline-next-visible-heading)
       ("M-O" . org-backward-sentence)

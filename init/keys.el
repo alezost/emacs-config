@@ -25,6 +25,11 @@
   (keyboard-translate ?\C-x ?\C-t)
   (keyboard-translate ?\C-t ?\C-x)
   (when (display-graphic-p)
+    ;; This is not possible because the index of "C-M-m" character is
+    ;; too big for the char-table.
+    ;;
+    ;; (keyboard-translate ?\M-\r 'ctrl-alt-m)
+
     (keyboard-translate ?\C-m 'ctrl-m)
     (keyboard-translate ?\C-i 'ctrl-i)))
 
