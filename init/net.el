@@ -445,6 +445,7 @@
     "#guile"
     "#guix"
     "#geiser"
+    "#dunst"
     "#conkeror"
     "#stumpwm"
     "#org-mode"))
