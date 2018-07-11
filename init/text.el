@@ -234,6 +234,9 @@
   (setq-local paragraph-start "[^ ]"))
 (al/add-hook-maybe 'occur-mode-hook 'al/occur-set-paragraph)
 
+(with-eval-after-load 'grep
+  (setq grep-save-buffers nil))
+
 (with-eval-after-load 'misearch
   (setq multi-isearch-pause nil))
 
