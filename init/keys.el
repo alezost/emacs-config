@@ -148,6 +148,7 @@
 
  ("<f5>"        . compile)
  ("C-="           (describe-char (point)))
+ ("C-c x"       . exit-recursive-edit)
  ("C-c r"       . revert-buffer)
  ("C-c p"       . list-processes)
  ("C-c e"       . list-environment)
