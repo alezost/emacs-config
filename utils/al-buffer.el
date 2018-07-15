@@ -1,6 +1,6 @@
 ;;; al-buffer.el --- Additional functionality for working with buffers
 
-;; Copyright © 2013–2017 Alex Kost
+;; Copyright © 2013–2018 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -87,6 +87,13 @@ message for a case when FUN does not return a string."
 ;;; Switching to some buffers
 
 (require 'al-minibuffer)
+
+;;;###autoload
+(defun al/display-buffer (buffer)
+  "Switch to BUFFER, preferably reusing a window displaying this buffer."
+  (pop-to-buffer buffer
+                 '((display-buffer-reuse-window
+                    display-buffer-same-window))))
 
 (defvar ivy-switch-buffer-map)
 (defvar ido-default-buffer-method)

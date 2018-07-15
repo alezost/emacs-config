@@ -155,13 +155,13 @@
  ("H"   . guix-hash)
  ("p"   . guix-profiles)
  ("H-p" . guix-set-current-profile)
- ("i"     (switch-to-buffer (guix-package-info-buffer-name
+ ("i"     (al/display-buffer (guix-package-info-buffer-name
                              guix-current-profile)))
- ("<ctrl-i>" (switch-to-buffer (guix-generation-info-buffer-name
+ ("<ctrl-i>" (al/display-buffer (guix-generation-info-buffer-name
                                 guix-current-profile)))
- ("l"     (switch-to-buffer (guix-package-list-buffer-name
+ ("l"     (al/display-buffer (guix-package-list-buffer-name
                              guix-current-profile)))
- ("C-l"   (switch-to-buffer (guix-generation-list-buffer-name
+ ("C-l"   (al/display-buffer (guix-generation-list-buffer-name
                              guix-current-profile)))
  ("u"   . al/guix-commit-url))
 

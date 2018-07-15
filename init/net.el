@@ -469,10 +469,10 @@
  ("m"   . erc-track-mode)
  ("n"   . erc-notifications-mode)
  ("p"     (erc-part-from-channel ""))
- ("e"     (switch-to-buffer "#emacs"))
- ("x"     (switch-to-buffer "#guix"))
- ("s"     (switch-to-buffer "#stumpwm"))
- ("M-z"   (switch-to-buffer "*status")))
+ ("e"     (al/display-buffer "#emacs"))
+ ("x"     (al/display-buffer "#guix"))
+ ("s"     (al/display-buffer "#stumpwm"))
+ ("M-z"   (al/display-buffer "*status")))
 
 (with-eval-after-load 'erc
   (setq
@@ -633,7 +633,7 @@
  :prefix "M-B"
  ("M-B" . debbugs-gnu)
  ("n"   . debbugs-gnu-bugs)
- ("b"     (switch-to-buffer "*Guix-Patches Bugs*"))
+ ("b"     (al/display-buffer "*Guix-Patches Bugs*"))
  ("s"   . debbugs-gnu-search))
 
 (with-eval-after-load 'debbugs-gnu
