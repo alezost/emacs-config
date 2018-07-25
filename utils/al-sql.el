@@ -1,6 +1,6 @@
 ;;; al-sql.el --- Additional functionality for sql stuff
 
-;; Copyright © 2013–2017 Alex Kost
+;; Copyright © 2013–2018 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 ;;; Code:
 
 (require 'sql)
+(require 'al-buffer)
 
 ;;;###autoload
 (defun al/sql-switch-to-repl ()
@@ -27,6 +28,15 @@
                (buffer-live-p (get-buffer sql-buffer)))
     (sql-set-sqli-buffer))
   (pop-to-buffer sql-buffer))
+
+;;;###autoload
+(defun al/sql-switch-or-connect (conn)
+  "Switch to SQLi buffer with connection CONN.
+Create it if it does not exist."
+  (let ((buffer (sql-find-sqli-buffer nil conn)))
+    (if buffer
+        (al/display-buffer buffer)
+      (sql-connect conn))))
 
 
 ;;; SQL passwords from .authinfo

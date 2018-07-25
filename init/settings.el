@@ -306,7 +306,7 @@
  ("t"   . visit-ansi-term)
  ("e"   . eshell)
  ("i"   . ielm)
- ("s"     (al/sql-connect 'darts))
+ ("s"     (al/sql-switch-or-connect 'darts))
  ("l"   . slime-repl)
  ("g"   . (lambda (arg) (interactive "P")
             (let (geiser-repl-use-other-window)
@@ -545,26 +545,17 @@
 
 ;;; SQL
 
-(setq
- sql-product 'postgres
- sql-database "darts"
- sql-user user-login-name)
-(defun al/sql-connect (conn)
-  (let ((sql-connection-alist
-         `((darts (sql-product 'postgres)
-                  (sql-server "")
-                  (sql-database "darts")
-                  (sql-user ,user-login-name))
-           (paste (sql-product 'postgres)
-                  (sql-server "")
-                  (sql-database "paste")
-                  (sql-user "www-data")
-                  (sql-password ,(al/sql-password-from-auth-source
-                                  "sql-paste"))))))
-    (sql-connect conn)
-    (setq sql-password nil)))
-
 (with-eval-after-load 'sql
+  (setq
+   sql-product 'postgres
+   sql-database "darts"
+   sql-user user-login-name
+   sql-connection-alist
+   `((darts (sql-product 'postgres)
+            (sql-server "")
+            (sql-database "darts")
+            (sql-user ,user-login-name))))
+
   (defconst al/sql-keys
     '(("C-v"   . sql-send-region)
       ("C-M-v" . sql-send-paragraph)
