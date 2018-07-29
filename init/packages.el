@@ -138,6 +138,7 @@
  :prefix-docstring "Map for guix."
  :prefix "H-x"
  ("H-x" . guix)
+ ("f"   . build-farm)
  ("e"   . guix-edit)
  ("b"   . guix-switch-to-buffer)
  ("P"   . guix-prettify-mode)
