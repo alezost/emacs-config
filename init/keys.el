@@ -147,7 +147,7 @@
  ("<M-XF86New>" . kmacro-edit-macro)
 
  ("<f5>"        . compile)
- ("C-="           (describe-char (point)))
+ ("C-="         . describe-char)
  ("C-c x"       . exit-recursive-edit)
  ("C-c r"       . revert-buffer)
  ("C-c p"       . list-processes)
