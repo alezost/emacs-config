@@ -288,6 +288,18 @@
     (append al/guix-list-key-vars '(al/guix-license-list-keys))
     t))
 
+(with-eval-after-load 'guix-ui-store-item
+  (defconst al/guix-store-item-list-keys
+    '("R"
+      ("M-d" . guix-store-item-list-edit)
+      ("r" . guix-store-item-list-requisites)
+      ("d" . guix-store-item-list-derivers)
+      ("D" . guix-store-item-list-mark-delete))
+    "Alist of auxiliary keys for `guix-store-item-list-mode-map'.")
+  (al/bind-keys-from-vars 'guix-store-item-list-mode-map
+    (append al/guix-list-key-vars '(al/guix-store-item-list-keys))
+    t))
+
 (with-eval-after-load 'guix-ui-profile
   (setq guix-profiles
         (append (list guix-system-profile
