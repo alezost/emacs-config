@@ -42,6 +42,7 @@
 (setq org-export-backends
       '(ascii html icalendar latex odt texinfo man))
 (with-eval-after-load 'org
+  (require 'org-emms nil t)
   (when (require 'al-org nil t)
     (advice-add 'org-make-link-string
       :around #'al/org-set-link-description))
@@ -142,10 +143,9 @@ will do the right thing."
    ("." . org-agenda-previous-line)
    ("e" . org-agenda-next-line)))
 
-(with-eval-after-load 'al-org
-  (org-add-link-type "emms" 'al/org-emms-open)
-  (al/add-hook-maybe 'org-store-link-functions
-    'al/org-emms-store-link))
+(with-eval-after-load 'org-emms
+  (setq org-emms-delay 2
+        org-emms-time-format "%m:%.2s"))
 
 (al/autoload "org-pdfview"
   org-pdfview-open

@@ -84,6 +84,7 @@
      (journal            :fetcher git :url ,(al/emacs-repo "journal"))
      pcmpl-args
      org-pdfview
+     org-emms
      (dictem             :fetcher github :repo "cheusov/dictem")
      google-translate
      (emms-state         :fetcher git :url ,(al/emacs-repo "emms-state"))

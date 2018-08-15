@@ -63,6 +63,9 @@ return nil; with FORCE return its time value. "
        (eval (cons 'encode-time
                    (org-parse-time-string org-time)))))
 
+
+;;; Tables
+
 (defun al/org-table-beginning-of-section ()
   "Move point to beginning of current section (a space between
 horizontal lines) - behaviour is similar to `backward-word' or
@@ -105,73 +108,6 @@ row."
   (and (al/re-search-forward "^[^|]")
        (al/re-search-forward "^|")
        (org-table-goto-line (+ 1 (org-table-current-line)))))
-
-
-;;; EMMS links
-
-;; To add a possibility of making org links for emms tracks under the
-;; point in `emms-playlist-mode' use the following lines:
-
-;; (eval-after-load 'org '(org-add-link-type "emms" 'al/org-emms-open))
-;; (add-hook 'org-store-link-functions 'al/org-emms-store-link)
-
-(defvar al/org-emms-file-sleep 3
-  "Time in seconds after starting to play file before seeking to time.")
-
-(defvar al/org-emms-url-sleep 7
-  "Time in seconds after starting to play url before seeking to time.")
-
-;;;###autoload
-(defun al/org-emms-open (link)
-  "Open emms LINK."
-  (let ((path link)
-        sec)
-    (if (string-match "::\\([0-9]+\\)\\'" link)
-        (setq sec (string-to-number (match-string 1 link))
-              path (substring link 0 (match-beginning 0))))
-    ;; Don't reload a track (just seek to time) if we want to open a
-    ;; link with the currently playing track.
-    (if (and (fboundp 'emms-track-name)
-             (string= path
-                      (emms-track-name
-                       (emms-playlist-current-selected-track))))
-        (emms-start)
-      ;; TODO Use some emacs variable for matching url (there is
-      ;; `ffap-url-regexp' but it can be modified by a user).
-      (if (string-match "^\\(ftp\\|https?\\)://" path)
-          (progn (emms-play-url path)
-                 ;; We need to wait while the backend will start to play.
-                 (and sec (sleep-for al/org-emms-url-sleep)))
-        (emms-play-file path)
-        (and sec (sleep-for al/org-emms-file-sleep))))
-    (and sec (emms-seek-to sec))))
-
-;;;###autoload
-(defun al/org-emms-store-link ()
-  "Store link for the current playing file in EMMS."
-  (when (eq major-mode 'emms-playlist-mode)
-    (let ((link (al/org-emms-make-link
-                 (emms-playlist-track-at (point)))))
-      (org-store-link-props
-       :type        "emms"
-       :link        (car link)
-       :description (cdr link)))))
-
-(defun al/org-emms-make-link (&optional track)
-  "Return org link for the EMMS track TRACK or current track.
-The return value is a cons cell (link . description)."
-  (or track
-      (setq track (emms-playlist-current-selected-track))
-      (error "Couldn't find a track"))
-  (let ((path (emms-track-simple-description track))
-        (desc (emms-info-track-description track))
-        (sec (and (bound-and-true-p emms-playing-time-p)
-                  (/= 0 emms-playing-time)
-                  emms-playing-time)))
-    (cons (concat "emms:" path
-                  (and sec (concat "::" (number-to-string sec))))
-          ;; if description is the same as path, do not add it
-          (unless (string= path desc) desc))))
 
 (provide 'al-org)
 
