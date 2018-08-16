@@ -647,6 +647,7 @@
 
 ;;; Misc settings and packages
 
+(setq url-debug t)
 (with-eval-after-load 'url
   (setq url-configuration-directory (al/emacs-data-dir-file "url")))
 
