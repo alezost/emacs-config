@@ -305,8 +305,7 @@
     '(("."   . browse-kill-ring-previous)
       ("e"   . browse-kill-ring-forward)
       ("u"   . browse-kill-ring-insert-and-quit)
-      ("M-d" . browse-kill-ring-edit)
-      ("C-g" . browse-kill-ring-quit))
+      ("M-d" . browse-kill-ring-edit))
     "Alist of auxiliary keys for `browse-kill-ring-mode-map'.")
   ;; The keys are defined inside `browse-kill-ring-mode'.
   (defun al/browse-kill-ring-bind-keys ()
