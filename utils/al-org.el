@@ -21,6 +21,10 @@
 (require 'org)
 (require 'org-table)
 
+(defvar al/org-link-no-description-regexp
+  (rx string-start (or "file" "emms") ":")
+  "Regexp for `al/org-set-link-description'.")
+
 (defun al/org-set-link-description (fun link &optional description)
   "Call FUN with LINK and fixed DESCRIPTION.
 This function is intended to be used as an 'around' advice for
@@ -29,10 +33,12 @@ This function is intended to be used as an 'around' advice for
   (advice-add 'org-make-link-string
               :around #'al/org-set-link-description)
 
-If DESCRIPTION is the same as LINK, then it is ignored (FUN is
-called with LINK only)."
-  (if (and description
-           (string= link description))
+If `al/org-link-no-description-regexp' matches LINK or if
+DESCRIPTION is the same as LINK, then description is ignored (FUN
+is called with LINK only)."
+  (if (or (string-match-p al/org-link-no-description-regexp link)
+          (and description
+               (string= link description)))
       (funcall fun link)
     (funcall fun link description)))
 
