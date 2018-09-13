@@ -55,6 +55,15 @@ Return nil if credentials not found."
                          secret)))
         (or password "")))))
 
+
+;;; Miscellaneous
+
+(defun al/sql-set-comment-start-skip ()
+  "Set `comment-start-skip' variable for the current sql buffer."
+  ;; This variable is not set in `sql-mode'.  It is needed for
+  ;; `comment-search-forward' (which is needed for `mwim').
+  (setq-local comment-start-skip "--+ *"))
+
 (declare-function sql-mysql-completion-init "sql-completion")
 
 (defun al/sql-completion-setup ()

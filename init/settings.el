@@ -571,6 +571,8 @@
   (when (require 'al-sql nil t)
     (advice-add 'sql-highlight-product
       :override 'al/sql-highlight-product)
+    (al/add-hook-maybe 'sql-mode-hook
+      'al/sql-set-comment-start-skip)
     (al/add-hook-maybe 'sql-interactive-mode-hook
       '(al/sql-save-history
         al/sql-highlight-product
