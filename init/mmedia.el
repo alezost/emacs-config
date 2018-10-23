@@ -147,6 +147,7 @@
   (al/bind-keys-from-vars 'emms-playlist-mode-map
     '(al/free-misc-keys al/lazy-moving-keys al/emms-playlist-keys)
     t)
+  (suppress-keymap emms-playlist-mode-map)
   (al/add-hook-maybe 'emms-playlist-mode-hook
     '(al/mode-name hl-line-mode)))
 
