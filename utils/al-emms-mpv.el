@@ -1,6 +1,6 @@
 ;;; al-emms-mpv.el --- Additional functionality for using EMMS with mpv  -*- lexical-binding: t -*-
 
-;; Copyright © 2015–2017 Alex Kost
+;; Copyright © 2015–2018 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -163,6 +163,23 @@ Interactively with prefix, prompt for VALUE."
    nil
    (lambda (_closure _answer)
      (al/emms-mpv-show-property "speed"))))
+
+(defun al/emms-mpv-switch-volume (&optional value)
+  "Set volume to VALUE or switch between default values.
+Interactively with '\\[universal-argument]' argument, prompt for VALUE.
+If prefix argument is numerical, use it for VALUE."
+  (interactive
+   (when current-prefix-arg
+     (list (if (numberp current-prefix-arg)
+               current-prefix-arg
+             (read-number "Set volume to: " 100)))))
+  (al/emms-mpv-run-command
+   (if value
+       (list "set" "volume" (number-to-string value))
+     '("cycle-values" "volume" "50" "90" "130"))
+   nil
+   (lambda (_closure _answer)
+     (al/emms-mpv-show-property "volume"))))
 
 (defun al/emms-mpv-speed-down (&optional value)
   "Decrease playback speed by VALUE (0.1 by default).

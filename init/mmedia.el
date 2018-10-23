@@ -129,6 +129,7 @@
       ("]"   . al/emms-mpv-speed-up)
       ("DEL" . al/emms-mpv-speed-normal)
       ("o"   . al/emms-mpv-show-progress)
+      ("z"   . al/emms-mpv-switch-volume)
       ("<left>"    (al/emms-seek-backward 10))
       ("<right>"   (al/emms-seek-forward 10))
       ("<C-left>"  (al/emms-seek-backward 3))
