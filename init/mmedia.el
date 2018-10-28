@@ -162,6 +162,9 @@
   (al/add-hook-maybe 'emms-stream-hook
     '(al/mode-name hl-line-mode)))
 
+(with-eval-after-load 'later-do
+  (setq later-do-interval 0.1))
+
 (al/autoload "emms-cue" emms-info-cueinfo)
 (al/autoload "emms-info-libtag" emms-info-libtag)
 
