@@ -176,7 +176,7 @@ If prefix argument is numerical, use it for VALUE."
   (al/emms-mpv-run-command
    (if value
        (list "set" "volume" (number-to-string value))
-     '("cycle-values" "volume" "50" "90" "130"))
+     '("cycle-values" "volume" "50" "90" "130" "170"))
    nil
    (lambda (_closure _answer)
      (al/emms-mpv-show-property "volume"))))
