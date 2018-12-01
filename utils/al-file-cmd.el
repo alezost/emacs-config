@@ -1,6 +1,6 @@
 ;;; al-file-cmd.el --- Interactive commands for working with files
 
-;; Copyright © 2012–2017 Alex Kost
+;; Copyright © 2012–2018 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -16,6 +16,8 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Code:
+
+(require 'al-read)
 
 (declare-function counsel-find-file "counsel" t)
 
@@ -114,6 +116,39 @@ with \\[universal-argument] \\[universal-argument] prompt for a default host as 
   (let ((file (executable-find file)))
     (when file
       (find-file file))))
+
+
+;;; Renaming files
+
+;;;###autoload
+(defun al/replace-space-in-file-names (dir &optional recursive string)
+  "Rename files in DIR by replacing space in their names with STRING.
+Rename DIR itself if needed.  If recursive is non-nil, rename
+files in all sub-directories recursively.  If STRING is nil, use
+'_'."
+  (interactive
+   (list (let* ((dir (and (derived-mode-p 'dired-mode)
+                          (dired-get-filename)))
+                (dir (and (file-directory-p dir) dir)))
+           (read-directory-name "Directory: " dir))
+         (y-or-n-p "Recursively? ")
+         (al/read-string "Replace space with: " nil nil "_")))
+  (or string (setq string "_"))
+  (let* ((regexp ".* .*")
+         (dir (directory-file-name (expand-file-name dir)))
+         (files (if recursive
+                    (directory-files-recursively dir regexp t)
+                  (directory-files dir t regexp t)))
+         (files (if (string-match-p regexp dir)
+                    (append files (list dir))
+                  files)))
+    (dolist (file files)
+      (let* ((new-name (replace-regexp-in-string
+                        " " string (file-name-nondirectory file)))
+             (new-file (expand-file-name new-name
+                                         (file-name-directory file))))
+        (message "Renaming '%s' to '%s'." file new-file)
+        (rename-file file new-file)))))
 
 (provide 'al-file-cmd)
 
