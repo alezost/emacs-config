@@ -303,8 +303,7 @@
 
 (with-eval-after-load 'guix-ui-profile
   (setq guix-profiles
-        (append (list guix-system-profile
-                      guix-pulled-profile)
+        (append guix-profiles
                 (al/guix-profiles))))
 
 (with-eval-after-load 'guix-utils
