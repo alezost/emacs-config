@@ -46,6 +46,12 @@ TYPE is one of `:action', `:sequence-action', `:switch', or
     (set popup (plist-put plist type
                           (append alist (list value))))))
 
+(defun al/magit-add-popup-keys (popup type values)
+  "In POPUP, add list of VALUES to TYPE property.
+See `al/magit-add-popup-key' for details."
+  (dolist (value values)
+    (al/magit-add-popup-key popup type value)))
+
 (provide 'al-magit-popup)
 
 ;;; al-magit-popup.el ends here
