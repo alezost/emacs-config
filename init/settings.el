@@ -347,7 +347,8 @@
       ("M-U" . shell-forward-command))
     "Alist of auxiliary keys for `shell-mode-map'.")
   (al/bind-keys-from-vars 'shell-mode-map 'al/shell-keys t)
-  (al/add-hook-maybe 'shell-mode-hook 'guix-build-log-minor-mode))
+  (al/add-hook-maybe 'shell-mode-hook
+    '(guix-build-log-minor-mode al/no-truncate-lines)))
 
 (al/bind-keys
  ("C-z"   . eshell)
