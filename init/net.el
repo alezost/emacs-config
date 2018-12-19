@@ -662,6 +662,8 @@
      ("beatles" . ,(al/echo-download-dir-file "beatles"))
      ("classicrock" . ,(al/echo-download-dir-file "classicrock"))
      (,(regexp-quote "echo.msk.ru") . ,al/echo-download-dir)
+     (,(regexp-opt '("ngenix.net/audio" "vgtrk.com/audio"))
+      . ,(al/download-dir-file "mayak"))
      ("." . ,al/download-dir))))
 
 (with-eval-after-load 'mentor
