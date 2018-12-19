@@ -75,8 +75,8 @@
     '("c" "u" "k" "M-s"
       ("<ctrl-m> a"  (emms-add-url (w3m-anchor)))
       ("<ctrl-m> p"  (emms-play-url (w3m-anchor)))
-      ("i"         . w3m-toggle-inline-images)
-      ("I"         . w3m-toggle-inline-image)
+      ("i"         . w3m-toggle-inline-image)
+      ("I"         . w3m-toggle-inline-images)
       ("b"         . w3m-bookmark-view)
       ("y"         . w3m-history)
       (","         . w3m-view-previous-page)
