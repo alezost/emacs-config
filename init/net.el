@@ -448,6 +448,7 @@
     "#dunst"
     "#conkeror"
     "#stumpwm"
+    "#openmw"
     "#org-mode"))
  erc-log-channels-directory (al/emacs-data-dir-file "erc-log"))
 
