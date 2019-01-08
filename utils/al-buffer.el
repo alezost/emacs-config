@@ -1,6 +1,6 @@
 ;;; al-buffer.el --- Additional functionality for working with buffers
 
-;; Copyright © 2013–2018 Alex Kost
+;; Copyright © 2013–2019 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -17,18 +17,13 @@
 
 ;;; Code:
 
+(require 'cl-lib)
+
 (defun al/kill-file-buffer (filename)
   "Kill the buffer visiting file FILENAME (a string).
 Return nil, if there is no such live buffer."
   (let ((buffer (get-file-buffer filename)))
     (if buffer (kill-buffer buffer))))
-
-(defun al/re-buffer-list (regexp)
-  "Return a list of buffers which names match REGEXP."
-  (let ((buffers))
-    (dolist (buffer (buffer-list) buffers)
-      (if (string-match-p regexp (buffer-name buffer))
-          (setq buffers (cons buffer buffers))))))
 
 ;;;###autoload
 (defun al/buffer-file-name (&optional buffer)
@@ -40,6 +35,38 @@ If BUFFER is not visiting a file, return BUFFER name."
      (if file
          (file-name-nondirectory file)
        (buffer-name buffer)))))
+
+
+;;; Getting buffers
+
+(defun al/buffers (filter-pred &optional sort-pred)
+  "Return a list of buffers satisfying FILTER-PRED predicate.
+If SORT-PRED is specified, use this predicate to sort the list.
+See `sort' for details."
+  (let ((buffers (cl-remove-if-not
+                  (lambda (buf) (funcall filter-pred buf))
+                  (buffer-list))))
+    (if sort-pred
+        (sort buffers sort-pred)
+      buffers)))
+
+(defun al/buffers-by-regexp (regexp)
+  "Return a list of buffers which names match REGEXP."
+  (al/buffers
+   (lambda (buf)
+     (string-match-p regexp (buffer-name buf)))))
+
+(defun al/buffers-by-mode (mode)
+  "Return a list of buffers which `major-mode' is derived from MODE."
+  (al/buffers
+   (lambda (buf)
+     (with-current-buffer buf
+       (derived-mode-p mode)))))
+
+(defun al/buffer-name< (b1 b2)
+  "Call `string<' on names of buffers B1 and B2."
+  (string< (buffer-name b1)
+           (buffer-name b2)))
 
 
 ;;; Putting buffer info into kill ring
