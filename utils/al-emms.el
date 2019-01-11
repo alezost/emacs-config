@@ -1,6 +1,6 @@
 ;;; al-emms.el --- Additional functionality for EMMS
 
-;; Copyright © 2013-2016 Alex Kost
+;; Copyright © 2013–2016, 2019 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -82,11 +82,20 @@ If ARG is specified, show metadata of the track."
 
 ;;; Track description
 
+(defvar al/emms-track-description-use-time
+  (require 'emms-state nil t)
+  "If non-nil, `al/emms-full-track-description' adds playing time
+to the track description.")
+
+(declare-function emms-state-format-time "emms-state" (time))
+
 (defun al/emms-full-track-description (track)
   "Return a full description of TRACK.
 Intended to be used for `emms-track-description-function'."
   (let ((artist   (emms-track-get track 'info-artist))
         (title    (emms-track-get track 'info-title))
+        (time     (and al/emms-track-description-use-time
+                       (emms-track-get track 'info-playing-time)))
         (tracknum (emms-track-get track 'info-tracknumber))
         (album    (emms-track-get track 'info-album))
         (year     (emms-track-get track 'info-year)))
@@ -104,7 +113,9 @@ Intended to be used for `emms-track-description-function'."
           (setq name (format "%s [%s]" name year)))
          (album
           (setq name (format "%s [%s]" name album))))
-        name))))
+        (if time
+            (concat name " (" (emms-state-format-time time) ")")
+          name)))))
 
 (defun al/emms-short-track-description (track)
   "Return a short description of TRACK suitable for mode-line."
