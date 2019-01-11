@@ -1,6 +1,6 @@
 ;;; al-emms-mpv.el --- Additional functionality for using EMMS with mpv  -*- lexical-binding: t -*-
 
-;; Copyright © 2015–2018 Alex Kost
+;; Copyright © 2015–2019 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -66,21 +66,6 @@ should be a list of values, e.g.:
    ;; <https://github.com/mpv-player/mpv/issues/4517>.
    (cons "osd-auto" command)
    closure (or function #'ignore)))
-
-(defun al/emms-mpv-tq-enqueue-sync (com-ls closure fn
-                                           &optional delay-question)
-  "Like `emms-player-simple-mpv-tq-enqueue' but synchronized.
-I.e., wait for the result of FN and return it."
-  (let (done result)
-    (emms-player-simple-mpv-tq-enqueue
-     com-ls closure
-     (lambda (clos ans)
-       (setq result (funcall fn clos ans)
-             done t))
-     delay-question)
-    (while (not done)
-      (sleep-for 0.1))
-    result))
 
 (defun al/emms-mpv-show-property (property)
   "Display PROPERTY of the current TRACK."
