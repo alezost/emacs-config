@@ -1,6 +1,6 @@
 ;;; al-file-cmd.el --- Interactive commands for working with files
 
-;; Copyright © 2012–2018 Alex Kost
+;; Copyright © 2012–2019 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -119,6 +119,8 @@ with \\[universal-argument] \\[universal-argument] prompt for a default host as 
 
 
 ;;; Renaming files
+
+(declare-function dired-get-filename "dired" t)
 
 ;;;###autoload
 (defun al/replace-space-in-file-names (dir &optional recursive string)
