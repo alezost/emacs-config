@@ -1,6 +1,6 @@
 ;;; file-modes.el --- Modes for various file types  -*- lexical-binding: t -*-
 
-;; Copyright © 2014–2018 Alex Kost
+;; Copyright © 2014–2019 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -61,7 +61,7 @@
    org-ellipsis " […]"
    org-file-apps
    `(("\\.mm\\'" . default)
-     ("\\.x?html?\\'" al/choose-browser file)
+     ("\\.x?html?\\'" . al/choose-browser)
      (,(al/file-regexp "jpg" "png" "gif") . "sxiv %s")
      ("\\.pdf\\'" . "zathura %s")
      ("\\.djvu\\'" . "zathura %s")
