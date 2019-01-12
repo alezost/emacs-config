@@ -1,6 +1,6 @@
 ;;; packages.el --- Emacs packages and interfaces to other package systems
 
-;; Copyright © 2014–2018 Alex Kost
+;; Copyright © 2014–2019 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -133,11 +133,11 @@
   (when (file-exists-p dir)
     (setq guix-load-path dir)))
 
-(al/bind-key "H-M-x" guix-extended-command)
+(al/bind-key "H-x" guix)
 (al/bind-keys
  :prefix-map al/guix-map
  :prefix-docstring "Map for guix."
- :prefix "H-x"
+ :prefix "H-M-x"
  ("H-x" . guix)
  ("f"   . build-farm)
  ("e"   . guix-edit)
@@ -214,7 +214,7 @@
       ("D"   . guix-package-info-delete)
       ("U"   . guix-package-info-upgrade)
       ("S"   . guix-package-info-size))
-    "Ainfo of auxiliary keys for `guix-package-info-mode-map'.")
+    "Alist of auxiliary keys for `guix-package-info-mode-map'.")
   (defconst al/guix-package-list-keys
     '(("M-d" . guix-package-list-edit)
       ("I"   . guix-package-list-mark-install)
@@ -325,6 +325,18 @@
     'al/guix-build-log-common-keys)
   (al/bind-keys-from-vars 'guix-build-log-mode-map
     'al/guix-build-log-keys t))
+
+(with-eval-after-load 'guix-popup
+  ;; Use "P" for packages and "p" for profiles.
+  (magit-change-popup-key 'guix-popup :action ?p ?–)
+  (magit-change-popup-key 'guix-popup :action ?P ?p)
+  (magit-change-popup-key 'guix-popup :action ?– ?P)
+  (when (require 'al-magit-popup nil t)
+    (al/magit-add-popup-keys
+     'guix-popup :action
+     '((?z "switch to REPL" guix-switch-to-repl)
+       (?u "browse commit URL" al/guix-commit-url)
+       (?f "build farm" build-farm)))))
 
 
 ;;; Aurel
