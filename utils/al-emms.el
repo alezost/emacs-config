@@ -119,9 +119,7 @@ Intended to be used for `emms-track-description-function'."
 
 (defun al/emms-short-track-description (track)
   "Return a short description of TRACK suitable for mode-line."
-  (let ((title  (emms-track-get track 'info-title)))
-    (if title
-        title
+  (or (emms-track-get track 'info-title)
       (let ((type (emms-track-type track)))
         (cond ((eq 'file type)
                (file-name-nondirectory (emms-track-name track)))
@@ -129,7 +127,7 @@ Intended to be used for `emms-track-description-function'."
                (url-file-nondirectory (emms-format-url-track-name
                                        (emms-track-name track))))
               (t (concat (symbol-name type)
-                         ": " (emms-track-name track))))))))
+                         ": " (emms-track-name track)))))))
 
 
 ;;; Mode line
