@@ -1,6 +1,6 @@
 ;;; settings.el --- Miscellaneous settings
 
-;; Copyright © 2012–2018 Alex Kost
+;; Copyright © 2012–2019 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -298,11 +298,12 @@
 
 (setq shell-file-name "bash")
 
+(al/bind-key "s-s" al/shell)
 (al/bind-keys*
  :prefix-map al/repl-map
  :prefix-docstring "Map for various REPLs."
  :prefix "C-n"
- ("C-s" . shell)
+ ("C-s" . al/switch-to-shell-buffer)
  ("t"   . visit-ansi-term)
  ("e"   . eshell)
  ("i"   . ielm)

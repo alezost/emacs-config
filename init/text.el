@@ -1,6 +1,6 @@
 ;;; text.el --- Working with text: editing, searching, …
 
-;; Copyright © 2014–2018 Alex Kost
+;; Copyright © 2014–2019 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -276,7 +276,7 @@
   (when (require 'al-imenus nil t)
     (setq imenus-completing-read-function 'al/imenus-completing-read)))
 
-(al/bind-key "s-s" al/imenus-search-elisp-directories)
+(al/bind-key "M-s-s" al/imenus-search-elisp-directories)
 (with-eval-after-load 'al-imenus
   (setq al/imenus-elisp-directories
         (list al/emacs-init-dir al/emacs-utils-dir)))
