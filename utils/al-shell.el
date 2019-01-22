@@ -52,11 +52,11 @@ Interactively, ARG has the same meaning as in `shell'."
           (call-interactively 'shell))))))
 
 ;;;###autoload
-(defun al/switch-to-shell-buffer ()
-  "Switch to \\[shell] buffer or make it if needed."
-  (interactive)
+(defun al/switch-to-shell-buffer (&optional arg)
+  "Switch to \\[shell] buffer or make it if ARG is non-nil."
+  (interactive "P")
   (let ((buffers (al/shell-buffers nil t)))
-    (if buffers
+    (if (and buffers (null arg))
         (al/switch-buffer "Switch to shell buffer: "
                           :buffers (mapcar #'buffer-name buffers))
       (call-interactively 'shell))))
