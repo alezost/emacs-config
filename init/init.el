@@ -1,6 +1,6 @@
 ;;; init.el --- Init file  -*- lexical-binding: t -*-
 
-;; Copyright © 2012–2018 Alex Kost
+;; Copyright © 2012–2019 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -56,6 +56,7 @@
 (al/file-accessors "src"           "~/src")
 (al/file-accessors "devel"         "~/devel")
 (al/file-accessors "download"      "~/downloads")
+(al/file-accessors "math"          "~/maths")
 (al/file-accessors "echo-download" (al/download-dir-file "echo"))
 
 
