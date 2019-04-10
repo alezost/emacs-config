@@ -1,6 +1,6 @@
 ;;; time.el --- Time, calendar, diary, appointments, notifications, …
 
-;; Copyright © 2014–2016, 2018 Alex Kost
+;; Copyright © 2014–2016, 2018–2019 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -112,7 +112,7 @@
     (advice-add 'appt-display-message
       :override 'al/appt-display-message)))
 (al/eval-after-init
-  (when (string= server-name "server")
+  (when (string= server-name "server-emms")
     (appt-activate)))
 
 (with-eval-after-load 'al-appt
