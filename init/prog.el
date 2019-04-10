@@ -138,7 +138,7 @@
   '(("C-v"     . al/slime-eval-dwim)
     ("C-M-v"   . slime-eval-defun)
     ("M-s-v"   . slime-eval-buffer)
-    ("<M-tab>" . slime-complete-symbol)
+    ("C-S-v"   . slime-expand-1)
     ("C-d"     . slime-describe-symbol)
     ("M-d"     . slime-edit-definition)
     ("C-M-d"   . slime-doc-map)
