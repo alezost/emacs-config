@@ -1,6 +1,6 @@
 ;;; al-key.el --- Additional functionality for working with key bindings
 
-;; Copyright © 2013–2016, 2018 Alex Kost
+;; Copyright © 2013–2016, 2018–2019 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -63,6 +63,7 @@ Examples:
   (al/bind-key \"C-j\" newline lisp-mode-map)
   (al/bind-key [return] newline-and-indent lisp-mode-shared-map)
   (al/bind-key \"C-s-b\" ((backward-word) (backward-char)))"
+  (declare (indent 1))
   (let ((command (al/key-command command))
         (key-var (make-symbol "key"))
         (map-var (make-symbol "map")))
@@ -77,6 +78,7 @@ Examples:
              (define-key ,map-var ,key-var nil))))))
 
 (defmacro al/bind-key* (key-name command)
+  (declare (indent 1))
   `(al/bind-key ,key-name ,command al/override-global-map))
 
 (defmacro al/bind-keys (&rest args)
@@ -96,6 +98,7 @@ optional keywords are available:
 
 The rest ARGS are conses of key binding strings and functions.
 See `al/bind-key' for details."
+  (declare (indent 0))
   (let* ((map        (plist-get args :map))
          (doc        (plist-get args :prefix-docstring))
          (prefix-map (plist-get args :prefix-map))
@@ -122,6 +125,7 @@ See `al/bind-key' for details."
                  bindings))))
 
 (defmacro al/bind-keys* (&rest args)
+  (declare (indent 0))
   `(al/bind-keys :map al/override-global-map ,@args))
 
 
