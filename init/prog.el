@@ -527,8 +527,17 @@
 
 (with-eval-after-load 'magit-remote
   (magit-change-popup-key 'magit-remote-popup :action ?r ?R) ; rename
+  )
+
+(with-eval-after-load 'magit-push
   (magit-change-popup-key 'magit-push-popup :action ?p ?P) ; pushRemote
+  )
+
+(with-eval-after-load 'magit-pull
   (magit-change-popup-key 'magit-pull-popup :action ?u ?F) ; upstream
+  )
+
+(with-eval-after-load 'magit-fetch
   (magit-change-popup-key 'magit-fetch-popup :action ?u ?f) ; upstream
   )
 
