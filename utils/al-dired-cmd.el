@@ -51,6 +51,15 @@ If ARG is non-nil, visit it with `find-file-literally'."
       (find-file-literally (dired-get-file-for-visit))
     (dired-find-file)))
 
+(declare-function browse-url-file-url "browse-url" (file))
+
+;;;###autoload
+(defun al/dired-browse-url ()
+  "Open the current file in browser."
+  (interactive)
+  (require 'browse-url)
+  (browse-url (browse-url-file-url (dired-get-file-for-visit))))
+
 
 ;;; File stats
 

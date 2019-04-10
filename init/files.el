@@ -182,10 +182,7 @@
    ("m"     (al/dired-start-process "mupdf"))
    ("z"     (al/dired-start-process "zathura"))
    ("s"     (al/dired-start-process-on-marked-files "sxiv"))
-   ("c"     (al/browse-url-conkeror
-             (browse-url-file-url (dired-get-filename))))
-   ("w"     (w3m-browse-url
-             (browse-url-file-url (dired-get-filename)))))
+   ("b"   . al/dired-browse-url))
 
   (al/add-hook-maybe 'dired-mode-hook 'hl-line-mode)
 
