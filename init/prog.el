@@ -1,6 +1,6 @@
 ;;; prog.el --- Programming modes and tools
 
-;; Copyright © 2014–2018 Alex Kost
+;; Copyright © 2014–2019 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -176,6 +176,12 @@
   (al/bind-keys-from-vars '(slime-mode-map slime-editing-map)))
 
 (with-eval-after-load 'slime-repl
+  ;; "C-c C-j" (in `slime-mode-map') is bound in "slime-repl.el", so
+  ;; override it here.
+  (al/bind-key "C-c C-j"
+    al/slime-switch-to-repl-and-enter
+    slime-mode-map)
+
   (defconst al/slime-repl-keys
     '(("C-k" . al/slime-repl-kill-whole-line)
       ("M-." . slime-repl-previous-input)
