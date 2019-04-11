@@ -1,6 +1,6 @@
 ;;; mmedia.el --- Using multimedia stuff inside Emacs
 
-;; Copyright © 2014–2018 Alex Kost
+;; Copyright © 2014–2019 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -118,6 +118,7 @@
   (defconst al/emms-playlist-keys
     '(("SPC" . emms-pause)
       ("S"   . emms-stop)
+      ("Q"   . emms-stop)
       ("u"   . emms-playlist-mode-play-smart)
       ("j"   . emms-playlist-mode-goto-dired-at-point)
       ("w"   . al/emms-playlist-wget)
