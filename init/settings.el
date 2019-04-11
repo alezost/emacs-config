@@ -299,6 +299,7 @@
 (setq shell-file-name "bash")
 
 (al/bind-key "s-s" al/shell)
+(al/bind-key "s-s" al/shells ctl-x-map)
 (al/bind-keys*
  :prefix-map al/repl-map
  :prefix-docstring "Map for various REPLs."
@@ -350,6 +351,15 @@
   (al/bind-keys-from-vars 'shell-mode-map 'al/shell-keys t)
   (al/add-hook-maybe 'shell-mode-hook
     '(guix-build-log-minor-mode al/no-truncate-lines)))
+
+(with-eval-after-load 'al-shell
+  (setq al/shell-buffer-alist
+        (let ((dir al/download-dir))
+          `(("*shell*" . ,dir)
+            ("*shell*<2>" . ,dir)
+            ("*shell*<3>" . ,dir)
+            ("*shell-chess*" . ,(al/download-dir-file "chess"))
+            ("*shell-math*" . ,(al/math-dir-file "video"))))))
 
 (al/bind-keys
  ("C-z"   . eshell)

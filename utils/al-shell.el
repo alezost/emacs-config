@@ -61,6 +61,20 @@ Interactively, ARG has the same meaning as in `shell'."
                           :buffers (mapcar #'buffer-name buffers))
       (call-interactively 'shell))))
 
+(defvar al/shell-buffer-alist nil
+  "Association list of shell buffer names and their working directories.
+This variable is used by `al/shells' command.")
+
+;;;###autoload
+(defun al/shells ()
+  "Run shells according to `al/shell-buffer-alist'."
+  (interactive)
+  (dolist (assoc al/shell-buffer-alist)
+    (let ((buf-name (car assoc)))
+      (unless (get-buffer buf-name)
+        (let ((default-directory (cdr assoc)))
+          (shell (get-buffer-create buf-name)))))))
+
 (provide 'al-shell)
 
 ;;; al-shell.el ends here
