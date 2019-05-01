@@ -1,6 +1,6 @@
 ;;; net.el --- Browsing, mail, chat, network utils; w3m, wget, …
 
-;; Copyright © 2014–2018 Alex Kost
+;; Copyright © 2014–2019 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -129,13 +129,13 @@
   (when (require 'al-browse-url nil t)
     (setq browse-url-browser-function 'al/choose-browser)
     (advice-add 'browse-url-default-browser
-      :override 'al/browse-url-conkeror)))
+      :override 'al/browse-url-default)))
 
 (with-eval-after-load 'al-browse-url
   (setcar (cl-find-if (lambda (spec)
-                        (string= "conkeror" (cadr spec)))
+                        (string= "browser" (cadr spec)))
                       al/browser-choices)
-          '(?c ?u ?\C-m)))
+          '(?b ?u ?\C-m)))
 
 
 ;;; Mail, news, gnus

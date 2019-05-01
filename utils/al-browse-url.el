@@ -1,17 +1,17 @@
 ;;; al-browse-url.el --- Additional functionality for browse-url package
 
-;; Copyright © 2013-2016 Alex Kost
+;; Copyright © 2013–2016, 2019 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
 ;; (at your option) any later version.
-
+;;
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-
+;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -21,7 +21,7 @@
 (require 'cl-lib)
 
 
-;;; Browse IRC logs from gnunet.
+;;; Browse IRC logs from gnunet
 
 (defvar al/irc-log-base-url "https://gnunet.org/bot/log/"
   "Base URL with IRC logs.")
@@ -43,31 +43,28 @@
                                     al/irc-log-base-url)))
 
 
-;;; Add support for the Conkeror browser.
+;;; Additional browsers
 
-(defcustom al/browse-url-conkeror-program "conkeror"
-  "The name by which to invoke Conkeror."
+(defcustom al/browse-url-program "browser"
+  "Shell command name for the default browser."
   :type 'string
   :group 'browse-url)
 
-(defcustom al/browse-url-conkeror-arguments nil
-  "A list of strings to pass to Conkeror as arguments."
+(defcustom al/browse-url-arguments nil
+  "A list of strings to pass to the default browser as arguments."
   :type '(repeat (string :tag "Argument"))
   :group 'browse-url)
 
 ;;;###autoload
-(defun al/browse-url-conkeror (url &optional new-window)
-  "Ask the Conkeror WWW browser to load URL.
-Default to the URL around or before point.  The strings in
-variable `al/browse-url-conkeror-arguments' are also passed to
-Conkeror."
+(defun al/browse-url-default (url)
+  "Ask the default browser to load URL."
   (interactive (browse-url-interactive-arg "URL: "))
-  (setq url (browse-url-encode-url url))
-  (let* ((process-environment (browse-url-process-environment)))
+  (let ((url (browse-url-encode-url url))
+        (process-environment (browse-url-process-environment)))
     (apply #'start-process
-	   (concat "conkeror " url) nil
-	   al/browse-url-conkeror-program
-	   (append al/browse-url-conkeror-arguments
+	   (concat "browser " url) nil
+	   al/browse-url-program
+	   (append al/browse-url-arguments
                    (list url)))))
 
 
@@ -78,7 +75,7 @@ Conkeror."
 ;;   (setq browse-url-browser-function 'al/choose-browser)
 
 (defvar al/browser-choices
-  '(((?c ?\C-m) "conkeror" al/browse-url-conkeror)
+  '(((?b ?\C-m) "browser" al/browse-url-default)
     (?f "firefox" browse-url-firefox)
     (?w "w3m" w3m-browse-url)
     (?e "eww" eww))

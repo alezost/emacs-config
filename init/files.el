@@ -1,6 +1,6 @@
 ;;; files.el --- Working with files; dired, sunrise-commander, …
 
-;; Copyright © 2014–2018 Alex Kost
+;; Copyright © 2014–2019 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -69,7 +69,6 @@
  ("M-c"     (al/find-file al/config-dir))
  ("C-M-c"   (find-file (al/config-dir-file "config.scm")))
  ("M-g"     (al/find-file al/guix-profile-dir))
- ("c"       (al/find-file (al/config-dir-file "conkeror")))
  ("s"       (al/find-file (al/config-dir-file "stumpwm")))
  ("v"       (al/find-file "/var/log")))
 

@@ -846,9 +846,6 @@
  ("v"   . visit-tags-table)
  ("c"   . al/create-tags))
 
-(with-eval-after-load 'etags
-  (setq tags-file-name (al/src-dir-file "conkeror/modules/TAGS")))
-
 (with-eval-after-load 'tabulated-list
   (defconst al/tabulated-list-keys
     '(("s" . tabulated-list-sort))
