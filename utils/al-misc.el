@@ -17,6 +17,8 @@
 
 ;;; Code:
 
+(require 'cl-lib)
+
 (defun al/xor (a b)
   "Exclusive or."
   (if a (not b) b))
@@ -110,6 +112,26 @@ If VAL is a list, call FUNCTION on each element of the list."
 (defun al/list-maybe (obj)
   "Return OBJ if it is a list, or a list with OBJ otherwise."
   (if (listp obj) obj (list obj)))
+
+(defun al/assq-delete-all (keys alist &optional predicate)
+  "Delete from ALIST all elements whose car is one of KEYS.
+This is similar to `assq-delete-all', but KEYS can either be a
+single key or a list of keys.  KEYS are checked using
+PREDICATE (`memq' by default)."
+  (let ((keys (al/list-maybe keys)))
+    (cl-delete-if (lambda (assoc)
+                    (and (consp assoc)
+                         (funcall (or predicate #'memq)
+                                  (car assoc)
+                                  keys)))
+                  alist)))
+
+(defun al/assoc-delete-all (keys alist &optional predicate)
+  "Delete from ALIST all elements whose car is one of KEYS.
+This is similar to `assoc-delete-all', but KEYS can either be a
+single key or a list of keys.  KEYS are checked using
+PREDICATE (`member' by default)."
+  (al/assq-delete-all keys alist #'member))
 
 (defun al/add-to-load-path-maybe (&rest dirs)
   "Add existing directories from DIRS to `load-path'."
