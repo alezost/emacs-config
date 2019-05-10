@@ -59,6 +59,9 @@
    org-url-hexify-p nil
    org-link-escape-chars '(?\[ ?\] ?\; ?\= ?\+)
    org-ellipsis " […]"
+   ;; "/" and "_" are common for file names, so don't fontify them:
+   org-emphasis-alist
+   (al/assoc-delete-all '("/" "_") org-emphasis-alist)
    org-file-apps
    `(("\\.mm\\'" . default)
      ("\\.x?html?\\'" . al/choose-browser)
