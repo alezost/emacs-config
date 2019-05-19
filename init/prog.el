@@ -376,7 +376,7 @@
  :prefix-docstring "Map for magit and git stuff."
  :prefix "M-m"
  ("M-m" . al/magit-switch-buffer)
- ("b" . magit-blame-popup)
+ ("b" . magit-blame)
  ("c" . al/magit-show-commit)
  ("s" . magit-status)
  ("l" . magit-log-current)
@@ -402,8 +402,6 @@
     ("M-e" . magit-section-forward-sibling))
   "Alist of auxiliary keys for moving by magit sections.")
 
-;; TODO Remove (it will be autoloaded in the next release after Magit 2.10.0).
-(al/autoload "magit-extras" ido-enter-magit-status)
 (with-eval-after-load 'magit
   (setq
    magit-status-buffer-name-format   "*magit: %a*"
@@ -420,7 +418,7 @@
    magit-merge-arguments '("--ff-only")
    magit-push-always-verify t
    magit-branch-read-upstream-first nil)
-  (magit-change-popup-key 'magit-branch-popup :action ?m ?R) ; rename
+  (transient-suffix-put 'magit-branch "m" :key "R") ; rename
   )
 
 (with-eval-after-load 'magit-mode
@@ -436,7 +434,8 @@
       ("u" . magit-show-commit)
       ("U" . magit-unstage-file)
       ("E" . magit-ediff-dwim)
-      ("C" . magit-cherry-pick-popup)
+      ("C" . magit-cherry-pick)
+      ("R" . magit-remote)
       ("1" . magit-section-show-level-1-all)
       ("2" . magit-section-show-level-2-all)
       ("3" . magit-section-show-level-3-all)
@@ -482,7 +481,10 @@
    magit-reflog-arguments '("-n99")
    magit-log-arguments `(,@magit-reflog-arguments "--decorate")
    magit-log-select-arguments magit-log-arguments)
-  (magit-change-popup-key 'magit-log-popup :option ?G ?p) ; patch
+
+  (transient-suffix-put 'magit-log 'magit-log:--grep :key "=g") ; grep
+  (transient-suffix-put 'magit-log 'magit-log:-G :key "=p")     ; patch
+  (transient-suffix-put 'magit-log 'magit:-- :key "=f")         ; file
 
   (defconst al/magit-log-select-keys
     '(("m" . magit-log-select-pick))
@@ -499,7 +501,7 @@
 
 (with-eval-after-load 'magit-diff
   (defconst al/magit-diff-visit-keys
-    '(("RET" . magit-diff-visit-file-worktree)
+    '(("RET" . magit-diff-visit-worktree-file)
       ("<C-return>" . magit-diff-visit-file))
     "Alist of auxiliary keys for visiting files in `magit-diff-mode'.")
   (al/bind-keys-from-vars 'magit-diff-mode-map
@@ -514,31 +516,24 @@
   (al/bind-keys-from-vars 'magit-staged-section-map 'al/magit-common-keys))
 
 (with-eval-after-load 'magit-sequence
-  (magit-change-popup-key 'magit-cherry-pick-popup :action ?A ?C) ; pick
-  (magit-change-popup-key 'magit-rebase-popup :action ?u ?r) ; upstream
-  )
-
-(with-eval-after-load 'magit-bisect
-  (magit-change-popup-key 'magit-bisect-popup :action ?B ?s) ; start
-  (magit-change-popup-key 'magit-bisect-popup :action ?s ?!) ; run script
-  (magit-change-popup-key 'magit-bisect-popup
-                          :sequence-action ?s ?!) ; run script
+  (transient-suffix-put 'magit-cherry-pick "A" :key "C") ; pick
+  (transient-suffix-put 'magit-rebase "u" :key "r")      ; upstream
   )
 
 (with-eval-after-load 'magit-remote
-  (magit-change-popup-key 'magit-remote-popup :action ?r ?R) ; rename
+  (transient-suffix-put 'magit-remote "r" :key "R") ; rename
   )
 
 (with-eval-after-load 'magit-push
-  (magit-change-popup-key 'magit-push-popup :action ?p ?P) ; pushRemote
+  (transient-suffix-put 'magit-push "p" :key "P") ; push to remote
   )
 
 (with-eval-after-load 'magit-pull
-  (magit-change-popup-key 'magit-pull-popup :action ?u ?F) ; upstream
+  (transient-suffix-put 'magit-pull "u" :key "F") ; pull from upstream
   )
 
 (with-eval-after-load 'magit-fetch
-  (magit-change-popup-key 'magit-fetch-popup :action ?u ?f) ; upstream
+  (transient-suffix-put 'magit-fetch "u" :key "f") ; fetch from upstream
   )
 
 (with-eval-after-load 'magit-blame
