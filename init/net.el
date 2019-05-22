@@ -733,7 +733,7 @@
    "https://www.archlinux.org/packages/?sort=&q=%s&maintainer=&flagged=")
   (web-search-add-engine
    'multitran "Multitran"
-   "http://www.multitran.ru/c/M.exe?CL=1&s=%s")
+   "https://www.multitran.com/m.exe?l1=1&l2=2&s=%s")
   (web-search-add-engine
    'ej "ej.ru"
    "http://mvvc44tv.cmle.ru/?a=note&id=%s"))
