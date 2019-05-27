@@ -870,4 +870,52 @@
     "Alist of auxiliary keys for `bui-list-mode-map'.")
   (al/bind-keys-from-vars 'bui-list-mode-map 'al/bui-list-keys))
 
+(with-eval-after-load 'transient
+  (setq
+   transient--buffer-name "*transient*"
+   transient-detect-key-conflicts t
+   ;; transient-highlight-mismatched-keys t
+   ;; transient--debug t
+   transient-enable-popup-navigation t
+   transient-read-with-initial-input nil
+   transient-mode-line-format mode-line-format
+   transient-display-buffer-action '(display-buffer-below-selected))
+
+  (defconst al/transient-base-keys
+    '("C-v" "M-v"
+      ("C-g" . transient-quit-all)
+      ("C-q" . transient-quit-one)
+      ("DEL" . transient-quit-one))
+    "Alist of auxiliary keys for `transient-base-map'.")
+  (al/bind-keys-from-vars 'transient-base-map
+    'al/transient-base-keys)
+
+  (defconst al/transient-keys
+    '("C-h")
+    "Alist of auxiliary keys for `transient-map'.")
+  (al/bind-keys-from-vars 'transient-map 'al/transient-keys)
+
+  (defconst al/transient-navigation-keys
+    '(("<tab>" . transient-forward-button)
+      ("<backtab>" . transient-backward-button))
+    "Alist of auxiliary keys for `transient-popup-navigation-map'.")
+  (al/bind-keys-from-vars 'transient-popup-navigation-map
+    'al/transient-navigation-keys)
+
+  (transient-suffix-put 'transient-common-commands
+                        "C-g" :command 'transient-quit-all)
+  (transient-suffix-put 'transient-common-commands
+                        "C-q" :command 'transient-quit-one)
+
+  (when (require 'al-transient nil t)
+    (advice-add 'transient--minibuffer-setup :override #'ignore)
+    (advice-add 'transient--minibuffer-exit :override #'ignore)
+    (advice-add 'transient--push-keymap :override #'al/transient-push-keymap)
+    (advice-add 'transient--pop-keymap :override #'al/transient-pop-keymap)
+    (advice-add 'transient--pre-command :around #'al/transient-fix-pre/post-command)
+    (advice-add 'transient--post-command :around #'al/transient-fix-pre/post-command)
+    (advice-add 'transient--delete-window :around #'al/transient-fix-delete-window)
+    (advice-add 'transient--init-transient :after #'al/transient-fix-init)
+    (advice-add 'transient--show :after #'al/transient-fix-show)))
+
 ;;; settings.el ends here
