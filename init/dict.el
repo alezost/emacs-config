@@ -1,17 +1,17 @@
 ;;; dict.el --- Spelling, translating, …
 
-;; Copyright © 2014-2016 Alex Kost
+;; Copyright © 2014–2016, 2019 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
 ;; (at your option) any later version.
-
+;;
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-
+;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -32,11 +32,8 @@
  ("q" . dictem-kill-all-buffers)
  ("e"   (al/google-translate-using-languages "en" "ru"))
  ("r"   (al/google-translate-using-languages "ru" "en"))
- ("f"   (al/google-translate-using-languages "fr" "ru"))
- ("l"   (let ((google-translate-translation-directions-alist
-               '(("la" . "ru") ("ru" . "la")
-                 ("la" . "en") ("en" . "la"))))
-          (al/google-translate-smooth-translate)))
+ ("f"   (al/google-translate-using-languages "fr" "ru" "en"))
+ ("l"   (al/google-translate-using-languages "la" "ru" "en"))
  ("g"   (let ((google-translate-translation-directions-alist nil))
           (al/google-translate-smooth-translate))))
 
