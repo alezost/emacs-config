@@ -33,8 +33,9 @@
  ("e"   (al/google-translate-using-languages "en" "ru"))
  ("r"   (al/google-translate-using-languages "ru" "en"))
  ("f"   (al/google-translate-using-languages "fr" "ru" "en"))
+ ("g"   (al/google-translate-using-languages "de" "ru" "en"))
  ("l"   (al/google-translate-using-languages "la" "ru" "en"))
- ("g"   (let ((google-translate-translation-directions-alist nil))
+ ("G"   (let ((google-translate-translation-directions-alist nil))
           (al/google-translate-smooth-translate))))
 
 (al/bind-keys
