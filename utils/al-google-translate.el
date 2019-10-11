@@ -19,6 +19,7 @@
 
 (require 'cl-lib)
 (require 'google-translate-smooth-ui)
+(require 'al-misc)
 
 ;;;###autoload
 (defun al/google-translate-smooth-translate ()
@@ -49,14 +50,30 @@ languages (if needed) before text."
        text))))
 
 ;;;###autoload
-(defun al/google-translate-using-languages (source &rest targets)
-  "Translate a text using SOURCE and TARGETS languages."
+(cl-defun al/google-translate-using-languages* (&key source target one-way)
+  "Translate a text using SOURCE and TARGET languages.
+Both, SOURCE and TARGET can be a string or a list of strings with
+language names.  If ONE-WAY is non-nil, use only source/target
+pairs for translation.  Otherwise, use the reverse
+pairs (target/source) as well."
   (let ((google-translate-translation-directions-alist
-         (cl-mapcan (lambda (target)
-                      (list (cons source target)
-                            (cons target source)))
-                    targets)))
+         (cl-mapcan
+          (lambda (source)
+            (cl-mapcan (lambda (target)
+                         (if one-way
+                             (list (cons source target))
+                           (list (cons source target)
+                                 (cons target source))))
+                       (al/list-maybe target)))
+          (al/list-maybe source))))
     (al/google-translate-smooth-translate)))
+
+;;;###autoload
+(defun al/google-translate-using-languages (source &rest targets)
+  "Translate a text using SOURCE and TARGETS languages.
+See `al/google-translate-using-languages*' for details."
+  (al/google-translate-using-languages* :source source
+                                        :target targets))
 
 (provide 'al-google-translate)
 

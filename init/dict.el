@@ -31,7 +31,9 @@
  ("d" . al/dictem-run-dict-search)
  ("q" . dictem-kill-all-buffers)
  ("e"   (al/google-translate-using-languages "en" "ru"))
- ("r"   (al/google-translate-using-languages "ru" "en"))
+ ("r"   (al/google-translate-using-languages* :source "ru"
+                                              :target '("en" "de" "fr" "la")
+                                              :one-way t))
  ("f"   (al/google-translate-using-languages "fr" "ru" "en"))
  ("g"   (al/google-translate-using-languages "de" "ru" "en"))
  ("l"   (al/google-translate-using-languages "la" "ru" "en"))
