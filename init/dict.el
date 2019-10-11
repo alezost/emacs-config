@@ -35,8 +35,7 @@
  ("f"   (al/google-translate-using-languages "fr" "ru" "en"))
  ("g"   (al/google-translate-using-languages "de" "ru" "en"))
  ("l"   (al/google-translate-using-languages "la" "ru" "en"))
- ("G"   (let ((google-translate-translation-directions-alist nil))
-          (al/google-translate-smooth-translate))))
+ ("G" . al/google-translate-smooth-translate))
 
 (al/bind-keys
  :prefix-map al/spell-map
@@ -105,8 +104,6 @@
     (setq google-translate-preferable-input-methods-alist
           '((dvorak-russian-computer "ru"))))
   (setq
-   google-translate-translation-directions-alist
-   '(("en" . "ru") ("ru" . "en"))
    google-translate-input-method-auto-toggling t)
 
   (google-translate--setup-minibuffer-keymap)
