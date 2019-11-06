@@ -1,6 +1,6 @@
 ;;; al-org.el --- Additional functionality for org-mode
 
-;; Copyright © 2012–2016, 2018 Alex Kost
+;; Copyright © 2012–2016, 2018–2019 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -68,6 +68,13 @@ return nil; with FORCE return its time value. "
   (and org-time
        (eval (cons 'encode-time
                    (org-parse-time-string org-time)))))
+
+(defun al/org-return-indent ()
+  "Insert a new row in tables, insert a newline and indent otherwise."
+  (interactive)
+  (if (org-at-table-p)
+      (org-table-insert-row t)
+    (org-return t)))
 
 
 ;;; Tables

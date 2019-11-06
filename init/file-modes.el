@@ -92,6 +92,7 @@
       ("<C-kp-enter>" . al/org-table-next-column)
       ("<M-kp-enter>" . al/org-table-kill-rows-recalculate)
       ("<C-M-kp-enter>" . al/org-table-next-table)
+      ("C-j" . al/org-return-indent)
       ("C-c e" . org-export-dispatch)
       ("C-c M-x" . org-copy-special)
       ("C-c C-t" . org-cut-special)
