@@ -72,7 +72,7 @@
    w3m-modeline-separator "")
 
   (defconst al/w3m-keys
-    '("c" "u" "k" "M-s"
+    '("c" "u" "k" "M-s" [left]
       ("<ctrl-m> a"  (emms-add-url (w3m-anchor)))
       ("<ctrl-m> p"  (emms-play-url (w3m-anchor)))
       ("i"         . w3m-toggle-inline-image)
