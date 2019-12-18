@@ -25,8 +25,8 @@
  :prefix-docstring "Map for dictionaries, translating and friends."
  :prefix "<XF86Spell>"
  ("<XF86Spell>" . al/dictem-run-word)
- ("s" . dictem-run-search)
- ("m" . dictem-run-match)
+ ;; ("s" . dictem-run-search)
+ ;; ("m" . dictem-run-match)
  ("i" . al/dictem-run-show-all-info)
  ("d" . al/dictem-run-dict-search)
  ("q" . dictem-kill-all-buffers)
@@ -38,6 +38,16 @@
  ("g"   (al/google-translate-using-languages "de" "ru" "en"))
  ("l"   (al/google-translate-using-languages "la" "ru" "en"))
  ("G" . al/google-translate-smooth-translate))
+
+(al/bind-keys
+ :map al/translation-map
+ :prefix-map al/translation-multitran-map
+ :prefix-docstring "Map for translating with multitran."
+ :prefix "m"
+ ("e" . web-search-multitran-en/ru)
+ ("E" . web-search-multitran-ru/en)
+ ("g" . web-search-multitran-de/ru)
+ ("G" . web-search-multitran-ru/de))
 
 (al/bind-keys
  :prefix-map al/spell-map

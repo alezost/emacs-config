@@ -42,7 +42,6 @@
  ("w e" . web-search-wikipedia-en)
  ("w r" . web-search-wikipedia-ru)
  ("W"   . web-search-wiktionary-en)
- ("m"   . web-search-multitran)
  ("a"   . web-search-archwiki)
  ("A"   . web-search-arch-package)
  ("e"   . web-search-emacswiki)
@@ -703,7 +702,10 @@
   web-search-ip-address
   web-search-wikipedia-ru
   web-search-arch-package
-  web-search-multitran
+  web-search-multitran-en/ru
+  web-search-multitran-ru/en
+  web-search-multitran-de/ru
+  web-search-multitran-ru/de
   web-search-ej)
 
 (with-eval-after-load 'web-search
@@ -732,8 +734,17 @@
    'arch-package "Arch Packages"
    "https://www.archlinux.org/packages/?sort=&q=%s&maintainer=&flagged=")
   (web-search-add-engine
-   'multitran "Multitran"
+   'multitran-en/ru "Multitran en/ru"
    "https://www.multitran.com/m.exe?l1=1&l2=2&s=%s")
+  (web-search-add-engine
+   'multitran-ru/en "Multitran ru/en"
+   "https://www.multitran.com/m.exe?l1=2&l2=1&s=%s")
+  (web-search-add-engine
+   'multitran-de/ru "Multitran de/ru"
+   "https://www.multitran.com/m.exe?l1=3&l2=2&s=%s")
+  (web-search-add-engine
+   'multitran-ru/de "Multitran ru/de"
+   "https://www.multitran.com/m.exe?l1=2&l2=3&s=%s")
   (web-search-add-engine
    'ej "ej.ru"
    "http://mvvc44tv.cmle.ru/?a=note&id=%s"))
