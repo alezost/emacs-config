@@ -219,7 +219,8 @@
  ("M-s" . isearch-query-replace)
  ("M-d" . isearch-edit-string)
  ("M-o" . isearch-occur)
- ("s-7"   (al/set-isearch-input-method nil))
+ ("s-6"   (al/set-isearch-input-method))
+ ("s-7"   (al/set-isearch-input-method "al/latin-prefix"))
  ("s-8"   (al/set-isearch-input-method "dvorak-russian-computer")))
 
 (defconst al/occur-keys
@@ -367,6 +368,27 @@
                        'beginning-of-visual-line)
   (al/mwim-set-default 'mwim-end-of-line-function
                        'end-of-visual-line))
+
+
+;;; Input methods, abbreviations, completions, etc.
+
+(defvar al/default-input-method nil
+  "My default input method.")
+
+(defun al/init-default-input-method ()
+  (when (and (null al/default-input-method)
+             (require 'al-quail nil t))
+    (setq al/default-input-method "al/latin-prefix")))
+
+(defun al/set-default-input-method ()
+  (when (and al/default-input-method
+             (null (string= al/default-input-method
+                            current-input-method)))
+    (set-input-method al/default-input-method)))
+
+(al/add-after-init-hook 'al/init-default-input-method)
+(al/add-hook-maybe 'after-change-major-mode-hook
+  'al/set-default-input-method)
 
 (with-eval-after-load 'abbrev
   (define-abbrev-table 'global-abbrev-table

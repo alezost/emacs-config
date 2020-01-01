@@ -1,6 +1,6 @@
 ;;; keys.el --- Miscellaneous global key bindings and relative settings
 
-;; Copyright © 2013–2018 Alex Kost
+;; Copyright © 2013–2019 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -131,7 +131,8 @@
  ("H-M-u"       . undo-only)
 
  ("C-\\"          (toggle-input-method t))
- ("s-7"           (set-input-method nil))
+ ("s-6"           (deactivate-input-method))
+ ("s-7"           (set-input-method "al/latin-prefix"))
  ("s-8"         . dvorak-russian-computer)
  ("s-9"         . dvorak-qwerty)
  ("s-0"           (set-input-method "greek"))
