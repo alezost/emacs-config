@@ -1,6 +1,6 @@
 ;;; text.el --- Working with text: editing, searching, …
 
-;; Copyright © 2014–2019 Alex Kost
+;; Copyright © 2014–2020 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -422,11 +422,15 @@
      ("e"        . [?∈])
      ("ne"       . [?∉])
      ([?\C-0]    . [?∅])
+     ("NC"       . [?ℂ])
+     ("ND"       . [?𝔻])
+     ("NF"       . [?𝔽])
      ("NN"       . [?ℕ])
-     ("NZ"       . [?ℤ])
+     ("NP"       . [?ℙ])
      ("NQ"       . [?ℚ])
      ("NR"       . [?ℝ])
-     ("NC"       . [?ℂ])
+     ("NS"       . [?𝕊])
+     ("NZ"       . [?ℤ])
      ("s"        . [?☺])
      ("S"        . [?☹])
      ("="        . [?≈])
