@@ -179,7 +179,7 @@
              (nnimap-address "imap.gmail.com")
              (nnimap-server-port 993)
              (nnimap-stream ssl))
-     (nntp "gmane" (nntp-address "news.gmane.org"))))
+     (nntp "gmane" (nntp-address "news.gmane.io"))))
 
   (setq
    gnus-group-buffer "*Gnus Groups*"
