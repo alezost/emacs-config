@@ -1,6 +1,6 @@
 ;;; al-dired-cmd.el --- Additional commands for dired
 
-;; Copyright © 2012–2019 Alex Kost
+;; Copyright © 2012–2020 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -92,21 +92,13 @@ With prefix (if ARG is non-nil), use the next ARG files instead."
 
 ;;;###autoload
 (defun al/dired-copy-filename-as-kill (&optional arg)
-  "Copy names of marked (or next ARG) files into the kill ring.
+  "Copy names of marked files into the kill ring.
 This function is similar to `dired-copy-filename-as-kill',
-except it quotes file names for a shell."
+except it quotes file names for a shell, unless ARG is non-nil."
   (interactive "P")
   (let ((string (mapconcat
-                 #'shell-quote-argument
-                 (if arg
-                     (cond ((zerop (prefix-numeric-value arg))
-                            (dired-get-marked-files))
-                           ((consp arg)
-                            (dired-get-marked-files t))
-                           (t
-                            (dired-get-marked-files
-                             'no-dir (prefix-numeric-value arg))))
-                   (dired-get-marked-files 'no-dir))
+                 (if arg #'identity #'shell-quote-argument)
+                 (dired-get-marked-files)
                  " ")))
     (kill-new string)
     (message "%s" string)))

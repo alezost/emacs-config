@@ -1,6 +1,6 @@
 ;;; files.el --- Working with files; dired, sunrise-commander, …
 
-;; Copyright © 2014–2019 Alex Kost
+;; Copyright © 2014–2020 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -152,7 +152,7 @@
       ("C-d"   . dired-find-file-other-window)
       ("C-l"   . dired-omit-mode)
       ("c 0"   . al/default-directory-to-kill-ring)
-      ("c RET"   (al/dired-copy-filename-as-kill 0))
+      ("c RET" . al/dired-copy-filename-as-kill)
       ("r"     . dired-do-query-replace-regexp)
       ("<ctrl-m> p" . emms-play-dired)
       ("<ctrl-m> a" . emms-add-dired))
