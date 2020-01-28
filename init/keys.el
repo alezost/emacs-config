@@ -1,6 +1,6 @@
 ;;; keys.el --- Miscellaneous global key bindings and relative settings
 
-;; Copyright © 2013–2019 Alex Kost
+;; Copyright © 2013–2020 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -140,8 +140,11 @@
  ("s-M-8"         (ispell-change-dictionary "ru-yeyo"))
  ("C-M-c"       . calc)
 
+ ("H-m H-m"     . kmacro-end-or-call-macro)
  ("<f4>"        . kmacro-end-or-call-macro)
  ("<XF86New>"   . kmacro-end-or-call-macro)
+ ("H-m s"       . kmacro-start-macro-or-insert-counter)
+ ("H-m RET"     . kmacro-start-macro-or-insert-counter)
  ("<C-f4>"      . kmacro-start-macro-or-insert-counter)
  ("<C-XF86New>" . kmacro-start-macro-or-insert-counter)
  ("<M-f4>"      . kmacro-edit-macro)
