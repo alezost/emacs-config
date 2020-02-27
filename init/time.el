@@ -1,6 +1,6 @@
 ;;; time.el --- Time, calendar, diary, appointments, notifications, …
 
-;; Copyright © 2014–2016, 2018–2019 Alex Kost
+;; Copyright © 2014–2016, 2018–2020 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -98,6 +98,7 @@
   (setq
    diary-number-of-entries 3
    diary-comment-start "#")
+  (require 'al-calendar nil t)
   (add-hook 'diary-list-entries-hook 'diary-sort-entries t))
 
 (with-eval-after-load 'appt

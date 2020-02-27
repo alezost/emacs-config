@@ -1,6 +1,6 @@
 ;;; al-calendar.el --- Additional functionality for calendar, diary, etc.
 
-;; Copyright © 2014-2016, 2018 Alex Kost
+;; Copyright © 2014–2016, 2018, 2020 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -39,6 +39,32 @@ of `calendar-date-display-form'."
   "Visit `diary-file'."
   (interactive)
   (find-file diary-file))
+
+(defun al/diary-date (month day year &optional mark)
+  "Specific date diary entry.
+This is the same as `diary-date' but allows non-positive number
+for DAY.  Zero means the last day of MONTH, -1 means the last but
+one day, etc."
+  (let ((ddate (diary-make-date month day year)))
+    (let ((dd (calendar-extract-day   ddate))
+          (mm (calendar-extract-month ddate))
+          (yy (calendar-extract-year  ddate))
+          (m  (calendar-extract-month date))
+          (y  (calendar-extract-year  date))
+          (d  (calendar-extract-day   date)))
+      (and
+       (or (eq yy t)
+           (and (listp yy) (memq y yy))
+           (= y yy))
+       (or (eq mm t)
+           (and (listp mm) (memq m mm))
+           (= m mm))
+       (or (eq dd t)
+           (and (listp dd) (memq d dd))
+           (= d (if (> dd 0)
+                    dd
+                  (+ dd (calendar-last-day-of-month m y)))))
+       (cons mark entry)))))
 
 
 ;;; Sunrise, sunset
