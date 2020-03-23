@@ -389,6 +389,8 @@
 
 (defun al/set-default-input-method ()
   (when (and al/default-input-method
+             (null (eq major-mode 'fundamental-mode))
+             (null (derived-mode-p 'prog-mode))
              (null (string= al/default-input-method
                             current-input-method)))
     (set-input-method al/default-input-method)))
