@@ -1,17 +1,17 @@
 ;;; al-text.el --- Additional functionality related to text editing
 
-;; Copyright © 2014-2016 Alex Kost
+;; Copyright © 2014–2016, 2020 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
 ;; (at your option) any later version.
-
+;;
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-
+;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -64,6 +64,29 @@ Page break should not belong to whitespace syntax, because
 `back-to-indentation' moves the point after ^L character which is not good.
 Also it (default syntax) breaks `indent-guide-mode'."
   `(al/modify-syntax ,table-name (?\f ">   ")))
+
+(defun al/replace (from-string to-string &optional start end)
+  "This is similar to `query-replace' but without querying.
+
+Replace some occurrences of FROM-STRING with TO-STRING in the
+current buffer.
+
+START and END specify the region to operate on.  If they are not
+specified, then the currenty marked region is used.  If there is
+no marked region, then the whole buffer is used."
+  (let ((count 0)
+        beg end)
+    (if (use-region-p)
+        (setq beg (region-beginning)
+              end (region-end)))
+    (save-excursion
+      (when beg (goto-char beg))
+      (while (re-search-forward (regexp-quote from-string) end t)
+        (replace-match to-string)
+        (setq count (1+ count))))
+    (unless (= 0 count)
+      (message "'%s' has been replaced with '%s' %d time(s)."
+               from-string to-string count))))
 
 (provide 'al-text)
 

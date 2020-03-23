@@ -213,6 +213,8 @@
  :map search-map
  ("s"   . query-replace)
  ("M-s" . query-replace)
+ ("SPC"   (al/replace " " "_"))
+ ("_"     (al/replace "_" " "))
  ("r"   . query-replace-regexp)
  ("R"   . replace-regexp))
 
