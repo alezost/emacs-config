@@ -1,6 +1,6 @@
 ;;; al-quail.el --- Additional input methods
 
-;; Copyright © 2019 Alex Kost
+;; Copyright © 2019–2020 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -73,6 +73,26 @@
  (";y" ?ÿ)
  (";Y" ?Ÿ)
 
+ ("`0" ?₀)
+ ("`1" ?₁)
+ ("`2" ?₂)
+ ("`3" ?₃)
+ ("`4" ?₄)
+ ("`5" ?₅)
+ ("`6" ?₆)
+ ("`7" ?₇)
+ ("`8" ?₈)
+ ("`9" ?₉)
+ ("`-" ?₋)
+ ("`+" ?₊)
+ ("`=" ?₌)
+ ("`k" ?ₖ)
+ ("`l" ?ₗ)
+ ("`m" ?ₘ)
+ ("`n" ?ₙ)
+ ("`p" ?ₚ)
+ ("`s" ?ₛ)
+ ("`t" ?ₜ)
  ("`A" ?À)
  ("`E" ?È)
  ("`I" ?Ì)
