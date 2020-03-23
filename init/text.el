@@ -178,6 +178,7 @@
 (al/bind-keys
  ("C->"     (insert "->"))
  ("H-4"   . insert-parentheses)
+ ("H-M-4" . insert-pair-dollar)
  ("H-5"   . insert-pair-square-brackets)
  ("H-6"   . insert-pair-curly-brackets)
  ("H-,"   . insert-pair-angle-brackets)
@@ -200,6 +201,10 @@
  ("d"   . al/insert-date)
  ("M-'" . insert-pair-top-corners)
  ("M-;" . insert-pair-bottom-corners))
+
+(al/autoload "insert-pair" insert-pair-dollar)
+(with-eval-after-load 'insert-pair
+  (insert-pair-define-command "dollar" ?$ ?$))
 
 
 ;;; Searching, finding and replacing
