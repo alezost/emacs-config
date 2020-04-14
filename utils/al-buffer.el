@@ -1,6 +1,6 @@
 ;;; al-buffer.el --- Additional functionality for working with buffers
 
-;; Copyright © 2013–2019 Alex Kost
+;; Copyright © 2013–2020 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -138,7 +138,7 @@ Specifying BUFFERS is not supported by `ido' engine."
     ;; Disable flx match, as I prefer to sort buffers chronologically.
     (let (ivy--flx-featurep)
       (ivy-read prompt
-                (or buffers (mapcar #'buffer-name (buffer-list)))
+                #'internal-complete-buffer
                 :initial-input initial-input
                 :matcher 'ivy--switch-buffer-matcher
                 :preselect (unless initial-input
@@ -146,13 +146,16 @@ Specifying BUFFERS is not supported by `ido' engine."
                 :action 'ivy--switch-buffer-action
                 :keymap ivy-switch-buffer-map
                 :caller 'ivy-switch-buffer)))
-   ((and (null buffers)
-         (eq 'ido al/completing-read-engine)
+   ((and (eq 'ido al/completing-read-engine)
          (require 'ido nil t))
-    (ido-buffer-internal ido-default-buffer-method
-                         nil prompt nil initial-input))
+    (if buffers
+        (switch-to-buffer (completing-read prompt buffers
+                                           nil nil initial-input))
+      (ido-buffer-internal ido-default-buffer-method
+                           nil prompt nil initial-input)))
    (t
-    (completing-read-default prompt buffers nil nil initial-input))))
+    (switch-to-buffer (completing-read-default prompt buffers
+                                               nil nil initial-input)))))
 
 (defun al/switch-to-buffer-or-funcall (buffer &optional function)
   "Switch to BUFFER or call FUNCTION.
