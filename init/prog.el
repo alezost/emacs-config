@@ -1,6 +1,6 @@
 ;;; prog.el --- Programming modes and tools
 
-;; Copyright © 2014–2019 Alex Kost
+;; Copyright © 2014–2020 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@
  ("C-M-v" . eval-defun)
  ("M-s-v" . eval-buffer)
  ("C-d"   . elisp-slime-nav-describe-elisp-thing-at-point)
- ("M-d"   . xref-find-definitions))
+ ("M-d"   . elisp-slime-nav-find-elisp-thing-at-point))
 (al/bind-keys
  :prefix-map al/doc-map
  :prefix-docstring "Map for documentation/finding definitions."
