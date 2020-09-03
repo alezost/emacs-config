@@ -1,6 +1,6 @@
 ;;; settings.el --- Miscellaneous settings
 
-;; Copyright © 2012–2019 Alex Kost
+;; Copyright © 2012–2020 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -98,6 +98,9 @@
       '(ido-file-dir-completion-map
         ido-file-completion-map)
     '(al/ido-file-dir-keys al/ido-common-keys))
+
+  (when (require 'al-ido nil t)
+    (advice-add 'ido-completions :override #'al/ido-completions))
 
   (al/add-hook-maybe 'ido-minibuffer-setup-hook 'al/no-truncate-lines)
 
