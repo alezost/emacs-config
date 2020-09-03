@@ -1,6 +1,6 @@
 ;;; al-imenus.el --- Additional functionality for imenus
 
-;; Copyright © 2014–2017 Alex Kost
+;; Copyright © 2014–2017, 2020 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -32,14 +32,19 @@ candidates for `ivy'."
   (cond
    ((and (eq 'ivy al/completing-read-engine)
          (require 'ivy nil t))
-    ;; Disable flx match to make `ivy--sort' sort candidates using
-    ;; `ivy-sort-matches-functions-alist'.
-    (let (ivy--flx-featurep)
-      (ivy-read prompt collection
-                :preselect (thing-at-point 'symbol)
-                :initial-input initial-input
-                :history history
-                :caller 'imenus)))
+    (let ((input-method (and inherit-input-method
+                             current-input-method)))
+      ;; See the commentary for `al/completing-read'.
+      (minibuffer-with-setup-hook
+          (lambda () (set-input-method input-method))
+        ;; Disable flx match to make `ivy--sort' sort candidates using
+        ;; `ivy-sort-matches-functions-alist'.
+        (let (ivy--flx-featurep)
+          (ivy-read prompt collection
+                    :preselect (thing-at-point 'symbol)
+                    :initial-input initial-input
+                    :history history
+                    :caller 'imenus)))))
    (t
     (funcall completing-read-function
              prompt collection predicate require-match
