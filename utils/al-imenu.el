@@ -17,6 +17,8 @@
 
 ;;; Code:
 
+(require 'cl-lib)
+
 (cl-defun al/add-to-imenu (regexp &key (index 1) title append)
   "Add REGEXP with INDEX and TITLE to `imenu-generic-expression'.
 If APPEND is nil, add the new element at the end."
