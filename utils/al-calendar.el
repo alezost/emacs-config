@@ -18,6 +18,7 @@
 ;;; Code:
 
 (require 'calendar)
+(require 'diary-lib)
 (require 'solar)
 (require 'al-misc)
 
@@ -45,6 +46,9 @@ of `calendar-date-display-form'."
 This is the same as `diary-date' but allows non-positive number
 for DAY.  Zero means the last day of MONTH, -1 means the last but
 one day, etc."
+  ;; This function is called from `diary-sexp-entry' where DATE and
+  ;; ENTRY are bound.
+  (with-no-warnings (defvar date) (defvar entry))
   (let ((ddate (diary-make-date month day year)))
     (let ((dd (calendar-extract-day   ddate))
           (mm (calendar-extract-month ddate))
