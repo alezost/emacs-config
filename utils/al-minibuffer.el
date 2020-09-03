@@ -1,6 +1,6 @@
 ;;; al-minibuffer.el --- Additional functionality for minibuffer
 
-;; Copyright © 2013–2017 Alex Kost
+;; Copyright © 2013–2017, 2020 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 ;; fallback to `completing-read-default' came from
 ;; <http://www.emacswiki.org/emacs/InteractivelyDoThings#toc15>.
 
+(require 'cl-lib)
+
 (defvar al/completing-read-engine
   (if (boundp 'ivy-mode)
       'ivy
@@ -36,25 +38,34 @@ Can be either `ivy', `ido' or nil (to fallback to
                                   hist def inherit-input-method)
   "Function for `completing-read-function' variable.
 Use completion engine depending on `al/completing-read-engine'."
-  ;; Match is never required in the following calls, otherwise it's not
-  ;; possible to select "#XXXXXX" with `read-color'.
-  (cl-case al/completing-read-engine
-    (ivy
-     (ivy-completing-read prompt collection predicate
-                          nil initial-input
-                          hist def inherit-input-method))
-    (ido
-     (ido-completing-read prompt (all-completions "" collection predicate)
-                          nil nil initial-input hist def))
-    (t
-     ;; `minibuffer-complete' (bound to TAB in minibuffer prompt) calls
-     ;; `completion-in-region', so return
-     ;; `completion-in-region-function' to default value (in particular,
-     ;; ivy changes it).
-     (let ((completion-in-region-function 'completion--in-region))
-       (completing-read-default prompt collection predicate
-                                nil initial-input
-                                hist def inherit-input-method)))))
+  (let ((input-method (and inherit-input-method
+                           current-input-method)))
+    ;; Currently, `ivy' and `ido' do not provide a way to handle
+    ;; input-method: both `ivy-completing-read' and
+    ;; `ido-completing-read' simply ignore `inherit-input-method'
+    ;; argument.  So, `minibuffer-setup-hook' need to be adjusted.
+    (minibuffer-with-setup-hook
+        (lambda () (set-input-method input-method))
+      ;; Match is never required in the following calls, otherwise it's not
+      ;; possible to select "#XXXXXX" with `read-color'.
+      (cl-case al/completing-read-engine
+        (ivy
+         (ivy-completing-read prompt collection predicate
+                              nil initial-input
+                              hist def inherit-input-method))
+        (ido
+         (ido-completing-read prompt (all-completions "" collection predicate)
+                              nil nil initial-input
+                              hist def inherit-input-method))
+        (t
+         ;; `minibuffer-complete' (bound to TAB in minibuffer prompt) calls
+         ;; `completion-in-region', so return
+         ;; `completion-in-region-function' to default value (in particular,
+         ;; ivy changes it).
+         (let ((completion-in-region-function 'completion--in-region))
+           (completing-read-default prompt collection predicate
+                                    nil initial-input
+                                    hist def inherit-input-method)))))))
 
 (defun al/complete-default (fun &rest args)
   "Use `completing-read-default' for FUN.
