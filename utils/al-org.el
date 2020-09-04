@@ -17,6 +17,7 @@
 
 ;;; Code:
 
+(require 'cl-lib)
 (require 'al-text-cmd)
 (require 'org)
 (require 'org-table)

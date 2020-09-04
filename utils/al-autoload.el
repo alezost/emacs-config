@@ -17,6 +17,8 @@
 
 ;;; Code:
 
+(require 'cl-lib)
+
 (defvar al/autoloads-regexp
   (rx (group (* any) "-autoloads")
       ".el" (zero-or-one "c") string-end)
