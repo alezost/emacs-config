@@ -1,6 +1,6 @@
 ;;; file-modes.el --- Modes for various file types  -*- lexical-binding: t -*-
 
-;; Copyright © 2014–2019 Alex Kost
+;; Copyright © 2014–2020 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -44,8 +44,8 @@
 (with-eval-after-load 'org
   (require 'org-emms nil t)
   (when (require 'al-org nil t)
-    (advice-add 'org-make-link-string
-      :around #'al/org-set-link-description))
+    (advice-add 'org-link-make-string
+      :around #'al/org-link-set-description))
   (setq
    org-imenu-depth 6
    org-completion-use-ido t

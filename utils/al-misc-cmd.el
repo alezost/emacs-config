@@ -1,6 +1,6 @@
 ;;; al-misc-cmd.el --- Miscellaneous interactive commands
 
-;; Copyright © 2013–2016, 2019 Alex Kost
+;; Copyright © 2013–2016, 2019–2020 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -24,24 +24,24 @@
   "Go to the next link."
   ;; The function is almost the same as `org-next-link'.
   (interactive)
-  (when (and org-link-search-failed
+  (when (and org-link--search-failed
              (eq this-command last-command))
     (goto-char (point-min))
     (message "Link search wrapped back to beginning of buffer"))
-  (setq org-link-search-failed nil)
+  (setq org-link--search-failed nil)
   (let* ((pos (point))
 	 (srch-fun (if search-backward
                        're-search-backward
                      're-search-forward)))
-    (when (looking-at org-any-link-re)
+    (when (looking-at org-link-any-re)
       ;; Don't stay stuck at link without an org-link face.
       (forward-char (if search-backward -1 1)))
-    (if (funcall srch-fun org-any-link-re nil t)
+    (if (funcall srch-fun org-link-any-re nil t)
 	(progn
 	  (goto-char (match-beginning 0))
 	  (if (outline-invisible-p) (org-show-context)))
       (goto-char pos)
-      (setq org-link-search-failed t)
+      (setq org-link--search-failed t)
       (message "No further link found"))))
 
 ;;;###autoload

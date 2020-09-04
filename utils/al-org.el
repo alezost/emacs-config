@@ -1,6 +1,6 @@
 ;;; al-org.el --- Additional functionality for org-mode
 
-;; Copyright © 2012–2016, 2018–2019 Alex Kost
+;; Copyright © 2012–2016, 2018–2020 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -26,13 +26,13 @@
   (rx string-start (or "file" "emms") ":")
   "Regexp for `al/org-set-link-description'.")
 
-(defun al/org-set-link-description (fun link &optional description)
+(defun al/org-link-set-description (fun link &optional description)
   "Call FUN with LINK and fixed DESCRIPTION.
 This function is intended to be used as an 'around' advice for
 `org-make-link-string':
 
-  (advice-add 'org-make-link-string
-              :around #'al/org-set-link-description)
+  (advice-add 'org-link-make-string
+              :around #'al/org-link-set-description)
 
 If `al/org-link-no-description-regexp' matches LINK or if
 DESCRIPTION is the same as LINK, then description is ignored (FUN
