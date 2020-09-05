@@ -82,7 +82,9 @@
      ("n" . org-narrow-to-subtree)))
 
   (defconst al/org-keys
-    '("<C-tab>"
+    '([remap delete-char]
+      [remap delete-backward-char]
+      "<C-tab>"
       ("<M-tab>" . pcomplete)
       ("<M-return>" . org-meta-return)
       ("M->" . outline-previous-visible-heading)
