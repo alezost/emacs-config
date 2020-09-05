@@ -103,6 +103,17 @@
   (when (require 'al-minibuffer nil t)
     (advice-add 'org-set-tags :around #'al/complete-default))
 
+  ;; "org-compat.el" adds a hook to set `imenu-create-index-function' to
+  ;; `org-imenu-get-tree', but it does this only after `imenu' is loaded.
+  ;; This raises the following problem: if an org file is loaded and
+  ;; imenu is not loaded yet, then `imenu-create-index-function' is still
+  ;; set to `imenu-default-create-index-function', so after running
+  ;; `imenu', we have a general index made by
+  ;; `imenu-default-create-index-function' instead of a specialized index
+  ;; made by `org-imenu-get-tree'.  So imenu is required here to be sure
+  ;; it is loaded before enabling `org-mode'.
+  (require 'imenu nil t)
+
   (org-add-link-type "pdfview" 'org-pdfview-open 'org-pdfview-export))
 
 (defun al/autoload-org-protocol (fun files &rest args)
