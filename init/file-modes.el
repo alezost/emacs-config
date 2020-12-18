@@ -281,7 +281,10 @@ will do the right thing."
      (conf-unix-mode (".*rc\\'"
                       "/etc/.*\\'")
                      t)
-     (syslog-mode "/var/log.*\\'" t)
+     (syslog-mode ("/var/log.*\\'"
+                   ;;"\\.log\\'" not this because of ~/config/emacs/data/emacs-wget.log
+                   )
+                  t)
      (pdf-view-mode "\\.[pP][dD][fF]\\'")
      (markdown-mode "\\.mdown\\'")
      (pkgbuild-mode "PKGBUILD\\'")
