@@ -1,6 +1,6 @@
 ;;; file-modes.el --- Modes for various file types  -*- lexical-binding: t -*-
 
-;; Copyright © 2014–2020 Alex Kost
+;; Copyright © 2014–2021 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -42,7 +42,8 @@
 (setq org-export-backends
       '(ascii html icalendar latex odt texinfo man))
 (with-eval-after-load 'org
-  (require 'org-emms nil t)
+  (when (require 'org-emms nil t)
+    (require 'al-org-emms nil t))
   (when (require 'al-org nil t)
     (advice-add 'org-link-make-string
       :around #'al/org-link-set-description))
