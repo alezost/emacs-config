@@ -1,6 +1,6 @@
 ;;; keys.el --- Miscellaneous global key bindings and relative settings
 
-;; Copyright © 2013–2020 Alex Kost
+;; Copyright © 2013–2021 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -147,6 +147,8 @@
  ("H-m RET"     . kmacro-start-macro-or-insert-counter)
  ("<C-f4>"      . kmacro-start-macro-or-insert-counter)
  ("<C-XF86New>" . kmacro-start-macro-or-insert-counter)
+ ("H-m e"       . kmacro-edit-macro)
+ ("H-m C-d"     . kmacro-edit-macro)
  ("<M-f4>"      . kmacro-edit-macro)
  ("<M-XF86New>" . kmacro-edit-macro)
 
