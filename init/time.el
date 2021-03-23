@@ -1,6 +1,6 @@
 ;;; time.el --- Time, calendar, diary, appointments, notifications, …
 
-;; Copyright © 2014–2016, 2018–2020 Alex Kost
+;; Copyright © 2014–2016, 2018–2021 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -31,8 +31,8 @@
  ("A"   . appt-activate)
  ("a n" . appt-add)
  ("a k" . appt-delete)
- ("M-T"   (al/timer-set "Tea!!" 180))
- ("T"     (al/timer-set "Break!!" (* 15 60)))
+ ("M-T"   (al/timer-set (* 3 60)))
+ ("T"     (al/timer-set (* 15 60)))
  ("t n" . al/timer-set)
  ("t t" . al/timer-remaining-time)
  ("t k" . al/timer-cancel))

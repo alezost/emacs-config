@@ -1,22 +1,23 @@
 ;;; al-notification.el --- Additional functionality for various notifications
 
-;; Copyright © 2014-2016 Alex Kost
+;; Copyright © 2014–2016, 2021 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
 ;; (at your option) any later version.
-
+;;
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-
+;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Code:
 
+(require 'cl-lib)
 (require 'timer)
 (require 'notifications)
 (require 'al-file)
@@ -37,15 +38,22 @@
 (declare-function al/play-sound "al-sound" (file))
 
 ;;;###autoload
-(defun al/timer-set (msg seconds)
-  "Notify with a sound and a message MSG in some SECONDS.
-Interactively, prompt for the message and the number of minutes.
-With prefix, prompt for the number of seconds."
+(defun al/timer-set (seconds &optional msg)
+  "Notify in some SECONDS with a sound and a message MSG.
+Interactively, prompt for the number of minutes.
+With \\[universal-argument], prompt for the message as well.
+With \\[universal-argument] \\[universal-argument], prompt for
+the number of seconds and the message.
+If the prefix argument is numerical, use it as the number of minutes."
   (interactive
-   (list (read-string "Message: " nil nil "You should do something!")
-         (if current-prefix-arg
-             (read-number "Seconds for the timer: ")
-           (* 60 (read-number "Minutes for the timer: ")))))
+   (list
+    (cond ((numberp current-prefix-arg)
+           (* 60 current-prefix-arg))
+          ((equal current-prefix-arg '(16))
+           (read-number "Seconds for the timer: "))
+          (t (* 60 (read-number "Minutes for the timer: "))))
+    (and (consp current-prefix-arg)
+         (read-string "Message: " nil nil "You should do something!"))))
   (al/timer-cancel)
   (setq al/timer
         (run-at-time seconds nil
@@ -54,7 +62,7 @@ With prefix, prompt for the number of seconds."
                                   (require 'al-sound nil t))
                          (al/play-sound al/notification-sound))
                        (notifications-notify :title "Timer" :body msg))
-                     msg))
+                     (or msg "Break!")))
   (message "The timer has been set on %s."
            (format-time-string "%T" (timer--time al/timer))))
 
