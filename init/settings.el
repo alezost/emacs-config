@@ -1,6 +1,6 @@
 ;;; settings.el --- Miscellaneous settings
 
-;; Copyright © 2012–2020 Alex Kost
+;; Copyright © 2012–2021 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -184,7 +184,8 @@
     (counsel-mode))
    ((fboundp 'smex)
     (al/bind-key "C-M-t" smex-major-mode-commands)
-    (al/bind-key* "M-t" smex)))
+    (al/bind-key* "M-t" smex)
+    (al/bind-key* "M-s-t" execute-extended-command)))
   (unless (boundp 'ivy-mode)
     (ido-mode)))
 
