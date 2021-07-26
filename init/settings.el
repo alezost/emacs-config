@@ -187,6 +187,7 @@
     (al/bind-key* "M-t" smex)
     (al/bind-key* "M-s-t" execute-extended-command)))
   (unless (boundp 'ivy-mode)
+    (setq al/completing-read-engine 'ido)
     (ido-mode)))
 
 
