@@ -1,6 +1,6 @@
 ;;; al-dired-cmd.el --- Additional commands for dired
 
-;; Copyright © 2012–2020 Alex Kost
+;; Copyright © 2012–2021 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 
 (require 'dired)
 (require 'dired-x)
+(require 'al-file)
 
 
 ;;; Navigating by files
@@ -59,6 +60,18 @@ If ARG is non-nil, visit it with `find-file-literally'."
   (interactive)
   (require 'browse-url)
   (browse-url (browse-url-file-url (dired-get-file-for-visit))))
+
+;;;###autoload
+(defun al/dired-append-marked-files (file-name &optional arg)
+  "Insert the contents of the marked files into FILE-NAME.
+If ARG is non-nil, insert a file name before the contents of each
+file."
+  (interactive
+   (if (derived-mode-p 'dired-mode)
+       (list (expand-file-name (read-file-name "Write to file: "))
+             current-prefix-arg)
+     (error "Not a Dired buffer")))
+  (al/append-files (dired-get-marked-files) file-name arg))
 
 
 ;;; File stats

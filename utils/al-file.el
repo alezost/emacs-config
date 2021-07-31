@@ -1,6 +1,6 @@
 ;;; al-file.el --- Additional functionality for working with files
 
-;; Copyright © 2016–2017 Alex Kost
+;; Copyright © 2016–2017, 2021 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -84,6 +84,24 @@ For the first form, specifications are added at the beginning of
         (`(,mode . ,regexps)
          (dolist (regexp regexps)
            (add mode regexp)))))))
+
+(defun al/append-files (in-files out-file &optional insert-file-names)
+  "Insert the contents of IN-FILES into OUT-FILE.
+IN-FILES is a list of file names.
+OUT-FILE is a name of the output file.
+If INSERT-FILE-NAMES is non-nil, insert a file name before the
+contents of each file."
+  (if (and (listp in-files)
+           (> (length in-files) 1))
+      (with-temp-buffer
+        (dolist (file in-files)
+          (when (file-regular-p file)
+            (when insert-file-names
+              (insert "\n" file "\n"))
+            (insert-file-contents file)
+            (goto-char (point-max))))
+        (write-region nil nil out-file))
+    (error "Give me more than 1 file to append")))
 
 (provide 'al-file)
 
