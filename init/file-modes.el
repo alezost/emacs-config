@@ -43,7 +43,8 @@
       '(ascii html icalendar latex odt texinfo man))
 (with-eval-after-load 'org
   (when (require 'org-emms nil t)
-    (require 'al-org-emms nil t))
+    (when (require 'al-org-emms nil t)
+      (advice-add 'org-emms-play :override #'al/org-emms-play)))
   (when (require 'al-org nil t)
     (advice-add 'org-link-make-string
       :around #'al/org-link-set-description))

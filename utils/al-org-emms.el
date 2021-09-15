@@ -21,6 +21,28 @@
 (require 'org-emms)
 (require 'emms-source-playlist)
 
+(defun al/org-emms-play (file)
+  "Play multimedia FILE from `org-mode'.
+This function is a substitution for `org-emms-play'."
+  (let* ((path (split-string file "::"))
+	 (file (expand-file-name (car path)))
+	 (time (org-emms-time-string-to-seconds (cadr path))))
+    ;; If we want to open a link with the current track, then
+    ;; start it if it is stopped or just seek to time, otherwise.
+    (if (string= file
+                 (emms-track-name
+                  (emms-playlist-current-selected-track)))
+        (unless emms-player-playing-p
+          (emms-start))
+      (emms-play-file file))
+    (when time
+      (and (> org-emms-delay 0)
+           (sleep-for org-emms-delay))
+      (emms-seek-to time))))
+
+
+;;; Playlist
+
 (defun al/org-emms-playlist-play (file)
   "Play emms playlist FILE from `org-mode'.
 If link contains a track position, start there.  Otherwise,
