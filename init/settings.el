@@ -326,7 +326,7 @@
  ("x"   . guix-switch-to-repl))
 
 (with-eval-after-load 'comint
-  (setq comint-move-point-for-output 'this
+  (setq comint-move-point-for-output nil
         comint-buffer-maximum-size 5000
         comint-password-prompt-regexp
         (rx-to-string `(or (and bol "Password")
