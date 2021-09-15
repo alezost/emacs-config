@@ -1,6 +1,6 @@
 ;;; al-quail.el --- Additional input methods
 
-;; Copyright © 2019–2020 Alex Kost
+;; Copyright © 2019–2021 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -40,6 +40,7 @@
 " nil t nil nil nil nil nil nil nil nil t)
 
 (quail-define-rules
+ ("''" ?')
  ("'a" ?á)
  ("'A" ?Á)
  ("'c" ?ç)
@@ -73,6 +74,7 @@
  (";y" ?ÿ)
  (";Y" ?Ÿ)
 
+ ("``" ?`)
  ("`0" ?₀)
  ("`1" ?₁)
  ("`2" ?₂)
@@ -108,6 +110,7 @@
  ("`w" ?ẁ)
  ("`y" ?ỳ)
 
+ ("~~" ?~)
  ("~p" ?£)
  ("~e" ?€)
  ("~r" ?₽)
@@ -134,6 +137,7 @@
  ("~z" ?ž)
  ("~Z" ?Ž)
 
+ ("^^" ?^)
  ("^0" ?⁰)
  ("^1" ?¹)
  ("^2" ?²)
