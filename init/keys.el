@@ -151,6 +151,7 @@
  ("H-m C-d"     . kmacro-edit-macro)
  ("<M-f4>"      . kmacro-edit-macro)
  ("<M-XF86New>" . kmacro-edit-macro)
+ ("H-m A"         (kmacro-call-macro 0))
 
  ("<f5>"        . compile)
  ("C-="         . describe-char)
