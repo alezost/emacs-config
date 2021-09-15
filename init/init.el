@@ -1,6 +1,6 @@
 ;;; init.el --- Init file  -*- lexical-binding: t -*-
 
-;; Copyright © 2012–2019 Alex Kost
+;; Copyright © 2012–2021 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -17,7 +17,9 @@
 
 ;; Hacks to reduce the startup time:
 ;; <https://www.reddit.com/r/emacs/comments/3kqt6e/2_easy_little_known_steps_to_speed_up_emacs_start/>
-(setq gc-cons-threshold (expt 2 24)) ; 16 MiB
+;; <https://bling.github.io/blog/2016/01/18/why-are-you-changing-gc-cons-threshold/>
+(setq gc-cons-threshold (expt 2 24) ; 16 MiB
+      garbage-collection-messages t)
 (setq load-prefer-newer t)
 
 
