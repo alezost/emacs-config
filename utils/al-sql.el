@@ -1,6 +1,6 @@
 ;;; al-sql.el --- Additional functionality for sql stuff
 
-;; Copyright © 2013–2018 Alex Kost
+;; Copyright © 2013–2018, 2021 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -32,7 +32,13 @@
 ;;;###autoload
 (defun al/sql-switch-or-connect (conn)
   "Switch to SQLi buffer with connection CONN.
-Create it if it does not exist."
+Create it if it does not exist.
+Interactively, use the first connection from `sql-connection-alist'.
+With prefix, prompt for connection."
+  (interactive
+   (list (if current-prefix-arg
+             (sql-read-connection "Connection: ")
+           (caar sql-connection-alist))))
   (let ((buffer (sql-find-sqli-buffer nil conn)))
     (if buffer
         (al/display-buffer buffer)

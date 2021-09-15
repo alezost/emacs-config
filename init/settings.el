@@ -313,7 +313,7 @@
  ("t"   . visit-ansi-term)
  ("e"   . eshell)
  ("i"   . ielm)
- ("s"     (al/sql-switch-or-connect 'darts))
+ ("s"   . al/sql-switch-or-connect)
  ("l"   . slime-repl)
  ("g"   . (lambda (arg) (interactive "P")
             (let (geiser-repl-use-other-window)
