@@ -1,6 +1,6 @@
 ;;; al-org.el --- Additional functionality for org-mode
 
-;; Copyright © 2012–2016, 2018–2020 Alex Kost
+;; Copyright © 2012–2016, 2018–2021 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -122,6 +122,20 @@ row."
   (and (al/re-search-forward "^[^|]")
        (al/re-search-forward "^|")
        (org-table-goto-line (+ 1 (org-table-current-line)))))
+
+
+;;; Links
+
+(defun al/org-browse-youtube (id)
+  "Browse youtube video or playlist with ID from `org-mode'."
+  (if (string-match-p "\\`PL" id)
+      (browse-url (concat "https://www.youtube.com/playlist?list=" id))
+    ;; TODO add time position
+    (browse-url (concat "https://www.youtube.com/watch?v=" id))))
+
+(org-link-set-parameters
+ "yt"
+ :follow #'al/org-browse-youtube)
 
 (provide 'al-org)
 
