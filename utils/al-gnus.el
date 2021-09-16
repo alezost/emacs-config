@@ -1,6 +1,6 @@
 ;;; al-gnus.el --- Additional functionality for Gnus  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2017 Alex Kost
+;; Copyright © 2013–2017, 2021 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@
 (require 'gnus-sum)
 (require 'gnus-art)
 (require 'al-buffer)
-(require 'al-misc)  ; for al/xor
 
 (defun al/gnus-buffer-names ()
   "Return a list of names of live gnus buffer."
@@ -79,7 +78,7 @@
 Return `al/gnus-win-config' if current buffer is a gnus buffer,
 return `al/non-gnus-win-config' otherwise.
 If REVERT is non-nil, do vice versa (return the other variable)."
-  (if (al/xor (al/gnus-buffer-p) revert)
+  (if (xor (al/gnus-buffer-p) revert)
       'al/gnus-win-config
     'al/non-gnus-win-config))
 
@@ -312,7 +311,6 @@ This is the same as `gnus-group-prev-unread-group' except it
 doesn't honor `gnus-group-goto-unread'."
   (interactive "p")
   (al/gnus-group-next-unread-group (- n)))
-
 
 (provide 'al-gnus)
 

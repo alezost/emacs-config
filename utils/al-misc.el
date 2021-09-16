@@ -1,6 +1,6 @@
 ;;; al-misc.el --- Miscellaneous additional functionality
 
-;; Copyright © 2013–2016, 2019 Alex Kost
+;; Copyright © 2013–2021 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -19,9 +19,6 @@
 
 (require 'cl-lib)
 
-(defun al/xor (a b)
-  "Exclusive or."
-  (if a (not b) b))
 
 (defun al/next-element (list &optional element)
   "Return next element from LIST.
