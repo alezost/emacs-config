@@ -56,15 +56,16 @@ If the prefix argument is numerical, use it as the number of minutes."
          (read-string "Message: " nil nil "You should do something!"))))
   (al/timer-cancel)
   (setq al/timer
-        (run-at-time seconds nil
-                     (lambda (msg)
-                       (when (and al/notification-sound
-                                  (require 'al-sound nil t))
-                         (al/play-sound al/notification-sound))
-                       (notifications-notify :title "Timer" :body msg))
-                     (or msg "Break!")))
+        (run-at-time seconds nil #'al/timer-notify (or msg "Break!")))
   (message "The timer has been set on %s."
            (format-time-string "%T" (timer--time al/timer))))
+
+(defun al/timer-notify (message)
+  "Notify with MESSAGE."
+  (when (and al/notification-sound
+             (require 'al-sound nil t))
+    (al/play-sound al/notification-sound))
+  (notifications-notify :title "Timer" :body message))
 
 (defun al/timer-funcall-on-active-timer (fun &optional silent)
   "Call function FUN if current timer is active.
