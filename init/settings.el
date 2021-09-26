@@ -463,6 +463,7 @@
    ("i" (info "dir"))
    ("c" (info "cl"))
    ("e" (info "elisp"))
+   ("o" (info "org"))
    ("g" (info "guile"))
    ("x" (info "guix"))
    ("m" (info "make"))
