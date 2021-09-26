@@ -1,43 +1,35 @@
 ** About
 
-Ask =fsbot= on [[http://www.freenode.net/][freenode]] about hell, and it will answer you that =hell is
-other people's .emacs=.  This repo is my own hell and I like it very
-much.
+This repository contains my configuration for [[https://www.gnu.org/software/emacs/][GNU Emacs]].
 
-It is not some elisp code that is pretended to be used by other people
-(like [[http://batsov.com/prelude/][prelude]], [[https://github.com/technomancy/emacs-starter-kit/tree/master][emacs-starter-kit]] or even [[https://github.com/kovan/dopemacs][dopemacs]]).  It is *my own*
-Emacs config and it is intended to be used only by me.
-
-Anyway here is what makes this hell so warm and comfortable for me.
+It is intended to be used only by me, not by other people.  Anyway, here
+are the main features of my config.
 
 ** Features
 
-- No [[http://orgmode.org/worg/org-contrib/babel/intro.html#literate-programming][Org-mode for emacs config]] because good old =.el= files are much
+- No [[https://orgmode.org/worg/org-contrib/babel/intro.html#literate-programming][Org-mode for emacs config]] because good old =.el= files are much
   more convenient for me.
 
 - Unusable key bindings: I use hundreds and hundreds of non-standard key
-  bindings that are suitable for me.  Besides I use dvorak layout, so my
+  bindings that are suitable for me.  Besides, I use dvorak layout, so my
   bindings may look really weird for other people.  I use my code (from
-  [[https://github.com/alezost/emacs-config/blob/master/keys.el][keys.el]]) based on [[https://github.com/jwiegley/use-package/blob/master/bind-key.el][bind-key]] to manage those tons of keys.
+  [[file:init/keys.el][keys.el]]) based on [[https://github.com/jwiegley/use-package/blob/master/bind-key.el][bind-key]] to manage those tons of keys.
 
-- I prefer to split my config into several files than to keep everything
-  in a single one.  And it is really easy to search them using [[https://github.com/alezost/imenus.el][imenus]].
-  I just press =s-s= (which is bound to =al/imenus-search-elisp-dir=
-  from [[https://github.com/alezost/emacs-config/blob/master/utils/al-imenus.el][al-imenus.el]]) and jump to =with-eval-after-load= clause or
-  perform =isearch= or =occur= if I need to search for something.
+- I prefer to split my config into multiple files instead of keeping
+  everything in a single one.  And it is really easy to search them
+  using [[https://github.com/alezost/imenus.el][imenus]].  I just press =s-s= (which is bound to
+  =al/imenus-search-elisp-dir= from [[file:utils/al-imenus.el][al-imenus.el]]) and jump to
+  =with-eval-after-load= clause or perform =isearch= or =occur= if I
+  need to search for something.
 
-- Currently I use [[https://github.com/quelpa/quelpa][quelpa]] to install/upgrade Emacs packages.  I just run
-  =al/quelpa= command (with prefix if needed) to install or upgrade some
-  package (or all packages).  However I'm going to switch to [[http://www.gnu.org/software/guix/][GNU Guix]]
-  for managing the Emacs packages I use (this is a work in progress:
-  some of the packages are already handled by Guix, but most are still
-  installed using Emacs package system and quelpa).
+- I use an insane mix of [[https://github.com/quelpa/quelpa][quelpa]]/[[https://melpa.org/][melpa]]/[[https://guix.gnu.org/][GNU Guix]] to install/upgrade Emacs
+  packages. Do not try this at home ☺.
 
 - My Emacs config is intended to be robust.  I mean it does not require
   any third-party packages to be started successfully.  So I can easily
   deploy my config on a fresh system: I just clone the repo and make
-  [[~/.emacs.d/init.el]] file a symlink to my [[https://github.com/alezost/emacs-config/blob/master/init/init.el][init.el]].  Actually this
-  process is even more simple, as I don't do this manually – I use my
+  [[~/.emacs.d/init.el]] file a symlink to my [[file:init/init.el][init.el]].  Actually, this
+  process is even more simple, as I don't do this manually — I use my
   [[https://gitlab.com/alezost-config/config][config]] script to fetch and deploy all my configs including this Emacs
   config.
 
@@ -53,17 +45,17 @@ Anyway here is what makes this hell so warm and comfortable for me.
   emacs-init-time= (actually, I have this value in my
   =initial-scratch-message= so I know the init time very well), because
   I don't =require= packages without a reason as some people do.
-  Instead I use =with-eval-after-load= everywhere.
+  Instead, I use =with-eval-after-load= everywhere.
 
 ** Files
 
 As you can see, this repository consists of the following directories:
 
-- =init=: The files that are loaded on Emacs start.  As described above
-  [[file:init/init.el]] is the "main" init file.  It defines some major
-  things and then loads the rest files from this directory.
+- [[file:init][init]]: The files that are loaded on Emacs start.  As described above,
+  [[file:init/init.el][init.el]] is the "main" init file.  It defines some major
+  things and loads the rest files from this directory.
 
-- =utils=: These are my various auxiliary small packages with the
+- [[file:utils][utils]]: These are my various auxiliary small packages with the
   additional code (for Emacs itself and for external packages) that is
   not needed for start-up.  All of the code there have "al/" prefix and
   are placed in files that provide "al-…" features.  My init files are
@@ -84,5 +76,5 @@ As you can see, this repository consists of the following directories:
   In the past these utils were placed in a [[https://github.com/alezost/emacs-utils][separate repository]] and had
   "utl-" prefix.
 
-- =data=: Just some Emacs related data (like eshell aliases or my
+- [[file:data][data]]: Just some Emacs related data (like eshell aliases or my
   yasnippets) that I use.
