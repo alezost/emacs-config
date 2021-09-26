@@ -29,6 +29,27 @@ If ELEMENT is an element of LIST, return an element placed after it."
           (car list))
     (car list)))
 
+(cl-defun al/add-to-list-after (list-var after-element new-element &key test)
+  "Add NEW-ELEMENT to LIST-VAR after the first occurrence of AFTER-ELEMENT.
+If AFTER-ELEMENT does not exist, insert NEW-ELEMENT to the end of
+LIST-VAR.
+TEST key is `eq' by default."
+  (let* (added
+         (new (cl-mapcon
+               (lambda (lst)
+                 (let ((elt (car lst)))
+                   (if (or added
+                           (not (funcall (or test #'eq)
+                                         elt after-element)))
+                       (list elt)
+                     (setq added t)
+                     (list elt new-element))))
+               (symbol-value list-var))))
+    (set list-var
+         (if added
+             new
+           (append (symbol-value list-var) (list new-element))))))
+
 (defun al/warning (format-string &rest args)
   "Display a warning message."
   (apply #'message
