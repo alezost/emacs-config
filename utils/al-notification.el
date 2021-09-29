@@ -20,6 +20,7 @@
 (require 'cl-lib)
 (require 'timer)
 (require 'notifications)
+(require 'al-misc)
 (require 'al-file)
 
 (defvar al/notification-sound
@@ -57,6 +58,7 @@ If the prefix argument is numerical, use it as the number of minutes."
   (al/timer-cancel)
   (setq al/timer
         (run-at-time seconds nil #'al/timer-notify (or msg "Break!")))
+  (al/timer-mode 1)
   (message "The timer has been set on %s."
            (format-time-string "%T" (timer--time al/timer))))
 
@@ -65,7 +67,8 @@ If the prefix argument is numerical, use it as the number of minutes."
   (when (and al/notification-sound
              (require 'al-sound nil t))
     (al/play-sound al/notification-sound))
-  (notifications-notify :title "Timer" :body message))
+  (notifications-notify :title "Timer" :body message)
+  (al/timer-mode -1))
 
 (defun al/timer-funcall-on-active-timer (fun &optional silent)
   "Call function FUN if current timer is active.
@@ -99,11 +102,54 @@ Return nil if `al/timer' is not a proper timer."
 (defun al/timer-cancel ()
   "Cancel current timer."
   (interactive)
+  (al/timer-mode -1)
   (al/timer-funcall-on-active-timer
    (lambda (sec)
      (cancel-timer al/timer)
      (setq al/timer nil)
      (message "The timer has been cancelled."))))
+
+
+;;; Timer in the mode line
+
+(defvar al/timer-mode-line-update-time 3
+  "Time (in seconds) to update the mode line.")
+
+(defvar al/timer-mode-line-timer nil)
+
+(defvar al/timer-mode-line-string "")
+;; (put 'al/timer-mode-line-string 'risky-local-variable t)
+
+(defun al/timer-update-mode-line ()
+  (al/timer-funcall-on-active-timer
+   (lambda (sec)
+     (setq al/timer-mode-line-string
+           (concat " 🕒 "
+                   (format-time-string al/timer-format
+                                       (seconds-to-time sec)))))
+   (force-mode-line-update)))
+
+(define-minor-mode al/timer-mode
+  "Toggle displaying timer in the mode line."
+  :global t
+  (when al/timer-mode-line-timer
+    (cancel-timer al/timer-mode-line-timer))
+  (setq al/timer-mode-line-string "")
+  (if al/timer-mode
+      ;; Turn on.
+      (progn
+        (if global-mode-string
+            (al/add-to-list-after 'global-mode-string ""
+                                  'al/timer-mode-line-string)
+          (setq global-mode-string '("" al/timer-mode-line-string)))
+        (setq al/timer-mode-line-timer
+              (run-with-timer 0 al/timer-mode-line-update-time
+                              #'al/timer-update-mode-line)))
+    ;; Turn off.
+    (setq global-mode-string
+          (remove 'al/timer-mode-line-string
+                  global-mode-string)))
+  (force-mode-line-update))
 
 (provide 'al-notification)
 
