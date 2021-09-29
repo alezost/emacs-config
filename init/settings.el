@@ -62,8 +62,8 @@
    ido-enable-flex-matching t
    ido-create-new-buffer 'always
    ido-decorations
-   '("\n─► " "" "\n   " "\n   ..." "[" "]" " [No match]" " [Matched]"
-     " [Not readable]" " [Too big]" " [Confirm]" "\n─► " " ◄─"))
+   '("\n ● " "" "\n   " "\n   ..." "[" "]" " [No match]" " [Matched]"
+     " [Not readable]" " [Too big]" " [Confirm]" "\n ● " " ●"))
 
   (defconst al/ido-common-keys
     '(("C-l"    . ido-toggle-ignore)
