@@ -19,6 +19,24 @@
 
 (require 'cl-lib)
 
+(defun al/time-string-to-seconds (str)
+  ;; This function originates from `org-emms-time-string-to-seconds'
+  ;; (from `org-emms' package).
+  "Convert timestring STR to a number of seconds.
+STR can have one of the following formats:
+- SS
+- MM:SS
+- HH:MM:SS
+"
+  (save-match-data
+    (if (string-match "\\([0-9]+:\\)?\\([0-9]+\\):\\([0-9]+\\)" str)
+	(let ((h (if (match-beginning 1)
+                     (string-to-number (match-string 1 str))
+                   0))
+	      (m (string-to-number (match-string 2 str)))
+	      (s (string-to-number (match-string 3 str))))
+	  (+ (* h 3600) (* m 60) s))
+      (string-to-number str))))
 
 (defun al/next-element (list &optional element)
   "Return next element from LIST.

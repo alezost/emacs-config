@@ -19,6 +19,7 @@
 
 (require 'cl-lib)
 (require 'al-text-cmd)
+(require 'al-misc) ; for `al/time-string-to-seconds'
 (require 'org)
 (require 'org-table)
 
@@ -130,8 +131,13 @@ row."
   "Browse youtube video or playlist with ID from `org-mode'."
   (if (string-match-p "\\`PL" id)
       (browse-url (concat "https://www.youtube.com/playlist?list=" id))
-    ;; TODO add time position
-    (browse-url (concat "https://www.youtube.com/watch?v=" id))))
+    (cl-multiple-value-bind (id time)
+        (split-string id "::")
+      (browse-url
+       (concat "https://www.youtube.com/watch?v="
+               id
+               (and time (concat "&t=" (number-to-string
+                                        (al/time-string-to-seconds time)))))))))
 
 (org-link-set-parameters
  "yt"
