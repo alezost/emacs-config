@@ -185,7 +185,9 @@ will do the right thing."
 (with-eval-after-load 'pdf-view
   (al/bind-keys
    :map pdf-view-mode-map
-   ("h" . pdf-view-previous-page-command))
+   ("h" . pdf-view-previous-page-command)
+   ("n" . pdf-view-next-page-command)
+   ("c" . pdf-view-themed-minor-mode))
   (add-hook 'pdf-view-mode-hook 'pdf-tools-enable-minor-modes)
   (require 'org-pdfview nil t))
 
@@ -193,11 +195,11 @@ will do the right thing."
   (al/clean-map 'pdf-outline-minor-mode-map)
   (al/bind-keys
    :map pdf-outline-minor-mode-map
-   ("c" . pdf-outline))
+   ("i" . pdf-outline))
 
   (defconst al/pdf-outline-buffer-keys
     '(("TAB" . outline-cycle)
-      ("c" . pdf-outline-select-pdf-window)
+      ("i" . pdf-outline-select-pdf-window)
       ("u" . pdf-outline-follow-link)
       ("d" . pdf-outline-display-link)
       ("q" . quit-window))
