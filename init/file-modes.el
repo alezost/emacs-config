@@ -182,13 +182,25 @@ will do the right thing."
 (setq pdf-tools-handle-upgrades nil)
 
 (al/autoload "pdf-view" pdf-view-mode)
+
 (with-eval-after-load 'pdf-view
+  (setq-default pdf-view-display-size 'fit-page)
+  (setq pdf-view-mode-hook
+        '(pdf-history-minor-mode
+          pdf-isearch-minor-mode
+          pdf-links-minor-mode
+          pdf-misc-minor-mode
+          pdf-outline-minor-mode
+          pdf-misc-context-menu-minor-mode
+          pdf-cache-prefetch-minor-mode
+          pdf-occur-global-minor-mode))
+
   (al/bind-keys
    :map pdf-view-mode-map
    ("h" . pdf-view-previous-page-command)
    ("n" . pdf-view-next-page-command)
    ("c" . pdf-view-themed-minor-mode))
-  (add-hook 'pdf-view-mode-hook 'pdf-tools-enable-minor-modes)
+
   (require 'org-pdfview nil t))
 
 (with-eval-after-load 'pdf-outline
