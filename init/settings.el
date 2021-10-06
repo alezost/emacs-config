@@ -572,6 +572,14 @@
    `((darts (sql-product 'postgres)
             (sql-server "")
             (sql-database "darts")
+            (sql-user ,user-login-name))
+     (ptmp  (sql-product 'postgres)
+            (sql-server "")
+            (sql-database "tmp")
+            (sql-user ,user-login-name))
+     (mtmp  (sql-product 'mariadb)
+            (sql-server "")
+            (sql-database "tmp")
             (sql-user ,user-login-name))))
 
   (defconst al/sql-keys
