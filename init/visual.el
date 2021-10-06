@@ -1,6 +1,6 @@
 ;;; visual.el --- Visual settings: fonts, themes, mode-line, …  -*- lexical-binding: t -*-
 
-;; Copyright © 2012–2018 Alex Kost
+;; Copyright © 2012–2021 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -226,6 +226,7 @@
      (eldoc-mode                 ""             eldoc)
      (edebug-mode                " 🔧"           edebug)
      (counsel-mode               ""             counsel)
+     (pdf-view-themed-minor-mode ""             pdf-view)
 
      (gnus-topic-mode            " T"           gnus-topic)
      (gnus-dired-mode            " 𝗚"           gnus-dired)
