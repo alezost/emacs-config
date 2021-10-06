@@ -65,3 +65,8 @@ alias g goto $1
 alias temperature sudo hddtemp /dev/sd[ab]
 alias texet mount /mnt/texet ; dired /mnt/texet
 alias gc guile-compile $*
+
+alias y youtube-dl $*
+alias yg youtube-dl -f22 $*
+alias yb youtube-dl -f18 $*
+alias ya youtube-dl -f140 $*
