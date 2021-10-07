@@ -197,8 +197,8 @@ will do the right thing."
 
   (al/bind-keys
    :map pdf-view-mode-map
-   ("h" . pdf-view-previous-page-command)
-   ("n" . pdf-view-next-page-command)
+   ("h" . al/pdf-view-previous-page)
+   ("n" . al/pdf-view-next-page)
    ("c" . pdf-view-themed-minor-mode))
 
   (require 'org-pdfview nil t))
