@@ -560,6 +560,18 @@
     "Alist of auxiliary keys for `texinfo-mode'.")
   (al/bind-keys-from-vars 'texinfo-mode-map 'al/texinfo-keys))
 
+(al/bind-key "w" which-key-mode ctl-x-map)
+(with-eval-after-load 'which-key
+  (setq
+   which-key-use-C-h-commands nil
+   which-key-separator " "
+   which-key-prefix-prefix ""
+   which-key-idle-delay 0.8
+   which-key-idle-secondary-delay 0.1
+   which-key-add-column-padding 2
+   which-key-max-display-columns 5))
+(al/add-after-init-hook 'which-key-mode)
+
 
 ;;; SQL
 
