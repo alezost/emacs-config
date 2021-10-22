@@ -234,7 +234,7 @@
       ("C-l"   (ibuffer-update t))
 
       ("z"   . ibuffer-unmark-forward)
-      ("Z"     (ibuffer-unmark-all 0))
+      ("Z"     (ibuffer-unmark-all ?\r))
       ("* o" . ibuffer-mark-old-buffers))
     "Alist of auxiliary keys for `ibuffer-mode-map'.")
   (al/bind-keys-from-vars 'ibuffer-mode-map 'al/ibuffer-keys)
