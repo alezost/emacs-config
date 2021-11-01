@@ -39,7 +39,7 @@ With prefix, prompt for connection."
    (list (if current-prefix-arg
              (sql-read-connection "Connection: ")
            (caar sql-connection-alist))))
-  (let ((buffer (sql-find-sqli-buffer nil conn)))
+  (let ((buffer (sql-find-sqli-buffer)))
     (if buffer
         (al/display-buffer buffer)
       (sql-connect conn))))
