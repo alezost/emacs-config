@@ -1,6 +1,6 @@
 ;;; al-buffer.el --- Additional functionality for working with buffers
 
-;; Copyright © 2013–2020 Alex Kost
+;; Copyright © 2013–2021 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -109,6 +109,78 @@ message for a case when FUN does not return a string."
   (interactive)
   (al/funcall-to-kill-ring
    (lambda () default-directory) "%s"))
+
+
+;;; Switching to previous buffers
+
+(defvar al/switch-buffer-map (make-sparse-keymap))
+(defvar al/original-buffer nil)
+(defvar al/previous-buffers nil)
+(defvar al/next-buffers nil)
+
+(defvar al/skip-buffer-checkers
+  '("\\` \\*Minibuf"
+    get-buffer-window)
+  "List of checkers for `al/skip-buffer'.
+Each element should be either a function that takes a buffer as
+its argument, or a string which is a regexp to match a buffer
+name.")
+
+(defun al/skip-buffer (buffer)
+  "Return non-nil, if BUFFER should be ignored."
+  (cl-find-if
+   (lambda (checker)
+     (cond
+      ((stringp checker)
+       (string-match-p checker (buffer-name buffer)))
+      ((functionp checker)
+       (funcall checker buffer))
+      (t
+       (message "Wrong checker: %s" checker)
+       nil)))
+   al/skip-buffer-checkers))
+
+(defun al/switch-to-prev-buffer ()
+  "Switch to previous buffer."
+  (interactive)
+  (let ((buf (pop al/previous-buffers)))
+    (if (or (null buf)
+            (al/skip-buffer buf))
+        (al/switch-to-prev-buffer)
+      (push (current-buffer) al/next-buffers)
+      (switch-to-buffer buf)
+      (set-transient-map al/switch-buffer-map))))
+
+(defun al/switch-to-next-buffer ()
+  "Switch to next buffer."
+  (interactive)
+  (let ((buf (pop al/next-buffers)))
+    (if buf
+        (progn
+          (push (current-buffer) al/previous-buffers)
+          (switch-to-buffer buf))
+      (message "The first buffer is reached.")))
+  (set-transient-map al/switch-buffer-map))
+
+(defun al/switch-to-other-buffer ()
+  "Switch between `al/original-buffer' and the current buffer ."
+  (interactive)
+  (if (eq (current-buffer) al/original-buffer)
+      (al/switch-to-previous-buffer)
+    (switch-to-buffer al/original-buffer)
+    (set-transient-map al/switch-buffer-map)))
+
+;;;###autoload
+(defun al/switch-to-previous-buffer ()
+  "Switch to the previously selected buffer.
+This is similar to `mode-line-other-buffer' but with a transient
+`al/switch-buffer-map' keymap."
+  (interactive)
+  (setq
+   al/original-buffer (current-buffer)
+   al/next-buffers nil
+   al/previous-buffers (buffer-list))
+  (al/switch-to-prev-buffer))
 
 
 ;;; Switching to some buffers

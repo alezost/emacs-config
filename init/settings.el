@@ -193,9 +193,15 @@
 
 ;;; Working with buffers: ibuffer, uniquify, …
 
+(with-eval-after-load 'al-buffer
+  (al/bind-keys
+    :map al/switch-buffer-map
+    ("M-b" . al/switch-to-other-buffer)
+    ("M-B" . al/switch-to-prev-buffer)))
+
 (al/bind-keys*
- ("M-b" . mode-line-other-buffer)
- ("C-M-b" (find-file (al/notes-dir-file "bookmarks.org"))))
+  ("M-b" . al/switch-to-previous-buffer)
+  ("C-M-b" (find-file (al/notes-dir-file "bookmarks.org"))))
 
 (al/bind-keys*
  :prefix-map al/buffer-map
