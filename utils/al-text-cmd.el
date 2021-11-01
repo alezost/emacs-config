@@ -265,6 +265,7 @@ Use message MSG in a prompt."
 
 ;;;###autoload
 (defun al/delete-horizontal-space (&optional direction)
+  ;; Originates from `delete-horizontal-space'.
   "Delete all spaces and tabs around point.
 If DIRECTION is positive, delete them after point,
 if it's negative - delete before point."
