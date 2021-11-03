@@ -1,6 +1,6 @@
 ;;; net.el --- Browsing, mail, chat, network utils; w3m, wget, …
 
-;; Copyright © 2014–2019 Alex Kost
+;; Copyright © 2014–2021 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -201,6 +201,7 @@
    gnus-treat-display-smileys nil
    mm-text-html-renderer 'gnus-w3m
    mm-inline-text-html-with-images t
+   mm-discouraged-alternatives '("text/html" "text/richtext")
    gnus-gcc-mark-as-read t)
 
   ;; Wrap text in gnus-article buffers by words.
