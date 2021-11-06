@@ -42,6 +42,7 @@
 (setq org-export-backends
       '(ascii html icalendar latex odt texinfo man))
 (with-eval-after-load 'org
+  (require 'org-tempo nil t)
   (when (require 'org-emms nil t)
     (when (require 'al-org-emms nil t)
       (advice-add 'org-emms-play :override #'al/org-emms-play)))
