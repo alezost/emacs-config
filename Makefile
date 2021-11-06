@@ -1,6 +1,6 @@
 # Makefile
 
-# Copyright (C) 2016, 2019 Alex Kost <alezost@gmail.com>
+# Copyright (C) 2016, 2019, 2021 Alex Kost <alezost@gmail.com>
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ MY_ELPA_DIR = $(CURDIR)/packages
 EMACS_ELPA_DIR = $(CURDIR)/data/elpa
 GUIX_DIR = $(HOME)/.guix-profiles/emacs/emacs/share/emacs/site-lisp
 GUIX_ELPA_DIR = $(GUIX_DIR)/guix.d
-SLIME_DIR = $(shell find "$(HOME)/.quicklisp/dists/quicklisp/software" -mindepth 1 -maxdepth 1 -type d -name "slime*")
+SLIME_DIR = $(shell find "$(HOME)/.quicklisp/dists/quicklisp/software" -mindepth 1 -maxdepth 1 -type d -name "slime*" | head -n1)
 SLIME_CONTRIB_DIR = $(SLIME_DIR)/contrib
 
 L_dirs = $(shell test -d $(1) &&				\
