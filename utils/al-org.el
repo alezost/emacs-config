@@ -143,6 +143,24 @@ row."
  "yt"
  :follow #'al/org-browse-youtube)
 
+;; There is `org-pdftools' package
+;; <https://github.com/fuxialexander/org-pdftools> but it does too much.
+;; All I need is to open a [[pdf:<file>::<page>]] org link.
+
+(declare-function pdf-view-goto-page "pdf-view")
+
+(defun al/org-open-pdf (link)
+  "Open LINK using `pdf-view-mode'."
+  (cl-multiple-value-bind (file page)
+      (split-string link "::")
+    (org-open-file file 'in-emacs)
+    (when page
+      (pdf-view-goto-page (string-to-number page)))))
+
+(org-link-set-parameters
+ "pdf"
+ :follow #'al/org-open-pdf)
+
 (provide 'al-org)
 
 ;;; al-org.el ends here

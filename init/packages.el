@@ -83,7 +83,6 @@
      (date-at-point      :fetcher git :url ,(al/emacs-repo "date-at-point"))
      (journal            :fetcher git :url ,(al/emacs-repo "journal"))
      pcmpl-args
-     org-pdfview
      org-emms
      (dictem             :fetcher github :repo "cheusov/dictem")
      google-translate

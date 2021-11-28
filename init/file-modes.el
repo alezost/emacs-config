@@ -173,10 +173,6 @@ will do the right thing."
       (sleep-for 1))
     (advice-add 'org-emms-make-link :before #'al/org-emms-sync-time)))
 
-(al/autoload "org-pdfview"
-  org-pdfview-open
-  org-pdfview-export)
-
 (with-eval-after-load 'org-ref
   (defvar al/org-ref-cite-keys
     '("H-o" "H-u" "H-e"))
