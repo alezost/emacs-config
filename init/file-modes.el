@@ -202,12 +202,12 @@ will do the right thing."
           pdf-occur-global-minor-mode))
 
   (al/bind-keys
-   :map pdf-view-mode-map
-   ("h" . al/pdf-view-previous-page)
-   ("n" . al/pdf-view-next-page)
-   ("c" . pdf-view-themed-minor-mode))
-
-  (require 'org-pdfview nil t))
+    :map pdf-view-mode-map
+    ("h" . al/pdf-view-previous-page)
+    ("n" . al/pdf-view-next-page)
+    ("c" . pdf-view-themed-minor-mode)
+    ([down-mouse-1] . al/pdf-view-select-region)
+    ([double-mouse-1] . al/pdf-view-select-word)))
 
 (with-eval-after-load 'pdf-outline
   (al/clean-map 'pdf-outline-minor-mode-map)

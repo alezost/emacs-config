@@ -40,6 +40,41 @@ the first page."
   (interactive "p")
   (al/pdf-view-next-page (- n)))
 
+
+;;; Copying text with mouse
+
+(defun al/pdf-view-kill-ring-save ()
+  "Copy the current region to the `kill-ring'.
+This is similar to `pdf-view-kill-ring-save' but without
+deactivating the region."
+  (interactive)
+  (when (pdf-view-active-region-p)
+    (let ((text (mapconcat 'identity (pdf-view-active-region-text) "\n")))
+      (kill-new text)
+      (message "Copied: «%s»" text))))
+
+(defun al/pdf-view-select-region (event)
+  "Select a region and copy it to `kill-ring'."
+  (interactive "@e")
+  (pdf-view-mouse-set-region event)
+  (al/pdf-view-kill-ring-save))
+
+;; Originates from
+;; <https://emacs.stackexchange.com/questions/52457/select-a-word-in-a-pdf-by-double-clicking-on-it-with-pdf-tools>
+(defun al/pdf-view-select-word (event)
+  "Select word at mouse and copy it to `kill-ring'."
+  (interactive "@e")
+  (let* ((posn (event-start event))
+         (xy (posn-object-x-y posn))
+         (size (pdf-view-image-size))
+         (page (pdf-view-current-page))
+         (x (/ (car xy) (float (car size))))
+         (y (/ (cdr xy) (float (cdr size)))))
+    (setq pdf-view-active-region
+          (pdf-info-getselection page (list x y x y) 'word))
+    (pdf-view-display-region pdf-view-active-region)
+    (al/pdf-view-kill-ring-save)))
+
 (provide 'al-pdf)
 
 ;;; al-pdf.el ends here
