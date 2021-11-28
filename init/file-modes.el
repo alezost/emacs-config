@@ -190,6 +190,10 @@ will do the right thing."
 (al/autoload "pdf-view" pdf-view-mode)
 
 (with-eval-after-load 'pdf-view
+  (when (require 'al-pdf nil t)
+    (advice-add 'pdf-view-deactivate-region
+      :override 'al/pdf-view-deactivate-region))
+
   (setq-default pdf-view-display-size 'fit-page)
   (setq pdf-view-mode-hook
         '(pdf-history-minor-mode

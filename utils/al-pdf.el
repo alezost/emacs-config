@@ -75,6 +75,14 @@ deactivating the region."
     (pdf-view-display-region pdf-view-active-region)
     (al/pdf-view-kill-ring-save)))
 
+(defun al/pdf-view-deactivate-region ()
+  "Deactivate the region but do not redisplay the pages.
+This is similar to `pdf-view-deactivate-region' but better."
+  (interactive)
+  (when pdf-view-active-region
+    (setq pdf-view-active-region nil)
+    (deactivate-mark)))
+
 (provide 'al-pdf)
 
 ;;; al-pdf.el ends here
