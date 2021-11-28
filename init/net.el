@@ -112,6 +112,11 @@
     (al/w3m-bind-number-keys 'al/w3m-switch-to-buffer)
     (al/w3m-bind-number-keys 'al/w3m-kill-buffer "k")))
 
+(with-eval-after-load 'w3m-save
+  (setq
+   w3m-save-buffer-html-only t
+   w3m-save-buffer-directory (al/download-dir-file "html")))
+
 (with-eval-after-load 'w3m-form
   (defconst al/w3m-form-keys
     '(("u" . w3m-form-input-select-set))
