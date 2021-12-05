@@ -469,6 +469,7 @@
    ("i" (info "dir"))
    ("c" (info "cl"))
    ("e" (info "elisp"))
+   ("s" (info (al/src-dir-file "stumpwm/stumpwm.info")))
    ("o" (info "org"))
    ("g" (info "guile"))
    ("x" (info "guix"))
