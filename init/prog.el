@@ -270,8 +270,9 @@
           #'al/geiser-repl-buffer-name)))
 
 (with-eval-after-load 'geiser-impl
-  (setq-default geiser-scheme-implementation 'guile)
-  (setq geiser-active-implementations '(guile)))
+  ;; (setq-default geiser-scheme-implementation 'guile)
+  (setq geiser-active-implementations '(guile racket))
+  (geiser-implementation-extension 'racket "rkt[dl]?"))
 
 (with-eval-after-load 'geiser-doc
   (defconst al/geiser-doc-keys
