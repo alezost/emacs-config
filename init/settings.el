@@ -742,9 +742,14 @@
  inhibit-startup-screen t
  find-function-C-source-directory (al/src-dir-file "emacs-git/src"))
 
-;; Do not pop up the *Warnings* buffer when something long is executed
-;; in *shell*.
-(setq warning-suppress-types '((undo discard-info)))
+(setq
+ ;; `bibtex-completion-get-entry1' uses :warning as a TYPE instead of
+ ;; LEVEL (TODO this should be reported).  So it cannot be suppressed;
+ ;; that's why I just ignore all the warnings.
+ warning-minimum-level :error
+ warning-suppress-types      ; do not pop up the *Warnings* buffer when:
+ '(;; something long is executed in *shell*.
+   (undo discard-info)))
 
 (electric-indent-mode 0)
 
