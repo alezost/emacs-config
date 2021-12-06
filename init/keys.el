@@ -153,6 +153,10 @@
  ("<M-XF86New>" . kmacro-edit-macro)
  ("H-m A"         (kmacro-call-macro 0))
 
+ ("<C-kp-add>"      . text-scale-increase)
+ ("<C-kp-subtract>" . text-scale-decrease)
+ ("<C-kp-multiply>"   (text-scale-set 0))
+
  ("<f5>"        . compile)
  ("C-="         . describe-char)
  ("C-c x"       . exit-recursive-edit)
