@@ -106,6 +106,10 @@
  delete-old-versions t
  vc-make-backup-files t)
 
+(al/eval-after-init
+  (advice-add 'file-newer-than-file-p
+    :around #'al/check-file-name-length))
+
 (when (require 'al-backup nil t)
   (setq
    al/backup-ignored-regexps

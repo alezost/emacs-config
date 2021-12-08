@@ -103,6 +103,22 @@ contents of each file."
         (write-region nil nil out-file))
     (error "Give me more than 1 file to append")))
 
+(defun al/check-file-name-length (fun file1 file2)
+  ;; Evaluate: (file-newer-than-file-p (make-string 257 ?a) "")
+  ;; and it gives the following error:
+  ;;
+  ;;   Getting attributes: File name too long
+  ;;
+  ;; This is problematic because `after-find-file' calls
+  ;; `file-newer-than-file-p' to check auto-save file, which may have a
+  ;; VERY LONG name.
+  "Call FUN if FILE1 and FILE2 are not too long.
+This function is intendend to be used as an 'around' advice for
+`file-newer-than-file-p'."
+  (and (< 257 (length file1))
+       (< 257 (length file2))
+       (funcall fun file1 file2)))
+
 (provide 'al-file)
 
 ;;; al-file.el ends here
