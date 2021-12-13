@@ -1,6 +1,6 @@
 ;;; mmedia.el --- Using multimedia stuff inside Emacs
 
-;; Copyright © 2014–2019 Alex Kost
+;; Copyright © 2014–2021 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -70,7 +70,6 @@
 (with-eval-after-load 'emms
   (require 'emms-source-file)
   (require 'emms-source-playlist)
-  (require 'emms-player-mplayer)
   (require 'emms-info)
   (require 'emms-playlist-mode)
   (require 'emms-mark)
@@ -93,9 +92,7 @@
    emms-show-format "%s"
    emms-source-file-default-directory al/music-dir)
 
-  (setq emms-player-list '(emms-player-mplayer))
-  (when (and (executable-find "mpv")
-             (require 'al-emms-mpv nil t))
+  (when (require 'al-emms-mpv nil t)
     (push 'emms-player-mpv emms-player-list))
 
   ;; Do not add `emms-cache-save' to `kill-emacs-hook'.
