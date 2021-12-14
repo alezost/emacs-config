@@ -92,7 +92,12 @@
    emms-show-format "%s"
    emms-source-file-default-directory al/music-dir)
 
-  (when (require 'al-emms-mpv nil t)
+  (when (require 'emms-player-mpv nil t)
+    (require 'al-emms-mpv nil t)
+    (setq emms-player-mpv-parameters '("--no-terminal"))
+    (emms-player-set emms-player-mpv 'regex
+                     (apply #'emms-player-simple-regexp
+                            (cons "oga" emms-player-base-format-list)))
     (push 'emms-player-mpv emms-player-list))
 
   ;; Do not add `emms-cache-save' to `kill-emacs-hook'.

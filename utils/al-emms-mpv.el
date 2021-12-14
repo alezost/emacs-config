@@ -1,6 +1,6 @@
 ;;; al-emms-mpv.el --- Additional functionality for using EMMS with mpv  -*- lexical-binding: t -*-
 
-;; Copyright © 2015–2019 Alex Kost
+;; Copyright © 2015–2021 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 
 ;;; Code:
 
-(require 'emms-player-simple-mpv)
+(require 'emms-player-mpv)
 
 (defun al/emms-mpv-playing-radio? ()
   "Return non-nil, if current player is 'mpv' and current track
@@ -32,16 +32,14 @@ type is 'url' or 'streamlist'."
 (defun al/emms-mpv-call-with-property (property function &optional fallback)
   "Call FUNCTION on the value of PROPERTY of the current mpv track.
 If there is no such PROPERTY, call FALLBACK function without arguments."
-  (emms-player-simple-mpv-tq-enqueue
+  (emms-player-mpv-cmd
    (list "get_property" property)
-   nil
-   (lambda (_ answer)
-     (if (emms-player-simple-mpv-tq-success-p answer)
-         (funcall function
-                  (emms-player-simple-mpv-tq-assq-v 'data answer))
-       (if fallback
-           (funcall fallback)
-         (message "mpv refuses to return '%s' property" property))))))
+   (lambda (value error)
+     (if error
+         (if fallback
+             (funcall fallback)
+           (message "mpv refuses to return '%s' property" property))
+       (funcall function value)))))
 
 (defun al/emms-mpv-call-with-metadata (function)
   "Call FUNCTION on the metadata of the current mpv track."
@@ -50,10 +48,9 @@ If there is no such PROPERTY, call FALLBACK function without arguments."
    (lambda (value)
      (funcall function value))))
 
-(defun al/emms-mpv-run-command (command &optional closure function)
+(defun al/emms-mpv-run-command (command &optional handler)
   "Run mpv COMMAND for the current EMMS mpv process.
-This is a wrapper for `emms-player-simple-mpv-tq-enqueue' (just
-to make CLOSURE and FUNCTION optional arguments).
+This is a wrapper for `emms-player-mpv-cmd'.
 
 Command is what may be put in mpv conf-file, except it
 should be a list of values, e.g.:
@@ -61,11 +58,11 @@ should be a list of values, e.g.:
   (\"cycle\" \"mute\")
   (\"show_text\" \"${playback-time}\")
   (\"add\" \"speed\" 0.2)"
-  (emms-player-simple-mpv-tq-enqueue
+  (emms-player-mpv-cmd
    ;; OSD prefixes are disabled for JSON API by default:
    ;; <https://github.com/mpv-player/mpv/issues/4517>.
    (cons "osd-auto" command)
-   closure (or function #'ignore)))
+   (or handler #'ignore)))
 
 (defun al/emms-mpv-show-property (property)
   "Display PROPERTY of the current TRACK."
@@ -133,8 +130,7 @@ notification for an audio track."
   (al/emms-mpv-run-command
    ;; Unlike "add" or "multiply", "set" requires a string, not a number!
    '("set" "speed" "1")
-   nil
-   (lambda (_closure _answer)
+   (lambda (_value _error)
      (al/emms-mpv-show-property "speed"))))
 
 (defun al/emms-mpv-speed-up (&optional value)
@@ -145,9 +141,16 @@ Interactively with prefix, prompt for VALUE."
      (list (read-number "Increase speed by: " 0.1))))
   (al/emms-mpv-run-command
    (list "add" "speed" (number-to-string (or value 0.1)))
-   nil
-   (lambda (_closure _answer)
+   (lambda (_value _error)
      (al/emms-mpv-show-property "speed"))))
+
+(defun al/emms-mpv-speed-down (&optional value)
+  "Decrease playback speed by VALUE (0.1 by default).
+Interactively with prefix, prompt for VALUE."
+  (interactive
+   (when current-prefix-arg
+     (list (read-number "Decrease speed by: " 0.1))))
+  (al/emms-mpv-speed-up (- (or value 0.1))))
 
 (defun al/emms-mpv-switch-volume (&optional value)
   "Set volume to VALUE or switch between default values.
@@ -162,17 +165,8 @@ If prefix argument is numerical, use it for VALUE."
    (if value
        (list "set" "volume" (number-to-string value))
      '("cycle-values" "volume" "50" "90" "130" "170"))
-   nil
-   (lambda (_closure _answer)
+   (lambda (_value _error)
      (al/emms-mpv-show-property "volume"))))
-
-(defun al/emms-mpv-speed-down (&optional value)
-  "Decrease playback speed by VALUE (0.1 by default).
-Interactively with prefix, prompt for VALUE."
-  (interactive
-   (when current-prefix-arg
-     (list (read-number "Decrease speed by: " 0.1))))
-  (al/emms-mpv-speed-up (- (or value 0.1))))
 
 (defvar emms-playing-time)
 
@@ -186,21 +180,6 @@ Interactively with prefix, prompt for VALUE."
        (message "Old playing time: %d; new time: %d"
                 emms-playing-time sec)
        (setq emms-playing-time sec)))))
-
-(define-emms-simple-player-mpv mpv
-  '(file url streamlist playlist)
-  (concat "\\`\\(http\\|mms\\)://\\|"
-          (emms-player-simple-regexp
-           "ogg" "mp3" "wav" "mpg" "mpeg" "wmv" "wma"
-           "mov" "avi" "divx" "oga" "ogm" "ogv" "asf" "mkv"
-           "rm" "rmvb" "mp4" "flac" "vob" "m4a" "ape"
-           "flv" "webm"))
-  "mpv" "--no-terminal")
-
-(emms-player-simple-mpv-add-to-converters
- 'emms-player-mpv "." '(playlist)
- (lambda (track-name)
-   (format "--playlist=%s" track-name)))
 
 (provide 'al-emms-mpv)
 
