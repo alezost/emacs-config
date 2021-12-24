@@ -1,6 +1,6 @@
 ;;; text.el --- Working with text: editing, searching, …
 
-;; Copyright © 2014–2020 Alex Kost
+;; Copyright © 2014–2021 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -510,74 +510,6 @@
    ("M-." . company-select-previous)
    ("M-e" . company-select-next))
   (global-company-mode))
-
-
-;;; Yasnippet
-
-(al/autoload "yasnippet"
-  yas-new-snippet
-  yas-insert-snippet)
-(setq
- al/my-snippets-dir  (al/emacs-data-dir-file "snippets/my")
- al/yas-snippets-dir (al/emacs-data-dir-file "snippets/yas")
- ;; al/yas-snippets-dir (expand-file-name "yasnippet/snippets"
- ;;                                       quelpa-build-dir)
- yas-snippet-dirs (list al/my-snippets-dir al/yas-snippets-dir)
- yas-prompt-functions '(yas-ido-prompt))
-
-;; I do not use `yas-minor-mode' (or `yas-global-mode') because I don't
-;; want to see `yas--post-command-handler' in `post-command-hook'.  I
-;; just use yas functionality when I need to expand something without
-;; enabling the mode.
-(al/bind-keys
- ("<kanji>"   . al/yas-next-field-or-expand)
- ("<M-kanji>" . al/yas-exit-and-expand))
-(al/bind-keys
- :prefix-map al/yas-map
- :prefix-docstring "Map for yasnippet commands."
- :prefix "M-Y"
- ("M-Y" . yas-insert-snippet)
- ("f"   . yas-visit-snippet-file)
- ("r"     (yas--load-pending-jits))
- ("R"   . yas-reload-all)
- ("n"   . yas-new-snippet)
- ("l"   . yas-load-directory)
- ("d"   . yas-describe-tables)
- ("g"   . yas-global-mode)
- ("s"     (al/find-file
-           (expand-file-name "yasnippet/snippets/emacs-lisp-mode"
-                             quelpa-build-dir))))
-
-(with-eval-after-load 'yasnippet
-  (setq yas-indent-line 'fixed)
-  (setq yas-new-snippet-default "\
-# -*- mode: snippet; require-final-newline: nil -*-
-# contributor: Alex Kost
-# name: $1
-# key: $1
-# --
-$0")
-
-  ;; Allow any editing during working with a snippet.
-  (advice-add 'yas--on-protection-overlay-modification
-    :override 'ignore)
-
-  (al/bind-key "C-g" ((yas-exit-all-snippets) (keyboard-quit)))
-  (al/bind-keys
-   :map yas-minor-mode-map
-   ("<tab>") ("TAB"))
-  (al/bind-keys
-   :map yas-keymap
-   ("<kanji>"   . yas-next-field-or-maybe-expand)
-   ("<S-kanji>" . yas-prev-field)
-   ("M-<"       . yas-skip-and-clear-or-delete-char)
-   ("C-d") ("C-g") ("<tab>") ("TAB"))
-  (al/bind-keys
-   :map snippet-mode-map
-   ("C-c C-k" (kill-buffer nil)))
-
-  (yas--load-snippet-dirs)
-  (yas--load-pending-jits))
 
 
 ;;; Working with parentheses (paredit, smartparens)
