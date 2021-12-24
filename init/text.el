@@ -399,6 +399,34 @@
 (al/add-hook-maybe 'after-change-major-mode-hook
   'al/set-default-input-method)
 
+(al/bind-keys
+  ("C-\\"  (toggle-input-method t))
+  ("s-6"   (deactivate-input-method))
+  ("s-7"   (set-input-method "al/latin-prefix"))
+  ("s-8" . dvorak-russian-computer)
+  ("s-9" . dvorak-qwerty)
+  ("s-0"   (set-input-method "greek"))
+  ("s-M-7" (ispell-change-dictionary "en"))
+  ("s-M-8" (ispell-change-dictionary "ru-yeyo")))
+
+(al/bind-keys
+  :prefix-map al/lang-map
+  :prefix-docstring "Map for input methods."
+  :prefix "<kanji>"
+  ("<kanji>" (toggle-input-method t))
+  ("RET"     (toggle-input-method t))
+  ("SPC"     (deactivate-input-method))
+  ("C-d"   . describe-input-method)
+  ("l"       (set-input-method "al/latin-prefix"))
+  ("d"       (set-input-method "al/latin-prefix"))
+  ("g"       (set-input-method "greek"))
+  ("j"       (set-input-method "japanese"))
+  ("h"       (set-input-method "japanese-hiragana"))
+  ("k"       (set-input-method "japanese-katakana"))
+  ("t"       (set-input-method "TeX"))
+  ("r"     . dvorak-russian-computer)
+  ("q"     . dvorak-qwerty))
+
 (with-eval-after-load 'abbrev
   (define-abbrev-table 'global-abbrev-table
     '(("gos"  "GuixSD")

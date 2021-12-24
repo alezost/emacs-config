@@ -130,14 +130,6 @@
  ("H-u"         . undo)
  ("H-M-u"       . undo-only)
 
- ("C-\\"          (toggle-input-method t))
- ("s-6"           (deactivate-input-method))
- ("s-7"           (set-input-method "al/latin-prefix"))
- ("s-8"         . dvorak-russian-computer)
- ("s-9"         . dvorak-qwerty)
- ("s-0"           (set-input-method "greek"))
- ("s-M-7"         (ispell-change-dictionary "en"))
- ("s-M-8"         (ispell-change-dictionary "ru-yeyo"))
  ("C-M-c"       . calc)
 
  ("H-m H-m"     . kmacro-end-or-call-macro)
