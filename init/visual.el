@@ -116,7 +116,10 @@
           'alect-light))))
 
 
-;;; Mode line
+;;; Mode line and frame title
+
+(setq frame-title-format
+      '(al/server-running? server-name invocation-name))
 
 (defface al/mode-name
   '((((background light)) :foreground "#028902")
