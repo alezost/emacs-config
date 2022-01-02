@@ -540,6 +540,15 @@
   (global-company-mode))
 
 
+;;; TeX
+
+(with-eval-after-load 'tex-mode
+  (defconst al/tex-keys
+    '("C-j")
+    "Alist of auxiliary keys for `tex-mode-map'.")
+  (al/bind-keys-from-vars 'tex-mode-map 'al/tex-keys))
+
+
 ;;; Working with parentheses (paredit, smartparens)
 
 (al/autoload "paredit"
