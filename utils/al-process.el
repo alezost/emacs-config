@@ -1,17 +1,17 @@
 ;;; al-process.el --- Additional functionality for working with processs
 
-;; Copyright © 2013-2016 Alex Kost
+;; Copyright © 2013–2016, 2020 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
 ;; (at your option) any later version.
-
+;;
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-
+;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -26,6 +26,18 @@
                        (concat program "_output"))))
     (apply #'start-process
            process-name buffer-name program args)))
+
+(defvar al/process-locale "C"
+  "Default locale for `al/call-process'.")
+
+(defun al/call-process (program &optional infile destination display
+                                &rest args)
+  "Same as `call-process', but using `al/process-locale' instead
+of the current locale."
+  (let ((process-environment
+         (cons (concat "LC_ALL=" al/process-locale)
+               process-environment)))
+    (apply #'call-process program infile destination display args)))
 
 ;; Idea from
 ;; <http://stackoverflow.com/questions/11572934/how-do-i-kill-a-running-process-in-emacs>.
