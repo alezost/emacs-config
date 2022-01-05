@@ -566,7 +566,6 @@
     (setq-default erc-enable-logging 'al/erc-log-all-but-some-buffers)
     (setq
      erc-insert-timestamp-function 'al/erc-insert-timestamp
-     erc-view-log-timestamp-position 'left
      erc-generate-log-file-name-function
      'al/erc-log-file-name-network-channel)
     (setq
@@ -630,6 +629,13 @@
                                      erc-log-channels-directory)))
               'erc-view-log-mode)
         auto-mode-alist))
+
+(with-eval-after-load 'erc-view-log
+  (setq
+   erc-view-log-timestamp-regexp
+   (rx "[" (one-or-more (or digit ":")) "]")
+   erc-view-log-timestamp-position 'left
+   ))
 
 
 ;;; Debbugs
