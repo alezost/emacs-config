@@ -513,8 +513,7 @@
    erc-paranoid t)
 
   (defun al/erc-quit-part-reason (&rest _)
-    (concat "I live in GuixSD <http://www.gnu.org/s/guix>"
-            " and Emacs <http://www.gnu.org/s/emacs>"))
+    "I live in Emacs <http://www.gnu.org/s/emacs>")
   (setq
    erc-quit-reason 'al/erc-quit-part-reason
    erc-part-reason 'al/erc-quit-part-reason)
