@@ -431,7 +431,7 @@
 
 (with-eval-after-load 'abbrev
   (define-abbrev-table 'global-abbrev-table
-    '(("gos"  "GuixSD")
+    '(("gos"  "GuixOS")
       ("hhg"  "GNU/Linux")
       ("hhpr" "programming")
       ("hhy"  "yesterday")
