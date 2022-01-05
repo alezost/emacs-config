@@ -1,17 +1,17 @@
 ;;; al-server.el --- Code for working with Emacs server
 
-;; Copyright © 2014-2016 Alex Kost
+;; Copyright © 2014–2016, 2022 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
 ;; (at your option) any later version.
-
+;;
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-
+;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -44,9 +44,9 @@ If servers with all NAMES are running, do not start the server."
         (rest (cdr names)))
     (if (null name)
         (setq server-name "server-unused")
-      (setq server-name name)
-      (if (server-running-p)
+      (if (server-running-p name)
           (apply #'al/server-named-start rest)
+        (setq server-name name)
         (al/server-start)))))
 
 (provide 'al-server)
