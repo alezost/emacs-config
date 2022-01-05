@@ -20,6 +20,7 @@
 (require 'dired)
 (require 'dired-x)
 (require 'al-file)
+(require 'al-process)
 
 
 ;;; Navigating by files
@@ -85,7 +86,7 @@ If ARG is non-nil, do not use human readable format (size in bytes)."
                        (if arg "b" "h")))
         (files (dired-get-marked-files)))
     (with-temp-buffer
-      (apply #'call-process "du" nil t nil args files)
+      (apply #'al/call-process "du" nil t nil args files)
       (message "Size of all marked files: %s"
                (progn
                  (re-search-backward "\\(^.+\\)[[:blank:]]*total$")
