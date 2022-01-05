@@ -1,6 +1,6 @@
 ;;; file-modes.el --- Modes for various file types  -*- lexical-binding: t -*-
 
-;; Copyright © 2014–2021 Alex Kost
+;; Copyright © 2014–2022 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -54,6 +54,7 @@
    org-completion-use-ido t
    org-confirm-elisp-link-function nil
    org-src-fontify-natively t
+   org-fontify-quote-and-verse-blocks t
    org-return-follows-link t
    org-startup-folded "showall"
    org-tags-column -54
