@@ -1,6 +1,6 @@
 ;;; net.el --- Browsing, mail, chat, network utils; w3m, wget, …
 
-;; Copyright © 2014–2021 Alex Kost
+;; Copyright © 2014–2022 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -63,6 +63,8 @@
 
 (with-eval-after-load 'w3m
   (setq
+   w3m-add-user-agent nil
+   w3m-use-cookies nil
    w3m-confirm-leaving-secure-page nil
    w3m-use-title-buffer-name t  ; don't duplicate title in the mode-line
    w3m-show-graphic-icons-in-mode-line nil
