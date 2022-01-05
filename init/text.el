@@ -1,6 +1,6 @@
 ;;; text.el --- Working with text: editing, searching, …
 
-;; Copyright © 2014–2021 Alex Kost
+;; Copyright © 2014–2022 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -220,7 +220,9 @@
 
 (setq
  isearch-allow-scroll t
- isearch-lax-whitespace nil)
+ isearch-lax-whitespace nil
+ ;; "a" searches for "ä", "à", etc.
+ search-default-mode 'char-fold-to-regexp)
 (al/bind-keys
  :map isearch-mode-map
  ("M-s" . isearch-query-replace)
