@@ -1,6 +1,6 @@
 ;;; files.el --- Working with files; dired, sunrise-commander, …
 
-;; Copyright © 2014–2021 Alex Kost
+;; Copyright © 2014–2022 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -99,7 +99,7 @@
  backup-directory-alist
  `( ;;(,tramp-file-name-regexp . nil)
    (".*" . ,(al/emacs-data-dir-file "backup")))
- backup-by-copying t        ; overwrite backups, not originals files
+ backup-by-copying t        ; overwrite backups, not original files
  version-control t
  kept-old-versions 2
  kept-new-versions 4
@@ -107,8 +107,11 @@
  vc-make-backup-files t)
 
 (al/eval-after-init
-  (advice-add 'file-newer-than-file-p
-    :around #'al/check-file-name-length))
+  (when (require 'al-file nil t)
+    (advice-add 'file-newer-than-file-p :around #'al/check-file-name-length))
+  (when (require 'al-process nil t)
+    (advice-add 'insert-directory :around #'al/call-with-locale)
+    ))
 
 (when (require 'al-backup nil t)
   (setq

@@ -1,6 +1,6 @@
 ;;; al-process.el --- Additional functionality for working with processs
 
-;; Copyright © 2013–2016, 2020 Alex Kost
+;; Copyright © 2013–2016, 2020–2022 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -30,14 +30,28 @@
 (defvar al/process-locale "C"
   "Default locale for `al/call-process'.")
 
+(defun al/call-with-locale (fun &rest args)
+  "Call FUN with ARGS using `al/process-locale'.
+This function can be used as an 'around' advice.
+For example, `insert-directory' (used by `dired') calls
+`insert-directory-program' (\"ls -l\" more or less) and searches
+for \"total\" in its output to insert occupied and free disk
+space.  But \"total\" is obviously not available for non-English
+locales.  The following line should fix this problem.
+
+  (advice-add 'insert-directory :around #'al/call-with-locale)
+"
+  (let ((process-environment
+         (cons (concat "LC_ALL=" al/process-locale)
+               process-environment)))
+    (apply fun args)))
+
 (defun al/call-process (program &optional infile destination display
                                 &rest args)
   "Same as `call-process', but using `al/process-locale' instead
 of the current locale."
-  (let ((process-environment
-         (cons (concat "LC_ALL=" al/process-locale)
-               process-environment)))
-    (apply #'call-process program infile destination display args)))
+  (apply #'al/call-with-locale
+         #'call-process program infile destination display args))
 
 ;; Idea from
 ;; <http://stackoverflow.com/questions/11572934/how-do-i-kill-a-running-process-in-emacs>.
