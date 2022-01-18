@@ -1,6 +1,6 @@
 ;;; prog.el --- Programming modes and tools
 
-;; Copyright © 2014–2020 Alex Kost
+;; Copyright © 2014–2022 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -117,6 +117,25 @@
 
 ;;; SLIME
 
+;; This should be set before loading slime.
+(setq slime-contribs
+      '(slime-repl
+        slime-autodoc
+        ;; slime-editing-commands  ; Binds C-M-e to some rubbish
+        ;; slime-c-p-c             ; requires slime-editing-commands
+        slime-fancy-inspector
+        slime-fancy-trace
+        slime-fuzzy
+        slime-mdot-fu
+        slime-macrostep
+        slime-presentations
+        ;; slime-scratch
+        slime-references
+        slime-package-fu
+        slime-fontifying-fu
+        slime-trace-dialog
+        slime-indentation))
+
 ;; Use SLIME from quicklisp.
 (let* ((quicklisp-dir  (expand-file-name "~/.quicklisp"))
        (swank.txt-file (expand-file-name
@@ -130,8 +149,8 @@
            (slime-dir (file-name-directory
                        (expand-file-name swank.txt quicklisp-dir))))
       (al/add-to-load-path-maybe slime-dir)
-      (require 'slime-autoloads nil t))))
-(setq slime-contribs '(slime-fancy))
+      (al/autoload "slime" slime slime-mode slime-lisp-mode-hook)
+      (add-hook 'lisp-mode-hook 'slime-lisp-mode-hook))))
 
 ;; `al/slime-keys' is required for `al/erc-channel-config'
 (defconst al/slime-keys
