@@ -190,6 +190,11 @@
     "Alist of auxiliary keys for `slime-xref-mode'.")
   (al/bind-keys-from-vars 'slime-xref-mode-map 'al/slime-xref-keys)
 
+  (defconst al/slime-doc-keys
+    '(("C-d" . slime-documentation-lookup))
+    "Alist of auxiliary keys for `slime-doc-map'.")
+  (al/bind-keys-from-vars 'slime-doc-map 'al/slime-doc-keys)
+
   (al/bind-keys-from-vars 'slime-parent-map
     '(al/free-misc-keys al/slime-keys))
   (al/bind-keys-from-vars '(slime-mode-map slime-editing-map)))
