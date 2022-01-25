@@ -434,6 +434,7 @@
     '(("gos"  "GuixOS")
       ("hhg"  "GNU/Linux")
       ("hhpr" "programming")
+      ("hhl"  "LANG=C")
       ("hhy"  "yesterday")
       ("hhY"  "Yesterday")
       ("hh1"  "Monday")
