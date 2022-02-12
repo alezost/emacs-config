@@ -1,6 +1,6 @@
 ;;; keys.el --- Miscellaneous global key bindings and relative settings
 
-;; Copyright © 2013–2021 Alex Kost
+;; Copyright © 2013–2022 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -84,7 +84,8 @@
 
 (defconst al/button-keys
   '(("." . backward-button)
-    ("e" . forward-button))
+    ("e" . forward-button)
+    ("u" . push-button))
   "Alist of auxiliary keys for modes with buttons.")
 
 (defconst al/minibuffer-keys
