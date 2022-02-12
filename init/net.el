@@ -347,14 +347,12 @@
       ("V" . gnus-mime-view-part))
     "Alist of auxiliary keys for `gnus-mime-button-map'.")
   (al/bind-keys-from-vars 'gnus-article-mode-map
-    '(al/widget-button-keys al/gnus-article-keys))
+    '(al/button-keys al/gnus-article-keys))
   (al/bind-keys-from-vars 'gnus-url-button-map
-    '(al/widget-button-keys al/gnus-url-button-keys))
+    '(al/button-keys al/gnus-url-button-keys))
   (al/bind-keys-from-vars 'gnus-mime-button-map
-    '(al/widget-button-keys al/gnus-mime-button-keys))
-
-  (add-hook 'gnus-article-mode-hook
-            (lambda () (setq-local widget-button-face nil))))
+    '(al/button-keys al/gnus-mime-button-keys))
+  )
 
 (with-eval-after-load 'gnus-topic
   (setq
