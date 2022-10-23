@@ -173,18 +173,8 @@
           (emms-playlist-save 'native (al/music-dir-file "playlist"))))))
   (al/add-hook-maybe 'kill-emacs-hook 'al/emms-save-playlist))
 
-(with-eval-after-load 'emms-streams
-  (defconst al/emms-stream-keys
-    '(("." . emms-stream-previous-line)
-      ("e" . emms-stream-next-line)
-      ("u" . emms-stream-play))
-    "Alist of auxiliary keys for `emms-stream-mode-map'.")
-  (al/bind-keys-from-vars 'emms-stream-mode-map 'al/emms-stream-keys)
-  (al/add-hook-maybe 'emms-stream-hook
-    '(al/mode-name hl-line-mode)))
-
-(with-eval-after-load 'later-do
-  (setq later-do-interval 0.1))
+(with-eval-after-load 'emms-later-do
+  (setq emms-later-do-interval 0.1))
 
 (al/autoload "emms-cue" emms-info-cueinfo)
 (al/autoload "emms-info-libtag" emms-info-libtag)
