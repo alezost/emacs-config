@@ -120,7 +120,7 @@
   (defconst al/emms-playlist-keys
     '("r"
       ("SPC" . emms-pause)
-      ("S"   . emms-stop)
+      ("S"   . al/emms-save-playlist)
       ("Q"   . emms-stop)
       ("u"   . emms-playlist-mode-play-smart)
       ("j"   . emms-playlist-mode-goto-dired-at-point)
@@ -163,7 +163,15 @@
     t)
   (suppress-keymap emms-playlist-mode-map)
   (al/add-hook-maybe 'emms-playlist-mode-hook
-    '(al/mode-name hl-line-mode)))
+    '(al/mode-name hl-line-mode))
+
+  (defun al/emms-save-playlist ()
+    (interactive)
+    (let (emms-source-playlist-ask-before-overwrite)
+      (when emms-playlist-buffer
+        (with-current-buffer emms-playlist-buffer
+          (emms-playlist-save 'native (al/music-dir-file "playlist"))))))
+  (al/add-hook-maybe 'kill-emacs-hook 'al/emms-save-playlist))
 
 (with-eval-after-load 'emms-streams
   (defconst al/emms-stream-keys
