@@ -55,7 +55,7 @@
   (al/add-hook-maybe 'lisp-mode-hook
     '(al/imenu-add-sections
       al/lisp-add-defcommand-to-imenu))
-  (al/modify-page-break-syntax lisp--mode-syntax-table))
+  (al/modify-page-break-syntax lisp-mode-syntax-table))
 
 (with-eval-after-load 'elisp-mode
   (al/bind-keys-from-vars
