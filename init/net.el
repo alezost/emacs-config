@@ -179,7 +179,7 @@
    gnus-secondary-select-methods
    '((nnimap "gmail"
              (nnimap-address "imap.gmail.com")
-             (nnimap-server-port 993)
+             ;; (nnimap-server-port 'imaps)  ; this is default
              (nnimap-stream ssl))
      (nntp "gmane" (nntp-address "news.gmane.io"))))
 
