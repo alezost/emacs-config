@@ -405,7 +405,7 @@
  ("c" . al/magit-show-commit)
  ("s" . magit-status)
  ("l" . magit-log-current)
- ("u" . github-browse-file))
+ ("u" . browse-at-remote))
 
 (defconst al/magit-common-keys
   '(("v"   . magit-git-command)

@@ -1,6 +1,6 @@
 ;;; packages.el --- Emacs packages and interfaces to other package systems
 
-;; Copyright © 2014–2021 Alex Kost
+;; Copyright © 2014–2022 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -68,7 +68,6 @@
      (yasnippet          :fetcher github :repo "capitaomorte/yasnippet"
                          :files ("yasnippet.el"))
 
-     github-browse-file
      (shift-number       :fetcher git :url ,(al/emacs-repo "shift-number"))
      (pathify            :fetcher git :url ,(al/emacs-repo "pathify"))
      (point-pos          :fetcher git :url ,(al/emacs-repo "point-pos"))
@@ -88,6 +87,7 @@
      google-translate
      (emms-state         :fetcher git :url ,(al/emacs-repo "emms-state"))
      browse-kill-ring
+     browse-at-remote
      outline-magic
      markdown-mode
      syslog-mode
