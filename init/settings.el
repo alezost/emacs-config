@@ -325,6 +325,7 @@
             (let (geiser-repl-use-other-window)
               (switch-to-guile arg))))
  ("G"   . al/geiser-socket-connect)
+ ("h"   . al/haskell-interactive-switch-or-start)
  ("P"   . run-python)
  ("p"   . python-shell-switch-to-shell)
  ("L"   . lua-start-process)
