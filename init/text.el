@@ -389,10 +389,17 @@
              (require 'al-quail nil t))
     (setq al/default-input-method "al/latin-prefix")))
 
+(defvar al/default-input-method-modes
+  '(prog-mode
+    comint-mode
+    slime-repl-mode
+    haskell-interactive-mode)
+  "A list of major modes where default input method should be kept unchanged.")
+
 (defun al/set-default-input-method ()
   (when (and al/default-input-method
              (null (eq major-mode 'fundamental-mode))
-             (null (derived-mode-p 'prog-mode 'comint-mode 'slime-repl-mode))
+             (null (apply #'derived-mode-p al/default-input-method-modes))
              (null (string= al/default-input-method
                             current-input-method)))
     (set-input-method al/default-input-method)))
