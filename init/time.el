@@ -1,6 +1,6 @@
 ;;; time.el --- Time, calendar, diary, appointments, notifications, …
 
-;; Copyright © 2014–2016, 2018–2021 Alex Kost
+;; Copyright © 2014–2016, 2018–2022 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -123,7 +123,7 @@
      al/appt-notify-urgent-sound (al/sound-dir-file "bell.oga"))))
 
 (with-eval-after-load 'al-notification
-  (setq al/timer-format "%M min %S sec")
+  (setq al/timer-format "%Mm %Ss")
   (when (require 'al-file nil t)
     (al/setq-file
      al/notification-sound (al/sound-dir-file "alarm.wav"))))
