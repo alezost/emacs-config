@@ -895,6 +895,13 @@
     t)
   (add-hook 'tabulated-list-mode-hook 'hl-line-mode))
 
+(with-eval-after-load 'simple
+  (defconst al/process-menu-mode-keys
+    '(("C-k" . process-menu-delete-process))
+    "Alist of auxiliary keys for `process-menu-mode-map'.")
+  (al/bind-keys-from-vars 'process-menu-mode-map
+    'al/process-menu-mode-keys))
+
 (with-eval-after-load 'bui
   (defconst al/bui-keys
     '(("," . bui-history-back)
