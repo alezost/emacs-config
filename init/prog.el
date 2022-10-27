@@ -313,6 +313,33 @@
         '("~/.config/guile-daemon/run/socket")))
 
 
+;;; Haskell
+
+(defconst al/haskell-general-keys
+  '(("M-d" . haskell-mode-jump-to-def-or-tag))
+  "Alist of auxiliary keys for Haskell modes.")
+
+(with-eval-after-load 'haskell-mode
+  (defconst al/haskell-keys
+    '(("C-c C-z" . haskell-interactive-switch))
+    "Alist of auxiliary keys `haskell-mode-map'.")
+  (al/bind-keys-from-vars 'haskell-mode-map
+    '(al/haskell-general-keys al/haskell-keys)))
+
+(with-eval-after-load 'haskell-interactive-mode
+  (defconst al/haskell-interactive-keys
+    '(("M-." . haskell-interactive-mode-history-previous)
+      ("M-e" . haskell-interactive-mode-history-next)
+      ("M->" . haskell-interactive-mode-prompt-previous)
+      ("M-E" . haskell-interactive-mode-prompt-next)
+      ("C-a" . haskell-interactive-mode-beginning)
+      ("C-k" . haskell-interactive-mode-kill-whole-line)
+      ("C-c C-d" (haskell-session-kill 'leave-buffer)))
+    "Alist of auxiliary keys for `haskell-interactive-mode'.")
+  (al/bind-keys-from-vars 'haskell-interactive-mode-map
+    '(al/haskell-general-keys al/haskell-interactive-keys)))
+
+
 ;;; GDB, GUD
 
 (setq gud-key-prefix (kbd "M-G"))
