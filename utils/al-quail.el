@@ -1,6 +1,6 @@
 ;;; al-quail.el --- Additional input methods
 
-;; Copyright © 2019–2021 Alex Kost
+;; Copyright © 2019–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -699,9 +699,12 @@ The main prefixes are:
 
   ("\\-" ?­)                    ; soft hyphen
   ("\\ " ? )                    ; no-break space
+  ("\\%" ?％)
+  ("\\#" ?＃)
 
   ("\\\\" ?\\)
   ("^^" ?^)
+  ("^_" ?^)
   ("__" ?_)
 
   (";a" ?ä)
@@ -719,6 +722,17 @@ The main prefixes are:
   (";W" ?Ẅ)
   (";y" ?ÿ)
   (";Y" ?Ÿ)
+
+  (";-a" ?ā)
+  (";-A" ?Ā)
+  (";-e" ?ē)
+  (";-E" ?Ē)
+  (";-i" ?ī)
+  (";-I" ?Ī)
+  (";-o" ?ō)
+  (";-O" ?Ō)
+  (";-u" ?ū)
+  (";-U" ?Ū)
   )
 
 (provide 'al-quail)
