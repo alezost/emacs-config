@@ -1,6 +1,6 @@
 ;;; al-org.el --- Additional functionality for org-mode
 
-;; Copyright © 2012–2016, 2018–2021 Alex Kost
+;; Copyright © 2012–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -142,6 +142,14 @@ row."
 (org-link-set-parameters
  "yt"
  :follow #'al/org-browse-youtube)
+
+(defun al/org-browse-rutube (id)
+  "Browse rutube video or playlist with ID from `org-mode'."
+  (browse-url (concat "https://rutube.ru/video/" id)))
+
+(org-link-set-parameters
+ "rt"
+ :follow #'al/org-browse-rutube)
 
 ;; There is `org-pdftools' package
 ;; <https://github.com/fuxialexander/org-pdftools> but it does too much.
