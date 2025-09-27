@@ -129,15 +129,20 @@ row."
 
 (defun al/org-browse-youtube (id)
   "Browse youtube video or playlist with ID from `org-mode'."
-  (if (string-match-p "\\`PL" id)
-      (browse-url (concat "https://www.youtube.com/playlist?list=" id))
-    (cl-multiple-value-bind (id time)
-        (split-string id "::")
+  (cl-multiple-value-bind (id time)
+      (split-string id "::")
+    (cond
+     ((= (length id) 11)
       (browse-url
        (concat "https://www.youtube.com/watch?v="
                id
                (and time (concat "&t=" (number-to-string
-                                        (al/time-string-to-seconds time)))))))))
+                                        (al/time-string-to-seconds time)))))))
+     ((let (case-fold-search)
+        (string-match-p "\\`PL" id))
+      (browse-url (concat "https://www.youtube.com/playlist?list=" id)))
+     (t
+      (error "Unknown youtube link")))))
 
 (org-link-set-parameters
  "yt"
