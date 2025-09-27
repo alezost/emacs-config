@@ -17,7 +17,7 @@
 
 ;;; Code:
 
-(defun al/pp-enable-undo (_expression buffer-name)
+(defun al/pp-enable-undo (_expression buffer-name &rest _)
   "Enable undo in `buffer-name'.
 This function is intended to be used as an 'after' advice for
 `pp-display-expression'."
