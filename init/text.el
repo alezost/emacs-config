@@ -1,6 +1,6 @@
 ;;; text.el --- Working with text: editing, searching, …
 
-;; Copyright © 2014–2022 Alex Kost
+;; Copyright © 2014–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -175,6 +175,10 @@
 (define-key key-translation-map [?\C--] [?–])
 (define-key key-translation-map [?\C-\M--] [?—])
 
+(when (boundp 'insert-pair-specifications)
+  (push '("japanese-quotations" ?「 ?」)
+        insert-pair-specifications))
+
 (al/bind-keys
  ("C->"     (insert "->"))
  ("H-4"   . insert-parentheses)
@@ -187,6 +191,7 @@
  ("C-H-," . insert-pair-angle-quotations)
  ("C-H-'" . insert-pair-left-right-single-quotations)
  ("C-H-;" . insert-pair-left-right-double-quotations)
+ ("C-H-M-'" . insert-pair-japanese-quotations)
  ("H-`"   . insert-pair-grave-accent-quotation)
  ("C-H-`" . insert-pair-grave-accents))
 
