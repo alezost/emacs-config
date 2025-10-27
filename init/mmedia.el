@@ -1,6 +1,6 @@
 ;;; mmedia.el --- Using multimedia stuff inside Emacs
 
-;; Copyright © 2014–2022 Alex Kost
+;; Copyright © 2014–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -122,6 +122,7 @@
       ("SPC" . emms-pause)
       ("S"   . al/emms-save-playlist)
       ("Q"   . emms-stop)
+      ("h"   . emms-previous)
       ("u"   . emms-playlist-mode-play-smart)
       ("j"   . emms-playlist-mode-goto-dired-at-point)
       ("w"   . al/emms-playlist-wget)
@@ -159,7 +160,10 @@
       ("<M-down>"  (al/set-sound "10%-")))
     "Alist of auxiliary keys for `emms-playlist-mode-map'.")
   (al/bind-keys-from-vars 'emms-playlist-mode-map
-    '(al/free-misc-keys al/lazy-moving-keys al/emms-playlist-keys)
+    '(al/free-moving-keys
+      al/free-misc-keys
+      al/lazy-moving-keys
+      al/emms-playlist-keys)
     t)
   (suppress-keymap emms-playlist-mode-map)
   (al/add-hook-maybe 'emms-playlist-mode-hook
