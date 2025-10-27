@@ -1,6 +1,6 @@
 ;;; net.el --- Browsing, mail, chat, network utils; w3m, wget, …
 
-;; Copyright © 2014–2022 Alex Kost
+;; Copyright © 2014–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -717,6 +717,7 @@
   web-search-multitran-ru/en
   web-search-multitran-de/ru
   web-search-multitran-ru/de
+  web-search-naver
   web-search-ej)
 
 (with-eval-after-load 'web-search
@@ -756,6 +757,9 @@
   (web-search-add-engine
    'multitran-ru/de "Multitran ru/de"
    "https://www.multitran.com/m.exe?l1=2&l2=3&s=%s")
+  (web-search-add-engine
+   'naver "Naver (ko/en)"
+   "https://en.dict.naver.com/#/search?query=%s")
   (web-search-add-engine
    'ej "ej.ru"
    "http://mvvc44tv.cmle.ru/?a=note&id=%s"))

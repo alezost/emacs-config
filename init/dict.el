@@ -1,6 +1,6 @@
 ;;; dict.el --- Spelling, translating, …
 
-;; Copyright © 2014–2016, 2019 Alex Kost
+;; Copyright © 2014–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@
  ("i" . al/dictem-run-show-all-info)
  ("d" . al/dictem-run-dict-search)
  ("q" . dictem-kill-all-buffers)
+ ("k" . web-search-naver)
  ("e"   (al/google-translate-using-languages "en" "ru"))
  ("r"   (al/google-translate-using-languages* :source "ru"
                                               :target '("en" "de" "fr" "la")
