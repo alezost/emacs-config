@@ -51,6 +51,14 @@
  ("G" . web-search-multitran-ru/de))
 
 (al/bind-keys
+ :map al/translation-map
+ :prefix-map al/translation-verbix-map
+ :prefix-docstring "Map for verb conjugations with Verbix."
+ :prefix "v"
+ ("k" . web-search-verbix-ko)
+ ("g" . web-search-verbix-de))
+
+(al/bind-keys
  :prefix-map al/spell-map
  :prefix-docstring "Map for flyspell and friends."
  :prefix "H-s"

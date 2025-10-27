@@ -717,6 +717,8 @@
   web-search-multitran-ru/en
   web-search-multitran-de/ru
   web-search-multitran-ru/de
+  web-search-verbix-ko
+  web-search-verbix-de
   web-search-naver
   web-search-ej)
 
@@ -757,6 +759,12 @@
   (web-search-add-engine
    'multitran-ru/de "Multitran ru/de"
    "https://www.multitran.com/m.exe?l1=2&l2=3&s=%s")
+  (web-search-add-engine
+   'verbix-de "Verbix (de)"
+   "https://verbix.com/webverbix/german/%s")
+  (web-search-add-engine
+   'verbix-ko "Verbix (ko)"
+   "https://verbix.com/webverbix/korean/%s")
   (web-search-add-engine
    'naver "Naver (ko/en)"
    "https://en.dict.naver.com/#/search?query=%s")
