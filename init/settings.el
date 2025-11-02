@@ -1,6 +1,6 @@
 ;;; settings.el --- Miscellaneous settings
 
-;; Copyright © 2012–2021 Alex Kost
+;; Copyright © 2012–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -39,7 +39,11 @@
 
 (al/bind-key* "M-t" execute-extended-command)
 
-(setq enable-recursive-minibuffers t)
+(setq
+ read-file-name-completion-ignore-case t
+ read-buffer-completion-ignore-case t
+ completion-ignore-case t
+ enable-recursive-minibuffers t)
 
 (al/add-hook-maybe 'minibuffer-setup-hook 'al/hbar-cursor-type)
 (al/bind-keys-from-vars 'minibuffer-local-map 'al/minibuffer-keys)

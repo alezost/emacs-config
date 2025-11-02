@@ -1,6 +1,6 @@
 ;;; files.el --- Working with files; dired, sunrise-commander, …
 
-;; Copyright © 2014–2022 Alex Kost
+;; Copyright © 2014–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -257,8 +257,6 @@
   (push ".go" completion-ignored-extensions))
 
 (setq
- ;; Needed for `find-name-arg' variable for `find-name-dired' command.
- read-file-name-completion-ignore-case t
  directory-free-space-args "-Ph"
  grep-command "grep -nHi -e "
  enable-local-variables :safe
