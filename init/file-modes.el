@@ -1,6 +1,6 @@
 ;;; file-modes.el --- Modes for various file types  -*- lexical-binding: t -*-
 
-;; Copyright © 2014–2022 Alex Kost
+;; Copyright © 2014–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -49,6 +49,9 @@
   (when (require 'al-org nil t)
     (advice-add 'org-link-make-string
       :around #'al/org-link-set-description))
+  (when (require 'al-text nil t)
+    (al/add-hook-maybe 'org-mode-hook 'al/set-default-paragraph))
+
   (setq
    org-imenu-depth 6
    org-completion-use-ido t
@@ -88,6 +91,8 @@
   (defconst al/org-keys
     '([remap delete-char]
       [remap delete-backward-char]
+      [remap forward-paragraph]
+      [remap backward-paragraph]
       "<C-tab>"
       ("<M-tab>" . pcomplete)
       ("<M-return>" . org-meta-return)

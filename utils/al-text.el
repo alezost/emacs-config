@@ -41,6 +41,10 @@
 (defun al/set-comment-column ()
   (setq-local comment-column 32))
 
+(defun al/set-default-paragraph ()
+  (setq-local paragraph-start    (default-value 'paragraph-start)
+              paragraph-separate (default-value 'paragraph-separate)))
+
 (defmacro al/modify-syntax (table-name &rest specs)
   "Update syntax table according to SPECS.
 TABLE-NAME is a name (unquoted symbol) of a syntax table variable.
