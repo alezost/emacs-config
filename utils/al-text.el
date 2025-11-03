@@ -1,6 +1,6 @@
-;;; al-text.el --- Additional functionality related to text editing
+;;; al-text.el --- Additional functionality related to text editing  -*- lexical-binding: t -*-
 
-;; Copyright © 2014–2016, 2020 Alex Kost
+;; Copyright © 2014–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -74,16 +74,23 @@ current buffer.
 START and END specify the region to operate on.  If they are not
 specified, then the currenty marked region is used.  If there is
 no marked region, then the whole buffer is used."
-  (let ((count 0)
-        beg end)
-    (if (use-region-p)
-        (setq beg (region-beginning)
-              end (region-end)))
+  (let* ((count 0)
+         (regionp (use-region-p))
+         (from-re (regexp-quote from-string))
+         (str-diff (- (length to-string)
+                      (length from-string)))
+         (beg (cond
+               (start start)
+               (regionp (region-beginning))))
+         (end (cond
+               (end end)
+               (regionp (region-end)))))
     (save-excursion
       (when beg (goto-char beg))
-      (while (re-search-forward (regexp-quote from-string) end t)
+      (while (re-search-forward from-re end t)
         (replace-match to-string)
-        (setq count (1+ count))))
+        (setq end (+ end str-diff) ; extend/shrink the end bound after replacing
+              count (1+ count))))
     (unless (= 0 count)
       (message "'%s' has been replaced with '%s' %d time(s)."
                from-string to-string count))))
