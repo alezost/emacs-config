@@ -306,10 +306,16 @@
 
 (with-eval-after-load 'saveplace
   (setq
+   ;; For some reason, `save-place-loaded' is t after `saveplace' load.
+   ;; This bug(?) appeared somewhere between Emacs 29.4 and Emacs 30.1.
+   ;; Set this variable back to nil.  Otherwise, `save-place-alist' is
+   ;; empty because `save-place-file' is never loaded.
+   save-place-loaded nil
    save-place-ignore-files-regexp
    (rx-to-string `(or (and string-start "/gnu")
                       (regexp ,save-place-ignore-files-regexp))
                  'no-group)
+   save-place-forget-unreadable-files nil
    save-place-file (al/emacs-data-dir-file "save-places")
    save-place-limit 999)
 
