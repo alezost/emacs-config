@@ -304,6 +304,11 @@
    recentf-max-saved-items 99
    recentf-save-file (al/emacs-data-dir-file "recentf")))
 
+(with-eval-after-load 'ffap
+  (when (require 'al-ffap nil t)
+    (advice-add 'ffap-read-file-or-url
+      :override #'al/ffap-read-file-or-url)))
+
 (with-eval-after-load 'saveplace
   (setq
    ;; For some reason, `save-place-loaded' is t after `saveplace' load.
