@@ -1,6 +1,6 @@
-;;; al-dired-cmd.el --- Additional commands for dired
+;;; al-dired-cmd.el --- Additional commands for dired  -*- lexical-binding: t -*-
 
-;; Copyright © 2012–2021 Alex Kost
+;; Copyright © 2012–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@
   "Move point to the first file."
   (interactive)
   (goto-char (point-min))
-  (dired-next-line 4))
+  (dired-next-line 3))
 
 ;;;###autoload
 (defun al/dired-end-of-buffer ()
@@ -132,7 +132,7 @@ except it quotes file names for a shell, unless ARG is non-nil."
   (interactive)
   (let ((file (dired-get-filename)))
     (if (al/man-file-p file)
-        (dired-man)
+        (dired-do-man)
       (dired-do-chmod))))
 
 (declare-function image-dired-backward-image
