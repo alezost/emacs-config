@@ -1,6 +1,6 @@
 ;;; prog.el --- Programming modes and tools
 
-;; Copyright © 2014–2022 Alex Kost
+;; Copyright © 2014–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -309,8 +309,17 @@
     '(al/button-keys al/geiser-keys al/geiser-doc-keys)))
 
 (with-eval-after-load 'al-geiser
-  (setq al/geiser-sockets
-        '("~/.config/guile-daemon/run/socket")))
+  (setq
+   al/geiser-sockets
+   (list (let* ((xdg-dir (getenv "XDG_RUNTIME_DIR"))
+                (dir (expand-file-name "guile-daemon"
+                                       (or xdg-dir
+                                           (getenv "XDG_CONFIG_HOME")
+                                           "~/.config")))
+                (dir (if xdg-dir
+                         dir
+                       (expand-file-name "run" dir))))
+           (expand-file-name "socket" dir)))))
 
 
 ;;; Haskell
