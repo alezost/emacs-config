@@ -276,11 +276,14 @@
 
 (al/bind-key* "C-M-s-m" imenu)
 (with-eval-after-load 'imenu
-  (setq imenu-space-replacement nil))
+  (setq
+   ;; imenu-flatten t
+   imenu-space-replacement nil
+   imenu-level-separator " ⇨ "))
 
 (al/bind-key* "C-M-m" imenus)
 (with-eval-after-load 'imenus
-  (setq imenus-delimiter " ⇨ ")
+  (setq imenus-delimiter imenu-level-separator)
 
   (defconst al/imenus-keys
     '(("C-r" . imenus-rescan)
