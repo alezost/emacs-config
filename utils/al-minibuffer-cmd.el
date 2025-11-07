@@ -29,6 +29,12 @@
   (interactive)
   (kill-new (al/minibuffer-current-completion)))
 
+;;;###autoload
+(defun al/minibuffer-set-directory (dir)
+  "Change the current directory in minibuffer prompt to DIR."
+  (kill-whole-line)
+  (insert (file-name-as-directory (expand-file-name dir))))
+
 (provide 'al-minibuffer-cmd)
 
 ;;; al-minibuffer-cmd.el ends here

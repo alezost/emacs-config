@@ -101,6 +101,7 @@
 (with-eval-after-load 'al-minibuffer
   (al/bind-keys
     :map al/minibuffer-file-map
+    ("M-h"   (al/minibuffer-set-directory "~"))
     ("RET" . icomplete-fido-ret)
     ("DEL" . icomplete-fido-backward-updir))
 
