@@ -83,6 +83,26 @@ procedures reading symbols from minibuffer."
   (al/minibuffer-with-keymap al/minibuffer-symbol-map
     (apply fun args)))
 
-(provide `al-minibuffer)
+
+;;; Minibuffer fallback
+
+(defvar al/minibuffer-fallback nil
+  "Function that is called by `al/minibuffer-fallback-or-funcall'.
+This variable should be set by minibuffer commands that want to exit
+from minibuffer and continue execution.")
+
+(defun al/minibuffer-fallback-or-funcall (fun &rest args)
+  "Call `al/minibuffer-fallback' or apply FUN to ARGS.
+This function is intendend to be used as an `around' advice for commands
+that read from minibuffer in the interactive clause.  When a minibuffer
+command sets `al/minibuffer-fallback' and exits from minibuffer, this
+advice call `al/minibuffer-fallback' instead executing FUN body."
+  (if al/minibuffer-fallback
+      (let ((fallback al/minibuffer-fallback))
+        (setq al/minibuffer-fallback nil)
+        (funcall fallback))
+    (apply fun args)))
+
+(provide 'al-minibuffer)
 
 ;;; al-minibuffer.el ends here

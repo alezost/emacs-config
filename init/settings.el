@@ -94,9 +94,7 @@
                             icomplete-fido-mode-map)
     'al/icomplete-keys)
   (al/bind-keys-from-vars '(icomplete-vertical-mode-minibuffer-map)
-    'al/icomplete-vertical-keys)
-
-  (require 'al-minibuffer nil t))
+    'al/icomplete-vertical-keys))
 
 (with-eval-after-load 'al-minibuffer
   (al/bind-keys
@@ -112,7 +110,17 @@
   (advice-add 'read-face-name             :around #'al/read-symbol-add-keymap)
   (advice-add 'help-fns--describe-function-or-command-prompt ; used by `describe-function'
     :around #'al/read-symbol-add-keymap)
-  )
+
+  (advice-add 'find-file                :around #'al/minibuffer-fallback-or-funcall)
+  (advice-add 'switch-to-buffer         :around #'al/minibuffer-fallback-or-funcall)
+  (advice-add 'execute-extended-command :around #'al/minibuffer-fallback-or-funcall)
+  (advice-add 'describe-function        :around #'al/minibuffer-fallback-or-funcall)
+  (advice-add 'describe-variable        :around #'al/minibuffer-fallback-or-funcall)
+  (advice-add 'describe-face            :around #'al/minibuffer-fallback-or-funcall)
+  (advice-add 'describe-symbol          :around #'al/minibuffer-fallback-or-funcall))
+
+(al/eval-after-init
+  (require 'al-minibuffer nil t))
 
 
 ;;; Working with buffers: ibuffer, uniquify, …
