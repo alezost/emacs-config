@@ -387,6 +387,9 @@
 (with-eval-after-load 'help
   (al/bind-keys
    :map help-map
+   ("v" . al/describe-variable)
+   ("s" . al/describe-symbol)
+   ("x" . describe-syntax)
    ("A" . apropos))
   (al/bind-keys
    :map help-map

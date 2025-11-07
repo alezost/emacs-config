@@ -35,6 +35,24 @@
   (kill-whole-line)
   (insert (file-name-as-directory (expand-file-name dir))))
 
+;;;###autoload
+(defun al/describe-variable ()
+  "Call `describe-variable' with `al/minibuffer-symbol-map'.
+This function exists because adding `al/read-symbol-add-keymap' advice
+to `describe-variable' will not work, since it reads symbol from the
+`interactive' call directly."
+  (interactive)
+  (al/minibuffer-with-keymap al/minibuffer-symbol-map
+    (call-interactively #'describe-variable)))
+
+;;;###autoload
+(defun al/describe-symbol ()
+  "Call `describe-symbol' with `al/minibuffer-symbol-map'.
+See also `al/describe-variable'."
+  (interactive)
+  (al/minibuffer-with-keymap al/minibuffer-symbol-map
+    (call-interactively #'describe-symbol)))
+
 (provide 'al-minibuffer-cmd)
 
 ;;; al-minibuffer-cmd.el ends here
