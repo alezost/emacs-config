@@ -41,6 +41,48 @@ input, not just some of them."
                  0)))
     (funcall fun string table pred point metadata)))
 
-(provide 'al-minibuffer)
+
+;;; Additional minibuffer keymaps
+
+(defvar-keymap al/minibuffer-buffer-map
+  :doc "Additional keys to read buffer name from minibuffer.")
+
+(defvar-keymap al/minibuffer-file-map
+  :doc "Additional keys to read file name from minibuffer.")
+
+(defvar-keymap al/minibuffer-symbol-map
+  :doc "Additional keys to read symbol from minibuffer.")
+
+(defmacro al/minibuffer-with-keymap (keymap &rest body)
+  "Use KEYMAP to the next minibuffer call and run BODY."
+  (declare (indent 1) (debug t))
+  `(minibuffer-with-setup-hook
+       (lambda ()
+         (use-local-map
+          (make-composed-keymap ,keymap (current-local-map))))
+     ,@body))
+
+(defun al/read-buffer-add-keymap (fun &rest args)
+  "Add `al/minibuffer-buffer-map' to the local map and call FUN with ARGS.
+This function is intendend to be used as an `around' advice for
+`read-buffer'."
+  (al/minibuffer-with-keymap al/minibuffer-buffer-map
+    (apply fun args)))
+
+(defun al/read-file-add-keymap (fun &rest args)
+  "Add `al/minibuffer-file-map' to the local map and call FUN with ARGS.
+This function is intendend to be used as an `around' advice for
+`read-file-name'."
+  (al/minibuffer-with-keymap al/minibuffer-file-map
+    (apply fun args)))
+
+(defun al/read-symbol-add-keymap (fun &rest args)
+  "Add `al/minibuffer-symbol-map' to the local map and call FUN with ARGS.
+This function is intendend to be used as an `around' advice for
+procedures reading symbols from minibuffer."
+  (al/minibuffer-with-keymap al/minibuffer-symbol-map
+    (apply fun args)))
+
+(provide `al-minibuffer)
 
 ;;; al-minibuffer.el ends here

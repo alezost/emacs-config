@@ -56,6 +56,14 @@
 (al/add-after-init-hook 'icomplete-vertical-mode)
 
 (al/bind-keys
+  :map minibuffer-local-completion-map
+  ("SPC") ("?")
+  ("RET" . icomplete-force-complete-and-exit))
+(al/bind-keys
+  :map minibuffer-local-must-match-map
+  ("RET" . icomplete-force-complete-and-exit))
+
+(al/bind-keys
   :map completion-list-mode-map
   ("." . previous-completion)
   ("e" . next-completion))
@@ -67,7 +75,12 @@
    icomplete-show-matches-on-no-input t)
 
   (defconst al/icomplete-keys
-    '(("TAB" . icomplete-force-complete)
+    ;; Don't bind "RET" in `icomplete-minibuffer-map' because it has a
+    ;; priority over my `al/minibuffer-*-map' keymaps.
+    ;; Use `minibuffer-local-completion-map' and
+    ;; `minibuffer-local-must-match-map' above.
+    '([remap minibuffer-complete-and-exit]
+      ("TAB" . icomplete-force-complete)
       ("C-j" . exit-minibuffer)
       ("C-." . icomplete-backward-completions)
       ("C-e" . icomplete-forward-completions))
@@ -85,8 +98,18 @@
   (require 'al-minibuffer nil t))
 
 (with-eval-after-load 'al-minibuffer
+  (al/bind-keys
+    :map al/minibuffer-file-map
+    ("RET" . icomplete-fido-ret)
+    ("DEL" . icomplete-fido-backward-updir))
+
   (advice-add 'completion-all-completions
     :around #'al/completion-all-completions)
+  (advice-add 'read-file-name :around #'al/read-file-add-keymap)
+  (advice-add 'read-buffer    :around #'al/read-buffer-add-keymap)
+  (advice-add 'read-extended-command :around #'al/read-symbol-add-keymap)
+  (advice-add 'help-fns--describe-function-or-command-prompt ; used by `describe-function'
+    :around #'al/read-symbol-add-keymap)
   )
 
 
