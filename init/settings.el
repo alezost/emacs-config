@@ -105,11 +105,11 @@
     ("RET" . icomplete-fido-ret)
     ("DEL" . icomplete-fido-backward-updir))
 
-  (advice-add 'completion-all-completions
-    :around #'al/completion-all-completions)
-  (advice-add 'read-file-name :around #'al/read-file-add-keymap)
-  (advice-add 'read-buffer    :around #'al/read-buffer-add-keymap)
-  (advice-add 'read-extended-command :around #'al/read-symbol-add-keymap)
+  (advice-add 'completion-all-completions :around #'al/completion-all-completions)
+  (advice-add 'read-file-name             :around #'al/read-file-add-keymap)
+  (advice-add 'read-buffer                :around #'al/read-buffer-add-keymap)
+  (advice-add 'read-extended-command      :around #'al/read-symbol-add-keymap)
+  (advice-add 'read-face-name             :around #'al/read-symbol-add-keymap)
   (advice-add 'help-fns--describe-function-or-command-prompt ; used by `describe-function'
     :around #'al/read-symbol-add-keymap)
   )
@@ -390,6 +390,7 @@
    ("v" . al/describe-variable)
    ("s" . al/describe-symbol)
    ("x" . describe-syntax)
+   ("F" . describe-face)
    ("A" . apropos))
   (al/bind-keys
    :map help-map
