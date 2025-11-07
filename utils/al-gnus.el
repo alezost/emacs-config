@@ -1,6 +1,6 @@
 ;;; al-gnus.el --- Additional functionality for Gnus  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2017, 2021 Alex Kost
+;; Copyright © 2013–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -21,10 +21,6 @@
 (require 'gnus-art)
 (require 'al-buffer)
 
-(defun al/gnus-buffer-names ()
-  "Return a list of names of live gnus buffer."
-  (mapcar #'buffer-name (gnus-buffers)))
-
 (defun al/gnus-buffer-p ()
   "Return nil if current buffer is not a gnus buffer."
   (memq (current-buffer) (gnus-buffers)))
@@ -42,7 +38,7 @@
 (defun al/gnus-switch-buffer ()
   "Switch to a gnus buffer."
   (interactive)
-  (let ((buffers (al/gnus-buffer-names)))
+  (let ((buffers (gnus-buffers)))
     (if buffers
      	(al/switch-buffer "Gnus buffer: "
                           :buffers buffers)
@@ -248,10 +244,8 @@ Matching url is defined by `al/gnus-mm-url-re'."
 
 (defun al/convert-atom-to-rss (&rest _)
   "Convert Atom to RSS (if needed) by calling xsltproc.
-This function is intendend to be used as an 'after' advice for
-`mm-url-insert', i.e.:
-
-  (advice-add 'mm-url-insert :after #'al/convert-atom-to-rss)"
+This function is intendend to be used as an `after' advice for
+`mm-url-insert'."
   (when (re-search-forward "xmlns=\"http://www.w3.org/.*/Atom\""
 			   nil t)
     (goto-char (point-min))
@@ -285,11 +279,8 @@ Used by `al/change-mode-string' advice for
 
 (defun al/gnus-agent-mode-line-string (fun string &rest args)
   "Modify \"Plugged\"/\"Unplugged\" mode-line string.
-This function is intendend to be used as an 'around' advice for
-`gnus-agent-make-mode-line-string', i.e.:
-
-  (advice-add 'gnus-agent-make-mode-line-string
-              :around #'al/gnus-agent-mode-line-string)"
+This function is intendend to be used as an `around' advice for
+`gnus-agent-make-mode-line-string'."
   (apply fun (al/gnus-plugged-status string) args))
 
 

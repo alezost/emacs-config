@@ -198,7 +198,8 @@ This is similar to `mode-line-other-buffer' but with a transient
 If the list of BUFFERS is not specified, use all buffers.
 See `completing-read' for the meaning of INITIAL-INPUT."
   (interactive (list "Switch to buffer: "))
-  (let ((buffer-names (or buffers (mapcar #'buffer-name (buffer-list)))))
+  (let ((buffer-names (mapcar #'buffer-name
+                              (or buffers (buffer-list)))))
     (switch-to-buffer
      (completing-read prompt buffer-names nil nil initial-input))))
 

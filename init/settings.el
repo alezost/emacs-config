@@ -106,7 +106,7 @@
  :prefix-map al/buffer-map
  :prefix-docstring "Map for managing/switching to buffers."
  :prefix "C-b"
- ("C-b" . al/switch-buffer)
+ ("C-b" . switch-to-buffer)
  ("M-b" . ibuffer)
  ("r" . rename-buffer)
  ("c" . clone-buffer)

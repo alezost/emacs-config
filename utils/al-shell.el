@@ -1,6 +1,6 @@
-;;; al-shell.el --- Additional functionality for `shell'
+;;; al-shell.el --- Additional functionality for `shell'  -*- lexical-binding: t -*-
 
-;; Copyright © 2019 Alex Kost
+;; Copyright © 2019–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@ Interactively, ARG has the same meaning as in `shell'."
   (let ((buffers (al/shell-buffers nil t)))
     (if (and buffers (null arg))
         (al/switch-buffer "Switch to shell buffer: "
-                          :buffers (mapcar #'buffer-name buffers))
+                          :buffers buffers)
       (call-interactively 'shell))))
 
 (defvar al/shell-buffer-alist nil
