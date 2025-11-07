@@ -35,11 +35,17 @@
 (al/add-after-init-hook 'al/enable-process-hooks)
 
 
-;;; Minibuffer, ido, smex
+;;; Minibuffer and completions
 
 (al/bind-key* "M-t" execute-extended-command)
 
 (setq
+ completion-auto-select 'second-tab
+ completions-sort 'historical
+ completions-format 'one-column
+ completions-max-height 20
+ ;; completion-styles '(basic substring partial-completion)
+ completion-styles '(flex)
  read-file-name-completion-ignore-case t
  read-buffer-completion-ignore-case t
  completion-ignore-case t
@@ -47,152 +53,41 @@
 
 (al/add-hook-maybe 'minibuffer-setup-hook 'al/hbar-cursor-type)
 (al/bind-keys-from-vars 'minibuffer-local-map 'al/minibuffer-keys)
+(al/add-after-init-hook 'icomplete-vertical-mode)
 
-(when (require 'al-minibuffer nil t)
-  (setq completing-read-function #'al/completing-read))
+(al/bind-keys
+  :map completion-list-mode-map
+  ("." . previous-completion)
+  ("e" . next-completion))
 
-(with-eval-after-load 'ido
+(with-eval-after-load 'icomplete
   (setq
-   ;; Not using virtual buffers because
-   ;; `ido-add-virtual-buffers-to-list' blatantly enables
-   ;; `recentf-mode'.
-   ido-use-virtual-buffers nil
-   ;; Disable auto searching for files unless called explicitly.
-   ido-auto-merge-delay-time 999
-   ido-enable-last-directory-history t
-   ido-save-directory-list-file (al/emacs-data-dir-file "ido.last")
-   ido-record-commands nil
-   ido-enable-tramp-completion nil
-   ido-enable-flex-matching t
-   ido-create-new-buffer 'always
-   ido-decorations
-   '("\n ● " "" "\n   " "\n   ..." "[" "]" " [No match]" " [Matched]"
-     " [Not readable]" " [Too big]" " [Confirm]" "\n ● " " ●"))
+   icomplete-scroll t
+   icomplete-tidy-shadowed-file-names t
+   icomplete-show-matches-on-no-input t)
 
-  (defconst al/ido-common-keys
-    '(("C-l"    . ido-toggle-ignore)
-      ("C-M-l"  . ido-toggle-regexp)
-      ("C-."    . ido-prev-match)
-      ("C-e"    . ido-next-match)
-      ("<up>"   . ido-prev-match)
-      ("<down>" . ido-next-match)
-      ("C-d"    . ido-fallback-command)
-      ("M-d"    . ido-edit-input)
-      ("M-k"    . al/ido-copy-current-item)
-      ("M-s"    . ido-select-text)
-      ;; C-j is unbound in `minibuffer-local-map'
-      ("C-j"    . ido-select-text)
-      "SPC")
-    "Alist of auxiliary keys for `ido-common-completion-map'.")
-  (defconst al/ido-file-dir-keys
-    '(("H-j"   . ido-enter-dired)
-      ("M-."   . ido-prev-work-directory)
-      ("M-e"   . ido-next-work-directory)
-      ("C-M-." . ido-prev-match-dir)
-      ("C-M-e" . ido-next-match-dir)
-      ("M-m"   . ido-enter-magit-status)
-      ("M-h"     (al/ido-set-current-directory "~"))
-      ("M-g"     (al/ido-set-current-directory al/guix-profile-dir)))
-    "Alist of auxiliary keys for `ido-file-dir-completion-map'.")
-  (al/bind-keys-from-vars
-      '(ido-common-completion-map
-        ido-buffer-completion-map)
-    '(al/minibuffer-keys al/ido-common-keys))
-  (al/bind-keys-from-vars
-      '(ido-file-dir-completion-map
-        ido-file-completion-map)
-    '(al/ido-file-dir-keys al/ido-common-keys))
+  (defconst al/icomplete-keys
+    '(("TAB" . icomplete-force-complete)
+      ("C-j" . exit-minibuffer)
+      ("C-." . icomplete-backward-completions)
+      ("C-e" . icomplete-forward-completions))
+    "Alist of auxiliary keys for icomplete maps.")
+  (defconst al/icomplete-vertical-keys
+    '(("H-a" . icomplete-vertical-goto-first)
+      ("H-i" . icomplete-vertical-goto-last))
+    "Alist of auxiliary keys for `icomplete-vertical-mode-minibuffer-map'.")
+  (al/bind-keys-from-vars '(icomplete-minibuffer-map
+                            icomplete-fido-mode-map)
+    'al/icomplete-keys)
+  (al/bind-keys-from-vars '(icomplete-vertical-mode-minibuffer-map)
+    'al/icomplete-vertical-keys)
 
-  (when (require 'al-ido nil t)
-    (advice-add 'ido-completions :override #'al/ido-completions))
+  (require 'al-minibuffer nil t))
 
-  (al/add-hook-maybe 'ido-minibuffer-setup-hook 'al/no-truncate-lines)
-
-  (ido-everywhere))
-
-(with-eval-after-load 'smex
-  (setq
-   smex-save-file (al/emacs-data-dir-file "smex-items")
-   smex-history-length 32
-   smex-prompt-string
-   (concat (key-description (where-is-internal 'smex nil t))
-           " (smex): "))
-  (defun al/smex-prepare-ido-bindings ()
-    "Add my bindings to the pseudo smex map."
-    (let ((map ido-completion-map))
-      (define-key map (kbd "C-h f") 'smex-describe-function)
-      (define-key map (kbd "C-h w") 'smex-where-is)
-      (define-key map (kbd "M-d")   'smex-find-function)
-      (define-key map (kbd "C-d")   'smex-describe-function)))
-  (advice-add 'smex-prepare-ido-bindings
-    :override 'al/smex-prepare-ido-bindings))
-
-(with-eval-after-load 'ivy
-  (setq
-   ;; Since I don't use `ivy-mode' (as it sets
-   ;; `completing-read-function'), set `completion-in-region-function'
-   ;; manually.
-   completion-in-region-function 'ivy-completion-in-region
-   ;; Do not exit from minibuffer when there is nothing to delete.
-   ivy-on-del-error-function 'ignore
-   ivy-initial-inputs-alist nil
-   ivy-sort-functions-alist nil
-   ivy-sort-matches-functions-alist '((t . nil))
-   ivy-sort-max-size 1000
-   ivy-re-builders-alist '((t . ivy--regex-fuzzy))
-   ivy-wrap t
-   ivy-extra-directories nil)
-
-  (defconst al/ivy-minibuffer-keys
-    '(("TAB" . al/ivy-partial)
-      ("RET" . ivy-alt-done)
-      ("C-j" . ivy-immediate-done)
-      ("C-l" . ivy-toggle-ignore)
-      ("M-." . ivy-previous-history-element)
-      ("M-e" . ivy-next-history-element)
-      ("M-k" . al/ivy-copy-current-item))
-    "Alist of auxiliary keys for `ivy-minibuffer-map'.")
-  (al/bind-keys-from-vars 'ivy-minibuffer-map 'al/ivy-minibuffer-keys)
-
-  (when (require 'al-ivy nil t)
-    (setq ivy-format-function 'al/ivy-format-function)
-    (push '(imenus . al/ivy-imenu-sort)
-          ivy-sort-matches-functions-alist)
-    (advice-add 'ivy-add-prompt-count
-      :override 'al/ivy-add-prompt-count)))
-
-(with-eval-after-load 'counsel
-  (define-key counsel-mode-map [remap switch-to-buffer]
-    'ivy-switch-buffer)
-
-  (defconst al/counsel-describe-keys
-    '(("M-d" . counsel-find-symbol))
-    "Alist of auxiliary keys for `counsel-describe-map'.")
-  (al/bind-keys-from-vars 'counsel-describe-map
-    'al/counsel-describe-keys)
-
-  (defconst al/counsel-find-file-keys
-    '(("M-h"   (ivy--cd "~/"))
-      ("M-m" . al/ivy-magit-status))
-    "Alist of auxiliary keys for `counsel-find-file-map'.")
-  (al/bind-keys-from-vars 'counsel-find-file-map
-    'al/counsel-find-file-keys)
-
-  (when (require 'al-file nil t)
-    (setq counsel-find-file-ignore-regexp
-          (al/file-regexp "elc" "go"))))
-
-(al/eval-after-init
-  (cond
-   ((fboundp 'counsel-mode)
-    (counsel-mode))
-   ((fboundp 'smex)
-    (al/bind-key "C-M-t" smex-major-mode-commands)
-    (al/bind-key* "M-t" smex)
-    (al/bind-key* "M-s-t" execute-extended-command)))
-  (unless (boundp 'ivy-mode)
-    (setq al/completing-read-engine 'ido)
-    (ido-mode)))
+(with-eval-after-load 'al-minibuffer
+  (advice-add 'completion-all-completions
+    :around #'al/completion-all-completions)
+  )
 
 
 ;;; Working with buffers: ibuffer, uniquify, …

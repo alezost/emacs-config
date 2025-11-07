@@ -111,9 +111,6 @@
     "Alist of auxiliary keys for `org-mode-map'.")
   (al/bind-keys-from-vars 'org-mode-map 'al/org-keys)
 
-  (when (require 'al-minibuffer nil t)
-    (advice-add 'org-set-tags :around #'al/complete-default))
-
   ;; "org-compat.el" adds a hook to set `imenu-create-index-function' to
   ;; `org-imenu-get-tree', but it does this only after `imenu' is loaded.
   ;; This raises the following problem: if an org file is loaded and

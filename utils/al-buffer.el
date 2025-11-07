@@ -1,6 +1,6 @@
-;;; al-buffer.el --- Additional functionality for working with buffers
+;;; al-buffer.el --- Additional functionality for working with buffers  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2021 Alex Kost
+;; Copyright © 2013–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -185,8 +185,6 @@ This is similar to `mode-line-other-buffer' but with a transient
 
 ;;; Switching to some buffers
 
-(require 'al-minibuffer)
-
 ;;;###autoload
 (defun al/display-buffer (buffer)
   "Switch to BUFFER, preferably reusing a window displaying this buffer."
@@ -194,40 +192,15 @@ This is similar to `mode-line-other-buffer' but with a transient
                  '((display-buffer-reuse-window
                     display-buffer-same-window))))
 
-(defvar ivy-switch-buffer-map)
-(defvar ido-default-buffer-method)
-(declare-function ivy-read "ivy" t)
-(declare-function ido-buffer-internal "ido" t)
-
 ;;;###autoload
 (cl-defun al/switch-buffer (prompt &key buffers initial-input)
-  "Switch to a buffer using `al/completing-read-engine'.
-Specifying BUFFERS is not supported by `ido' engine."
+  "Switch to a buffer prompting with PROMPT for a buffer from BUFFERS.
+If the list of BUFFERS is not specified, use all buffers.
+See `completing-read' for the meaning of INITIAL-INPUT."
   (interactive (list "Switch to buffer: "))
-  (cond
-   ((and (eq 'ivy al/completing-read-engine)
-         (require 'ivy nil t))
-    ;; Disable flx match, as I prefer to sort buffers chronologically.
-    (let (ivy--flx-featurep)
-      (ivy-read prompt
-                #'internal-complete-buffer
-                :initial-input initial-input
-                :matcher 'ivy--switch-buffer-matcher
-                :preselect (unless initial-input
-                             (buffer-name (other-buffer (current-buffer))))
-                :action 'ivy--switch-buffer-action
-                :keymap ivy-switch-buffer-map
-                :caller 'ivy-switch-buffer)))
-   ((and (eq 'ido al/completing-read-engine)
-         (require 'ido nil t))
-    (if buffers
-        (switch-to-buffer (completing-read prompt buffers
-                                           nil nil initial-input))
-      (ido-buffer-internal ido-default-buffer-method
-                           nil prompt nil initial-input)))
-   (t
-    (switch-to-buffer (completing-read-default prompt buffers
-                                               nil nil initial-input)))))
+  (let ((buffer-names (or buffers (mapcar #'buffer-name (buffer-list)))))
+    (switch-to-buffer
+     (completing-read prompt buffer-names nil nil initial-input))))
 
 (defun al/switch-to-buffer-or-funcall (buffer &optional function)
   "Switch to BUFFER or call FUNCTION.

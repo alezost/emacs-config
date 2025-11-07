@@ -290,9 +290,7 @@
       ("C-s" . imenus-exit-to-isearch)
       ("M-s" . imenus-exit-to-occur)))
   (al/bind-keys-from-vars 'imenus-minibuffer-map 'al/imenus-keys)
-
-  (when (require 'al-imenus nil t)
-    (setq imenus-completing-read-function 'al/imenus-completing-read)))
+  )
 
 (al/bind-key "M-s-s" al/imenus-search-elisp-directories)
 (with-eval-after-load 'al-imenus
