@@ -1,6 +1,6 @@
-;;; al-key.el --- Additional functionality for working with key bindings
+;;; al-key.el --- Additional functionality for working with key bindings  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2016, 2018–2019 Alex Kost
+;; Copyright © 2013–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@
 
 (define-minor-mode al/override-global-mode
   "Minor mode with key bindings to override other modes."
-  t "")
+  :init-value t)
 
 (add-to-list 'emulation-mode-map-alists
              `((al/override-global-mode . ,al/override-global-map)))
@@ -119,10 +119,12 @@ See `al/bind-key' for details."
                 `(put ',prefix-map 'variable-documentation ,doc))
              (define-prefix-command ',prefix-map)
              (al/bind-key ,prefix ,prefix-map ,map)))
-       ,@(mapcar (lambda (form)
-                   `(al/bind-key ,(car form) ,(cdr form)
-                                 ,(or prefix-map map)))
-                 bindings))))
+       (if (not (boundp ',map))
+           (message "Keymap does not exist: %S" ',map)
+         ,@(mapcar (lambda (form)
+                     `(al/bind-key ,(car form) ,(cdr form)
+                                   ,(or prefix-map map)))
+                   bindings)))))
 
 (defmacro al/bind-keys* (&rest args)
   (declare (indent 0))
