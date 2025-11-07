@@ -82,6 +82,7 @@
     '([remap minibuffer-complete-and-exit]
       ("TAB" . icomplete-force-complete)
       ("C-j" . exit-minibuffer)
+      ("M-k" . al/minibuffer-copy-current-completion)
       ("C-." . icomplete-backward-completions)
       ("C-e" . icomplete-forward-completions))
     "Alist of auxiliary keys for icomplete maps.")
