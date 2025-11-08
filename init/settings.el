@@ -98,6 +98,10 @@
 
 (with-eval-after-load 'al-minibuffer
   (al/bind-keys
+    :map al/minibuffer-buffer-map
+    ("M-m" . al/minibuffer-magit-buffers)
+    ("M-s" . al/minibuffer-shell-buffers))
+  (al/bind-keys
     :map al/minibuffer-file-map
     ("M-h"   (al/minibuffer-set-directory "~"))
     ("M-m" . al/minibuffer-enter-magit-status)

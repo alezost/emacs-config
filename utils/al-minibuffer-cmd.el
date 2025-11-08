@@ -56,7 +56,7 @@ See also `al/describe-variable'."
 
 ;;; Commands that use `al/minibuffer-fallback'
 
-(defun al/minibuffer-replace-and-exit (string)
+(defun al/minibuffer-replace-and-exit (&optional string)
   "Replace the current minibuffer input with STRING and exit."
     ;; This procedure exists because `exit-minibuffer' exits with the
     ;; current (most likely partial) input and it is not what the
@@ -68,7 +68,7 @@ See also `al/describe-variable'."
   (if (not (window-minibuffer-p))
       (error "Not in minibuffer")
     (delete-region (minibuffer-prompt-end) (point-max))
-    (insert string)
+    (insert (or string ""))
     (exit-minibuffer)))
 
 ;;;###autoload
@@ -108,6 +108,26 @@ See also `al/describe-variable'."
     (setq al/minibuffer-fallback
           (lambda () (magit-status dir)))
     (al/minibuffer-replace-and-exit "/")))
+
+(declare-function al/switch-to-shell-buffer "al-shell")
+
+;;;###autoload
+(defun al/minibuffer-shell-buffers ()
+  "Call `al/switch-to-shell-buffer'."
+  (interactive)
+  (setq al/minibuffer-fallback #'al/switch-to-shell-buffer)
+  (al/minibuffer-replace-and-exit))
+
+(declare-function al/magit-switch-buffer "al-magit")
+
+;;;###autoload
+(defun al/minibuffer-magit-buffers ()
+  "Call `al/magit-switch-buffer'."
+  (interactive)
+  (setq al/minibuffer-fallback
+        (lambda ()
+          (al/magit-switch-buffer 'all)))
+  (al/minibuffer-replace-and-exit))
 
 (provide 'al-minibuffer-cmd)
 
