@@ -100,6 +100,7 @@
   (al/bind-keys
     :map al/minibuffer-file-map
     ("M-h"   (al/minibuffer-set-directory "~"))
+    ("M-m" . al/minibuffer-enter-magit-status)
     ("RET" . icomplete-fido-ret)
     ("DEL" . icomplete-fido-backward-updir))
   (al/bind-keys

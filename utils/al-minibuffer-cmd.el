@@ -95,6 +95,20 @@ See also `al/describe-variable'."
           (lambda () (describe-symbol symbol)))
     (al/minibuffer-replace-and-exit symbol-name)))
 
+(declare-function magit-toplevel "magit-git")
+(declare-function magit-status "magit-status")
+
+;;;###autoload
+(defun al/minibuffer-enter-magit-status ()
+  "Enter magit status buffer for the directory in minibuffer."
+  (interactive)
+  (require 'magit)
+  (let ((dir (magit-toplevel
+              (file-name-directory (minibuffer-contents)))))
+    (setq al/minibuffer-fallback
+          (lambda () (magit-status dir)))
+    (al/minibuffer-replace-and-exit "/")))
+
 (provide 'al-minibuffer-cmd)
 
 ;;; al-minibuffer-cmd.el ends here
