@@ -102,6 +102,10 @@
     ("M-h"   (al/minibuffer-set-directory "~"))
     ("RET" . icomplete-fido-ret)
     ("DEL" . icomplete-fido-backward-updir))
+  (al/bind-keys
+    :map al/minibuffer-symbol-map
+    ("C-d" . al/minibuffer-describe-symbol)
+    ("M-d" . al/minibuffer-find-symbol))
 
   (advice-add 'completion--styles :override #'al/completion-styles)
   (advice-add 'completion-all-completions :around #'al/completion-all-completions)

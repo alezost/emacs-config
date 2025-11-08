@@ -53,6 +53,48 @@ See also `al/describe-variable'."
   (al/minibuffer-with-keymap al/minibuffer-symbol-map
     (call-interactively #'describe-symbol)))
 
+
+;;; Commands that use `al/minibuffer-fallback'
+
+(defun al/minibuffer-replace-and-exit (string)
+  "Replace the current minibuffer input with STRING and exit."
+    ;; This procedure exists because `exit-minibuffer' exits with the
+    ;; current (most likely partial) input and it is not what the
+    ;; current interactive command expects, so we need to insert a
+    ;; correct input.  We can do this with
+    ;; `minibuffer-force-complete-and-exit' but it is very slow.
+    ;; Instead the current completion is passed as STRING to this
+    ;; procedure.
+  (if (not (window-minibuffer-p))
+      (error "Not in minibuffer")
+    (delete-region (minibuffer-prompt-end) (point-max))
+    (insert string)
+    (exit-minibuffer)))
+
+;;;###autoload
+(defun al/minibuffer-find-symbol ()
+  "Display documentation of the current minibuffer completion."
+  (interactive)
+  (let* ((symbol-name (al/minibuffer-current-completion))
+         (symbol (intern symbol-name)))
+    (setq al/minibuffer-fallback
+          (lambda ()
+            (cond
+             ((fboundp symbol) (find-function symbol))
+             ((boundp symbol)  (find-variable symbol))
+             ((facep symbol)   (find-face-definition symbol)))))
+    (al/minibuffer-replace-and-exit symbol-name)))
+
+;;;###autoload
+(defun al/minibuffer-describe-symbol ()
+  "Display documentation of the current minibuffer completion."
+  (interactive)
+  (let* ((symbol-name (al/minibuffer-current-completion))
+         (symbol (intern symbol-name)))
+    (setq al/minibuffer-fallback
+          (lambda () (describe-symbol symbol)))
+    (al/minibuffer-replace-and-exit symbol-name)))
+
 (provide 'al-minibuffer-cmd)
 
 ;;; al-minibuffer-cmd.el ends here
