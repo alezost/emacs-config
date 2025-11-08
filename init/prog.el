@@ -67,7 +67,10 @@
         lisp-interaction-mode-hook)
     '(al/imenu-add-sections
       al/imenu-add-use-package
-      al/imenu-add-eval-after-load)))
+      al/imenu-add-eval-after-load))
+
+  (when (require 'al-elisp nil t)
+    (advice-add 'elisp--form-quoted-p :override #'al/elisp-form-quoted-p)))
 
 (with-eval-after-load 'ielm
   (setq ielm-prompt "EL> ")
