@@ -103,6 +103,7 @@
     ("RET" . icomplete-fido-ret)
     ("DEL" . icomplete-fido-backward-updir))
 
+  (advice-add 'completion--styles :override #'al/completion-styles)
   (advice-add 'completion-all-completions :around #'al/completion-all-completions)
   (advice-add 'read-file-name             :around #'al/read-file-add-keymap)
   (advice-add 'read-buffer                :around #'al/read-buffer-add-keymap)

@@ -41,6 +41,13 @@ input, not just some of them."
                  0)))
     (funcall fun string table pred point metadata)))
 
+(defun al/completion-styles (&rest _)
+  "Return `completion-styles'.
+This function is intended to be a replacement for `completion--styles',
+which adds default styles from `completion-category-defaults' to
+the output."
+  completion-styles)
+
 
 ;;; Additional minibuffer keymaps
 
