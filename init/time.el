@@ -1,6 +1,6 @@
 ;;; time.el --- Time, calendar, diary, appointments, notifications, …
 
-;; Copyright © 2014–2016, 2018–2022 Alex Kost
+;; Copyright © 2014–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -110,8 +110,8 @@
   (when (require 'sauron nil t)
     (add-to-list 'sauron-modules 'sauron-org))
   (when (require 'al-appt nil t)
-    (advice-add 'appt-display-message
-      :override 'al/appt-display-message)))
+    (advice-add 'appt-display-message :override #'al/appt-display-message)
+    (advice-add 'appt-mode-line :override #'al/appt-mode-line)))
 (al/eval-after-init
   (when (string= server-name "server-emms")
     (appt-activate)))

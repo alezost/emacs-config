@@ -1,6 +1,6 @@
-;;; al-appt.el --- Additional functionality for appointments
+;;; al-appt.el --- Additional functionality for appointments  -*- lexical-binding: t -*-
 
-;; Copyright © 2014-2016 Alex Kost
+;; Copyright © 2014–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -67,6 +67,28 @@ because I know better what to do."
          (min    (car mins))
          (fun    (cdr (assq min al/appt-actions))))
     (and fun (funcall fun string))))
+
+(defun al/appt-mode-line (min-list &rest _)
+  "Replacement for `appt-mode-line'."
+  (format " appt%s in %s"
+          (if (cdr min-list) "s" "")
+          (mapconcat #'identity min-list ",")))
+
+;; `appt-check' adds an extra space to the mode line which can be fixed
+;; by the following code, and there is no other way around.  However, I
+;; don't like to call `force-mode-line-update' 2 times in a row (in
+;; `appt-check' and in `al/appt-fix-mode-string').  So I made a hard
+;; decision to bear with this ugly extra space.
+
+;; (defun al/appt-fix-mode-string (&rest _)
+;;   "Remove the last character from `appt-mode-string'.
+;; This function is intended to be used as an 'after' advice for
+;; `appt-check', which hardcodes the trailing space in `appt-mode-string'."
+;;   (when appt-mode-string
+;;     (setq appt-mode-string (substring appt-mode-string 0 -1))
+;;     (force-mode-line-update t)))
+;;
+;; (advice-add 'appt-check :after #'al/appt-fix-mode-string)
 
 (provide 'al-appt)
 
