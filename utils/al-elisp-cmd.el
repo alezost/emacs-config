@@ -1,6 +1,6 @@
-;;; al-elisp.el --- Additional functionality for elisp, eldoc
+;;; al-elisp-cmd.el --- Various interactive commands for elisp  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2016, 2021 Alex Kost
+;; Copyright © 2013–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -61,6 +61,6 @@ If PP is non-nil (with \\[universal-argument] \\[universal-argument]), pretty-pr
   (let ((lisp-indent-offset (and no-offset 1)))
     (indent-pp-sexp pp)))
 
-(provide 'al-elisp)
+(provide 'al-elisp-cmd)
 
-;;; al-elisp.el ends here
+;;; al-elisp-cmd.el ends here
