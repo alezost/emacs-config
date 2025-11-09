@@ -447,6 +447,11 @@
   ("9"     . dvorak-qwerty)
   ("q"     . dvorak-qwerty))
 
+(with-eval-after-load 'hangul
+  (when (require 'al-quail-hangul nil t)
+    (advice-add 'hangul2-input-method-internal
+      :override #'al/quail-hangul2-input-method-internal)))
+
 (with-eval-after-load 'abbrev
   (define-abbrev-table 'global-abbrev-table
     '(("gos"  "GuixOS")
