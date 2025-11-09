@@ -1,6 +1,6 @@
-;;; al-eshell.el --- Additional functionality for eshell
+;;; al-eshell.el --- Additional functionality for eshell  -*- lexical-binding: t -*-
 
-;; Copyright © 2013-2016 Alex Kost
+;; Copyright © 2013–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -93,12 +93,13 @@ This function is intended to be used as a substitution for
 (defun al/eshell-input-at-point ()
   "Return eshell input from the current input (command) line.
 Return nil, if the current line is not the input line."
-  (when (save-excursion
-          (beginning-of-line)
-          (looking-at eshell-prompt-regexp))
-    (buffer-substring-no-properties
-     (save-excursion (eshell-bol) (point))
-     (line-end-position))))
+  (let ((bol (pos-bol))
+        (eol (pos-eol)))
+    (and (eq 'prompt (get-text-property bol 'field))
+         (null (get-text-property eol 'field))
+         (buffer-substring-no-properties
+          (save-excursion (goto-char eol) (line-beginning-position))
+          eol))))
 
 ;;;###autoload
 (defun al/eshell-send-input-maybe ()
@@ -129,7 +130,7 @@ input is not forced to begin with the current input."
                                al/eshell-next-matching-input-from-input))
     ;; Starting a new search.
     (setq eshell-matching-input-from-input-string
-          (buffer-substring (save-excursion (eshell-bol) (point))
+          (buffer-substring (save-excursion (beginning-of-line) (point))
                             (point))
           eshell-history-index nil))
   (eshell-previous-matching-input
