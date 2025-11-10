@@ -291,6 +291,7 @@
       ("C-c c" . compilation-shell-minor-mode)
       ("C-c o" . al/comint-toggle-move-point)
       ("C-c C-d" (process-send-eof))
+      ("C-c C-k" . comint-kill-subjob)
       ("TAB" . completion-at-point)
       ("RET" . al/comint-send-input-maybe)
       "C-d")
@@ -335,20 +336,23 @@
   (defconst al/eshell-keys
     '(("<M-tab>" . eshell-complete-lisp-symbol)
       ("RET" . al/eshell-send-input-maybe)
-      ("C-a" . eshell-bol)
       ("C-k" . al/eshell-kill-whole-line)
       ("M-." . eshell-previous-input)
       ("M-e" . eshell-next-input)
       ("M->" . eshell-previous-prompt)
-      ("M-E" . eshell-next-prompt)
-      ("M-r" . al/eshell-previous-matching-input-from-input)
+      ("M-E" . eshell-next-prompt))
+    "Alist of auxiliary keys for `eshell-mode-map'.")
+  (defconst al/eshell-hist-keys
+    '(("M-r" . al/eshell-previous-matching-input-from-input)
       ("M-s" . al/eshell-next-matching-input-from-input))
-    "Alist of auxiliary keys for `eshell-mode'.")
+    "Alist of auxiliary keys for `eshell-hist-mode-map'.")
   ;; For some strange reason `eshell-mode-map' is buffer local, so key
   ;; bindings should be put in a hook.
   (defun al/eshell-bind-keys ()
     (al/bind-keys-from-vars 'eshell-mode-map
-      '(al/free-misc-keys al/eshell-keys)))
+      '(al/free-editing-keys al/free-misc-keys al/eshell-keys))
+    (al/bind-keys-from-vars 'eshell-hist-mode-map
+      '(al/free-editing-keys al/eshell-keys)))
 
   ;; Default value of `paragraph-separate' breaks
   ;; `eshell-next-prompt'/`eshell-previous-prompt'.
