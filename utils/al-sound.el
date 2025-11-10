@@ -1,4 +1,4 @@
-;;; al-sound.el --- Playing audio and controlling sound parameters
+;;; al-sound.el --- Playing audio and controlling sound parameters  -*- lexical-binding: t -*-
 
 ;; Copyright © 2016 Alex Kost
 
@@ -41,7 +41,7 @@ If nil, use `play-sound-file'.")
 
 ;;; Setting sound
 
-;; This following code is used to set sound parameters (volume and
+;; The following code is used to set sound parameters (volume and
 ;; muteness).  It looks mostly like a wrapper around 'amixer' command,
 ;; except that 'osd-sound' is called instead.
 ;;
@@ -63,8 +63,8 @@ If nil, use `play-sound-file'.")
 
 ;;;###autoload
 (defun al/set-sound (&rest args)
-  "Set sound value for 'Master' simple control.
-ARGS are the rest amixer arguments after 'sset Master'."
+  "Set sound value for `Master' simple control.
+ARGS are the rest amixer arguments after \"sset Master\"."
   (interactive
    (split-string (read-string (concat al/sound-program " sset Master "))
                  " "))
