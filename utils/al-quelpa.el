@@ -1,6 +1,6 @@
-;;; al-quelpa.el --- Additional functionality for Quelpa
+;;; al-quelpa.el --- Additional functionality for Quelpa  -*- lexical-binding: t -*-
 
-;; Copyright © 2014-2016, 2018 Alex Kost
+;; Copyright © 2014–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -73,7 +73,7 @@ With \\[universal-argument] \\[universal-argument], update all packages."
   (unless (fboundp 'quelpa)
     (with-temp-buffer
       (url-insert-file-contents
-       "https://framagit.org/steckerhalter/quelpa/raw/master/bootstrap.el")
+       "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
       (eval-buffer)))
   (mapc #'quelpa recipes))
 
