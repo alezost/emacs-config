@@ -1,6 +1,6 @@
-;;; al-file.el --- Additional functionality for working with files
+;;; al-file.el --- Additional functionality for working with files  -*- lexical-binding: t -*-
 
-;; Copyright © 2016–2017, 2021 Alex Kost
+;; Copyright © 2016–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -102,22 +102,6 @@ contents of each file."
             (goto-char (point-max))))
         (write-region nil nil out-file))
     (error "Give me more than 1 file to append")))
-
-(defun al/check-file-name-length (fun file1 file2)
-  ;; Evaluate: (file-newer-than-file-p (make-string 257 ?a) "")
-  ;; and it gives the following error:
-  ;;
-  ;;   Getting attributes: File name too long
-  ;;
-  ;; This is problematic because `after-find-file' calls
-  ;; `file-newer-than-file-p' to check auto-save file, which may have a
-  ;; VERY LONG name.
-  "Call FUN if FILE1 and FILE2 are not too long.
-This function is intendend to be used as an 'around' advice for
-`file-newer-than-file-p'."
-  (and (< 257 (length file1))
-       (< 257 (length file2))
-       (funcall fun file1 file2)))
 
 (provide 'al-file)
 

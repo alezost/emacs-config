@@ -108,8 +108,6 @@
  vc-make-backup-files t)
 
 (al/eval-after-init
-  (when (require 'al-file nil t)
-    (advice-add 'file-newer-than-file-p :around #'al/check-file-name-length))
   (when (require 'al-process nil t)
     (advice-add 'insert-directory :around #'al/call-with-locale)
     ))
