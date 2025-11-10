@@ -1,6 +1,6 @@
-;;; al-notification.el --- Additional functionality for various notifications
+;;; al-notification.el --- Additional functionality for various notifications  -*- lexical-binding: t -*-
 
-;; Copyright © 2014–2016, 2021 Alex Kost
+;; Copyright © 2014–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -36,16 +36,20 @@
 (defvar al/timer-format "%M:%S"
   "Format string for the time message.")
 
+(defvar al/timer-timeout 0
+  "Default timeout for timer notification message.")
+
 (declare-function al/play-sound "al-sound" (file))
 
 ;;;###autoload
-(defun al/timer-set (seconds &optional msg)
+(defun al/timer-set (seconds &optional msg &rest args)
   "Notify in some SECONDS with a sound and a message MSG.
 Interactively, prompt for the number of minutes.
 With \\[universal-argument], prompt for the message as well.
 With \\[universal-argument] \\[universal-argument], prompt for
 the number of seconds and the message.
-If the prefix argument is numerical, use it as the number of minutes."
+If the prefix argument is numerical, use it as the number of minutes.
+Pass the rest ARGS to `al/timer-notify'."
   (interactive
    (list
     (cond ((numberp current-prefix-arg)
@@ -57,18 +61,26 @@ If the prefix argument is numerical, use it as the number of minutes."
          (read-string "Message: " nil nil "You should do something!"))))
   (al/timer-cancel)
   (setq al/timer
-        (run-at-time seconds nil #'al/timer-notify (or msg "Break!")))
+        (run-at-time seconds nil
+                     #'apply #'al/timer-notify (or msg "Break!") args))
   (al/timer-mode 1)
   (message "The timer has been set on %s."
            (format-time-string "%T" (timer--time al/timer))))
 
-(defun al/timer-notify (message)
-  "Notify with MESSAGE."
+(defun al/timer-notify (message &rest args)
+  "Notify with MESSAGE.
+Pass the rest ARGS to `notifications-notify'."
   (when (and al/notification-sound
              (require 'al-sound nil t))
     (al/play-sound al/notification-sound))
-  (notifications-notify :title "Timer" :body message)
-  (al/timer-mode -1))
+  (let* ((args (if (plist-get args :title)
+                   args
+                 (plist-put args :title "Timer")))
+         (args (if (plist-get args :timeout)
+                   args
+                 (plist-put args :timeout al/timer-timeout))))
+    (apply #'notifications-notify :body message args)
+    (al/timer-mode -1)))
 
 (defun al/timer-funcall-on-active-timer (fun &optional silent)
   "Call function FUN if current timer is active.
@@ -104,7 +116,7 @@ Return nil if `al/timer' is not a proper timer."
   (interactive)
   (al/timer-mode -1)
   (al/timer-funcall-on-active-timer
-   (lambda (sec)
+   (lambda (_sec)
      (cancel-timer al/timer)
      (setq al/timer nil)
      (message "The timer has been cancelled."))))
@@ -132,6 +144,7 @@ Return nil if `al/timer' is not a proper timer."
 (define-minor-mode al/timer-mode
   "Toggle displaying timer in the mode line."
   :global t
+  :group 'al/timer
   (when al/timer-mode-line-timer
     (cancel-timer al/timer-mode-line-timer))
   (setq al/timer-mode-line-string "")
