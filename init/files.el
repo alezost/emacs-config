@@ -33,6 +33,7 @@
  ("z"     . al/router-get-log)
  ("u"     . browse-url-emacs)
  ("l"     . find-library)
+ ("r"     . recentf-open)
  ("e"       (al/find-file al/emacs-dir))
  ("C-c"     (al/find-file al/emacs-init-dir))
  ("C-s"     (find-file (al/emacs-init-dir-file "settings.el")))
@@ -297,12 +298,23 @@
   (al/bind-keys-from-vars 'bookmark-bmenu-mode-map
     '(al/lazy-moving-keys al/bookmark-keys)))
 
+(al/bind-keys
+ :prefix-map al/recentf-map
+ :prefix-docstring "Map for recent files."
+ :prefix "C-x r"
+ ("m" . recentf-mode)
+ ("f" . recentf-open)
+ ("l" . recentf-edit-list)
+ ("c" . recentf-cleanup))
+
 (with-eval-after-load 'recentf
   (setq
-   recentf-keep nil
+   recentf-exclude (list (al/file-regexp "el" "gz"))
+   recentf-keep (list (lambda (f) (not (file-remote-p f))))
    recentf-auto-cleanup 'never
-   recentf-max-saved-items 99
+   recentf-max-saved-items 300
    recentf-save-file (al/emacs-data-dir-file "recentf")))
+(al/add-after-init-hook 'recentf-mode)
 
 (with-eval-after-load 'ffap
   (when (require 'al-ffap nil t)

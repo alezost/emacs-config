@@ -379,7 +379,9 @@
   (defconst al/widget-button-keys
     '(("." . widget-backward)
       ("e" . widget-forward)
-      ("u" . widget-button-press))
+      ("u" . widget-button-press)
+      ;; "m" for "mark"; useful in `recentf-edit-list'.
+      ("m"   (widget-button-press (point)) (widget-forward 1)))
     "Alist of auxiliary keys for modes with widget buttons.")
   (defconst al/widget-field-keys
     '(("<M-tab>" . widget-complete)
