@@ -281,6 +281,7 @@
 
   (defconst al/gnus-summary-keys
     '("x" ; disable `gnus-summary-limit-to-unread'
+      "M-r"
       ("."     . gnus-summary-prev-article)
       ("e"     . gnus-summary-next-article)
       (">"     . gnus-summary-prev-unread-article)
@@ -305,6 +306,14 @@
       ("w"       (wget (al/gnus-summary-find-mm-url))))
     "Alist of auxiliary keys for `gnus-summary-mode'.")
   (al/bind-keys-from-vars 'gnus-summary-mode-map 'al/gnus-summary-keys)
+
+  (al/bind-keys
+   :map gnus-summary-mode-map
+   :prefix-map al/gnus-summary-search-map
+   :prefix-docstring "Search map for `gnus-summary-mode'."
+   :prefix "M-s"
+   ("M-s" . gnus-summary-search-article-forward)
+   ("M-r" . gnus-summary-search-article-backward))
 
   (al/add-hook-maybe 'gnus-summary-mode-hook
     '(hl-line-mode al/hbar-cursor-type)))
