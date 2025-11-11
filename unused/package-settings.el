@@ -158,4 +158,21 @@
     "Alist of auxiliary keys for `vertico-map'.")
   (al/bind-keys-from-vars 'vertico-map 'al/vertico-keys))
 
+
+;;; Misc
+
+(al/bind-keys
+ :prefix-map al/echo-msk-map
+ :prefix-docstring "Map for echo-msk."
+ :prefix "C-M-s-e"
+ ("p" . echo-msk-program-task)
+ ("s" . echo-msk-browse-schedule)
+ ("a" . echo-msk-emms-play-online-audio)
+ ("A" . echo-msk-browse-online-audio)
+ ("v" . echo-msk-browse-online-video))
+
+(with-eval-after-load 'echo-msk
+  (when (require 'dvorak-russian-computer nil t)
+    (setq echo-msk-input-method "dvorak-russian-computer")))
+
 ;;; package-settings.el ends here

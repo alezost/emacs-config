@@ -60,7 +60,6 @@
  ("d"       (al/find-file al/journal-dir))
  ("w"       (al/find-file al/download-dir))
  ("M-d"     (find-file al/download-dir))
- ("e"       (find-file al/echo-download-dir))
  ("M-n"     (al/find-file al/notes-dir))
  ("t"       (al/find-file al/tmp-dir))
  ("m"       (al/find-file al/music-dir))

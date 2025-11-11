@@ -48,7 +48,6 @@
  ("i"   . web-search-ipduh)
  ("I"   . web-search-ip-address)
  ("b"   . web-search-debbugs)
- ("`"   . web-search-ej)
  ("t"     (w3m-browse-url "http://m.tv.yandex.ru/4"))
  ("l"   . al/browse-irc-log)
  ("L"     (al/browse-irc-log
@@ -97,8 +96,6 @@
       ("u 0"         (browse-url w3m-current-url))
       ("u u"         (browse-url (w3m-anchor)))
       ("u RET"       (browse-url (w3m-anchor)))
-      ("u v"         (browse-url-default-browser
-                      (echo-msk-program-video-url (w3m-anchor))))
       ("c 0"       . w3m-print-current-url)
       ("c RET"     . w3m-print-this-url)
       ("s"         . al/w3m-wget)
@@ -264,9 +261,6 @@
   (add-hook 'gnus-group-mode-hook 'hl-line-mode))
 
 (with-eval-after-load 'gnus-sum
-  (defvar al/ej-url-re "www\\.ej\\.ru.+id=\\([0-9]+\\)"
-    "Regexp matching 'ej.ru' arcticles.")
-
   (setq
    gnus-sum-thread-tree-root            "●─► "
    gnus-sum-thread-tree-false-root      "○─► "
@@ -308,9 +302,7 @@
       ("p"     . al/gnus-summary-emms-play-url)
       ("<ctrl-m> a" . al/gnus-summary-emms-add-url)
       ("<ctrl-m> p" . al/gnus-summary-emms-play-url)
-      ("w"       (wget (al/gnus-summary-find-mm-url)))
-      ("`"       (web-search-ej (al/gnus-summary-find-url-by-re
-                                 al/ej-url-re 1))))
+      ("w"       (wget (al/gnus-summary-find-mm-url))))
     "Alist of auxiliary keys for `gnus-summary-mode'.")
   (al/bind-keys-from-vars 'gnus-summary-mode-map 'al/gnus-summary-keys)
 
@@ -666,15 +658,7 @@
   (setq
    wget-debug-buffer "*wget-log*"
    wget-download-directory-filter 'wget-download-dir-filter-regexp
-   wget-download-log-file (al/emacs-data-dir-file "emacs-wget.log")
-   wget-download-directory
-   `(("onlinetv" . ,(al/download-dir-file "onlinetv"))
-     ("beatles" . ,(al/echo-download-dir-file "beatles"))
-     ("classicrock" . ,(al/echo-download-dir-file "classicrock"))
-     (,(regexp-quote "echo.msk.ru") . ,al/echo-download-dir)
-     (,(regexp-opt '("ngenix.net/audio" "vgtrk.com/audio"))
-      . ,(al/download-dir-file "mayak"))
-     ("." . ,al/download-dir))))
+   wget-download-log-file (al/emacs-data-dir-file "emacs-wget.log")))
 
 (with-eval-after-load 'mentor
   (setq mentor-rtorrent-url "scgi://127.0.0.1:5000"))
@@ -719,8 +703,7 @@
   web-search-multitran-ru/de
   web-search-verbix-ko
   web-search-verbix-de
-  web-search-naver
-  web-search-ej)
+  web-search-naver)
 
 (with-eval-after-load 'web-search
   :config
@@ -767,23 +750,6 @@
    "https://verbix.com/webverbix/korean/%s")
   (web-search-add-engine
    'naver "Naver (ko/en)"
-   "https://en.dict.naver.com/#/search?query=%s")
-  (web-search-add-engine
-   'ej "ej.ru"
-   "http://mvvc44tv.cmle.ru/?a=note&id=%s"))
-
-(al/bind-keys
- :prefix-map al/echo-msk-map
- :prefix-docstring "Map for echo-msk."
- :prefix "C-M-s-e"
- ("p" . echo-msk-program-task)
- ("s" . echo-msk-browse-schedule)
- ("a" . echo-msk-emms-play-online-audio)
- ("A" . echo-msk-browse-online-audio)
- ("v" . echo-msk-browse-online-video))
-
-(with-eval-after-load 'echo-msk
-  (when (require 'dvorak-russian-computer nil t)
-    (setq echo-msk-input-method "dvorak-russian-computer")))
+   "https://en.dict.naver.com/#/search?query=%s"))
 
 ;;; net.el ends here

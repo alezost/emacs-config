@@ -73,7 +73,6 @@
      (point-pos          :fetcher git :url ,(al/emacs-repo "point-pos"))
      (web-search         :fetcher git :url ,(al/emacs-repo "web-search"))
      (text-search        :fetcher git :url ,(al/emacs-repo "text-search"))
-     (echo-msk           :fetcher git :url ,(al/emacs-repo "echo-msk"))
      (darts-value        :fetcher git :url ,(al/emacs-repo "darts-value"))
      (debpaste           :fetcher git :url ,(al/emacs-repo "debpaste"))
      (aurel              :fetcher git :url ,(al/emacs-repo "aurel"))

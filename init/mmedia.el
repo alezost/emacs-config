@@ -50,9 +50,7 @@
  ("d" . emms-play-directory)
  ("f" . emms-play-file)
  ("l" . emms-play-playlist)
- ("u" . emms-play-url)
- ("e"   (emms-play-file
-         (read-file-name "Play file: " al/echo-download-dir))))
+ ("u" . emms-play-url))
 
 (al/bind-keys
  :map al/emms-map
@@ -63,9 +61,7 @@
  ("d" . emms-add-directory)
  ("f" . emms-add-file)
  ("l" . emms-add-playlist)
- ("u" . emms-add-url)
- ("e"   (emms-add-file
-         (read-file-name "Add file: " al/echo-download-dir))))
+ ("u" . emms-add-url))
 
 (with-eval-after-load 'emms
   (require 'emms-source-file)
