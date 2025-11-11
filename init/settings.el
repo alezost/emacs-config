@@ -238,14 +238,6 @@
  ("o"   . al/other-window)
  ("M-o" . other-window))
 
-(setq
- winner-dont-bind-my-keys t
- winner-ring-size 40)
-(al/bind-keys
- ("<C-left>"  . winner-undo)
- ("<C-right>" . winner-redo))
-(al/add-after-init-hook 'winner-mode)
-
 
 ;;; comint, shell, eshell
 
