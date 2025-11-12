@@ -420,6 +420,7 @@
    ("o" (info "org"))
    ("g" (info "guile"))
    ("x" (info "guix"))
+   ("M" (info "magit"))
    ("m" (info "make"))
    ("am" (info "automake"))
    ("ac" (info "autoconf"))
