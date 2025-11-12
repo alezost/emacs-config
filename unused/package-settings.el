@@ -203,4 +203,27 @@
                   "game" "ducpel" "sokoban")))
   (add-to-list 'sauron-modules 'sauron-erc))
 
+(with-eval-after-load 'sunrise-commander
+  (setq
+   sr-listing-switches "-alh --group-directories-first --no-group"
+   sr-show-hidden-files nil
+   sr-confirm-kill-viewer nil
+   sr-modeline-use-utf8-marks t)
+  ;; Do not block windows resizing with `sr-lock-window'.
+  (remove-hook 'window-size-change-functions 'sr-lock-window)
+
+  (defconst al/sr-keys
+    '(("i"   . sr-show-files-info)
+      ("o"   . sr-dired-prev-subdir)
+      ("u"   . sr-advertised-find-file)
+      ("M-u" . sr-advertised-find-file-other)
+      (","   . sr-history-prev)
+      ("p"   . sr-history-next)
+      ("y"   . sr-synchronize-panes)
+      ("H-a" . sr-beginning-of-buffer)
+      ("H-i" . sr-end-of-buffer)
+      ("V"     (sr-quick-view t)))
+    "Alist of auxiliary keys for `sr-mode-map'.")
+  (al/bind-keys-from-vars 'sr-mode-map 'al/sr-keys))
+
 ;;; package-settings.el ends here

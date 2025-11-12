@@ -1,4 +1,4 @@
-;;; al-sr.el --- Additional functionality for Sunrise Commander
+;;; al-sr.el --- Additional functionality for Sunrise Commander  -*- lexical-binding: t -*-
 
 ;; Copyright © 2012-2016 Alex Kost
 

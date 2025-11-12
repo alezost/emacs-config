@@ -111,7 +111,6 @@
                          :files ("lisp/*.el" "Documentation/*.texi"))
 
      (rainbow-mode       :fetcher url :url "http://git.savannah.gnu.org/cgit/emacs/elpa.git/plain/packages/rainbow-mode/rainbow-mode.el")
-     (sunrise-commander  :fetcher github :repo "escherdragon/sunrise-commander")
      (typing-practice    :fetcher url :url "https://raw.github.com/mebubo/dotfiles/master/.emacs.d/site-lisp/typing-practice.el")
      (mana               :fetcher git :url ,(al/emacs-repo "mana"))
      (ducpel             :fetcher git :url ,(al/emacs-repo "ducpel")
