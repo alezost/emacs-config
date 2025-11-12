@@ -65,8 +65,6 @@
      smartparens
      elisp-slime-nav
      hydra
-     (yasnippet          :fetcher github :repo "capitaomorte/yasnippet"
-                         :files ("yasnippet.el"))
 
      (shift-number       :fetcher git :url ,(al/emacs-repo "shift-number"))
      (pathify            :fetcher git :url ,(al/emacs-repo "pathify"))

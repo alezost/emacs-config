@@ -1,4 +1,4 @@
-;;; al-yasnippet.el --- Additional functionality for yasnippet
+;;; al-yasnippet.el --- Additional functionality for yasnippet  -*- lexical-binding: t -*-
 
 ;; Copyright © 2014-2016 Alex Kost
 
