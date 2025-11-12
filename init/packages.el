@@ -93,7 +93,6 @@
      list-environment
      (mysql              :fetcher github :repo "haxney/mysql")
      (sql-completion     :fetcher github :repo "emacsmirror/sql-completion")
-     sauron
      erc-hl-nicks
      (erc-view-log       :fetcher github :repo "alezost/erc-view-log"
                          :branch "general-regexps")

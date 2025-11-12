@@ -1,4 +1,4 @@
-;;; al-sauron.el --- Additional functionality for sauron
+;;; al-sauron.el --- Additional functionality for sauron  -*- lexical-binding: t -*-
 
 ;; Copyright © 2014-2016 Alex Kost
 

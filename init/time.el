@@ -1,4 +1,4 @@
-;;; time.el --- Time, calendar, diary, appointments, notifications, …
+;;; time.el --- Time, calendar, diary, appointments, notifications, …  -*- lexical-binding: t -*-
 
 ;; Copyright © 2014–2025 Alex Kost
 
@@ -107,8 +107,6 @@
    appt-display-diary nil
    appt-message-warning-time 5
    appt-display-interval 1)
-  (when (require 'sauron nil t)
-    (add-to-list 'sauron-modules 'sauron-org))
   (when (require 'al-appt nil t)
     (advice-add 'appt-display-message :override #'al/appt-display-message)
     (advice-add 'appt-mode-line :override #'al/appt-mode-line)))
@@ -127,17 +125,5 @@
   (when (require 'al-file nil t)
     (al/setq-file
      al/notification-sound (al/sound-dir-file "alarm.wav"))))
-
-(al/bind-keys
- ("C-c s" . al/sauron-toggle-hide-show)
- ("C-c S" . al/sauron-restart))
-
-(with-eval-after-load 'sauron
-  (setq
-   sauron-max-line-length 174
-   sauron-separate-frame nil
-   sauron-modules nil
-   sauron-nick-insensitivity 10
-   sauron-scroll-to-bottom nil))
 
 ;;; time.el ends here

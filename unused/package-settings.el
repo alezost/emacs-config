@@ -186,4 +186,21 @@
   (when (require 'dvorak-russian-computer nil t)
     (setq echo-msk-input-method "dvorak-russian-computer")))
 
+(al/bind-keys
+ ("C-c s" . al/sauron-toggle-hide-show)
+ ("C-c S" . al/sauron-restart))
+
+(with-eval-after-load 'sauron
+  (setq
+   sauron-max-line-length 174
+   sauron-separate-frame nil
+   sauron-modules nil
+   sauron-nick-insensitivity 10
+   sauron-scroll-to-bottom nil)
+  (setq sauron-watch-patterns
+        (append sauron-watch-patterns
+                '("theme" "color" "debpaste" "guix\\.el"
+                  "game" "ducpel" "sokoban")))
+  (add-to-list 'sauron-modules 'sauron-erc))
+
 ;;; package-settings.el ends here

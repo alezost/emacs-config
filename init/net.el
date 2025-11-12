@@ -1,4 +1,4 @@
-;;; net.el --- Browsing, mail, chat, network utils; w3m, wget, …
+;;; net.el --- Browsing, mail, chat, network utils; w3m, wget, …  -*- lexical-binding: t -*-
 
 ;; Copyright © 2014–2025 Alex Kost
 
@@ -574,12 +574,6 @@
      erc-ctcp-query-VERSION-hook '(al/erc-ctcp-query-VERSION))
     (al/add-hook-maybe 'erc-after-connect 'al/erc-ghost-maybe))
 
-  (when (require 'sauron nil t)
-    (setq sauron-watch-patterns
-          (append sauron-watch-patterns
-                  '("theme" "color" "debpaste" "guix\\.el"
-                    "game" "ducpel" "sokoban")))
-    (add-to-list 'sauron-modules 'sauron-erc))
   ;; ERC is loaded twice somehow (why??); so clear erc assoc of
   ;; `after-load-alist' to prevent the second loading of these settings.
   (setq after-load-alist
