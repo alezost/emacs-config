@@ -61,6 +61,19 @@ If PP is non-nil (with \\[universal-argument] \\[universal-argument]), pretty-pr
   (let ((lisp-indent-offset (and no-offset 1)))
     (indent-pp-sexp pp)))
 
+;;;###autoload
+(defun al/add-lexical-binding ()
+  "Insert \"lexical-binding\" clause to the current buffer if needed."
+  (interactive)
+  (goto-char (point-min))
+  (let ((end (save-excursion
+               (forward-line 1)
+               (point))))
+    (unless (save-excursion
+              (search-forward "lexical-binding" end t))
+      (end-of-line)
+      (insert "  -*- lexical-binding: t -*-"))))
+
 (provide 'al-elisp-cmd)
 
 ;;; al-elisp-cmd.el ends here
