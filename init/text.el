@@ -651,9 +651,7 @@
   (setq
    sp-navigate-reindent-after-up nil
    sp-ignore-modes-list nil
-   sp-wrap-entire-symbol 'globally
-   ;; It should be anything!!!!
-   sp-navigate-consider-stringlike-sexp '(latex-mode))
+   sp-wrap-entire-symbol 'globally)
 
   (al/bind-keys
    :map smartparens-mode-map
