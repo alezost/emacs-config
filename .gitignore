@@ -1,8 +1,9 @@
 *.elc
-tmp
+tmp*
 
 /data/auto-save*
 /data/backup
+/data/dictem-db.el
 /data/elpa
 /data/emms/*
 !/data/emms/streams
