@@ -228,6 +228,7 @@
  isearch-lax-whitespace nil
  ;; "a" searches for "ä", "à", etc.
  search-default-mode 'char-fold-to-regexp)
+
 (al/bind-keys
  :map isearch-mode-map
  ("M-s" . isearch-query-replace)
@@ -368,6 +369,7 @@
 (al/modify-syntax text-mode-syntax-table (?\" "\"   "))
 (al/add-hook-maybe 'text-mode-hook
   '(visual-line-mode
+    hl-line-mode
     abbrev-mode
     al/no-syntactic-font-lock
     al/show-trailing-whitespace))
