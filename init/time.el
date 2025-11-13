@@ -31,7 +31,7 @@
  ("A"   . appt-activate)
  ("a n" . appt-add)
  ("a k" . appt-delete)
- ("M-T"   (al/timer-set (* 3 60)))
+ ("M-T"   (al/timer-set (* 4 60)))
  ("T"     (al/timer-set (* 45 60)))
  ("t n" . al/timer-set)
  ("t t" . al/timer-remaining-time)
