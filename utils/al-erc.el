@@ -1,4 +1,4 @@
-;;; al-erc.el --- Additional functionality for ERC
+;;; al-erc.el --- Additional functionality for ERC  -*- lexical-binding: t -*-
 
 ;; Copyright © 2013–2016, 2018 Alex Kost
 
@@ -35,7 +35,7 @@
       (user-error "The current buffer is not a channel"))))
 
 (defun al/znc-running-p ()
-  "Return non-nil if 'znc' daemon is running."
+  "Return non-nil if `znc' daemon is running."
   (string-match-p "\\`[[:digit:]]+ znc"
                   (shell-command-to-string "pgrep -l znc")))
 
@@ -133,7 +133,7 @@ Similar to `erc-quit-server', but without prompting for REASON."
   (with-current-buffer (al/erc-server-buffer)
     (erc-cmd-QUIT reason)))
 
-(defun al/erc-ghost-maybe (server nick)
+(defun al/erc-ghost-maybe (_server nick)
   "Send GHOST message to NickServ if NICK ends with `erc-nick-uniquifier'.
 The function is suitable for `erc-after-connect'."
   (when (string-match (format "\\(.*?\\)%s+$" erc-nick-uniquifier) nick)
@@ -194,13 +194,13 @@ Similar to `erc-away-time', but no need to be in ERC buffer."
 
 ;;; CTCP info
 
-(defun al/erc-ctcp-query-FINGER (proc nick login host to msg)
+(defun al/erc-ctcp-query-FINGER (_proc nick _login _host _to _msg)
   "Respond to a CTCP FINGER query."
   (unless erc-disable-ctcp-replies
     (erc-send-ctcp-notice nick "FINGER Keep your FINGER out of me."))
   nil)
 
-(defun al/erc-ctcp-query-ECHO (proc nick login host to msg)
+(defun al/erc-ctcp-query-ECHO (_proc nick _login _host _to msg)
   "Respond to a CTCP ECHO query."
   (when (string-match "^ECHO\\s-+\\(.*\\)\\s-*$" msg)
     (let ((str (apply #'string
@@ -209,7 +209,7 @@ Similar to `erc-away-time', but no need to be in ERC buffer."
 	(erc-send-ctcp-notice nick (format "ECHO Did you mean '%s'?" str)))))
   nil)
 
-(defun al/erc-ctcp-query-TIME (proc nick login host to msg)
+(defun al/erc-ctcp-query-TIME (_proc nick _login _host _to _msg)
   "Respond to a CTCP TIME query."
   (unless erc-disable-ctcp-replies
     (let* ((hour (nth 2 (decode-time (current-time))))
@@ -221,7 +221,7 @@ Similar to `erc-away-time', but no need to be in ERC buffer."
       (erc-send-ctcp-notice nick (format "TIME %s." str))))
   nil)
 
-(defun al/erc-ctcp-query-VERSION (proc nick login host to msg)
+(defun al/erc-ctcp-query-VERSION (_proc nick _login _host _to _msg)
   "Respond to a CTCP VERSION query."
   (unless erc-disable-ctcp-replies
     (erc-send-ctcp-notice
@@ -237,7 +237,7 @@ Similar to `erc-away-time', but no need to be in ERC buffer."
   (interactive)
   (view-file (erc-current-logfile)))
 
-(defun al/erc-log-file-name-network-channel (buffer target nick server port)
+(defun al/erc-log-file-name-network-channel (buffer _target _nick server _port)
   "Return erc log-file name of network (or server) and channel names.
 The result file name is in the form \"network_channel.txt\".
 This function is suitable for `erc-generate-log-file-name-function'."

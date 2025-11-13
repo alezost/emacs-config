@@ -1,4 +1,4 @@
-;;; al-font.el --- Additional functionality for working with fonts
+;;; al-font.el --- Additional functionality for working with fonts  -*- lexical-binding: t -*-
 
 ;; Copyright © 2014-2016 Alex Kost
 

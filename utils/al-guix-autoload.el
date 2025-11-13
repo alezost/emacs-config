@@ -1,4 +1,4 @@
-;;; al-guix-autoload.el --- Additional functionality to autoload Guix packages
+;;; al-guix-autoload.el --- Additional functionality to autoload Guix packages  -*- lexical-binding: t -*-
 
 ;; Copyright © 2014-2016 Alex Kost
 

@@ -1,4 +1,4 @@
-;;; al-haskell.el --- Additional functionality for `haskell' mode
+;;; al-haskell.el --- Additional functionality for `haskell' mode  -*- lexical-binding: t -*-
 
 ;; Copyright © 2022 Alex Kost
 

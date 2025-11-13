@@ -1,4 +1,4 @@
-;;; al-pcmpl-args.el --- Additional functionality for pcmpl-args
+;;; al-pcmpl-args.el --- Additional functionality for pcmpl-args  -*- lexical-binding: t -*-
 
 ;; Copyright © 2015-2016 Alex Kost
 

@@ -1,4 +1,4 @@
-;;; al-geiser.el --- Additional functionality for geiser
+;;; al-geiser.el --- Additional functionality for geiser  -*- lexical-binding: t -*-
 
 ;; Copyright © 2014–2018 Alex Kost
 

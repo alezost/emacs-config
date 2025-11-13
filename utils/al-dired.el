@@ -1,4 +1,4 @@
-;;; al-dired.el --- Additional functionality for dired
+;;; al-dired.el --- Additional functionality for dired  -*- lexical-binding: t -*-
 
 ;; Copyright © 2012–2019 Alex Kost
 

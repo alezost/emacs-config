@@ -1,4 +1,4 @@
-;;; al-misc-cmd.el --- Miscellaneous interactive commands
+;;; al-misc-cmd.el --- Miscellaneous interactive commands  -*- lexical-binding: t -*-
 
 ;; Copyright © 2013–2016, 2019–2020 Alex Kost
 
@@ -39,7 +39,7 @@
     (if (funcall srch-fun org-link-any-re nil t)
 	(progn
 	  (goto-char (match-beginning 0))
-	  (if (outline-invisible-p) (org-show-context)))
+	  (when (outline-invisible-p) (org-fold-show-context)))
       (goto-char pos)
       (setq org-link--search-failed t)
       (message "No further link found"))))

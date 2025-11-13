@@ -1,4 +1,4 @@
-;;; al-parens.el --- Additional functionality for working with parentheses
+;;; al-parens.el --- Additional functionality for working with parentheses  -*- lexical-binding: t -*-
 
 ;; Copyright © 2015-2016 Alex Kost
 

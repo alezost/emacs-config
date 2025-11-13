@@ -1,4 +1,4 @@
-;;; al-window.el --- Additional functionality for working with windows and frames
+;;; al-window.el --- Additional functionality for working with windows and frames  -*- lexical-binding: t -*-
 
 ;; Copyright © 2013–2017 Alex Kost
 
@@ -99,9 +99,9 @@ otherwise select the next window."
 ;;; Frames
 
 ;;;###autoload
-(defun al/maximize-frame (&optional current-frame)
-  "Maximize active frame using 'wmctrl'.
-The variable CURRENT-FRAME affects nothing, it is used for
+(defun al/maximize-frame (&optional _current-frame)
+  "Maximize active frame using `wmctrl'.
+The variable _CURRENT-FRAME affects nothing, it is used for
 `after-make-frame-functions' (for maximizing new frames)."
   (interactive)
   (shell-command "wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz"))

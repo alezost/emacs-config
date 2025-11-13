@@ -1,4 +1,4 @@
-;;; al-magit-popup.el --- Additional functionality for magit-popup library
+;;; al-magit-popup.el --- Additional functionality for magit-popup library  -*- lexical-binding: t -*-
 
 ;; Copyright © 2016, 2018 Alex Kost
 

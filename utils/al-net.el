@@ -1,4 +1,4 @@
-;;; al-net.el --- Additional functionality for network stuff (including `net-utils' package)
+;;; al-net.el --- Additional functionality for network stuff (including `net-utils' package)  -*- lexical-binding: t -*-
 
 ;; Copyright © 2013-2016 Alex Kost
 

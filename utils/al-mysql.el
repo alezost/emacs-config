@@ -1,4 +1,4 @@
-;;; al-mysql.el --- Additional functionality for mysql package
+;;; al-mysql.el --- Additional functionality for mysql package  -*- lexical-binding: t -*-
 
 ;; Copyright © 2015-2016 Alex Kost
 

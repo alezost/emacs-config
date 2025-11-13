@@ -1,4 +1,4 @@
-;;; al-saveplace.el --- Additional functionality for saveplace
+;;; al-saveplace.el --- Additional functionality for saveplace  -*- lexical-binding: t -*-
 
 ;; Copyright © 2016 Alex Kost
 

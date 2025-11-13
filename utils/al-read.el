@@ -1,4 +1,4 @@
-;;; al-read.el --- Minibuffer readers
+;;; al-read.el --- Minibuffer readers  -*- lexical-binding: t -*-
 
 ;; Copyright © 2013-2016 Alex Kost
 

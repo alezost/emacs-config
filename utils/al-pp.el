@@ -1,4 +1,4 @@
-;;; al-pp.el --- Additional functionality for pp
+;;; al-pp.el --- Additional functionality for pp  -*- lexical-binding: t -*-
 
 ;; Copyright © 2016 Alex Kost
 
@@ -19,7 +19,7 @@
 
 (defun al/pp-enable-undo (_expression buffer-name &rest _)
   "Enable undo in `buffer-name'.
-This function is intended to be used as an 'after' advice for
+This function is intended to be used as an `after' advice for
 `pp-display-expression'."
   ;; `pp-display-expression' uses `with-output-to-temp-buffer' which
   ;; disables undo by setting `buffer-undo-list' to t.

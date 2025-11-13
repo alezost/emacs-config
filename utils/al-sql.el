@@ -1,4 +1,4 @@
-;;; al-sql.el --- Additional functionality for sql stuff
+;;; al-sql.el --- Additional functionality for sql stuff  -*- lexical-binding: t -*-
 
 ;; Copyright © 2013–2018, 2021 Alex Kost
 

@@ -1,4 +1,4 @@
-;;; al-process.el --- Additional functionality for working with processs
+;;; al-process.el --- Additional functionality for working with processs  -*- lexical-binding: t -*-
 
 ;; Copyright © 2013–2016, 2020–2022 Alex Kost
 
@@ -32,14 +32,14 @@
 
 (defun al/call-with-locale (fun &rest args)
   "Call FUN with ARGS using `al/process-locale'.
-This function can be used as an 'around' advice.
+This function can be used as an `around' advice.
 For example, `insert-directory' (used by `dired') calls
 `insert-directory-program' (\"ls -l\" more or less) and searches
 for \"total\" in its output to insert occupied and free disk
 space.  But \"total\" is obviously not available for non-English
 locales.  The following line should fix this problem.
 
-  (advice-add 'insert-directory :around #'al/call-with-locale)
+  (advice-add \\='insert-directory :around #\\='al/call-with-locale)
 "
   (let ((process-environment
          (cons (concat "LC_ALL=" al/process-locale)
@@ -96,12 +96,12 @@ program arguments.")
          'al/before-process-functions program args))
 
 (defun al/run-before-call-process-hook
-    (program &optional infile destination display &rest args)
+    (program &optional _infile _destination _display &rest args)
   "Run `al/before-process-functions' using PROGRAM and ARGS."
   (al/run-before-process-hook program args))
 
 (defun al/run-before-start-process-hook
-    (name buffer program &rest args)
+    (_name _buffer program &rest args)
   "Run `al/before-process-functions' using PROGRAM and ARGS."
   (al/run-before-process-hook program args))
 

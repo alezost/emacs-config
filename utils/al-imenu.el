@@ -1,4 +1,4 @@
-;;; al-imenu.el --- Additional functionality for imenu
+;;; al-imenu.el --- Additional functionality for imenu  -*- lexical-binding: t -*-
 
 ;; Copyright © 2014–2017 Alex Kost
 
@@ -62,11 +62,11 @@ If REGEXP is nil, use `al/imenu-sections-re'."
   "Regexp used for \"Sections\" imenu entries in `js-mode'.")
 
 ;;;###autoload
-(defun al/imenu-add-js-sections (&optional regexp)
+(defun al/imenu-add-js-sections (&optional _regexp)
   "Add REGEXP as a \"Sections\" element to `imenu-generic-expression'.
 If REGEXP is nil, use `al/imenu-sections-re'."
   (al/imenu-add-sections al/imenu-js-sections-re)
-  (setq-local imenu-create-index-function 'al/js-imenu-create-index))
+  (setq-local imenu-create-index-function #'al/js-imenu-create-index))
 
 (declare-function js--imenu-create-index "js" nil)
 (declare-function imenu--generic-function "imenu" (patterns))

@@ -1,4 +1,4 @@
-;;; al-guix.el --- Additional functionality for Guix
+;;; al-guix.el --- Additional functionality for Guix  -*- lexical-binding: t -*-
 
 ;; Copyright © 2015-2016 Alex Kost
 

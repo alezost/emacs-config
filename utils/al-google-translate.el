@@ -1,4 +1,4 @@
-;;; al-google-translate.el --- Additional functionality for google-translate
+;;; al-google-translate.el --- Additional functionality for google-translate  -*- lexical-binding: t -*-
 
 ;; Copyright © 2013–2016, 2019 Alex Kost
 

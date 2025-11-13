@@ -1,4 +1,4 @@
-;;; al-pcomplete.el --- Additional functionality for pcomplete
+;;; al-pcomplete.el --- Additional functionality for pcomplete  -*- lexical-binding: t -*-
 
 ;; Copyright © 2015-2016 Alex Kost
 

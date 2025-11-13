@@ -1,4 +1,4 @@
-;;; al-mode-line.el --- Additional functionality for mode-line
+;;; al-mode-line.el --- Additional functionality for mode-line  -*- lexical-binding: t -*-
 
 ;; Copyright © 2014-2016 Alex Kost
 
@@ -42,12 +42,12 @@ This function is intended to be used in `after-change-major-mode-hook'."
 ;;;###autoload
 (defun al/mode-line-default-buffer-identification (mode)
   "Set `mode-line-buffer-identification' to the default value for MODE.
-Some major modes like to override
-`mode-line-buffer-identification'.  If you want to force a mode
-to use the default value, call this function like this:
+Some major modes like to override `mode-line-buffer-identification'.
+If you want to force a mode to use the default value, call this function
+like this:
 
-  (al/mode-line-default-buffer-identification 'Man-mode)
-  (al/mode-line-default-buffer-identification 'dired-mode)"
+  (al/mode-line-default-buffer-identification \\='Man-mode)
+  (al/mode-line-default-buffer-identification \\='dired-mode)"
   (let ((hook (intern (concat (symbol-name mode) "-hook"))))
     (add-hook hook
               (lambda ()
@@ -65,7 +65,7 @@ to use the default value, call this function like this:
   "Set `mode-line-process' to the value of `al/mode-line-process'.
 This function is intended to be used in hooks:
 
-  (add-hook 'comint-mode-hook 'al/mode-line-process)"
+  (add-hook \\='comint-mode-hook #\\='al/mode-line-process)"
   (setq mode-line-process al/mode-line-process))
 
 

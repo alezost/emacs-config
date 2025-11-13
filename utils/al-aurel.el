@@ -1,4 +1,4 @@
-;;; al-aurel.el --- Additional functionality for AURel
+;;; al-aurel.el --- Additional functionality for AURel  -*- lexical-binding: t -*-
 
 ;; Copyright © 2016 Alex Kost
 

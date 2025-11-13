@@ -1,4 +1,4 @@
-;;; al-lisp.el --- Additional functionality for `lisp-mode'
+;;; al-lisp.el --- Additional functionality for `lisp-mode'  -*- lexical-binding: t -*-
 
 ;; Copyright © 2017 Alex Kost
 
@@ -32,10 +32,10 @@
       (zero-or-one "(")
       (zero-or-one
        (group (one-or-more (or (syntax word) (syntax symbol))))))
-  "Regexp to match 'defcommand' keyword.")
+  "Regexp to match `defcommand' keyword.")
 
 (defun al/lisp-add-defcommand-font-lock-keywords ()
-  "Add font-lock keywords to highlight 'defcommand' properly.
+  "Add font-lock keywords to highlight `defcommand' properly.
 Call this function once!"
   (font-lock-add-keywords
    'lisp-mode
@@ -44,7 +44,7 @@ Call this function once!"
       (2 font-lock-function-name-face nil t)))))
 
 (defun al/lisp-add-defcommand-to-imenu ()
-  "Add 'defcommand' entries to `imenu-generic-expression'.
+  "Add `defcommand' entries to `imenu-generic-expression'.
 This function is intended to be added to `lisp-mode-hook'."
   (al/add-to-imenu al/lisp-defcommand-regexp
                    :index 2))

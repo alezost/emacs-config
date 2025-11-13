@@ -1,4 +1,4 @@
-;;; al-package.el --- Additional functionality for Emacs package system
+;;; al-package.el --- Additional functionality for Emacs package system  -*- lexical-binding: t -*-
 
 ;; Copyright © 2014-2016 Alex Kost
 
@@ -22,12 +22,12 @@
 
 (defun al/package-installed-p (fun package &rest args)
   "Do not check the version of a built-in package.
-Some built-in packages (e.g., `org', `erc') do not have 'Version'
+Some built-in packages (e.g., `org', `erc') do not have `Version'
 header field.  This may break things if a third-party package
 relies on a particular version of a built-in package (e.g.,
-'org-6.1' or 'erc-5.3').  So just ignore the version.
+`org-6.1' or `erc-5.3').  So just ignore the version.
 
-This function is intendend to be used as an 'around' advice for
+This function is intendend to be used as an `around' advice for
 `package-installed-p'."
   (or (package-built-in-p package)
       (apply fun package args)))
@@ -74,7 +74,7 @@ This function is intendend to be used as an 'around' advice for
 
 (defun al/quelpa-package-install (fun package &rest args)
   "Do not install PACKAGE if it is one of `al/ignored-packages'.
-This function is intendend to be used as an 'around' advice for
+This function is intendend to be used as an `around' advice for
 `quelpa-package-install'."
   (let* ((name (al/package-name package))
          (ignore? (memq name al/ignored-packages)))
@@ -85,7 +85,7 @@ This function is intendend to be used as an 'around' advice for
 (defun al/package-compute-transaction (fun packages requirements
                                            &rest args)
   "Reduce REQUIREMENTS by excluding `al/ignored-packages'.
-This function is intendend to be used as an 'around' advice for
+This function is intendend to be used as an `around' advice for
 `package-compute-transaction'."
   (apply fun packages
          (al/remove-ignored-packages requirements)
@@ -93,7 +93,7 @@ This function is intendend to be used as an 'around' advice for
 
 (defun al/package-activate-1 (fun pkg-desc &rest args)
   "Reduce requirements from PKG-DESC by excluding `al/ignored-packages'.
-This function is intendend to be used as an 'around' advice for
+This function is intendend to be used as an `around' advice for
 `package-activate-1'."
   (setf (package-desc-reqs pkg-desc)
         (al/remove-ignored-packages (package-desc-reqs pkg-desc)))

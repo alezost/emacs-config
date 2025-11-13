@@ -1,4 +1,4 @@
-;;; al-compilation.el --- Additional functionality for compilation buffers
+;;; al-compilation.el --- Additional functionality for compilation buffers  -*- lexical-binding: t -*-
 
 ;; Copyright © 2015-2016 Alex Kost
 

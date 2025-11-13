@@ -1,4 +1,4 @@
-;;; al-texinfo.el --- Additional functionality for texinfo
+;;; al-texinfo.el --- Additional functionality for texinfo  -*- lexical-binding: t -*-
 
 ;; Copyright © 2016 Alex Kost
 

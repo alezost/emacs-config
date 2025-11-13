@@ -1,4 +1,4 @@
-;;; al-server.el --- Code for working with Emacs server
+;;; al-server.el --- Code for working with Emacs server  -*- lexical-binding: t -*-
 
 ;; Copyright © 2014–2016, 2022 Alex Kost
 

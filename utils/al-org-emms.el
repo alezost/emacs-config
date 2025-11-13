@@ -1,4 +1,4 @@
-;;; al-org.el --- Additional functionality for org-emms
+;;; al-org.el --- Additional functionality for org-emms  -*- lexical-binding: t -*-
 
 ;; Copyright © 2021 Alex Kost
 

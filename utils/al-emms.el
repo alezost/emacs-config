@@ -1,4 +1,4 @@
-;;; al-emms.el --- Additional functionality for EMMS
+;;; al-emms.el --- Additional functionality for EMMS  -*- lexical-binding: t -*-
 
 ;; Copyright © 2013–2016, 2019 Alex Kost
 

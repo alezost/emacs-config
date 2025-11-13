@@ -1,4 +1,4 @@
-;;; al-w3m.el --- Additional functionality for w3m
+;;; al-w3m.el --- Additional functionality for w3m  -*- lexical-binding: t -*-
 
 ;; Copyright © 2013-2016 Alex Kost
 

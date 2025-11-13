@@ -1,4 +1,4 @@
-;;; al-ediff.el --- Additional functionality for ediff
+;;; al-ediff.el --- Additional functionality for ediff  -*- lexical-binding: t -*-
 
 ;; Copyright © 2014-2016 Alex Kost
 

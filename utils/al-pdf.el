@@ -1,4 +1,4 @@
-;;; al-pdf.el --- Additional functionality for pdf-tools
+;;; al-pdf.el --- Additional functionality for pdf-tools  -*- lexical-binding: t -*-
 
 ;; Copyright © 2021 Alex Kost
 

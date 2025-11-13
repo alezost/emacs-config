@@ -1,6 +1,6 @@
-;;; al-text-cmd.el --- Various interactive commands for working with text
+;;; al-text-cmd.el --- Various interactive commands for working with text  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2016, 2018 Alex Kost
+;; Copyright © 2013–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -77,7 +77,7 @@ It doesn't destroy what you paste with \\[yank]."
 If last command is not `yank', call `yank' N times."
   (if (eq last-command 'yank)
       (yank-pop n)
-    (dotimes (i (abs n)) (yank))))
+    (dotimes (_ (abs n)) (yank))))
 
 ;;;###autoload
 (defun al/yank-or-prev (arg)
@@ -151,7 +151,7 @@ With ARG, save that many lines."
   (save-excursion
     (and (< arg 0)
          (forward-visible-line 1))
-    (kill-ring-save (point-at-bol)
+    (kill-ring-save (line-beginning-position)
                     (progn
                       (forward-visible-line arg)
                       (point)))))
@@ -177,7 +177,7 @@ With negative N, comment everything except the last copy."
                 (current-column)))
       (let ((text (buffer-substring-no-properties beg end)))
         (goto-char beg)
-        (dotimes (i (abs n))
+        (dotimes (_ (abs n))
           (let ((beg (point)))
             (insert text)
             (when (< n 0)
@@ -305,8 +305,9 @@ If a prefix ARG is non-nil, use that many lines."
   (interactive "p")
   (or (> arg 0)
       (error "I don't want to comment previous lines"))
-  (comment-or-uncomment-region (point-at-bol)
-                               (point-at-eol arg)))
+  (comment-or-uncomment-region (pos-bol) (pos-eol arg)))
+
+(defvar dabbrev-abbrev-char-regexp)
 
 ;;;###autoload
 (defun al/dabbrev-expand-word (arg)
@@ -376,7 +377,7 @@ the word.  It should accept a number of modified words as argument."
 If the point is in the beginning of line already,
 move to beginning of previous one."
   (interactive)
-  (beginning-of-line (if (= (point) (point-at-bol)) 0 1)))
+  (beginning-of-line (if (= (point) (pos-bol)) 0 1)))
 
 ;;;###autoload
 (defun al/end-of-line ()
@@ -384,7 +385,7 @@ move to beginning of previous one."
 If the point is in the end of line already,
 move to end of next one."
   (interactive)
-  (end-of-line (if (= (point) (point-at-eol)) 2 1)))
+  (end-of-line (if (= (point) (pos-eol)) 2 1)))
 
 ;;;###autoload
 (defun al/recenter-top ()

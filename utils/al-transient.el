@@ -1,4 +1,4 @@
-;;; al-transient.el --- Additional functionality for transient library
+;;; al-transient.el --- Additional functionality for transient library  -*- lexical-binding: t -*-
 
 ;; Copyright © 2019 Alex Kost
 

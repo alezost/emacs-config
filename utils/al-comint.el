@@ -1,4 +1,4 @@
-;;; al-comint.el --- Additional functionality for comint
+;;; al-comint.el --- Additional functionality for comint  -*- lexical-binding: t -*-
 
 ;; Copyright © 2015-2016 Alex Kost
 

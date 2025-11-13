@@ -1,4 +1,4 @@
-;;; al-url.el --- Code for searching and downloading various stuff
+;;; al-url.el --- Code for searching and downloading various stuff  -*- lexical-binding: t -*-
 
 ;; Copyright © 2015-2016 Alex Kost
 

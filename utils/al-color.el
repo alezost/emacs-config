@@ -1,4 +1,4 @@
-;;; al-color.el --- Additional functionality for working with color themes, faces, ...
+;;; al-color.el --- Additional functionality for working with color themes, faces, ...  -*- lexical-binding: t -*-
 
 ;; Copyright © 2013-2016 Alex Kost
 

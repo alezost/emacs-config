@@ -1,4 +1,4 @@
-;;; al-dictem.el --- Additional functionality for dictem
+;;; al-dictem.el --- Additional functionality for dictem  -*- lexical-binding: t -*-
 
 ;; Copyright © 2013-2016 Alex Kost
 

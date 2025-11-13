@@ -1,4 +1,4 @@
-;;; al-quail.el --- Additional input methods
+;;; al-quail.el --- Additional input methods  -*- lexical-binding: t -*-
 
 ;; Copyright © 2019–2025 Alex Kost
 

@@ -1,4 +1,4 @@
-;;; al-org.el --- Additional functionality for org-mode
+;;; al-org.el --- Additional functionality for org-mode  -*- lexical-binding: t -*-
 
 ;; Copyright © 2012–2025 Alex Kost
 
@@ -29,11 +29,8 @@
 
 (defun al/org-link-set-description (fun link &optional description)
   "Call FUN with LINK and fixed DESCRIPTION.
-This function is intended to be used as an 'around' advice for
-`org-make-link-string':
-
-  (advice-add 'org-link-make-string
-              :around #'al/org-link-set-description)
+This function is intended to be used as an `around' advice for
+`org-make-link-string'.
 
 If `al/org-link-no-description-regexp' matches LINK or if
 DESCRIPTION is the same as LINK, then description is ignored (FUN

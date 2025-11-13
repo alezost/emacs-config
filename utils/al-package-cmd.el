@@ -1,4 +1,4 @@
-;;; al-package-cmd.el --- Interactive commands related to Emacs package system
+;;; al-package-cmd.el --- Interactive commands related to Emacs package system  -*- lexical-binding: t -*-
 
 ;; Copyright © 2013-2016 Alex Kost
 
@@ -44,7 +44,7 @@ NAME is an archive name from `al/package-archives'."
 (defun al/remove-package-archive (&optional name)
   "Remove archive to the value of `package-archives'.
 NAME is an archive name from `package-archives'.
-If NAME is nil (interactively, with \\[universal-argument]), \
+If NAME is nil (interactively, with \\[universal-argument]),
 remove all archives (i.e., set it to nil)."
   (interactive
    (list (unless current-prefix-arg

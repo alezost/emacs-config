@@ -1,4 +1,4 @@
-;;; al-misc.el --- Miscellaneous additional functionality
+;;; al-misc.el --- Miscellaneous additional functionality  -*- lexical-binding: t -*-
 
 ;; Copyright © 2013–2021 Alex Kost
 
@@ -162,7 +162,7 @@ PREDICATE (`memq' by default)."
                                   keys)))
                   alist)))
 
-(defun al/assoc-delete-all (keys alist &optional predicate)
+(defun al/assoc-delete-all (keys alist &optional _predicate)
   "Delete from ALIST all elements whose car is one of KEYS.
 This is similar to `assoc-delete-all', but KEYS can either be a
 single key or a list of keys.  KEYS are checked using

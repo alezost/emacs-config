@@ -1,4 +1,4 @@
-;;; al-browse-url.el --- Additional functionality for browse-url package
+;;; al-browse-url.el --- Additional functionality for browse-url package  -*- lexical-binding: t -*-
 
 ;; Copyright © 2013–2016, 2019 Alex Kost
 
@@ -92,7 +92,7 @@ The first choice is used as default (pressing RET will call the
 first function).")
 
 ;;;###autoload
-(defun al/choose-browser (url &rest args)
+(defun al/choose-browser (url &rest _args)
   "Choose a browser for openning URL.
 Suitable for `browse-url-browser-function'."
   (interactive "sURL: ")

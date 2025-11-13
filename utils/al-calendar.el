@@ -1,4 +1,4 @@
-;;; al-calendar.el --- Additional functionality for calendar, diary, etc.
+;;; al-calendar.el --- Additional functionality for calendar, diary, etc.  -*- lexical-binding: t -*-
 
 ;; Copyright © 2014–2016, 2018, 2020 Alex Kost
 

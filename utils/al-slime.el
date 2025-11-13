@@ -1,4 +1,4 @@
-;;; al-slime.el --- Additional functionality for SLIME
+;;; al-slime.el --- Additional functionality for SLIME  -*- lexical-binding: t -*-
 
 ;; Copyright © 2013–2016, 2019 Alex Kost
 

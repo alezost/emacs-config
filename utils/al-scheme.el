@@ -1,4 +1,4 @@
-;;; al-scheme.el --- Additional functionality for `scheme-mode'
+;;; al-scheme.el --- Additional functionality for `scheme-mode'  -*- lexical-binding: t -*-
 
 ;; Copyright © 2015–2017 Alex Kost
 
@@ -76,7 +76,7 @@
 (defun al/scheme-indent-function (indent-point state)
   "Scheme mode function for the value of the variable `lisp-indent-function'.
 This function is the same as `scheme-indent-function' except it
-indents property lists properly and names starting with 'default'."
+indents property lists properly and names starting with `default'."
   (let ((normal-indent (current-column)))
     (goto-char (1+ (elt state 1)))
     (parse-partial-sexp (point) calculate-lisp-indent-last-sexp 0 t)

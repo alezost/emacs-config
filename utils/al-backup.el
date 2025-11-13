@@ -1,4 +1,4 @@
-;;; al-backup.el --- Auxiliary code for backup files
+;;; al-backup.el --- Auxiliary code for backup files  -*- lexical-binding: t -*-
 
 ;; Copyright © 2012–2016, 2021 Alex Kost
 
