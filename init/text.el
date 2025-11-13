@@ -1,4 +1,4 @@
-;;; text.el --- Working with text: editing, searching, …
+;;; text.el --- Working with text: editing, searching, …  -*- lexical-binding: t -*-
 
 ;; Copyright © 2014–2025 Alex Kost
 
@@ -308,9 +308,9 @@
  mouse-drag-copy-region t
  select-active-regions nil)
 
-;; Use PRIMARY instead of CLIPBOARD.
 (setq select-enable-primary t
-      select-enable-clipboard nil)
+      ;; Using clipboard for external programs (like Firefox).
+      select-enable-clipboard t)
 
 (al/bind-key "C-H-y" browse-kill-ring)
 (with-eval-after-load 'browse-kill-ring
