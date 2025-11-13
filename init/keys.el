@@ -1,6 +1,6 @@
-;;; keys.el --- Miscellaneous global key bindings and relative settings
+;;; keys.el --- Miscellaneous global key bindings and relative settings  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2022 Alex Kost
+;; Copyright © 2013–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -156,6 +156,7 @@
  ("C-c r"       . revert-buffer)
  ("C-c p"       . list-processes)
  ("C-c e"       . list-environment)
+ ("C-c F"       . al/switch-to-faces)
  ("C-c k"       . al/kill-process))
 
 (defalias 'ctl-x-r-prefix ctl-x-r-map)

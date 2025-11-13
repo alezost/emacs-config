@@ -233,6 +233,13 @@ If CHARSET is nil, use `unicode-bmp'.  With prefix, use `unicode-smp'."
   (al/switch-to-buffer-or-funcall
    "*Packages*" #'list-packages))
 
+;;;###autoload
+(defun al/switch-to-faces ()
+  "Switch to the buffer with packages."
+  (interactive)
+  (al/switch-to-buffer-or-funcall
+   "*Faces*" #'list-faces-display))
+
 (provide 'al-buffer)
 
 ;;; al-buffer.el ends here
