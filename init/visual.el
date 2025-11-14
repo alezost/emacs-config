@@ -1,6 +1,6 @@
 ;;; visual.el --- Visual settings: fonts, themes, mode-line, …  -*- lexical-binding: t -*-
 
-;; Copyright © 2012–2021 Alex Kost
+;; Copyright © 2012–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -24,25 +24,17 @@
   "Perform some visual actions specific to a FRAME type."
   (when (and (display-graphic-p)
              (require 'al-font nil t))
+    ;; Should be "solved":
+    ;; 안녕 (droid)
+    ;; 武; 🐼, 😻, ⚽, 💩, ∵, ⸪, 🃜, 🜒, 🝖, ←↑→↓ (symbola);
+    ;; ࿌ (unifont).
+    (setq use-default-font-for-symbols nil)
     (set-frame-font (al/first-existing-font) nil t)
-    ;; Should be "solved": 武; 🐼, 😻, ⚽, 💩, ∵, ⸪ (symbola);
-    ;; ࿌ (unifont); 🃜, 🜒, 🝖 (quivira).
-    (al/set-fontset
-     "fontset-default" nil nil
-     '(("Symbola"
-        (#x2020  . #x24ff)
-        (#x2600  . #x27ff)
-        (#x2900  . #x29ff)
-        (#x2e00  . #x2e42)
-        (#x1d300 . #x1d371)
-        (#x1d400 . #x1d7ff)
-        (#x1f000 . #x1f1ff)
-        (#x1f300 . #x1f9ff))
-       ("Ubuntu Mono"
-        (?²      . ?³)
-        (?¼      . ?¾)
-        (#x2070  . #x208f))
-       ("Quivira" nil)))))
+    (set-fontset-font t 'hangul "Droid Sans Mono")
+    (set-fontset-font t 'symbol "Symbola")
+    ;; This is needed to display unknown symbols (like ￰) properly
+    ;; i.e., without using Droid fallback.
+    (set-fontset-font t nil "Symbola")))
 
 (al/add-hook-maybe
     '(after-make-frame-functions window-setup-hook)

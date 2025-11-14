@@ -1,6 +1,6 @@
 ;;; al-font.el --- Additional functionality for working with fonts  -*- lexical-binding: t -*-
 
-;; Copyright © 2014-2016 Alex Kost
+;; Copyright © 2014-2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 
 ;;; Code:
 
-(require 'cl-lib)
+(require 'seq)
 
 
 ;;; Choosing the first available font
@@ -31,30 +31,9 @@
 (defun al/first-existing-font (&rest font-names)
   "Return the first existing font from FONT-NAMES.
 If FONT-NAMES is nil, use `al/font-candidates'."
-  (cl-find-if (lambda (name)
-                (find-font (font-spec :name name)))
-              (or font-names al/font-candidates)))
-
-
-;;; Setting different fonts for different characters
-
-;; See (info "(emacs) Modifying Fontsets"),
-;; <http://www.emacswiki.org/emacs/FontSets> and
-;; <http://paste.lisp.org/display/133488> for more information.
-
-(defun al/set-fontset (&optional name frame add specs)
-  "Modify fontset NAME.
-Each specification from SPECS list has the following form:
-
-  (FONT . TARGETS)
-
-TARGETS is a list of characters TARGET.  See `set-fontset-font'
-for details."
-  (dolist (spec specs)
-    (pcase spec
-      (`(,font . ,targets)
-       (dolist (target targets)
-         (set-fontset-font name target font frame add))))))
+  (seq-find (lambda (name)
+              (find-font (font-spec :name name)))
+            (or font-names al/font-candidates)))
 
 (provide 'al-font)
 
