@@ -99,7 +99,7 @@
   ;; Loading my utils required for the rest config.
   (require 'al-autoload)
   (require 'al-file)
-  (require 'al-misc)
+  (require 'al-general)
   (require 'al-text)
 
   ;; Autoloading my utils.

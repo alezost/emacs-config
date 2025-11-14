@@ -20,7 +20,7 @@
 (require 'calendar)
 (require 'diary-lib)
 (require 'solar)
-(require 'al-misc)
+(require 'al-general)
 
 (defvar al/calendar-date-display-form calendar-date-display-form
   "Variable used in `al/diary-insert-entry'.")

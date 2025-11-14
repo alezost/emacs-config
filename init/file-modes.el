@@ -43,15 +43,19 @@
       '(ascii html icalendar latex odt texinfo man))
 (with-eval-after-load 'org
   (require 'org-tempo nil t)
-  (when (require 'org-emms nil t)
-    (when (require 'al-org-emms nil t)
-      (advice-add 'org-emms-play :override #'al/org-emms-play)))
+  (and (require 'org-emms nil t)
+       (require 'al-org-emms nil t)
+       (advice-add 'org-emms-play :override #'al/org-emms-play))
   (when (require 'al-org nil t)
     (advice-add 'org-link-make-string
       :around #'al/org-link-set-description))
   (when (require 'al-text nil t)
     (al/add-hook-maybe 'org-mode-hook 'al/set-default-paragraph))
 
+  (when (require 'al-misc nil t)
+    ;; "/" and "_" are common for file names, so don't fontify them:
+    (setq org-emphasis-alist
+          (al/assoc-delete-all '("/" "_") org-emphasis-alist)))
   (setq
    org-imenu-depth 6
    org-completion-use-ido t
@@ -66,9 +70,6 @@
    org-url-hexify-p nil
    org-link-escape-chars '(?\[ ?\] ?\; ?\= ?\+)
    org-ellipsis " […]"
-   ;; "/" and "_" are common for file names, so don't fontify them:
-   org-emphasis-alist
-   (al/assoc-delete-all '("/" "_") org-emphasis-alist)
    org-file-apps
    `(("\\.mm\\'" . default)
      ("\\.x?html?\\'" . al/choose-browser)
@@ -325,7 +326,7 @@ will do the right thing."
   (setq tar-mode-show-date t)
   (defun al/tar-time-string (time)
     (format-time-string "  %d-%b-%Y" time))
-  (advice-add 'tar-clip-time-string :override 'al/tar-time-string)
+  (advice-add 'tar-clip-time-string :override #'al/tar-time-string)
 
   (al/bind-keys
    :map tar-mode-map

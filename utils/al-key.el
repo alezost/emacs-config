@@ -17,7 +17,8 @@
 
 ;;; Code:
 
-(require 'al-misc)
+(require 'cl-lib)
+(require 'al-general)
 
 
 ;;; Binding keys
