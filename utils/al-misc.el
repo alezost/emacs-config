@@ -1,6 +1,6 @@
 ;;; al-misc.el --- Miscellaneous additional functionality  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2021 Alex Kost
+;; Copyright © 2013–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -17,7 +17,8 @@
 
 ;;; Code:
 
-(require 'cl-lib)
+(eval-when-compile (require 'cl-lib))
+(require 'seq)
 
 (defun al/time-string-to-seconds (str)
   ;; This function originates from `org-emms-time-string-to-seconds'
@@ -47,26 +48,29 @@ If ELEMENT is an element of LIST, return an element placed after it."
           (car list))
     (car list)))
 
+(defun al/push-after (list after elt test)
+  "Add ELT to LIST after the first occurrence of AFTER.
+AFTER element is checked with TEST predicate.
+If AFTER does not exist, insert ELT to the end of LIST.
+Return the updated list."
+  (cond
+   ((null list)
+    (list elt))
+   ((funcall test (car list) after)
+    (cons (car list) (cons elt (cdr list))))
+   (t
+    (cons (car list) (al/push-after (cdr list) after elt test)))))
+
 (cl-defun al/add-to-list-after (list-var after-element new-element &key test)
   "Add NEW-ELEMENT to LIST-VAR after the first occurrence of AFTER-ELEMENT.
 If AFTER-ELEMENT does not exist, insert NEW-ELEMENT to the end of
 LIST-VAR.
 TEST key is `eq' by default."
-  (let* (added
-         (new (cl-mapcon
-               (lambda (lst)
-                 (let ((elt (car lst)))
-                   (if (or added
-                           (not (funcall (or test #'eq)
-                                         elt after-element)))
-                       (list elt)
-                     (setq added t)
-                     (list elt new-element))))
-               (symbol-value list-var))))
-    (set list-var
-         (if added
-             new
-           (append (symbol-value list-var) (list new-element))))))
+  (set list-var
+       (al/push-after (symbol-value list-var)
+                      after-element
+                      new-element
+                      (or test #'eq))))
 
 (defun al/warning (format-string &rest args)
   "Display a warning message."
@@ -81,35 +85,35 @@ Otherwise display warning MESSAGE on VAL and return nil."
       (progn (and message (al/warning message val))
              nil)))
 
-(defun al/every (predicate vals &optional message)
+(defun al/every? (predicate vals &optional message)
   "Return non-nil if PREDICATE returns non-nil on each element of VALS.
 If VALS is not a list, call PREDICATE on this value."
   (if (and (listp vals)
            (not (functionp vals))) ; to avoid treating "(lambda …)" as list
-      (cl-every (lambda (val)
-                  (al/p predicate val message))
-                vals)
+      (seq-every-p (lambda (val)
+                     (al/p predicate val message))
+                   vals)
     (al/p predicate vals message)))
 
 (defun al/function? (object)
   "Non-nil if OBJECT is a function or a list of functions."
-  (al/every #'functionp object
-            "Unknown function '%S'."))
+  (al/every? #'functionp object
+             "Unknown function '%S'."))
 
 (defun al/bound? (object)
   "Non-nil if OBJECT is a bound symbol or a list of bound symbols."
-  (al/every #'boundp object
-            "Symbol '%S' is not bound."))
+  (al/every? #'boundp object
+             "Symbol '%S' is not bound."))
 
 (defun al/file? (object)
   "Non-nil if OBJECT is an existing file or a list of directories."
-  (al/every #'file-exists-p object
-            "File '%s' does not exist."))
+  (al/every? #'file-exists-p object
+             "File '%s' does not exist."))
 
 (defun al/directory? (object)
   "Non-nil if OBJECT is an existing directory or a list of directories."
-  (al/every #'file-directory-p object
-            "Directory '%s' does not exist."))
+  (al/every? #'file-directory-p object
+             "Directory '%s' does not exist."))
 
 (defmacro al/with-check (&rest body)
   "Call rest of BODY if all checks are passed successfully.
@@ -155,7 +159,7 @@ This is similar to `assq-delete-all', but KEYS can either be a
 single key or a list of keys.  KEYS are checked using
 PREDICATE (`memq' by default)."
   (let ((keys (al/list-maybe keys)))
-    (cl-delete-if (lambda (assoc)
+    (seq-remove (lambda (assoc)
                     (and (consp assoc)
                          (funcall (or predicate #'memq)
                                   (car assoc)
