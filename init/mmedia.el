@@ -1,4 +1,4 @@
-;;; mmedia.el --- Using multimedia stuff inside Emacs
+;;; mmedia.el --- Using multimedia stuff inside Emacs  -*- lexical-binding: t -*-
 
 ;; Copyright © 2014–2025 Alex Kost
 
@@ -131,6 +131,7 @@
       ("DEL" . al/emms-mpv-speed-normal)
       ("o"   . al/emms-mpv-show-progress)
       ("z"   . al/emms-mpv-switch-volume)
+      ("v"   . al/set-sound)
       ("<left>"    (al/emms-seek-backward 10))
       ("<right>"   (al/emms-seek-forward 10))
       ("<C-left>"  (al/emms-seek-backward 3))
