@@ -118,7 +118,7 @@
      "COMMIT_EDITMSG")
    backup-enable-predicate 'al/backup-enable-predicate)
   (advice-add 'make-backup-file-name-1
-    :override 'al/make-backup-file-name-1))
+    :override #'al/make-backup-file-name-1))
 
 
 ;;; Dired
@@ -307,7 +307,7 @@
 (with-eval-after-load 'recentf
   (setq
    recentf-exclude (list (al/file-regexp "el" "gz"))
-   recentf-keep (list (lambda (f) (not (file-remote-p f))))
+   recentf-keep (list (al/negate #'file-remote-p))
    recentf-auto-cleanup 'never
    recentf-max-saved-items 300
    recentf-save-file (al/emacs-data-dir-file "recentf")))

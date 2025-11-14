@@ -19,6 +19,11 @@
 
 (require 'seq)
 
+(defun al/negate (fun)
+  "Return a function that negates the result of FUN."
+  (lambda (&rest args)
+    (not (apply fun args))))
+
 (defun al/list-maybe (obj)
   "Return OBJ if it is a list, or a list with OBJ otherwise."
   (if (listp obj) obj (list obj)))
