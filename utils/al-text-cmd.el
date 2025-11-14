@@ -414,6 +414,51 @@ move to end of next one."
   (when (memq major-mode al/check-parens-modes)
     (check-parens)))
 
+;;; From https://www.emacswiki.org/emacs/OverlaysToText
+;;;###autoload
+(defun al/copy-region-with-overlays (beg end)
+  "Save the region as if killed, respecting the overlays.
+This function is similar to `copy-region-as-kill' but it prefers
+overlays over the underlying text."
+  (interactive
+   (if (region-active-p)
+       (let ((m (mark))
+             (p (point)))
+         (list (min m p) (max m p)))
+     (user-error "Please, select some text")))
+  (let ((tmp-buf (generate-new-buffer " *tmp*"))
+        (overlays (sort (overlays-in beg end)
+                        (lambda (o1 o2)
+			  (< (overlay-start o1)
+			     (overlay-start o2)))))
+	(pos beg))
+    (mapc (lambda (ov)
+            ;; Skip overlays for the selected region and `hl-line-mode'.
+            (unless (memq (overlay-get ov 'face) '(region hl-line))
+              (let* ((ov-beg (overlay-start ov))
+                     (ov-end (overlay-end ov))
+                     (buf-str (buffer-substring-no-properties pos ov-beg))
+                     (ov-str (overlay-get ov 'display))
+                     (ov-str (if (stringp ov-str)
+                                 (substring-no-properties ov-str)
+                               (buffer-substring-no-properties ov-beg ov-end)))
+                     (ov-pre-str (overlay-get ov 'before-string))
+                     (ov-post-str (overlay-get ov 'after-string)))
+                (with-current-buffer tmp-buf
+                  (insert buf-str)
+                  (unless (overlay-get ov 'invisible)
+                    (when ov-pre-str (insert ov-pre-str))
+                    (insert ov-str)
+                    (when ov-post-str (insert ov-post-str))))
+                (setq pos ov-end))))
+          overlays)
+    (let ((rest (buffer-substring-no-properties pos end)))
+      (with-current-buffer tmp-buf
+        (insert rest)
+        (copy-region-as-kill (point-min) (point-max))))
+    (kill-buffer tmp-buf)
+    (deactivate-mark)))
+
 (provide 'al-text-cmd)
 
 ;;; al-text-cmd.el ends here
