@@ -153,7 +153,6 @@
     (al/server-named-start "server-emms" "server"))
 
   ;; Code for optional dependencies on external packages.
-  (al/define-package-exists hydra defhydra)
   (al/define-package-exists mwim mwim-beginning)
 
   (defun al/init-load (file)

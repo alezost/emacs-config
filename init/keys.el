@@ -98,17 +98,6 @@
       '(al/free-moving-keys al/free-editing-keys al/free-important-keys))
 
 
-;;; Hydra
-
-(with-eval-after-load 'hydra
-  (setq hydra-verbose t)
-  (al/bind-keys
-   :map hydra-base-map
-   ("C-4" . hydra--universal-argument)
-   ("C-u"))
-  (hydra-add-font-lock))
-
-
 ;;; Global keys
 
 (al/bind-keys

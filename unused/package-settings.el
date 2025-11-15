@@ -226,4 +226,12 @@
     "Alist of auxiliary keys for `sr-mode-map'.")
   (al/bind-keys-from-vars 'sr-mode-map 'al/sr-keys))
 
+(with-eval-after-load 'hydra
+  (setq hydra-verbose t)
+  (al/bind-keys
+   :map hydra-base-map
+   ("C-4" . hydra--universal-argument)
+   ("C-u"))
+  (hydra-add-font-lock))
+
 ;;; package-settings.el ends here

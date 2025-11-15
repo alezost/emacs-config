@@ -64,7 +64,6 @@
      smex
      smartparens
      elisp-slime-nav
-     hydra
 
      (shift-number       :fetcher git :url ,(al/emacs-repo "shift-number"))
      (pathify            :fetcher git :url ,(al/emacs-repo "pathify"))
