@@ -17,7 +17,7 @@
 
 ;;; Code:
 
-(require 'cl-lib)
+(require 'seq)
 
 ;; Setting `make-backup-file-name-function' is not enough as it is used
 ;; by `make-backup-file-name', but not by `find-backup-file-name', so
@@ -60,9 +60,9 @@ names matching any of these regexps.")
   "Function for `backup-enable-predicate'.
 Do not backup su/sudo files."
   (and (normal-backup-enable-predicate name)
-       (cl-every (lambda (re)
-                   (not (string-match-p re name)))
-                 al/backup-ignored-regexps)
+       (seq-every-p (lambda (re)
+                      (not (string-match-p re name)))
+                    al/backup-ignored-regexps)
        (not (let ((method (file-remote-p name 'method)))
               (when (stringp method)
                 (member method '("su" "sudo")))))))
