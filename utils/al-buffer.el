@@ -104,13 +104,15 @@ message for a case when FUN does not return a string."
 
 (defvar al/skip-buffer-checkers
   '("\\` \\*Minibuf"
+    "\\` \\*Echo Area"
+    "\\` \\*which-key"
     get-buffer-window)
-  "List of checkers for `al/skip-buffer'.
+  "List of checkers for `al/skip-buffer?'.
 Each element should be either a function that takes a buffer as
 its argument, or a string which is a regexp to match a buffer
 name.")
 
-(defun al/skip-buffer (buffer)
+(defun al/skip-buffer? (buffer)
   "Return non-nil, if BUFFER should be ignored."
   (seq-find
    (lambda (checker)
@@ -128,12 +130,22 @@ name.")
   "Switch to previous buffer."
   (interactive)
   (let ((buf (pop al/previous-buffers)))
-    (if (or (null buf)
-            (al/skip-buffer buf))
-        (al/switch-to-prev-buffer)
+    (and (null al/previous-buffers)
+         buf
+         (message "The last buffer is reached."))
+    (cond
+     ((null buf)
+      (push (current-buffer) al/next-buffers)
+      (setq al/previous-buffers (nreverse al/next-buffers)
+            al/next-buffers nil)
+      (switch-to-buffer al/original-buffer)
+      (set-transient-map al/switch-buffer-map))
+     ((al/skip-buffer? buf)
+      (al/switch-to-prev-buffer))
+     (t
       (push (current-buffer) al/next-buffers)
       (switch-to-buffer buf)
-      (set-transient-map al/switch-buffer-map))))
+      (set-transient-map al/switch-buffer-map)))))
 
 (defun al/switch-to-next-buffer ()
   "Switch to next buffer."
@@ -147,7 +159,7 @@ name.")
   (set-transient-map al/switch-buffer-map))
 
 (defun al/switch-to-other-buffer ()
-  "Switch between `al/original-buffer' and the current buffer ."
+  "Switch between `al/original-buffer' and the current buffer."
   (interactive)
   (if (eq (current-buffer) al/original-buffer)
       (al/switch-to-previous-buffer)
@@ -160,10 +172,19 @@ name.")
 This is similar to `mode-line-other-buffer' but with a transient
 `al/switch-buffer-map' keymap."
   (interactive)
-  (setq
-   al/original-buffer (current-buffer)
-   al/next-buffers nil
-   al/previous-buffers (buffer-list))
+  (let ((cur-buf  (current-buffer))
+        (prev-buf (other-buffer)))
+    (setq
+     al/original-buffer cur-buf
+     al/next-buffers nil
+     ;; We need to remove the current and previous buffers which are not
+     ;; necessarily on top of `buffer-list'.
+     al/previous-buffers
+     (cons prev-buf
+           (seq-remove (lambda (buf)
+                         (or (eq buf cur-buf)
+                             (eq buf prev-buf)))
+                       (buffer-list)))))
   (al/switch-to-prev-buffer))
 
 
