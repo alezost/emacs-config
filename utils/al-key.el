@@ -17,7 +17,7 @@
 
 ;;; Code:
 
-(require 'cl-lib)
+(require 'seq)
 (require 'al-general)
 
 
@@ -154,14 +154,17 @@ MAP-VAR is a variable with keymap."
 For the meaning of values of VARS, see `al/bind-keys-from-vars'.
 Returning value is an alist of keys and functions with removed
 key duplicates (rightmost values retain)."
-  (let* ((vars (cl-remove-if-not #'al/bound? vars))
+  (let* ((vars (seq-filter #'al/bound? vars))
+         ;; Reverse vars to make `seq-uniq' remove duplicates from the
+         ;; first vars, not from the last ones.
+         (vars (nreverse vars))
          (keys-raw (apply #'append
                           (mapcar #'symbol-value vars)))
          (keys (mapcar #'al/list-maybe keys-raw)))
-    (cl-remove-duplicates
+    (seq-uniq
      keys
-     :test (lambda (obj1 obj2)
-             (equal (car obj1) (car obj2))))))
+     (lambda (obj1 obj2)
+       (equal (car obj1) (car obj2))))))
 
 (defun al/bind-keys-from-vars (map-vars &optional key-vars no-default)
   "Bind all keys from KEY-VARS in all maps from MAP-VARS.
