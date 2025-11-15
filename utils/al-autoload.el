@@ -17,11 +17,8 @@
 
 ;;; Code:
 
-(require 'cl-lib)
-
 (defvar al/autoloads-regexp
-  (rx (group (* any) "-autoloads")
-      ".el" (zero-or-one "c") string-end)
+  (rx "-autoloads.el" string-end)
   "Regexp to match Emacs `autoloads' file.")
 
 (defmacro al/autoload (file &rest symbols)
@@ -39,15 +36,8 @@
     (expand-file-name (concat base "-autoloads.el") dir)))
 
 (defun al/find-autoloads (directory)
-  "Return a list of Emacs `autoloads' files in DIRECTORY.
-The files in the list do not have extensions (.el, .elc)."
-  (cl-remove-duplicates
-   (delq nil
-        (mapcar (lambda (file)
-                  (when (string-match al/autoloads-regexp file)
-                    (match-string 1 file)))
-                (directory-files directory 'full-name nil 'no-sort)))
-   :test #'string=))
+  "Return a list of Emacs `autoloads' files in DIRECTORY."
+  (directory-files directory 'full-name al/autoloads-regexp 'no-sort))
 
 (defun al/update-autoloads (&rest dirs)
   "Update the contents of `autoloads' files for all DIRS."
