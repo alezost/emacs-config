@@ -17,6 +17,7 @@
 
 ;;; Code:
 
+(eval-when-compile (require 'cl-lib))
 (require 'emms)
 (require 'emms-state)
 (require 'notifications)
@@ -110,6 +111,7 @@
 (define-minor-mode al/emms-notification-mode
   "Minor mode for EMMS notifications."
   :global t
+  :group 'al/emms-notification
   :init-value nil
   (if al/emms-notification-mode
       (add-hook 'emms-player-started-hook 'al/emms-notify t)
