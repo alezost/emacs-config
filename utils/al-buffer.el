@@ -17,35 +17,19 @@
 
 ;;; Code:
 
-(require 'cl-lib)
-
-(defun al/kill-file-buffer (filename)
-  "Kill the buffer visiting file FILENAME (a string).
-Return nil, if there is no such live buffer."
-  (let ((buffer (get-file-buffer filename)))
-    (if buffer (kill-buffer buffer))))
-
-;;;###autoload
-(defun al/buffer-file-name (&optional buffer)
-  "Return file name without extension for BUFFER.
-If BUFFER is nil, use the current buffer.
-If BUFFER is not visiting a file, return BUFFER name."
-  (let ((file (buffer-file-name buffer)))
-    (file-name-sans-extension
-     (if file
-         (file-name-nondirectory file)
-       (buffer-name buffer)))))
+(eval-when-compile (require 'cl-lib))
+(require 'seq)
 
 
 ;;; Getting buffers
 
-(defun al/buffers (filter-pred &optional sort-pred)
-  "Return a list of buffers satisfying FILTER-PRED predicate.
+(defun al/buffers (&optional filter-pred sort-pred)
+  "Return a list of buffers satisfying FILTER-PRED predicate if specified.
 If SORT-PRED is specified, use this predicate to sort the list.
 See `sort' for details."
-  (let ((buffers (cl-remove-if-not
-                  (lambda (buf) (funcall filter-pred buf))
-                  (buffer-list))))
+  (let ((buffers (if filter-pred
+                     (seq-filter filter-pred (buffer-list))
+                   (buffer-list))))
     (if sort-pred
         (sort buffers sort-pred)
       buffers)))
@@ -128,7 +112,7 @@ name.")
 
 (defun al/skip-buffer (buffer)
   "Return non-nil, if BUFFER should be ignored."
-  (cl-find-if
+  (seq-find
    (lambda (checker)
      (cond
       ((stringp checker)
