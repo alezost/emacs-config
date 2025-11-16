@@ -17,7 +17,8 @@
 
 ;;; Code:
 
-(require 'cl-lib)
+(eval-when-compile (require 'cl-lib))
+(require 'seq)
 
 (defun al/file-if-exists (file)
   "Return FILE if it exists, or nil."
@@ -25,11 +26,7 @@
 
 (defun al/existing-files (&rest file-names)
   "Return a list of existing files from FILE-NAMES."
-  (delq nil (mapcar #'al/file-if-exists file-names)))
-
-(defun al/first-existing-file (&rest file-names)
-  "Return the first existing file from FILE-NAMES."
-  (cl-find-if #'file-exists-p file-names))
+  (seq-filter #'file-exists-p file-names))
 
 (defmacro al/setq-file (&rest body)
   "Like `setq' but for setting to file name values.
@@ -40,14 +37,29 @@ Example:
                 v2 \"/tmp\")
 
 v2 will be set, while v1 will not."
+  ;; The following implementation works, but the compiler complains that
+  ;; `setqs' is not defined.  Apparently, it doesn't like recursive
+  ;; functions inside a macro.
+  ;;
+  ;; (defun setqs (lst)
+  ;;   (if (null lst)
+  ;;       '()
+  ;;     (cons (let ((var  (car lst))
+  ;;                 (file (cadr lst)))
+  ;;             `(let ((file ,file))
+  ;;                (when (file-exists-p file)
+  ;;                  (setq ,var file))))
+  ;;           (setqs (cddr lst)))))
+  ;; `(progn ,@(setqs body))
+
   `(progn
-     ,@(cl-loop for lst on body by #'cddr
-                collect
-                (let ((var  (car lst))
-                      (file (cadr lst)))
-                  `(let ((file ,file))
-                     (when (file-exists-p file)
-                       (setq ,var file)))))))
+     ,@(mapcar (lambda (lst)
+                 (let ((var  (car lst))
+                       (file (cadr lst)))
+                   `(let ((file ,file))
+                      (when (file-exists-p file)
+                        (setq ,var file)))))
+               (seq-partition body 2))))
 
 (defun al/file-regexp (&rest extensions)
   "Return regexp to match file name by EXTENSIONS."
@@ -56,11 +68,10 @@ v2 will be set, while v1 will not."
 
 (defun al/subdirs (directory)
   "Return list of DIRECTORY sub-directories."
-  (cl-remove-if (lambda (file)
-                  (or (string-match-p (rx "/." string-end) file)
-                      (string-match-p (rx "/.." string-end) file)
-                      (not (file-directory-p file))))
-                (directory-files directory 'full-name nil 'no-sort)))
+  (seq-remove (lambda (file)
+                (or (string-match-p (rx (or "/." "/..") string-end) file)
+                    (not (file-directory-p file))))
+              (directory-files directory 'full-name nil 'no-sort)))
 
 (defun al/add-to-auto-mode-alist (specs)
   "Add SPECS to `auto-mode-alist'.
