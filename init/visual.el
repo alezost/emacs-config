@@ -320,7 +320,7 @@
 (or standard-display-table
     (setq standard-display-table (make-display-table)))
 (aset standard-display-table ?\^L
-      (let ((line (make-vector 30 ?—)))
+      (let ((line (make-vector 24 ?—)))
         (vconcat line " page break " line)))
 
 (column-number-mode)
