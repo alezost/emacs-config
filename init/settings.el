@@ -139,6 +139,7 @@
   (al/bind-keys
     :map al/switch-buffer-map
     ("M-b" . al/switch-to-other-buffer)
+    ("M-N" . al/switch-to-next-buffer)
     ("M-B" . al/switch-to-prev-buffer)))
 
 (al/bind-keys*
