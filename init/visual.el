@@ -96,16 +96,7 @@
 (al/eval-after-init
   (and (require 'alect-themes nil t)
        (require 'al-color nil t)
-       ;; Load the dark theme if it is less than 1 hour before the
-       ;; sunset, and the light theme otherwise.
-       (al/load-theme
-        (if (and (require 'al-calendar nil t)
-                 (< (float-time
-                     (time-subtract (al/solar-time 'sunset)
-                                    (current-time)))
-                    3600))
-            'alect-dark
-          'alect-light))))
+       (al/load-theme 'alect-light)))
 
 
 ;;; Mode line and frame title
