@@ -110,6 +110,57 @@ advice call `al/minibuffer-fallback' instead executing FUN body."
         (funcall fallback))
     (apply fun args)))
 
+
+;;; `al/split' completion style
+
+(defun al/completion-make-split-pattern (pattern)
+  ;; Originates from `completion-flex--make-flex-pattern'.
+  "Split PCM-style PATTERN by words separated with spaces and hyphens.
+
+This turns
+    (prefix \"ab-cd ef\")
+into
+    (prefix \"ab\" any \"cd\" any \"ef\" any)"
+  (mapcan (lambda (elem)
+            (if (stringp elem)
+                (mapcan (lambda (str)
+                          (list str 'any))
+                        (split-string elem "[ -]+"))
+              (list elem)))
+          pattern))
+
+(defalias 'al/completion-split-try-completion
+  ;; Default for `partial-completion' style.
+  #'completion-pcm-try-completion)
+
+(defun al/completion-split-all-completions (string table pred point)
+  ;; Originates from `completion-substring--all-completions' and
+  ;; `completion-flex-all-completion'.
+  "Get completions of STRING in TABLE, given PRED and POINT."
+  (let* ((beforepoint (substring string 0 point))
+         (afterpoint (substring string point))
+         (bounds (completion-boundaries beforepoint table pred afterpoint))
+         (prefix (substring beforepoint 0 (car bounds)))
+         (basic-pattern (completion-basic--pattern
+                         beforepoint afterpoint bounds))
+         (pattern (if (not (stringp (car basic-pattern)))
+                      basic-pattern
+                    (cons 'prefix basic-pattern)))
+         (pattern (al/completion-make-split-pattern pattern))
+         (all (completion-pcm--all-completions prefix pattern table pred)))
+    (when all
+      (nconc (completion-pcm--hilit-commonality pattern all)
+             (length prefix)))))
+
+(when (boundp 'completion-styles-alist)
+  (push '(al/split
+          al/completion-split-try-completion
+          al/completion-split-all-completions
+          "Completion of multiple substrings separated by spaces or hyphens.
+When completing \"one two three\" the glob \"*one*two*three*\" is used,
+so that \"a b\" can complete to \"ax yb\".")
+        completion-styles-alist))
+
 (provide 'al-minibuffer)
 
 ;;; al-minibuffer.el ends here

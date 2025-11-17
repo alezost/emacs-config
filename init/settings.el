@@ -42,12 +42,11 @@
 (setq
  completion-show-help nil
  completion-auto-select 'second-tab
+ completion-styles '(basic substring partial-completion emacs22)
  completions-sort 'historical
  completions-format 'one-column
  completions-header-format (propertize "%s completions:\n" 'face 'alect-title)
  completions-max-height 20
- ;; completion-styles '(basic substring partial-completion)
- completion-styles '(flex)
  read-file-name-completion-ignore-case t
  read-buffer-completion-ignore-case t
  completion-ignore-case t
@@ -99,6 +98,7 @@
     'al/icomplete-vertical-keys))
 
 (with-eval-after-load 'al-minibuffer
+  (setq completion-styles '(al/split))
   (al/bind-keys
     :map al/minibuffer-buffer-map
     ("M-m" . al/minibuffer-magit-buffers)
