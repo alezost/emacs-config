@@ -89,9 +89,7 @@
 (defvar al/pure-config? (getenv "EMPURE")
   "Non-nil, if external packages should not be loaded.")
 
-(setq
- package-user-dir (al/emacs-data-dir-file "elpa")
- package-enable-at-startup nil)
+(setq package-user-dir (al/emacs-data-dir-file "elpa"))
 
 (push al/emacs-utils-dir load-path)
 
