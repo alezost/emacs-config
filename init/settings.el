@@ -1,4 +1,4 @@
-;;; settings.el --- Miscellaneous settings
+;;; settings.el --- Miscellaneous settings  -*- lexical-binding: t -*-
 
 ;; Copyright © 2012–2025 Alex Kost
 
@@ -40,9 +40,11 @@
 (al/bind-key* "M-t" execute-extended-command)
 
 (setq
+ completion-show-help nil
  completion-auto-select 'second-tab
  completions-sort 'historical
  completions-format 'one-column
+ completions-header-format (propertize "%s completions:\n" 'face 'alect-title)
  completions-max-height 20
  ;; completion-styles '(basic substring partial-completion)
  completion-styles '(flex)
