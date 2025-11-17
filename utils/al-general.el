@@ -140,17 +140,6 @@ See `al/add-hook-maybe'."
   (declare (indent 0))
   `(add-hook 'after-init-hook (lambda () ,@body)))
 
-(defmacro al/define-package-exists (name &optional symbol)
-  "Define `al/NAME-exists?' variable.
-The value of the variable tells if SYMBOL is `fbound'.  If SYMBOL
-is not specified, NAME is checked (both should be unquoted
-symbols)."
-  (let* ((name-str (symbol-name name))
-         (var (intern (concat "al/" name-str "-exists?"))))
-    `(defvar ,var (fboundp ',(or symbol name))
-       ,(format "Non-nil, if `%s' package is available."
-                name-str))))
-
 (provide 'al-general)
 
 ;;; al-general.el ends here

@@ -106,7 +106,7 @@
   (require 'al-text)
   (require 'al-key)
 
-  (al/title-message "Loading %s files" al/emacs-init-dir)
+  (al/title-message "Loading init files")
   (defun al/init-load (file)
     "Load FILE from `al/emacs-init-dir'."
     (al/load (al/emacs-init-dir-file file)))
@@ -126,8 +126,8 @@
           "games"
           "custom"))
 
+  (al/title-message "Loading utils autoloads")
   (let ((auto-file (al/autoloads-file al/emacs-utils-dir)))
-    (al/title-message "Loading %s" auto-file)
     (unless (file-exists-p auto-file)
       (with-demoted-errors "ERROR during generating utils autoloads: %S"
         (al/update-autoloads al/emacs-utils-dir)))
@@ -186,8 +186,7 @@
 
 (al/title-message "Final settings")
 
-(al/define-package-exists mwim mwim-beginning)
-(when al/mwim-exists?
+(when (fboundp 'mwim-beginning)
   (if (display-graphic-p)
       (al/bind-keys
         ("C-a" . mwim-beginning)
