@@ -17,7 +17,7 @@
 
 ;;; Code:
 
-(require 'cl-lib)
+(eval-when-compile (require 'cl-lib))
 (require 'al-text-cmd)
 (require 'al-misc) ; for `al/time-string-to-seconds'
 (require 'org)

@@ -1,6 +1,6 @@
 ;;; al-process.el --- Additional functionality for working with processs  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2016, 2020–2022 Alex Kost
+;; Copyright © 2013–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -16,8 +16,6 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Code:
-
-(require 'cl-lib)
 
 (defun al/start-process (program &rest args)
   "Same as `start-process', but don't bother about name and buffer."
@@ -73,9 +71,9 @@ Interactively prompt for PROCESS name."
     (when prog
       (or (string= prog name)
           (and (string-match-p "sh\\'" prog) ; if it is bash/sh/...
-               (string= (cl-second args) "-c")
+               (string= (nth 1 args) "-c")
                (string-match-p (regexp-quote name)
-                               (cl-third args)))))))
+                               (nth 2 args)))))))
 
 
 ;; Hooks for starting/calling processes

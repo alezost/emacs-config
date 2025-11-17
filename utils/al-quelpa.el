@@ -17,7 +17,7 @@
 
 ;;; Code:
 
-(require 'cl-lib)
+(require 'seq)
 
 (defvar al/main-packages nil
   "List of main packages that should be installed in a common way.")
@@ -40,9 +40,9 @@
   "Return package recipe by NAME-OR-RECIPE."
   (if (listp name-or-recipe)
       name-or-recipe
-    (cl-find-if (lambda (recipe)
-                  (eq name-or-recipe (al/package-name recipe)))
-                (al/all-packages))))
+    (seq-find (lambda (recipe)
+                (eq name-or-recipe (al/package-name recipe)))
+              (al/all-packages))))
 
 (defun al/read-package-name ()
   "Prompt for and return a package name (symbol)."

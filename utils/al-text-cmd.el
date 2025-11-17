@@ -17,7 +17,7 @@
 
 ;;; Code:
 
-(require 'cl-lib)
+(eval-when-compile (require 'cl-lib))
 
 
 ;;; Searching and replacing
@@ -347,7 +347,7 @@ Function FUN is called in body of the resulting function for updating
 the word.  It should accept a number of modified words as argument."
   (let ((fun-name (intern (concat "al/" name "-word-backward"))))
     `(progn
-       (cl-pushnew ',fun-name al/word-seq-functions)
+       (push ',fun-name al/word-seq-functions)
        (defun ,fun-name (arg)
          ,(concat (capitalize name)
                   " previous word (or ARG words), do not move the point.\n"

@@ -17,7 +17,7 @@
 
 ;;; Code:
 
-(require 'cl-lib)
+(eval-when-compile (require 'cl-lib))
 
 (cl-defun al/add-to-imenu (regexp &key (index 1) title append)
   "Add REGEXP with INDEX and TITLE to `imenu-generic-expression'.

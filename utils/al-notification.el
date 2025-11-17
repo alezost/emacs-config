@@ -17,7 +17,6 @@
 
 ;;; Code:
 
-(require 'cl-lib)
 (require 'timer)
 (require 'notifications)
 (require 'al-misc)

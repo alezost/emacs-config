@@ -17,7 +17,6 @@
 
 ;;; Code:
 
-(require 'cl-lib)
 (require 'imenus)
 
 
@@ -36,9 +35,9 @@
 (defun al/imenus-search-elisp-directories ()
   "Perform `imenus' on elisp files from `al/imenus-elisp-directories'."
   (interactive)
-  (let ((files (cl-mapcan (lambda (dir)
-                            (directory-files dir t al/imenus-elisp-re))
-                          al/imenus-elisp-directories)))
+  (let ((files (mapcan (lambda (dir)
+                         (directory-files dir t al/imenus-elisp-re))
+                       al/imenus-elisp-directories)))
     (imenus-files files nil al/imenus-elisp-prompt)))
 
 (provide 'al-imenus)

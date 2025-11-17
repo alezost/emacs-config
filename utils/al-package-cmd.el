@@ -1,6 +1,6 @@
 ;;; al-package-cmd.el --- Interactive commands related to Emacs package system  -*- lexical-binding: t -*-
 
-;; Copyright © 2013-2016 Alex Kost
+;; Copyright © 2013-2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 
 ;;; Code:
 
-(require 'cl-lib)
+(require 'seq)
 (require 'package)
 
 (defvar al/package-archives
@@ -42,7 +42,7 @@ NAME is an archive name from `al/package-archives'."
 
 ;;;###autoload
 (defun al/remove-package-archive (&optional name)
-  "Remove archive to the value of `package-archives'.
+  "Remove archive from the value of `package-archives'.
 NAME is an archive name from `package-archives'.
 If NAME is nil (interactively, with \\[universal-argument]),
 remove all archives (i.e., set it to nil)."
@@ -52,9 +52,9 @@ remove all archives (i.e., set it to nil)."
                             (mapcar #'car package-archives)))))
   (setq package-archives
         (and name
-             (cl-remove-if (lambda (archive)
-                             (equal name (car archive)))
-                           package-archives)))
+             (seq-remove (lambda (archive)
+                           (equal name (car archive)))
+                         package-archives)))
   (pp-eval-expression 'package-archives))
 
 (provide 'al-package-cmd)
