@@ -15,8 +15,6 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-(require 'al-key)
-
 
 ;;; Frame specific settings
 
@@ -122,7 +120,8 @@
   "Mode line construct for displaying `server-name' if server is running.")
 (put 'al/mode-server 'risky-local-variable t)
 
-(when (require 'dim nil t)
+(al/eval-after-init (require 'dim nil t))
+(with-eval-after-load 'dim
   (dim-major-names
    '((emacs-lisp-mode            "EL")
      (elisp-byte-code-mode       "EL-byte")

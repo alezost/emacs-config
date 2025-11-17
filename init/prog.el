@@ -1,4 +1,4 @@
-;;; prog.el --- Programming modes and tools
+;;; prog.el --- Programming modes and tools  -*- lexical-binding: t -*-
 
 ;; Copyright © 2014–2025 Alex Kost
 
@@ -14,8 +14,6 @@
 ;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-(require 'al-key)
 
 
 ;;; Working with elisp: eldoc, edebug, debugger, …
@@ -115,7 +113,7 @@
 
 (with-eval-after-load 'pp
   (when (require 'al-pp nil t)
-    (advice-add 'pp-display-expression :after 'al/pp-enable-undo)))
+    (advice-add 'pp-display-expression :after #'al/pp-enable-undo)))
 
 
 ;;; SLIME
@@ -660,13 +658,6 @@
     'al/xref-buffer-keys))
 
 (with-eval-after-load 'prog-mode
-  (al/add-hook-maybe 'prog-mode-hook
-    '(hl-line-mode
-      hl-todo-mode
-      ;; indent-guide-mode
-      abbrev-mode
-      al/set-comment-column
-      al/show-trailing-whitespace))
   (defconst al/prog-keys
     '(("<C-M-tab>" . prog-indent-sexp))
     "Alist of auxiliary keys for `prog-mode-map'.")

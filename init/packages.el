@@ -1,4 +1,4 @@
-;;; packages.el --- Emacs packages and interfaces to other package systems
+;;; packages.el --- Emacs packages and interfaces to other package systems  -*- lexical-binding: t -*-
 
 ;; Copyright © 2014–2022 Alex Kost
 
@@ -14,8 +14,6 @@
 ;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-(require 'al-key)
 
 
 ;;; Emacs packages
@@ -301,8 +299,6 @@
 (with-eval-after-load 'guix-utils
   (setq
    guix-find-file-function #'org-open-file))
-
-(al/add-after-init-hook 'global-guix-prettify-mode)
 
 (with-eval-after-load 'guix-build-log
   (setq guix-build-log-minor-mode-activate nil)

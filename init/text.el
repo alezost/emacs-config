@@ -15,8 +15,6 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-(require 'al-key)
-
 
 ;;; Global keys for moving
 
@@ -63,34 +61,25 @@
  ("C-H-3" . al/recenter-top)
  ("C-2"   . move-to-window-line-top-bottom))
 
-(if al/mwim-exists?
-    (al/bind-keys
-     ("C-a" . mwim-beginning)
-     ("<ctrl-i>" . mwim-end))
-  (al/bind-keys
-   ("C-a" . beginning-of-line)
-   ("<ctrl-i>" . end-of-line)))
+(al/bind-keys
+  ("C-a" . beginning-of-line)
+  ("<ctrl-i>" . end-of-line))
 
 (unless (display-graphic-p)
   (al/bind-keys
-   ("M-."   . previous-line)
-   ("M-e"   . next-line)
-   ("M->"   . scroll-down-command)
-   ("M-E"   . scroll-up-command)
-   ("C-x a" . beginning-of-buffer)
-   ("C-x i" . end-of-buffer)
-   ("C-M-i" . complete-symbol))
-  (if al/mwim-exists?
-      (al/bind-keys
-       ("M-a" . mwim-beginning)
-       ("M-i" . mwim-end))
-    (al/bind-keys
-     ("M-a" . beginning-of-line)
-     ("M-i" . end-of-line))))
+    ("M-."   . previous-line)
+    ("M-e"   . next-line)
+    ("M-a"   . beginning-of-line)
+    ("M-i"   . end-of-line)
+    ("M->"   . scroll-down-command)
+    ("M-E"   . scroll-up-command)
+    ("C-x a" . beginning-of-buffer)
+    ("C-x i" . end-of-buffer)
+    ("C-M-i" . complete-symbol)))
 
 (al/bind-keys
- :map narrow-map
- ("r" . narrow-to-region))
+  :map narrow-map
+  ("r" . narrow-to-region))
 
 
 ;;; Global keys for editing
@@ -364,15 +353,7 @@
  scroll-preserve-screen-position t)
 
 (prefer-coding-system 'utf-8)
-(al/add-hook-maybe 'after-save-hook 'al/check-parens)
-
 (al/modify-syntax text-mode-syntax-table (?\" "\"   "))
-(al/add-hook-maybe 'text-mode-hook
-  '(visual-line-mode
-    hl-line-mode
-    abbrev-mode
-    al/no-syntactic-font-lock
-    al/show-trailing-whitespace))
 
 (with-eval-after-load 'mwim
   (defun al/mwim-set-default (var fun)
@@ -689,59 +670,53 @@
    ("j" . sp-join-sexp)
    ("s" . sp-split-sexp)))
 
-(when (and (fboundp 'smartparens-mode)
-           (fboundp 'paredit-mode))
-  (al/bind-key "H-p H-p" al/parens-mode)
+(defvar al/parens-mode-map (make-sparse-keymap))
+(al/bind-keys
+  :map al/parens-mode-map
+  ("<H-M-tab>" . sp-indent-defun)
+  ("M-p"       . paredit-backward-kill-word)
+  ("M-,"       . paredit-forward-kill-word)
+  ("C-M-."     . paredit-backward-up)
+  ("C-M-e"     . paredit-forward-down)
+  ("H-E"       . paredit-splice-sexp)
+  ("H-P"       . paredit-splice-sexp-killing-backward)
+  ("H-<"       . paredit-splice-sexp-killing-forward)
+  ("H->"       . paredit-raise-sexp)
+  ("C-M-p"     . al/backward-kill-sexp)
+  ("C-M-,"     . al/kill-sexp)
+  ("C-M-'"     . sp-transpose-sexp)
+  ("C-)"       . sp-forward-slurp-sexp)
+  ("C-M-0"     . sp-forward-barf-sexp)
+  ("C-("       . sp-backward-slurp-sexp)
+  ("C-M-9"     . sp-backward-barf-sexp))
+(al/bind-keys
+  :map al/parens-mode-map
+  :prefix-map al/parens-misc-map
+  :prefix-docstring "Map for misc parens commands."
+  :prefix "H-p"
+  ("c" . sp-cheat-sheet)
+  ("." . sp-absorb-sexp)
+  ("e" . sp-emit-sexp)
+  ("o" . sp-convolute-sexp)
+  ("j" . sp-join-sexp)
+  ("s" . sp-split-sexp))
 
-  (defvar al/parens-mode-map (make-sparse-keymap))
-  (al/bind-keys
-   :map al/parens-mode-map
-   ("<H-M-tab>" . sp-indent-defun)
-   ("M-p"       . paredit-backward-kill-word)
-   ("M-,"       . paredit-forward-kill-word)
-   ("C-M-."     . paredit-backward-up)
-   ("C-M-e"     . paredit-forward-down)
-   ("H-E"       . paredit-splice-sexp)
-   ("H-P"       . paredit-splice-sexp-killing-backward)
-   ("H-<"       . paredit-splice-sexp-killing-forward)
-   ("H->"       . paredit-raise-sexp)
-   ("C-M-p"     . al/backward-kill-sexp)
-   ("C-M-,"     . al/kill-sexp)
-   ("C-M-'"     . sp-transpose-sexp)
-   ("C-)"       . sp-forward-slurp-sexp)
-   ("C-M-0"     . sp-forward-barf-sexp)
-   ("C-("       . sp-backward-slurp-sexp)
-   ("C-M-9"     . sp-backward-barf-sexp))
-  (al/bind-keys
-   :map al/parens-mode-map
-   :prefix-map al/parens-misc-map
-   :prefix-docstring "Map for misc parens commands."
-   :prefix "H-p"
-   ("c" . sp-cheat-sheet)
-   ("." . sp-absorb-sexp)
-   ("e" . sp-emit-sexp)
-   ("o" . sp-convolute-sexp)
-   ("j" . sp-join-sexp)
-   ("s" . sp-split-sexp))
+(define-minor-mode al/parens-mode
+  "Minor mode for working with parentheses."
+  :init-value nil
+  :lighter " ()")
 
-  (define-minor-mode al/parens-mode
-    "Minor mode for working with parentheses."
-    :init-value nil
-    :lighter " ()")
+(defconst al/parens-ignore-modes
+  '(c-mode c++-mode ; because of "<H-M-tab>" (better ideas?)
+    nxml-mode)
+  "List of modes where `al/parens-mode' should not be enabled.")
 
-  (defconst al/parens-ignore-modes
-    '(c-mode c++-mode ; because of "<H-M-tab>" (better ideas?)
-      nxml-mode)
-    "List of modes where `al/parens-mode' should not be enabled.")
+(defun al/turn-on-parens-mode ()
+  (unless (or (apply #'derived-mode-p al/parens-ignore-modes)
+              (boundp 'ido-completing-read)) ; inside ido
+    (al/parens-mode)))
 
-  (defun al/turn-on-parens-mode ()
-    (unless (or (apply #'derived-mode-p al/parens-ignore-modes)
-                (boundp 'ido-completing-read)) ; inside ido
-      (al/parens-mode)))
-
-  (define-globalized-minor-mode al/global-parens-mode
-    al/parens-mode al/turn-on-parens-mode)
-
-  (al/global-parens-mode))
+(define-globalized-minor-mode al/global-parens-mode
+  al/parens-mode al/turn-on-parens-mode)
 
 ;;; text.el ends here

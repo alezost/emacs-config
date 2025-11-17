@@ -1,6 +1,6 @@
 ;;; init.el --- Init file  -*- lexical-binding: t -*-
 
-;; Copyright © 2012–2021 Alex Kost
+;; Copyright © 2012–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -21,6 +21,9 @@
 (setq gc-cons-threshold (expt 2 24) ; 16 MiB
       garbage-collection-messages t)
 (setq load-prefer-newer t)
+
+(defun al/title-message (format-string &rest args)
+  (apply #'message (concat "⏺ " format-string) args))
 
 
 ;;; Location of various files
@@ -89,19 +92,42 @@
 (defvar al/pure-config? (getenv "EMPURE")
   "Non-nil, if external packages should not be loaded.")
 
-(setq package-user-dir (al/emacs-data-dir-file "elpa"))
+(setq
+ package-user-dir (al/emacs-data-dir-file "elpa")
+ custom-file (al/emacs-init-dir-file "custom.el"))
 
 (push al/emacs-utils-dir load-path)
 
 (let (file-name-handler-alist)
-  ;; Loading my utils required for the rest config.
+  (al/title-message "Loading necessary utils")
   (require 'al-autoload)
   (require 'al-file)
   (require 'al-general)
   (require 'al-text)
+  (require 'al-key)
 
-  ;; Autoloading my utils.
+  (al/title-message "Loading %s files" al/emacs-init-dir)
+  (defun al/init-load (file)
+    "Load FILE from `al/emacs-init-dir'."
+    (al/load (al/emacs-init-dir-file file)))
+  (mapc #'al/init-load
+        '("keys"
+          "text"
+          "packages"
+          "settings"
+          "files"
+          "prog"
+          "time"
+          "file-modes"
+          "mmedia"
+          "net"
+          "dict"
+          "visual"
+          "games"
+          "custom"))
+
   (let ((auto-file (al/autoloads-file al/emacs-utils-dir)))
+    (al/title-message "Loading %s" auto-file)
     (unless (file-exists-p auto-file)
       (with-demoted-errors "ERROR during generating utils autoloads: %S"
         (al/update-autoloads al/emacs-utils-dir)))
@@ -110,6 +136,7 @@
   ;; Autoloading external packages.
   (unless al/pure-config?
     (with-demoted-errors "ERROR during autoloading ELPA packages: %S"
+      (al/title-message "Autoloading ELPA packages")
       (when (require 'al-package nil t)
         (setq
          al/ignored-packages
@@ -132,11 +159,16 @@
         (advice-add 'package-activate-1
           :around #'al/package-activate-1))
       (package-initialize))
-    (with-demoted-errors "ERROR during autoloading Guix packages: %S"
-      (when (require 'al-guix-autoload nil t)
-        (apply #'al/guix-autoload-emacs-packages
-               (al/guix-profiles))))
+
+    (when (file-exists-p al/guix-profile-dir)
+      (al/title-message "Autoloading Guix packages")
+      (with-demoted-errors "ERROR during autoloading Guix packages: %S"
+        (when (require 'al-guix-autoload nil t)
+          (apply #'al/guix-autoload-emacs-packages
+                 (al/guix-profiles)))))
+
     (when (file-exists-p al/emacs-my-packages-dir)
+      (al/title-message "Autoloading my packages")
       (with-demoted-errors "ERROR during autoloading my packages: %S"
         (dolist (dir (al/subdirs al/emacs-my-packages-dir))
           (let* ((elisp-dir (expand-file-name "elisp" dir))
@@ -144,38 +176,61 @@
                           elisp-dir
                         dir)))
             (push dir load-path)
-            (mapc #'al/load (al/find-autoloads dir)))))))
+            (mapc #'al/load (al/find-autoloads dir))))))))
 
-  (with-demoted-errors "ERROR during server start: %S"
-    (require 'al-server)
-    (al/server-named-start "server-emms" "server"))
+
+;;; Final settings
 
-  ;; Code for optional dependencies on external packages.
-  (al/define-package-exists mwim mwim-beginning)
+;; Settings that cannot be set in other config files because they are
+;; loaded before external packages are autoloaded.
 
-  (defun al/init-load (file)
-    "Load FILE from `al/emacs-init-dir'."
-    (al/load (al/emacs-init-dir-file file)))
+(al/title-message "Final settings")
 
-  ;; Loading the rest config files.
-  (mapc #'al/init-load
-        '("keys"
-          "text"
-          "packages"
-          "settings"
-          "files"
-          "prog"
-          "time"
-          "file-modes"
-          "mmedia"
-          "net"
-          "dict"
-          "visual"
-          "games"
-          "custom")))
+(al/define-package-exists mwim mwim-beginning)
+(when al/mwim-exists?
+  (if (display-graphic-p)
+      (al/bind-keys
+        ("C-a" . mwim-beginning)
+        ("<ctrl-i>" . mwim-end))
+    (al/bind-keys
+      ("M-a" . mwim-beginning)
+      ("M-i" . mwim-end))))
 
-(setq custom-file (al/emacs-init-dir-file "custom.el"))
+(al/add-after-init-hook 'which-key-mode)
+
+;; Setting hooks from files that are already loaded.
+(al/add-hook-maybe 'after-save-hook 'al/check-parens)
+(al/add-hook-maybe 'window-configuration-change-hook
+  'al/set-windows-num-property)
+(al/add-hook-maybe 'text-mode-hook
+  '(visual-line-mode
+    hl-line-mode
+    abbrev-mode
+    al/no-syntactic-font-lock
+    al/show-trailing-whitespace))
+(al/add-hook-maybe 'prog-mode-hook
+  '(hl-line-mode
+    hl-todo-mode
+    abbrev-mode
+    al/set-comment-column
+    al/show-trailing-whitespace))
+(al/add-hook-maybe 'messages-buffer-mode-hook
+  (list 'hl-todo-mode
+        (lambda () (setq buffer-read-only nil))))
+
+(when (and (fboundp 'smartparens-mode)
+           (fboundp 'paredit-mode))
+  (al/global-parens-mode))
+
+(when (require 'al-process nil t)
+  (advice-add 'insert-directory :around #'al/call-with-locale)
+  (al/enable-process-hooks))
+
+(with-demoted-errors "ERROR during server start: %S"
+  (require 'al-server)
+  (al/server-named-start "server-emms" "server"))
 
 (message "Garbage collected %d times." gcs-done)
+(al/title-message "Emacs config has been loaded")
 
 ;;; init.el ends here

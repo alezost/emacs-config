@@ -1,4 +1,4 @@
-;;; games.el --- Various settings for games
+;;; games.el --- Various settings for games  -*- lexical-binding: t -*-
 
 ;; Copyright © 2014–2017 Alex Kost
 
@@ -14,8 +14,6 @@
 ;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-(require 'al-key)
 
 
 ;;; Global keys

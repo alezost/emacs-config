@@ -15,8 +15,6 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-(require 'al-key)
-
 
 ;;; Global keys
 
@@ -105,11 +103,6 @@
  kept-new-versions 4
  delete-old-versions t
  vc-make-backup-files t)
-
-(al/eval-after-init
-  (when (require 'al-process nil t)
-    (advice-add 'insert-directory :around #'al/call-with-locale)
-    ))
 
 (when (require 'al-backup nil t)
   (setq

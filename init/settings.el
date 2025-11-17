@@ -15,8 +15,6 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-(require 'al-key)
-
 
 ;;; External processes
 
@@ -32,7 +30,6 @@
 
   (al/add-hook-maybe 'al/before-process-functions
     'al/sync-zathura-theme))
-(al/add-after-init-hook 'al/enable-process-hooks)
 
 
 ;;; Minibuffer and completions
@@ -97,6 +94,7 @@
   (al/bind-keys-from-vars '(icomplete-vertical-mode-minibuffer-map)
     'al/icomplete-vertical-keys))
 
+(al/eval-after-init (require 'al-minibuffer nil t))
 (with-eval-after-load 'al-minibuffer
   (setq completion-styles '(al/split))
   (al/bind-keys
@@ -130,9 +128,6 @@
   (advice-add 'describe-variable        :around #'al/minibuffer-fallback-or-funcall)
   (advice-add 'describe-face            :around #'al/minibuffer-fallback-or-funcall)
   (advice-add 'describe-symbol          :around #'al/minibuffer-fallback-or-funcall))
-
-(al/eval-after-init
-  (require 'al-minibuffer nil t))
 
 
 ;;; Working with buffers: ibuffer, uniquify, …
@@ -196,9 +191,6 @@
 ;;; Working with windows and frames
 
 (setq split-width-threshold 120)
-
-(al/add-hook-maybe 'window-configuration-change-hook
-  'al/set-windows-num-property)
 
 ;; Open some buffers in the same window.
 (setq
@@ -528,7 +520,6 @@
    which-key-idle-secondary-delay 0.1
    which-key-add-column-padding 2
    which-key-max-display-columns 5))
-(al/add-after-init-hook 'which-key-mode)
 
 
 ;;; SQL
@@ -674,13 +665,9 @@
   (with-current-buffer (messages-buffer)
     (messages-buffer-mode)))
 
-(al/eval-after-init
-  (al/set-scratch-message)
-  (al/reinit-messages-buffer))
-
-(al/add-hook-maybe 'messages-buffer-mode-hook
-  (list 'hl-todo-mode
-        (lambda () (setq buffer-read-only nil))))
+(al/add-after-init-hook
+ '(al/set-scratch-message
+   al/reinit-messages-buffer))
 
 
 ;;; Misc settings and packages
