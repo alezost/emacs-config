@@ -114,9 +114,12 @@ If VAL is a list, call FUNCTION on each element of the list."
 
 (defun al/load (file)
   "Load FILE.
+Return t if FILE is loaded successfully, nil otherwise.
 FILE may omit an extension.  See `load' for details."
-  (or (load file 'noerror)
-      (al/warning "Failed to load '%s'." file)))
+  (when (stringp file)
+    (or (load file 'noerror)
+        (progn (al/warning "Failed to load '%s'." file)
+               nil))))
 
 (defun al/add-hook-maybe (hooks functions &optional append local)
   "Add all bound FUNCTIONS to all HOOKS.
