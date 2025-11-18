@@ -133,10 +133,10 @@ this function makes it possible to avoid requiring `org-protocol'
 Making this function an 'after' advice for `server-visit-files',
 will do the right thing."
   (if (and (null (featurep 'org-protocol))
-           (cl-find-if (lambda (spec)
-                         ;; SPEC is (FILENAME . FILEPOS).
-                         (string-match "org-protocol:/" (car spec)))
-                       files))
+           (seq-find (lambda (spec)
+                       ;; SPEC is (FILENAME . FILEPOS).
+                       (string-match "org-protocol:/" (car spec)))
+                     files))
       (if (require 'org-protocol nil t)
           ;; `server-visit-files' can't be called as is here, because
           ;; `org-protocol' has just been loaded and the protocol advice

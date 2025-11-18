@@ -358,10 +358,11 @@
 (with-eval-after-load 'mwim
   (defun al/mwim-set-default (var fun)
     (set var
-         (cl-substitute-if
-          `(t . ,fun)
-          (lambda (assoc) (eq t (car assoc)))
-          (symbol-value var))))
+         (mapcar (lambda (assoc)
+                   (if (eq t (car assoc))
+                       (cons t fun)
+                     assoc))
+                 (symbol-value var))))
   (al/mwim-set-default 'mwim-beginning-of-line-function
                        'beginning-of-visual-line)
   (al/mwim-set-default 'mwim-end-of-line-function
