@@ -1,6 +1,6 @@
 ;;; al-guix-autoload.el --- Additional functionality to autoload Guix packages  -*- lexical-binding: t -*-
 
-;; Copyright © 2014-2016 Alex Kost
+;; Copyright © 2014–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
 
 ;;; Code:
 
+(require 'cl-lib)
+(require 'seq)
 (require 'al-autoload)
 (require 'al-file)
 
@@ -44,10 +46,10 @@ Return nil, if Emacs packages are not installed in PROFILE."
   (dolist (profile profiles)
     (let ((dirs (al/guix-emacs-directories profile)))
       (when dirs
-        (let* ((autoloads     (cl-mapcan #'al/find-autoloads dirs))
-               (new-autoloads (cl-nset-difference autoloads
-                                                  al/guix-emacs-autoloads
-                                                  :test #'string=)))
+        (let* ((autoloads     (seq-keep #'al/find-autoloads dirs))
+               (new-autoloads (seq-difference autoloads
+                                              al/guix-emacs-autoloads
+                                              #'string=)))
           (dolist (dir dirs)
             (cl-pushnew (directory-file-name dir)
                         load-path

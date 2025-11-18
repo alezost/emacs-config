@@ -37,7 +37,8 @@
 
 (defun al/find-autoloads (directory)
   "Return a list of Emacs `autoloads' files in DIRECTORY."
-  (directory-files directory 'full-name al/autoloads-regexp 'no-sort))
+  (car (directory-files
+        directory 'full-name al/autoloads-regexp 'no-sort 1)))
 
 (defun al/update-autoloads (&rest dirs)
   "Update the contents of `autoloads' files for all DIRS."

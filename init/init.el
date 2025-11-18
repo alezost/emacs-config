@@ -176,7 +176,7 @@
                           elisp-dir
                         dir)))
             (push dir load-path)
-            (mapc #'al/load (al/find-autoloads dir))))))))
+            (al/load (al/find-autoloads dir))))))))
 
 
 ;;; Final settings
