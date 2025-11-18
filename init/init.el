@@ -94,6 +94,7 @@
 
 (setq
  package-user-dir (al/emacs-data-dir-file "elpa")
+ package-quickstart-file (al/emacs-data-dir-file "package-quickstart.el")
  custom-file (al/emacs-init-dir-file "custom.el"))
 
 (push al/emacs-utils-dir load-path)
@@ -135,30 +136,13 @@
 
   ;; Autoloading external packages.
   (unless al/pure-config?
-    (with-demoted-errors "ERROR during autoloading ELPA packages: %S"
+    (when (file-exists-p package-user-dir)
       (al/title-message "Autoloading ELPA packages")
-      (when (require 'al-package nil t)
-        (setq
-         al/ignored-packages
-         '( ;; Installed via Guix:
-           pdf-tools
-           bui
-           dash
-           emms
-           geiser
-           magit
-           ;; Redundant dependencies of magit:
-           magit-popup git-commit with-editor))
-
-        (advice-add 'package-installed-p
-          :around #'al/package-installed-p)
-        (advice-add 'quelpa-package-install
-          :around #'al/quelpa-package-install)
-        (advice-add 'package-compute-transaction
-          :around #'al/package-compute-transaction)
-        (advice-add 'package-activate-1
-          :around #'al/package-activate-1))
-      (package-initialize))
+      (with-demoted-errors "ERROR during autoloading ELPA packages: %S"
+        (unless (file-exists-p package-quickstart-file)
+          (require 'package)
+          (package-quickstart-refresh))
+        (package-activate-all)))
 
     (when (file-exists-p al/guix-profile-dir)
       (al/title-message "Autoloading Guix packages")

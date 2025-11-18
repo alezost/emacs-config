@@ -37,7 +37,27 @@
    ("I" . package-menu-mark-install)
    ("D" . package-menu-mark-delete)
    ("^" . package-menu-mark-upgrades)
-   ("z" . package-menu-mark-unmark)))
+   ("z" . package-menu-mark-unmark))
+
+  (require 'al-package nil t))
+
+(with-eval-after-load 'al-package
+  (setq
+   al/ignored-packages
+   '(;; Installed via Guix:
+     pdf-tools
+     bui
+     dash
+     emms
+     geiser
+     magit
+     ;; Redundant dependencies of magit:
+     magit-popup git-commit with-editor))
+
+  (advice-add 'package-installed-p :around #'al/package-installed-p)
+  (advice-add 'quelpa-package-install :around #'al/quelpa-package-install)
+  (advice-add 'package-compute-transaction :around #'al/package-compute-transaction)
+  (advice-add 'package-activate-1 :around #'al/package-activate-1))
 
 (setq
  quelpa-upgrade-p t
