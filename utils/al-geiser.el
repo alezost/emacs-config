@@ -1,6 +1,6 @@
 ;;; al-geiser.el --- Additional functionality for geiser  -*- lexical-binding: t -*-
 
-;; Copyright © 2014–2018 Alex Kost
+;; Copyright © 2014–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -91,6 +91,15 @@ This function refers to `geiser-doc-symbol-at-point' as
 (defun al/geiser-repl-buffer-name (impl)
   "Return buffer name of Geiser REPL for IMPL."
   (format "*%s*" (geiser-repl--repl-name impl)))
+
+;;;###autoload
+(defun al/geiser-guile-switch-current-window (arg)
+  "Switch to a running guile REPL, or start one.
+This is the same as `geiser-guile-switch' except it always use the
+current window ignoring the value of `geiser-repl-use-other-window'."
+  (interactive "P")
+  (let (geiser-repl-use-other-window)
+    (geiser-repl-switch arg 'guile)))
 
 
 ;;; Connecting to pre-defined sockets
