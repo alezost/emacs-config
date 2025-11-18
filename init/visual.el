@@ -27,9 +27,12 @@
     ;; 武; 🐼, 😻, ⚽, 💩, ∵, ⸪, 🃜, 🜒, 🝖, ←↑→↓ (symbola);
     ;; ࿌ (unifont).
     (setq use-default-font-for-symbols nil)
-    (set-frame-font (al/first-existing-font) nil t)
-    (set-fontset-font t 'hangul "Droid Sans Mono")
-    (set-fontset-font t 'symbol "Symbola")
+    (let ((font (al/first-existing-font)))
+      (set-frame-font font nil t)
+      (set-fontset-font t 'mathematical "Symbola")
+      (set-fontset-font t 'symbol "Symbola")
+      (set-fontset-font t 'hangul "Droid Sans Mono")
+      (set-fontset-font t 'greek font))
     ;; This is needed to display unknown symbols (like ￰) properly
     ;; i.e., without using Droid fallback.
     (set-fontset-font t nil "Symbola")))
