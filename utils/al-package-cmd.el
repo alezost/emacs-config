@@ -19,6 +19,7 @@
 
 (require 'seq)
 (require 'package)
+(require 'al-general)
 
 (defvar al/package-archives
   '(("gnu"          . "http://elpa.gnu.org/packages/")
@@ -37,7 +38,7 @@ NAME is an archive name from `al/package-archives'."
                           (mapcar #'car al/package-archives))))
   (let ((archive (assoc name al/package-archives)))
     (when archive
-      (add-to-list 'package-archives archive)
+      (al/pushnew package-archives archive)
       (pp-eval-expression 'package-archives))))
 
 ;;;###autoload

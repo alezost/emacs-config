@@ -33,8 +33,8 @@
   "Minor mode with key bindings to override other modes."
   :init-value t)
 
-(add-to-list 'emulation-mode-map-alists
-             `((al/override-global-mode . ,al/override-global-map)))
+(al/pushnew emulation-mode-map-alists
+            `((al/override-global-mode . ,al/override-global-map)))
 
 (defun al/key-command (cmd-spec)
   "Return command value for `al/bind-key' macro."

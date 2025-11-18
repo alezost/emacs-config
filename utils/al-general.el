@@ -19,6 +19,13 @@
 
 (require 'seq)
 
+(defmacro al/pushnew (place newelt &optional testfn)
+  "Push NEWELT to PLACE if not already present.
+This is similar to `cl-pushnew' but uses `seq' library instead of `cl-lib'."
+  `(let ((elt ,newelt))
+     (unless (seq-contains-p ,place elt ,testfn)
+       (push elt ,place))))
+
 (defun al/negate (fun)
   "Return a function that negates the result of FUN."
   (lambda (&rest args)

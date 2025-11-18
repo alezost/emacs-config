@@ -17,8 +17,8 @@
 
 ;;; Code:
 
-(require 'cl-lib)
 (require 'seq)
+(require 'al-general)
 (require 'al-autoload)
 (require 'al-file)
 
@@ -51,9 +51,9 @@ Return nil, if Emacs packages are not installed in PROFILE."
                                               al/guix-emacs-autoloads
                                               #'string=)))
           (dolist (dir dirs)
-            (cl-pushnew (directory-file-name dir)
-                        load-path
-                        :test #'string=))
+            (al/pushnew load-path
+                        (directory-file-name dir)
+                        #'string=))
           (dolist (autoload new-autoloads)
             (load autoload 'noerror))
           (setq al/guix-emacs-autoloads
