@@ -511,11 +511,11 @@
   ;; "M-i <N>" to insert superscript numbers.
   ;; "M-i M-<N>" to insert subscript numbers.
   (defun al/make-number-alist (numbers &optional modifier)
-    (cl-loop for i to 9
-             for char across numbers
-             collect (cons (kbd (concat modifier
-                                        (number-to-string i)))
-                           (vector char))))
+    (seq-map-indexed
+     (lambda (char i)
+       (cons (kbd (concat modifier (number-to-string i)))
+             (vector char)))
+     numbers))
   (iso-transl-define-keys
    (append
     (al/make-number-alist "⁰¹²³⁴⁵⁶⁷⁸⁹")
