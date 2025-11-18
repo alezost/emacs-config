@@ -67,11 +67,10 @@ v2 will be set, while v1 will not."
                 'no-group))
 
 (defun al/subdirs (directory)
-  "Return list of DIRECTORY sub-directories."
-  (seq-remove (lambda (file)
-                (or (string-match-p (rx (or "/." "/..") string-end) file)
-                    (not (file-directory-p file))))
-              (directory-files directory 'full-name nil 'no-sort)))
+  "Return list of DIRECTORY sub-directories.
+See `directory-files' for the meaning OF FULL."
+  (seq-filter #'file-directory-p
+              (directory-files directory 'full "\\`[^.]" 'no-sort)))
 
 (defun al/add-to-auto-mode-alist (specs)
   "Add SPECS to `auto-mode-alist'.
