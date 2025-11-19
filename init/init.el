@@ -96,10 +96,11 @@
   "`autoloads' file for my utils.")
 (defvar al/emacs-my-package-autoloads (al/emacs-data-dir-file "my-autoloads.el")
   "`autoloads' file for my packages.")
+(defvar al/emacs-elpa-package-autoloads (al/emacs-data-dir-file "elpa-autoloads.el")
+  "`autoloads' file for ELPA packages.")
 
 (setq
  package-user-dir (al/emacs-data-dir-file "elpa")
- package-quickstart-file (al/emacs-data-dir-file "package-quickstart.el")
  custom-file (al/emacs-init-dir-file "custom.el"))
 
 (push al/emacs-utils-dir load-path)
@@ -132,7 +133,7 @@
           "games"
           "custom"))
 
-  (al/title-message "Loading utils autoloads")
+  (al/title-message "Autoloading utils")
   (unless (file-exists-p al/emacs-utils-autoloads)
     (with-demoted-errors "ERROR during generating utils autoloads: %S"
       (loaddefs-generate al/emacs-utils-dir al/emacs-utils-autoloads)))
@@ -142,11 +143,12 @@
   (unless al/pure-config?
     (when (file-exists-p package-user-dir)
       (al/title-message "Autoloading ELPA packages")
-      (with-demoted-errors "ERROR during autoloading ELPA packages: %S"
-        (unless (file-exists-p package-quickstart-file)
-          (require 'package)
-          (package-quickstart-refresh))
-        (package-activate-all)))
+      (unless (file-exists-p al/emacs-elpa-package-autoloads)
+        (with-demoted-errors "ERROR during generating ELPA packages autoloads: %S"
+          (al/concat-autoloads package-user-dir
+                               al/emacs-elpa-package-autoloads
+                               'append)))
+      (al/load al/emacs-elpa-package-autoloads))
 
     (when (file-exists-p al/guix-profile-dir)
       (al/title-message "Autoloading Guix packages")
