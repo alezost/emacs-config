@@ -92,6 +92,8 @@
 (defvar al/pure-config? (getenv "EMPURE")
   "Non-nil, if external packages should not be loaded.")
 
+(defvar al/emacs-utils-autoloads (al/emacs-utils-dir-file "utils-autoloads.el")
+  "`autoloads' file for my utils.")
 (defvar al/emacs-my-package-autoloads (al/emacs-data-dir-file "my-autoloads.el")
   "`autoloads' file for my packages.")
 
@@ -131,11 +133,10 @@
           "custom"))
 
   (al/title-message "Loading utils autoloads")
-  (let ((auto-file (al/autoloads-file al/emacs-utils-dir)))
-    (unless (file-exists-p auto-file)
-      (with-demoted-errors "ERROR during generating utils autoloads: %S"
-        (al/update-autoloads al/emacs-utils-dir)))
-    (al/load auto-file))
+  (unless (file-exists-p al/emacs-utils-autoloads)
+    (with-demoted-errors "ERROR during generating utils autoloads: %S"
+      (loaddefs-generate al/emacs-utils-dir al/emacs-utils-autoloads)))
+  (al/load al/emacs-utils-autoloads)
 
   ;; Autoloading external packages.
   (unless al/pure-config?
