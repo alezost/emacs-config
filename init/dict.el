@@ -28,10 +28,11 @@
  ("i" . al/dictem-run-show-all-info)
  ("d" . al/dictem-run-dict-search)
  ("q" . dictem-kill-all-buffers)
- ("k" . web-search-naver)
+ ("K" . web-search-naver)
+ ("k"   (al/google-translate-using-languages "ko" "ru" "en"))
  ("e"   (al/google-translate-using-languages "en" "ru"))
  ("r"   (al/google-translate-using-languages* :source "ru"
-                                              :target '("en" "de" "fr" "la")
+                                              :target '("en" "ko" "de" "fr" "la")
                                               :one-way t))
  ("f"   (al/google-translate-using-languages "fr" "ru" "en"))
  ("g"   (al/google-translate-using-languages "de" "ru" "en"))
@@ -123,21 +124,19 @@
 
 (with-eval-after-load 'google-translate-core-ui
   (setq
+   google-translate-input-method-auto-toggling t
+   google-translate-preferable-input-methods-alist
+   '((dvorak-russian-computer "ru")
+     (korean-hangul "ko"))
    google-translate-show-phonetic t
    google-translate-listen-button-label "Listen"))
 
 (with-eval-after-load 'google-translate-smooth-ui
-  (when (require 'dvorak-russian-computer nil t)
-    (setq google-translate-preferable-input-methods-alist
-          '((dvorak-russian-computer "ru"))))
-  (setq
-   google-translate-input-method-auto-toggling t)
-
   (google-translate--setup-minibuffer-keymap)
   (defconst al/google-translate-keys
     '(("C-." . google-translate-previous-translation-direction)
       ("C-e" . google-translate-next-translation-direction))
-    "Alist of auxiliary keys for google-translate.")
+    "Alist of auxiliary keys for `google-translate-minibuffer-keymap'.")
   (al/bind-keys-from-vars 'google-translate-minibuffer-keymap
     '(al/minibuffer-keys al/google-translate-keys)))
 
