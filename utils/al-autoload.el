@@ -46,8 +46,11 @@ This is a list of regexps to match package directories.")
 (defun al/autoloads-file (directory)
   "Return the name of `autoloads' file for DIRECTORY."
   (let* ((dir  (expand-file-name directory))
-         (base (file-name-nondirectory (directory-file-name dir))))
-    (expand-file-name (concat base "-autoloads.el") dir)))
+         (base (file-name-nondirectory (directory-file-name dir)))
+         ;; Package directories have "<name>[-<version>]" names.
+         (name (and (string-match "\\`\\(.+?\\)[-.0-9]*\\'" base)
+                    (match-string 1 base))))
+    (expand-file-name (concat (or name base) "-autoloads.el") dir)))
 
 (defun al/find-autoloads (directory)
   "Return a list of Emacs `autoloads' files in DIRECTORY."
