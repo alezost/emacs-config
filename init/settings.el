@@ -473,7 +473,6 @@
   (info-initialize)
   (setq Info-directory-list
         (append (al/existing-files
-                 (al/emacs-my-packages-dir-file "guix/doc")
                  (al/devel-dir-file "guix/doc"))
                 Info-directory-list))
 

@@ -92,6 +92,9 @@
 (defvar al/pure-config? (getenv "EMPURE")
   "Non-nil, if external packages should not be loaded.")
 
+(defvar al/emacs-my-package-autoloads (al/emacs-data-dir-file "my-autoloads.el")
+  "`autoloads' file for my packages.")
+
 (setq
  package-user-dir (al/emacs-data-dir-file "elpa")
  package-quickstart-file (al/emacs-data-dir-file "package-quickstart.el")
@@ -153,14 +156,12 @@
 
     (when (file-exists-p al/emacs-my-packages-dir)
       (al/title-message "Autoloading my packages")
-      (with-demoted-errors "ERROR during autoloading my packages: %S"
-        (dolist (dir (al/subdirs al/emacs-my-packages-dir))
-          (let* ((elisp-dir (expand-file-name "elisp" dir))
-                 (dir (if (file-exists-p elisp-dir)
-                          elisp-dir
-                        dir)))
-            (push dir load-path)
-            (al/load (al/find-autoloads dir))))))))
+      (unless (file-exists-p al/emacs-my-package-autoloads)
+        (with-demoted-errors "ERROR during generating my packages autoloads: %S"
+          (al/concat-autoloads al/emacs-my-packages-dir
+                               al/emacs-my-package-autoloads
+                               'append)))
+      (al/load al/emacs-my-package-autoloads))))
 
 
 ;;; Final settings
