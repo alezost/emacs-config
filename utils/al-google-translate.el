@@ -1,6 +1,6 @@
 ;;; al-google-translate.el --- Additional functionality for google-translate  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2016, 2019 Alex Kost
+;; Copyright © 2013–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -19,7 +19,13 @@
 
 (eval-when-compile (require 'cl-lib))
 (require 'google-translate-smooth-ui)
-(require 'al-misc)
+(require 'al-general)
+
+(defun al/google-translate-listen-translation (language text)
+  "Replacement for `google-translate-listen-translation'."
+  (apply #'call-process "mpv" nil nil nil
+         (append '("--really-quiet" "--no-config")
+                 (google-translate-format-listen-urls text language))))
 
 ;;;###autoload
 (defun al/google-translate-smooth-translate (&optional languages direction)
@@ -27,8 +33,8 @@
 Similar to `google-translate-smooth-translate', but prompt for
 languages (if needed) before text.
 
-LANGUAGES should have a form of `google-translate-translation-directions-alist'.
-DIRECTIONS should have a form of `google-translate-current-translation-direction'."
+LANGUAGES has a form of `google-translate-translation-directions-alist'.
+DIRECTION has a form of `google-translate-current-translation-direction'."
   (interactive)
   (setq google-translate-translation-direction-query
         (when (use-region-p)
@@ -60,14 +66,14 @@ language names.  If ONE-WAY is non-nil, use only source/target
 pairs for translation.  Otherwise, use the reverse
 pairs (target/source) as well."
   (let ((languages
-         (cl-mapcan
+         (mapcan
           (lambda (source)
-            (cl-mapcan (lambda (target)
-                         (if one-way
-                             (list (cons source target))
-                           (list (cons source target)
-                                 (cons target source))))
-                       (al/list-maybe target)))
+            (mapcan (lambda (target)
+                      (if one-way
+                          (list (cons source target))
+                        (list (cons source target)
+                              (cons target source))))
+                    (al/list-maybe target)))
           (al/list-maybe source))))
     (al/google-translate-smooth-translate languages)))
 

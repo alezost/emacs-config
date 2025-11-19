@@ -129,7 +129,12 @@
    '((dvorak-russian-computer "ru")
      (korean-hangul "ko"))
    google-translate-show-phonetic t
-   google-translate-listen-button-label "Listen"))
+   google-translate-listen-program "mpv"
+   google-translate-listen-button-label "Listen")
+
+  (when (require 'al-google-translate nil t)
+    (advice-add 'google-translate-listen-translation
+      :override #'al/google-translate-listen-translation)))
 
 (with-eval-after-load 'google-translate-smooth-ui
   (google-translate--setup-minibuffer-keymap)
