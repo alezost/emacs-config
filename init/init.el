@@ -145,6 +145,7 @@
       (al/title-message "Autoloading ELPA packages")
       (unless (file-exists-p al/emacs-elpa-package-autoloads)
         (with-demoted-errors "ERROR during generating ELPA packages autoloads: %S"
+          (require 'al-autoload-make)
           (al/concat-autoloads package-user-dir
                                al/emacs-elpa-package-autoloads
                                'append)))
@@ -161,6 +162,7 @@
       (al/title-message "Autoloading my packages")
       (unless (file-exists-p al/emacs-my-package-autoloads)
         (with-demoted-errors "ERROR during generating my packages autoloads: %S"
+          (require 'al-autoload-make)
           (al/concat-autoloads al/emacs-my-packages-dir
                                al/emacs-my-package-autoloads
                                'append)))
