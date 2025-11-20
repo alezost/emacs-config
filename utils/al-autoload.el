@@ -96,18 +96,25 @@ ADD-TO-PATH should be nil, `append' or `prepend'."
                            (save-match-data (syntax-ppss)))
                     (replace-match "")))
                 (insert "\n"))))))
+      ;; Set `load-path' at the beginning of file to make sure it is set
+      ;; even in case some autoloads fail.
+      (goto-char (point-min))
+      (when (search-forward "\f" nil t)
+        (delete-line))
       (when (and add-to-path load-dirs)
         (pp `(setq load-path
                    ,(if (eq 'prepend add-to-path)
                         `(append load-path ',load-dirs)
                       `(append ',load-dirs load-path)))
-            (current-buffer)))
+            (current-buffer))
+        (insert "\n"))
       (when info-dirs
         (pp `(with-eval-after-load 'info
                (info-initialize)
                (setq Info-directory-list
                      (append ',info-dirs Info-directory-list)))
-            (current-buffer))))))
+            (current-buffer)))
+      (insert "\n\f\n\n"))))
 
 (defun al/update-autoloads (&rest dirs)
   "Update the contents of `autoloads' files for all DIRS."
