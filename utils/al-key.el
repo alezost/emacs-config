@@ -70,7 +70,7 @@ Examples:
         (map-var (make-symbol "map")))
     `(let* ((,key-var ,key-name)
             (,key-var (if (stringp ,key-var)
-                          (read-kbd-macro ,key-var)
+                          (key-parse ,key-var)
                         ,key-var))
             (,map-var (or ,keymap global-map)))
        ,(if command
