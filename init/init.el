@@ -105,7 +105,7 @@
 
 (push al/emacs-utils-dir load-path)
 
-(let (file-name-handler-alist)
+(let ((file-name-handler-alist nil))
   (al/title-message "Loading necessary utils")
   (require 'al-autoload)
   (require 'al-file)
@@ -136,7 +136,9 @@
   (al/title-message "Autoloading utils")
   (unless (file-exists-p al/emacs-utils-autoloads)
     (with-demoted-errors "ERROR during generating utils autoloads: %S"
-      (loaddefs-generate al/emacs-utils-dir al/emacs-utils-autoloads)))
+      (require 'al-autoload-make)
+      (al/generate-autoloads al/emacs-utils-dir
+                             :output-file al/emacs-utils-autoloads)))
   (al/load al/emacs-utils-autoloads)
 
   ;; Autoloading external packages.
@@ -146,9 +148,10 @@
       (unless (file-exists-p al/emacs-elpa-package-autoloads)
         (with-demoted-errors "ERROR during generating ELPA packages autoloads: %S"
           (require 'al-autoload-make)
-          (al/concat-autoloads package-user-dir
-                               al/emacs-elpa-package-autoloads
-                               'append)))
+          (al/generate-autoloads package-user-dir
+                                 :output-file al/emacs-elpa-package-autoloads
+                                 :add-to-path 'append
+                                 :subdirs 'only)))
       (al/load al/emacs-elpa-package-autoloads))
 
     (when (file-exists-p al/guix-profile-dir)
@@ -163,9 +166,10 @@
       (unless (file-exists-p al/emacs-my-package-autoloads)
         (with-demoted-errors "ERROR during generating my packages autoloads: %S"
           (require 'al-autoload-make)
-          (al/concat-autoloads al/emacs-my-packages-dir
-                               al/emacs-my-package-autoloads
-                               'append)))
+          (al/generate-autoloads al/emacs-my-packages-dir
+                                 :output-file al/emacs-my-package-autoloads
+                                 :add-to-path 'append
+                                 :subdirs t)))
       (al/load al/emacs-my-package-autoloads))))
 
 
