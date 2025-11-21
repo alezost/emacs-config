@@ -424,6 +424,16 @@
  magit-auto-revert-mode nil
  magit-define-global-key-bindings nil)
 
+;; I don't load "magit-autoloads.el", so autoload some commands.
+(al/autoload "magit"
+  magit-dispatch)
+(al/autoload "magit-status"
+  magit-status)
+(al/autoload "magit-blame"
+  magit-blame)
+(al/autoload "magit-log"
+  magit-log-current)
+
 ;; By default, when `with-editor' library is loaded, it runs
 ;; "<emacsclient> --version" shell command HUNDREDS of times (for any
 ;; possible name of <emacsclient> executable in all dirs from PATH).
