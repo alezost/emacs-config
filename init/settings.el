@@ -851,28 +851,37 @@
 
 (with-eval-after-load 'transient
   (setq
+   transient-levels-file  (al/emacs-data-dir-file "transient/levels.el")
+   transient-history-file (al/emacs-data-dir-file "transient/history.el")
+   transient-values-file  (al/emacs-data-dir-file "transient/values.el")
    transient--buffer-name "*transient*"
-   transient-detect-key-conflicts t
-   ;; transient-highlight-mismatched-keys t
+   ;; transient-detect-key-conflicts t
    ;; transient--debug t
+   transient-highlight-mismatched-keys nil
    transient-enable-popup-navigation t
    transient-read-with-initial-input nil
-   transient-mode-line-format mode-line-format
-   transient-display-buffer-action '(display-buffer-below-selected))
+   transient-mode-line-format mode-line-format)
 
   (defconst al/transient-base-keys
     '("C-v" "M-v"
+      ("q" . transient-quit-all)
       ("C-g" . transient-quit-all)
       ("C-q" . transient-quit-one)
       ("DEL" . transient-quit-one))
     "Alist of auxiliary keys for `transient-base-map'.")
-  (al/bind-keys-from-vars 'transient-base-map
-    'al/transient-base-keys)
+  (al/bind-keys-from-vars 'transient-base-map 'al/transient-base-keys)
+
+  (defconst al/transient-sticky-keys
+    '(("C-g" . transient-quit-all)
+      ("C-q" . transient-quit-seq))
+    "Alist of auxiliary keys for `transient-sticky-map'.")
+  (al/bind-keys-from-vars 'transient-sticky-map 'al/transient-sticky-keys)
 
   (defconst al/transient-keys
-    '("C-h")
+    '(("C-M-p" . transient-history-next)
+      ("C-M-," . transient-history-prev))
     "Alist of auxiliary keys for `transient-map'.")
-  (al/bind-keys-from-vars 'transient-map 'al/transient-keys)
+  (al/bind-keys-from-vars 'transient-map 'al/transient-keys t)
 
   (defconst al/transient-navigation-keys
     '(("<tab>" . transient-forward-button)
@@ -884,17 +893,6 @@
   (transient-suffix-put 'transient-common-commands
                         "C-g" :command 'transient-quit-all)
   (transient-suffix-put 'transient-common-commands
-                        "C-q" :command 'transient-quit-one)
-
-  (when (require 'al-transient nil t)
-    (advice-add 'transient--minibuffer-setup :override #'ignore)
-    (advice-add 'transient--minibuffer-exit :override #'ignore)
-    (advice-add 'transient--push-keymap :override #'al/transient-push-keymap)
-    (advice-add 'transient--pop-keymap :override #'al/transient-pop-keymap)
-    (advice-add 'transient--pre-command :around #'al/transient-fix-pre/post-command)
-    (advice-add 'transient--post-command :around #'al/transient-fix-pre/post-command)
-    (advice-add 'transient--delete-window :around #'al/transient-fix-delete-window)
-    (advice-add 'transient--init-transient :after #'al/transient-fix-init)
-    (advice-add 'transient--show :after #'al/transient-fix-show)))
+                        "C-q" :command 'transient-quit-one))
 
 ;;; settings.el ends here
