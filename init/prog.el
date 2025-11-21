@@ -419,8 +419,10 @@
 
 ;;; Version control
 
-(setq vc-handled-backends nil)
-(setq magit-auto-revert-mode nil)
+(setq
+ vc-handled-backends nil
+ magit-auto-revert-mode nil
+ magit-define-global-key-bindings nil)
 
 ;; By default, when `with-editor' library is loaded, it runs
 ;; "<emacsclient> --version" shell command HUNDREDS of times (for any
