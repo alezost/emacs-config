@@ -1,4 +1,4 @@
-;;; al-autoload-make.el --- Additional functionality to create autoloads for Emacs packages  -*- lexical-binding: t -*-
+;;; al-autoloads-make.el --- Additional functionality to create autoloads for Emacs packages  -*- lexical-binding: t -*-
 
 ;; Copyright © 2013–2025 Alex Kost
 
@@ -120,6 +120,6 @@ SUBDIRS can have one of the following values:
   (dolist (dir dirs)
     (loaddefs-generate dir (al/autoloads-file dir))))
 
-(provide 'al-autoload-make)
+(provide 'al-autoloads-make)
 
-;;; al-autoload-make.el ends here
+;;; al-autoloads-make.el ends here

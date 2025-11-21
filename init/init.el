@@ -136,7 +136,7 @@
   (al/title-message "Autoloading utils")
   (unless (file-exists-p al/emacs-utils-autoloads)
     (with-demoted-errors "ERROR during generating utils autoloads: %S"
-      (require 'al-autoload-make)
+      (require 'al-autoloads-make)
       (al/generate-autoloads al/emacs-utils-dir
                              :output-file al/emacs-utils-autoloads)))
   (al/load al/emacs-utils-autoloads)
@@ -147,7 +147,7 @@
       (al/title-message "Autoloading ELPA packages")
       (unless (file-exists-p al/emacs-elpa-package-autoloads)
         (with-demoted-errors "ERROR during generating ELPA packages autoloads: %S"
-          (require 'al-autoload-make)
+          (require 'al-autoloads-make)
           (al/generate-autoloads package-user-dir
                                  :output-file al/emacs-elpa-package-autoloads
                                  :add-to-path 'append
@@ -165,7 +165,7 @@
       (al/title-message "Autoloading my packages")
       (unless (file-exists-p al/emacs-my-package-autoloads)
         (with-demoted-errors "ERROR during generating my packages autoloads: %S"
-          (require 'al-autoload-make)
+          (require 'al-autoloads-make)
           (al/generate-autoloads al/emacs-my-packages-dir
                                  :output-file al/emacs-my-package-autoloads
                                  :add-to-path 'append
