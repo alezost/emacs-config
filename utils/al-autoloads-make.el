@@ -114,12 +114,6 @@ SUBDIRS can have one of the following values:
                            (or output-file (al/autoloads-file directory))
                            nil extra-data nil t)))))
 
-;;;###autoload
-(defun al/update-autoloads (&rest dirs)
-  "Update the contents of `autoloads' files for all DIRS."
-  (dolist (dir dirs)
-    (loaddefs-generate dir (al/autoloads-file dir))))
-
 (provide 'al-autoloads-make)
 
 ;;; al-autoloads-make.el ends here

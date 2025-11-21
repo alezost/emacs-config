@@ -100,10 +100,7 @@
 
 (al/bind-keys
  :map ctl-x-map
- ("A"     (apply #'al/update-autoloads
-                 (if current-prefix-arg
-                     (al/subdirs al/emacs-my-packages-dir)
-                   (list al/emacs-utils-dir))))
+ ("A"   . al/autoloads-ui)
  ("C"   . save-buffers-kill-emacs)
  ("C-8" . insert-char))
 

@@ -40,6 +40,12 @@ STR can have one of the following formats:
 	  (+ (* h 3600) (* m 60) s))
       (string-to-number str))))
 
+(defun al/intern (string-or-symbol)
+  "Like `intern' except STRING-OR-SYMBOL can also be a symbol."
+  (if (symbolp string-or-symbol)
+      string-or-symbol
+    (intern string-or-symbol)))
+
 (defun al/next-element (list &optional element)
   "Return next element from LIST.
 If ELEMENT is nil or not in LIST, return the first element of LIST.
