@@ -290,8 +290,7 @@
     "Alist of auxiliary keys for `shell-mode-map'.")
   (al/bind-keys-from-vars 'shell-mode-map 'al/shell-keys t)
   (al/add-hook-maybe 'shell-mode-hook
-    '(guix-build-log-minor-mode
-      abbrev-mode
+    '(abbrev-mode
       al/no-truncate-lines)))
 
 (with-eval-after-load 'al-shell

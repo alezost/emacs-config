@@ -287,8 +287,7 @@
 
   (al/add-hook-maybe 'geiser-repl-mode-hook
     '(al/inhibit-field-motion
-      al/no-syntactic-font-lock
-      guix-build-log-minor-mode))
+      al/no-syntactic-font-lock))
 
   (when (require 'al-geiser nil t)
     (setq geiser-repl-buffer-name-function
