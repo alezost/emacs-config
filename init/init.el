@@ -1,4 +1,4 @@
-;;; init.el --- Init file  -*- lexical-binding: t -*-
+;;; init.el --- File symlinked by `user-init-file'  -*- lexical-binding: t -*-
 
 ;; Copyright © 2012–2025 Alex Kost
 
@@ -14,13 +14,6 @@
 ;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-;; Hacks to reduce the startup time:
-;; <https://www.reddit.com/r/emacs/comments/3kqt6e/2_easy_little_known_steps_to_speed_up_emacs_start/>
-;; <https://bling.github.io/blog/2016/01/18/why-are-you-changing-gc-cons-threshold/>
-(setq gc-cons-threshold (expt 2 24) ; 16 MiB
-      garbage-collection-messages t)
-(setq load-prefer-newer t)
 
 (defun al/title-message (format-string &rest args)
   (apply #'message (concat "⏺ " format-string) args))
@@ -100,77 +93,77 @@
   "`autoloads' file for ELPA packages.")
 
 (setq
+ load-prefer-newer t
  package-user-dir (al/emacs-data-dir-file "elpa")
  custom-file (al/emacs-init-dir-file "custom.el"))
 
 (push al/emacs-utils-dir load-path)
 
-(let ((file-name-handler-alist nil))
-  (al/title-message "Loading necessary utils")
-  (require 'al-autoload)
-  (require 'al-file)
-  (require 'al-general)
-  (require 'al-text)
-  (require 'al-key)
+(al/title-message "Loading necessary utils")
+(require 'al-autoload)
+(require 'al-file)
+(require 'al-general)
+(require 'al-text)
+(require 'al-key)
 
-  (al/title-message "Loading init files")
-  (defun al/init-load (file)
-    "Load FILE from `al/emacs-init-dir'."
-    (al/load (al/emacs-init-dir-file file)))
-  (mapc #'al/init-load
-        '("keys"
-          "text"
-          "packages"
-          "settings"
-          "files"
-          "prog"
-          "time"
-          "file-modes"
-          "mmedia"
-          "net"
-          "dict"
-          "visual"
-          "games"
-          "custom"))
+(al/title-message "Loading init files")
+(defun al/init-load (file)
+  "Load FILE from `al/emacs-init-dir'."
+  (al/load (al/emacs-init-dir-file file)))
+(mapc #'al/init-load
+      '("keys"
+        "text"
+        "packages"
+        "settings"
+        "files"
+        "prog"
+        "time"
+        "file-modes"
+        "mmedia"
+        "net"
+        "dict"
+        "visual"
+        "games"
+        "custom"))
 
-  (al/title-message "Autoloading utils")
-  (unless (file-exists-p al/emacs-utils-autoloads)
-    (with-demoted-errors "ERROR during generating utils autoloads: %S"
-      (require 'al-autoloads-make)
-      (al/generate-autoloads al/emacs-utils-dir
-                             :output-file al/emacs-utils-autoloads)))
-  (al/load al/emacs-utils-autoloads)
+(al/title-message "Autoloading utils")
+(unless (file-exists-p al/emacs-utils-autoloads)
+  (with-demoted-errors "ERROR during generating utils autoloads: %S"
+    (require 'al-autoloads-make)
+    (al/generate-autoloads al/emacs-utils-dir
+                           :output-file al/emacs-utils-autoloads)))
+(al/load al/emacs-utils-autoloads)
 
-  ;; Autoloading external packages.
-  (unless al/pure-config?
-    (when (file-exists-p package-user-dir)
-      (al/title-message "Autoloading ELPA packages")
-      (unless (file-exists-p al/emacs-elpa-package-autoloads)
-        (with-demoted-errors "ERROR during generating ELPA packages autoloads: %S"
-          (require 'al-autoloads-make)
-          (al/generate-autoloads package-user-dir
-                                 :output-file al/emacs-elpa-package-autoloads
-                                 :add-to-path 'append
-                                 :subdirs 'only)))
-      (al/load al/emacs-elpa-package-autoloads))
+;; Autoloading external packages.
+(unless al/pure-config?
+  (when (file-exists-p package-user-dir)
+    (al/title-message "Autoloading ELPA packages")
+    (unless (file-exists-p al/emacs-elpa-package-autoloads)
+      (with-demoted-errors "ERROR during generating ELPA packages autoloads: %S"
+        (require 'al-autoloads-make)
+        (al/generate-autoloads package-user-dir
+                               :output-file al/emacs-elpa-package-autoloads
+                               :add-to-path 'append
+                               :subdirs 'only)))
+    (al/load al/emacs-elpa-package-autoloads))
 
-    (when (file-exists-p al/guix-profile-dir)
-      (al/title-message "Autoloading Guix packages")
-      (with-demoted-errors "ERROR during autoloading Guix packages: %S"
-        (when (require 'al-guix-autoload nil t)
-          (apply #'al/guix-autoload-emacs-packages
-                 (al/guix-profiles)))))
+  (when (file-exists-p al/guix-profile-dir)
+    (al/title-message "Autoloading Guix packages")
+    (with-demoted-errors "ERROR during autoloading Guix packages: %S"
+      (when (require 'al-guix-autoload nil t)
+        (apply #'al/guix-autoload-emacs-packages
+               (al/guix-profiles)))))
 
-    (when (file-exists-p al/emacs-my-packages-dir)
-      (al/title-message "Autoloading my packages")
-      (unless (file-exists-p al/emacs-my-package-autoloads)
-        (with-demoted-errors "ERROR during generating my packages autoloads: %S"
-          (require 'al-autoloads-make)
-          (al/generate-autoloads al/emacs-my-packages-dir
-                                 :output-file al/emacs-my-package-autoloads
-                                 :add-to-path 'append
-                                 :subdirs t)))
-      (al/load al/emacs-my-package-autoloads))))
+  (when (file-exists-p al/emacs-my-packages-dir)
+    (al/title-message "Autoloading my packages")
+    (unless (file-exists-p al/emacs-my-package-autoloads)
+      (with-demoted-errors "ERROR during generating my packages autoloads: %S"
+        (require 'al-autoloads-make)
+        (al/generate-autoloads al/emacs-my-packages-dir
+                               :output-file al/emacs-my-package-autoloads
+                               :add-to-path 'append
+                               :subdirs t)))
+    (al/load al/emacs-my-package-autoloads)))
 
 
 ;;; Final settings
