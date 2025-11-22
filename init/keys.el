@@ -65,7 +65,7 @@
   '("M-_" "M-+"
     "M-/" "C-M-/" "M-?"
     "C-w"
-    "C-M-t" "<C-tab>" "<M-tab>" "<C-M-tab>")
+    "<C-tab>" "<M-tab>" "<C-M-tab>")
   "Alist of miscellaneous keys that should be unbound.")
 
 (defconst al/lazy-moving-keys
