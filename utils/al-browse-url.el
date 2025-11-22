@@ -1,6 +1,6 @@
 ;;; al-browse-url.el --- Additional functionality for browse-url package  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2016, 2019 Alex Kost
+;; Copyright © 2013–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -56,7 +56,7 @@
   :group 'browse-url)
 
 ;;;###autoload
-(defun al/browse-url-default (url)
+(defun al/browse-url-default (url &rest args)
   "Ask the default browser to load URL."
   (interactive (browse-url-interactive-arg "URL: "))
   (let ((url (browse-url-encode-url url))
@@ -65,6 +65,7 @@
 	   (concat "browser " url) nil
 	   al/browse-url-program
 	   (append al/browse-url-arguments
+                   args
                    (list url)))))
 
 
