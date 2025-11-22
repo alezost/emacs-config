@@ -101,6 +101,10 @@
   (interactive (list (al/choose-browser-current-url)))
   (browse-url-firefox url))
 
+(transient-define-suffix al/choose-browser-chromium (url)
+  (interactive (list (al/choose-browser-current-url)))
+  (browse-url-chromium url))
+
 (declare-function w3m-browse-url "w3m" (url))
 
 (transient-define-suffix al/choose-browser-w3m (url)
@@ -110,6 +114,10 @@
 (transient-define-suffix al/choose-browser-eww (url)
   (interactive (list (al/choose-browser-current-url)))
   (eww url))
+
+(transient-define-suffix al/choose-browser-emacs (url)
+  (interactive (list (al/choose-browser-current-url)))
+  (browse-url-emacs url))
 
 ;;;###autoload (autoload 'al/choose-browser "al-browse-url" nil t)
 (transient-define-prefix al/choose-browser (url &rest _args)
@@ -122,9 +130,10 @@ Suitable for `browse-url-browser-function'."
     ("u"   "default"  al/choose-browser-default)
     ("b"   "default"  al/choose-browser-default)]
    [("f"   "firefox"  al/choose-browser-firefox)]
+   [("c"   "chromium" al/choose-browser-chromium)]
    [("w"   "w3m"      al/choose-browser-w3m)]
    [("e"   "eww"      al/choose-browser-eww)]
-   ]
+   [("E"   "emacs"    al/choose-browser-emacs)]]
   (interactive "sURL: ")
   (transient-setup 'al/choose-browser nil nil
                    :value (list (concat "url="url))))
