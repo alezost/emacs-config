@@ -299,7 +299,7 @@
           `(("*shell*" . ,dir)
             ("*shell*<2>" . ,dir)
             ("*shell*<3>" . ,dir)
-            ("*shell-chess*" . ,(al/download-dir-file "chess"))
+            ("*shell*<4>" . ,dir)
             ("*shell-math*" . ,(al/math-dir-file "video"))))))
 
 (al/bind-keys
