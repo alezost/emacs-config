@@ -16,6 +16,52 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
+;;; from "al-browse-url.el"
+
+(defun al/choose-browser (url &rest _args)
+  "Choose a browser for openning URL.
+Suitable for `browse-url-browser-function'."
+  (interactive "sURL: ")
+  (let* ((choices (mapcar
+                   (lambda (spec)
+                     (let* ((chars (car spec))
+                            (chars (if (listp chars) chars (list chars)))
+                            (name (cadr spec)))
+                       (list chars name)))
+                   al/browser-choices))
+         (chars (cons ?\C-g
+                      (apply #'append (mapcar #'car choices))))
+         (str (mapconcat
+               (lambda (spec)
+                 (let ((chars (car spec))
+                       (name  (cadr spec)))
+                   (format "%s (%s)"
+                           (mapconcat
+                            (lambda (char)
+                              (propertize (string char)
+                                          'face 'font-lock-warning-face))
+                            chars
+                            "/")
+                           name)))
+               choices
+               ", "))
+         (char (read-char-choice
+                (concat (propertize "Choose a browser for '"
+                                    'face 'default)
+                        url "'\n" str ": ")
+                chars t)))
+    (unless (eq char ?\C-g)
+      (funcall (nth 2 (cl-find-if
+                       (lambda (spec)
+                         (let ((chars (car spec)))
+                           (if (listp chars)
+                               (memq char chars)
+                             (eq char chars))))
+                       al/browser-choices))
+               url))
+    (message "")))
+
+
 ;;; from "al-autoloads-make.el"
 
 (defun al/concat-autoloads (directory output-file &optional add-to-path)

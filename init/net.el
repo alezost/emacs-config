@@ -130,13 +130,7 @@
   (when (require 'al-browse-url nil t)
     (setq browse-url-browser-function 'al/choose-browser)
     (advice-add 'browse-url-default-browser
-      :override 'al/browse-url-default)))
-
-(with-eval-after-load 'al-browse-url
-  (setcar (cl-find-if (lambda (spec)
-                        (string= "browser" (cadr spec)))
-                      al/browser-choices)
-          '(?b ?u ?\C-m)))
+      :override #'al/browse-url-default)))
 
 
 ;;; Mail, news, gnus

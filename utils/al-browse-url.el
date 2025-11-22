@@ -18,7 +18,7 @@
 ;;; Code:
 
 (require 'browse-url)
-(require 'cl-lib)
+(require 'transient)
 
 
 ;;; Browse IRC logs from gnunet
@@ -69,72 +69,65 @@
                    (list url)))))
 
 
-;;; Choosing a browser
+;;; Transient interface to choose a browser
 
 ;; I use the following to be prompted for a browser before opening an URL:
 ;;
 ;;   (setq browse-url-browser-function 'al/choose-browser)
 
-(defvar al/browser-choices
-  '(((?b ?\C-m) "browser" al/browse-url-default)
-    (?f "firefox" browse-url-firefox)
-    (?w "w3m" w3m-browse-url)
-    (?e "eww" eww))
-  "List of the browser choices for `al/choose-browser'.
-Each choice has a form:
+(defun al/choose-browser-read-url (prompt _initial-input history)
+  ;; Transient does not put the current value to INITIAL-INPUT ?!!
+  ;; OK, than use the first value of history as the initial input.
+  (let ((history (symbol-value history)))
+    (read-from-minibuffer prompt (car history) nil nil (cdr history))))
 
-  (CHAR NAME FUN)
+(defun al/choose-browser-current-url ()
+  "Return URL from the current `al/choose-browser' transient."
+  (transient-arg-value "url=" (transient-args 'al/choose-browser)))
 
-CHAR is a character or a list of characters that can be pressed.
-NAME is a name of the browser.
-FUN is a function to call for browsing (should take URL as an argument).
+(transient-define-argument al/choose-browser:url ()
+  :description "URL"
+  :class 'transient-option
+  :key "U"
+  :argument "url="
+  :reader #'al/choose-browser-read-url
+  :always-read t)
 
-The first choice is used as default (pressing RET will call the
-first function).")
+(transient-define-suffix al/choose-browser-default (url)
+  (interactive (list (al/choose-browser-current-url)))
+  (al/browse-url-default url))
 
-;;;###autoload
-(defun al/choose-browser (url &rest _args)
-  "Choose a browser for openning URL.
+(transient-define-suffix al/choose-browser-firefox (url)
+  (interactive (list (al/choose-browser-current-url)))
+  (browse-url-firefox url))
+
+(declare-function w3m-browse-url "w3m" (url))
+
+(transient-define-suffix al/choose-browser-w3m (url)
+  (interactive (list (al/choose-browser-current-url)))
+  (w3m-browse-url url))
+
+(transient-define-suffix al/choose-browser-eww (url)
+  (interactive (list (al/choose-browser-current-url)))
+  (eww url))
+
+;;;###autoload (autoload 'al/choose-browser "al-browse-url" nil t)
+(transient-define-prefix al/choose-browser (url &rest _args)
+  "Choose a browser to open URL.
 Suitable for `browse-url-browser-function'."
+  [(al/choose-browser:url)]
+  ["Browser"
+   [:pad-keys t
+    ("RET" "default"  al/choose-browser-default)
+    ("u"   "default"  al/choose-browser-default)
+    ("b"   "default"  al/choose-browser-default)]
+   [("f"   "firefox"  al/choose-browser-firefox)]
+   [("w"   "w3m"      al/choose-browser-w3m)]
+   [("e"   "eww"      al/choose-browser-eww)]
+   ]
   (interactive "sURL: ")
-  (let* ((choices (mapcar
-                   (lambda (spec)
-                     (let* ((chars (car spec))
-                            (chars (if (listp chars) chars (list chars)))
-                            (name (cadr spec)))
-                       (list chars name)))
-                   al/browser-choices))
-         (chars (cons ?\C-g
-                      (apply #'append (mapcar #'car choices))))
-         (str (mapconcat
-               (lambda (spec)
-                 (let ((chars (car spec))
-                       (name  (cadr spec)))
-                   (format "%s (%s)"
-                           (mapconcat
-                            (lambda (char)
-                              (propertize (string char)
-                                          'face 'font-lock-warning-face))
-                            chars
-                            "/")
-                           name)))
-               choices
-               ", "))
-         (char (read-char-choice
-                (concat (propertize "Choose a browser for '"
-                                    'face 'default)
-                        url "'\n" str ": ")
-                chars t)))
-    (unless (eq char ?\C-g)
-      (funcall (nth 2 (cl-find-if
-                       (lambda (spec)
-                         (let ((chars (car spec)))
-                           (if (listp chars)
-                               (memq char chars)
-                             (eq char chars))))
-                       al/browser-choices))
-               url))
-    (message "")))
+  (transient-setup 'al/choose-browser nil nil
+                   :value (list (concat "url="url))))
 
 (provide 'al-browse-url)
 
