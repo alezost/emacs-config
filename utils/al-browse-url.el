@@ -81,9 +81,12 @@
   (let ((history (symbol-value history)))
     (read-from-minibuffer prompt (car history) nil nil (cdr history))))
 
-(defun al/choose-browser-current-url ()
-  "Return URL from the current `al/choose-browser' transient."
-  (transient-arg-value "url=" (transient-args 'al/choose-browser)))
+(defun al/choose-browser-args (&optional new-window-arg)
+  "Return arguments for the current `al/choose-browser' transient."
+  (let ((args (transient-args 'al/choose-browser)))
+    (cons (transient-arg-value "url=" args)
+          (and new-window-arg
+               (list (transient-arg-value "-new-window" args))))))
 
 (transient-define-argument al/choose-browser:url ()
   :description "URL"
@@ -93,37 +96,46 @@
   :reader #'al/choose-browser-read-url
   :always-read t)
 
-(transient-define-suffix al/choose-browser-default (url)
-  (interactive (list (al/choose-browser-current-url)))
-  (al/browse-url-default url))
+(transient-define-argument al/choose-browser:new-window ()
+  :description "new window"
+  :class 'transient-switch
+  :key "n"
+  :argument "-new-window")
 
-(transient-define-suffix al/choose-browser-firefox (url)
-  (interactive (list (al/choose-browser-current-url)))
-  (browse-url-firefox url))
+(transient-define-suffix al/choose-browser-default (url new-window)
+  (interactive (al/choose-browser-args t))
+  (apply #'al/browse-url-default url
+         (and new-window '("-new-window"))))
+
+(transient-define-suffix al/choose-browser-firefox (url new-window)
+  (interactive (al/choose-browser-args t))
+  (apply #'browse-url-firefox url
+         (and new-window '("-new-window"))))
 
 (transient-define-suffix al/choose-browser-chromium (url)
-  (interactive (list (al/choose-browser-current-url)))
+  (interactive (al/choose-browser-args))
   (browse-url-chromium url))
 
 (declare-function w3m-browse-url "w3m" (url))
 
 (transient-define-suffix al/choose-browser-w3m (url)
-  (interactive (list (al/choose-browser-current-url)))
+  (interactive (al/choose-browser-args))
   (w3m-browse-url url))
 
 (transient-define-suffix al/choose-browser-eww (url)
-  (interactive (list (al/choose-browser-current-url)))
+  (interactive (al/choose-browser-args))
   (eww url))
 
 (transient-define-suffix al/choose-browser-emacs (url)
-  (interactive (list (al/choose-browser-current-url)))
+  (interactive (al/choose-browser-args))
   (browse-url-emacs url))
 
 ;;;###autoload (autoload 'al/choose-browser "al-browse-url" nil t)
 (transient-define-prefix al/choose-browser (url &rest _args)
   "Choose a browser to open URL.
 Suitable for `browse-url-browser-function'."
-  [(al/choose-browser:url)]
+  [(al/choose-browser:url)
+   (al/choose-browser:new-window)]
   ["Browser"
    [:pad-keys t
     ("RET" "default"  al/choose-browser-default)
