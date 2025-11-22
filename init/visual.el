@@ -327,13 +327,22 @@
 
 (column-number-mode)
 (blink-cursor-mode 0)
-(tool-bar-mode 0)
-(menu-bar-mode 0)
 ;; (mouse-avoidance-mode 'banish)
 
+;; MenuBar, ToolBar, and ScrollBar are already disabled at
+;; "~/.Xresources" file.  Disabling them here is already too late for
+;; Emacs startup time (the bars appear for a moment on Emacs start and
+;; disappear if they are disabled in Emacs config).  So I want to see
+;; these bars if something went wrong with Xresources.
+;;
+;; (tool-bar-mode -1)
+;; (menu-bar-mode -1)
+;; (scroll-bar-mode -1)
+
+(with-eval-after-load 'scroll-bar
+  (setq previous-scroll-bar-mode 'right))
+
 (setq tooltip-delay 0.2)
-(setq scroll-bar-mode 'right)
-(scroll-bar-mode 0)
 
 (with-eval-after-load 'whitespace
   (setq
