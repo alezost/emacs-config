@@ -399,6 +399,7 @@
    ("s" . al/describe-symbol)
    ("x" . describe-syntax)
    ("F" . describe-face)
+   ("K" . describe-keymap)
    ("A" . apropos))
   (al/bind-keys
    :map help-map
