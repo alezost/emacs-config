@@ -16,6 +16,70 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
+;;; Working with text
+
+(with-eval-after-load 'paredit
+  (al/clean-map 'paredit-mode-map)
+  (al/bind-keys
+   :map paredit-mode-map
+   ("<H-M-tab>" . paredit-reindent-defun)
+   ("C-j"       . paredit-newline)
+   ("M-p"       . paredit-backward-kill-word)
+   ("M-,"       . paredit-forward-kill-word)
+   ("C-M-o"     . paredit-backward)
+   ("C-M-u"     . paredit-forward)
+   ("C-M-."     . paredit-backward-up)
+   ("C-M-e"     . paredit-forward-down)
+   ("M-<"       . paredit-kill)
+   ("H-E"       . paredit-splice-sexp)
+   ("H-P"       . paredit-splice-sexp-killing-backward)
+   ("H-<"       . paredit-splice-sexp-killing-forward)
+   ("H->"       . paredit-raise-sexp)
+   ("C-)"       . paredit-forward-slurp-sexp)
+   ("C-M-0"     . paredit-forward-barf-sexp)
+   ("C-("       . paredit-backward-slurp-sexp)
+   ("C-M-9"     . paredit-backward-barf-sexp)
+   ("C-M-5"     . paredit-split-sexp)
+   ("C-M-6"     . paredit-join-sexps))
+  (add-to-list 'emulation-mode-map-alists
+               `((paredit-mode . ,paredit-mode-map))))
+
+(with-eval-after-load 'smartparens
+  (al/bind-keys
+   :map smartparens-mode-map
+   ("<H-M-tab>" . sp-indent-defun)
+   ("M-p"       . sp-backward-kill-word)
+   ("M-,"       . sp-kill-word)
+   ("C-M-o"     . sp-backward-sexp)
+   ("C-M-u"     . sp-forward-sexp)
+   ("C-M-."     . sp-backward-up-sexp)
+   ("C-M-e"     . sp-down-sexp)
+   ("H-E"       . sp-splice-sexp)
+   ("H-<"       . sp-splice-sexp-killing-forward)
+   ("H-P"       . sp-splice-sexp-killing-backward)
+   ("H->"       . sp-splice-sexp-killing-around)
+   ("C-M-p"     . sp-backward-kill-sexp)
+   ("C-M-k"     . sp-backward-copy-sexp)
+   ("C-M-,"     . sp-kill-sexp)
+   ("C-M-q"     . sp-copy-sexp)
+   ("C-M-'"     . sp-transpose-sexp)
+   ("C-)"       . sp-forward-slurp-sexp)
+   ("C-M-0"     . sp-forward-barf-sexp)
+   ("C-("       . sp-backward-slurp-sexp)
+   ("C-M-9"     . sp-backward-barf-sexp))
+  (al/bind-keys
+   :map smartparens-mode-map
+   :prefix-map al/smartparens-map
+   :prefix-docstring "Map for misc smartparens commands."
+   :prefix "H-p"
+   ("c" . sp-cheat-sheet)
+   ("." . sp-absorb-sexp)
+   ("e" . sp-emit-sexp)
+   ("o" . sp-convolute-sexp)
+   ("j" . sp-join-sexp)
+   ("s" . sp-split-sexp)))
+
+
 ;;; Completion engines
 
 (with-eval-after-load 'ido
