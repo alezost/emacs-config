@@ -29,7 +29,7 @@
  ("S"     . al/sudo-find-file)
  ("h"     . al/ssh-find-file)
  ("z"     . al/router-get-log)
- ("u"     . browse-url-emacs)
+ ("u"     . al/choose-browser)
  ("l"     . find-library)
  ("r"     . recentf-open)
  ("e"       (al/find-file al/emacs-dir))
