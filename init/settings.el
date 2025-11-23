@@ -688,7 +688,7 @@
 
 (electric-indent-mode 0)
 
-(advice-add 'yes-or-no-p :override 'y-or-n-p)
+(setq use-short-answers t)
 
 (al/bind-keys-from-vars 'special-mode-map 'al/lazy-moving-keys t)
 
