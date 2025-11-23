@@ -859,7 +859,7 @@
    ;; transient-detect-key-conflicts t
    ;; transient--debug t
    transient-highlight-mismatched-keys nil
-   transient-enable-popup-navigation t
+   transient-enable-popup-navigation nil
    transient-read-with-initial-input nil
    transient-mode-line-format mode-line-format)
 
@@ -886,7 +886,9 @@
 
   (defconst al/transient-navigation-keys
     '(("<tab>" . transient-forward-button)
-      ("<backtab>" . transient-backward-button))
+      ("<backtab>" . transient-backward-button)
+      ("C-."   . transient-backward-button)
+      ("C-e"   . transient-forward-button))
     "Alist of auxiliary keys for `transient-popup-navigation-map'.")
   (al/bind-keys-from-vars 'transient-popup-navigation-map
     'al/transient-navigation-keys)
