@@ -167,7 +167,7 @@
   (setq uniquify-buffer-name-style 'post-forward))
 
 (with-eval-after-load 'ibuffer
-  (setq ibuffer-default-sorting-mode 'filename/process)
+  (setq ibuffer-default-sorting-mode 'recency)
   (defconst al/ibuffer-keys
     '(("u"   . ibuffer-visit-buffer)
       ("."   . ibuffer-backward-line)
