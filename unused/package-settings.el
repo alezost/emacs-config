@@ -298,4 +298,15 @@
    ("C-u"))
   (hydra-add-font-lock))
 
+(al/bind-keys
+ :prefix-map al/tags-map
+ :prefix-docstring "Map for tags."
+ :prefix "M-T"
+ ("M-T" . find-tag)
+ ("d"     (find-tag (find-tag-default)))
+ ("r"   . find-tag-regexp)
+ ("n"   . tags-loop-continue)
+ ("v"   . visit-tags-table)
+ ("c"   . al/create-tags))
+
 ;;; package-settings.el ends here
