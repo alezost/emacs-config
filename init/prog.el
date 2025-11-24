@@ -451,6 +451,7 @@
  ("M-m" . al/magit-switch-buffer)
  ("b" . magit-blame)
  ("c" . al/magit-show-commit)
+ ("d" . magit-dispatch)
  ("s" . magit-status)
  ("l" . magit-log-current)
  ("u" . browse-at-remote))
