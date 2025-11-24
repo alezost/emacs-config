@@ -83,7 +83,7 @@ TYPE should be a symbol `sunrise' (default) or `sunset'."
                                   solar-data)))
         (concat (format-time-string "%F ")
                 (apply #'solar-time-string solar-time)))
-    (al/warning "\
+    (al/warning-message "\
 Set `calendar-latitude' and `calendar-longitude' at first!")))
 
 (defun al/solar-time (&optional type)

@@ -35,7 +35,7 @@ This is similar to `cl-pushnew' but uses `seq' library instead of `cl-lib'."
   "Return OBJ if it is a list, or a list with OBJ otherwise."
   (if (listp obj) obj (list obj)))
 
-(defun al/warning (format-string &rest args)
+(defun al/warning-message (format-string &rest args)
   "Display a warning message."
   (apply #'message
          (concat "WARNING: " format-string)
@@ -45,7 +45,7 @@ This is similar to `cl-pushnew' but uses `seq' library instead of `cl-lib'."
   "Return non-nil if PREDICATE returns non-nil on VAL.
 Otherwise display warning MESSAGE on VAL and return nil."
   (or (funcall predicate val)
-      (progn (and message (al/warning message val))
+      (progn (and message (al/warning-message message val))
              nil)))
 
 (defun al/every? (predicate vals &optional message)
@@ -125,7 +125,7 @@ Return t if FILE is loaded successfully, nil otherwise.
 FILE may omit an extension.  See `load' for details."
   (when (stringp file)
     (or (load file 'noerror)
-        (progn (al/warning "Failed to load '%s'." file)
+        (progn (al/warning-message "Failed to load '%s'." file)
                nil))))
 
 (defun al/add-hook-maybe (hooks functions &optional append local)
