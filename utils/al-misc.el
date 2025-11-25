@@ -70,14 +70,17 @@ Return the updated list."
 
 (cl-defun al/add-to-list-after (list-var after-element new-element &key test)
   "Add NEW-ELEMENT to LIST-VAR after the first occurrence of AFTER-ELEMENT.
+If NEW-ELEMENT already exists in the list, do nothing.
 If AFTER-ELEMENT does not exist, insert NEW-ELEMENT to the end of
 LIST-VAR.
 TEST key is `eq' by default."
-  (set list-var
-       (al/push-after (symbol-value list-var)
-                      after-element
-                      new-element
-                      (or test #'eq))))
+  (let ((list (symbol-value list-var))
+        (test (or test #'eq)))
+    (unless (seq-find (lambda (elt)
+                        (funcall test elt new-element))
+                      list)
+      (set list-var
+           (al/push-after list after-element new-element test)))))
 
 (defun al/assq-delete-all (keys alist &optional predicate)
   "Delete from ALIST all elements whose car is one of KEYS.
