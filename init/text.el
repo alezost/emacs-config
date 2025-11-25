@@ -635,10 +635,10 @@
   :prefix-map al/parens-misc-map
   :prefix-docstring "Map for misc parens commands."
   :prefix "H-p"
-  ("c" . sp-cheat-sheet)
+  ("C" . sp-cheat-sheet)
   ("." . sp-absorb-sexp)
   ("e" . sp-emit-sexp)
-  ("o" . sp-convolute-sexp)
+  ("c" . sp-convolute-sexp)
   ("j" . sp-join-sexp)
   ("s" . sp-split-sexp))
 
