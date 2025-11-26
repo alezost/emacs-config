@@ -476,29 +476,35 @@
     ("M-e" . magit-section-forward-sibling))
   "Alist of auxiliary keys for moving by magit sections.")
 
-(with-eval-after-load 'magit
+(with-eval-after-load 'magit-status
+  (setq magit-status-initial-section '(((unstaged) (status)) 1)))
+
+(with-eval-after-load 'magit-section
   (setq
-   magit-status-buffer-name-format   "*magit: %a*"
-   magit-process-buffer-name-format  "*magit-process: %a*"
-   magit-log-buffer-name-format      "*magit-log: %a*"
-   magit-reflog-buffer-name-format   "*magit-reflog: %a*"
-   magit-refs-buffer-name-format     "*magit-refs: %a*"
-   magit-diff-buffer-name-format     "*magit-diff: %a*"
-   magit-revision-buffer-name-format "*magit-revision: %a*"
-   magit-cherry-buffer-name-format   "*magit-cherry: %a*"
-   magit-stash-buffer-name-format    "*magit-stash: %a*"
-   magit-stashes-buffer-name-format  "*magit-stashes: %a*")
-  (setq
-   magit-merge-arguments '("--ff-only")
-   magit-push-always-verify t
-   magit-branch-read-upstream-first nil)
-  (transient-suffix-put 'magit-branch "m" :key "R") ; rename
+   ;; I don't use global line numbers modes anyway, so there is no need
+   ;; in additional checks.
+   magit-section-disable-line-numbers nil
+   magit-section-initial-visibility-alist
+   '((untracked . show)
+     (unstaged . show)
+     (unpushed . show)
+     (stashes . show))))
+
+(with-eval-after-load 'magit-branch
+  (setq magit-branch-read-upstream-first nil)
+
+  (transient-suffix-put 'magit-branch 'magit-branch-rename :key "R")
+  (transient-suffix-put 'magit-branch 'magit-pull.rebase :key "U")
   )
+
+(with-eval-after-load 'magit-merge
+  (oset (get 'magit-merge 'transient--prefix)
+        value '("--ff-only")))
 
 (with-eval-after-load 'magit-mode
   (setq
+   magit-bury-buffer-function #'ignore
    magit-save-repository-buffers nil
-   magit-use-sticky-arguments nil
    magit-uniquify-buffer-names nil)
 
   (defconst al/magit-keys
@@ -506,7 +512,7 @@
       ("H-SPC" . magit-diff-show-or-scroll-up)
       ("M-k" . magit-copy-section-value)
       ("u" . magit-show-commit)
-      ("U" . magit-unstage-file)
+      ("U" . magit-unstage)
       ("E" . magit-ediff-dwim)
       ("C" . magit-cherry-pick)
       ("R" . magit-remote)
@@ -551,10 +557,8 @@
 (setq magit-log-margin '(t age-abbreviated magit-log-margin-width t 20))
 
 (with-eval-after-load 'magit-log
-  (setq
-   magit-reflog-arguments '("-n99")
-   magit-log-arguments `(,@magit-reflog-arguments "--decorate")
-   magit-log-select-arguments magit-log-arguments)
+  (put 'magit-log-mode 'magit-log-default-arguments
+       '("-n99" "--decorate"))
 
   (transient-suffix-put 'magit-log 'magit-log:--grep :key "=g") ; grep
   (transient-suffix-put 'magit-log 'magit-log:-G :key "=p")     ; patch
@@ -574,6 +578,7 @@
     t))
 
 (with-eval-after-load 'magit-diff
+  (setq-default magit-diff-refine-hunk t)
   (defconst al/magit-diff-visit-keys
     '(("RET" . magit-diff-visit-worktree-file)
       ("<C-return>" . magit-diff-visit-file))
@@ -581,10 +586,7 @@
   (al/bind-keys-from-vars 'magit-diff-mode-map
     'al/magit-history-keys
     t)
-  (al/bind-keys-from-vars 'magit-file-section-map
-    '(al/magit-common-keys al/magit-diff-visit-keys)
-    t)
-  (al/bind-keys-from-vars 'magit-hunk-section-map
+  (al/bind-keys-from-vars 'magit-diff-section-map
     '(al/magit-common-keys al/magit-diff-visit-keys)
     t)
   (al/bind-keys-from-vars 'magit-staged-section-map 'al/magit-common-keys))
