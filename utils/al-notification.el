@@ -1,4 +1,4 @@
-;;; al-notification.el --- Additional functionality for various notifications  -*- lexical-binding: t -*-
+;;; al-notification.el --- Interface for timers and notifications  -*- lexical-binding: t -*-
 
 ;; Copyright © 2014–2025 Alex Kost
 
@@ -17,111 +17,225 @@
 
 ;;; Code:
 
+(require 'seq)
 (require 'timer)
 (require 'notifications)
+(require 'transient)
 (require 'al-misc)
 (require 'al-file)
 
 (defvar al/notification-sound
   (al/file-if-exists "/usr/share/sounds/freedesktop/stereo/bell.oga")
-  "Default notification sound used by `al/timer-set'.")
-
-
-;;; Timers
-
-(defvar al/timer nil
-  "Current timer.")
-
-(defvar al/timer-format "%M:%S"
-  "Format string for the time message.")
-
-(defvar al/timer-timeout 0
-  "Default timeout for timer notification message.")
+  "Default notification sound used by `al/notification'.")
 
 (declare-function al/play-sound "al-sound" (file))
 
-;;;###autoload
-(defun al/timer-set (seconds &optional msg &rest args)
-  "Notify in some SECONDS with a sound and a message MSG.
-Interactively, prompt for the number of minutes.
-With \\[universal-argument], prompt for the message as well.
-With \\[universal-argument] \\[universal-argument], prompt for
-the number of seconds and the message.
-If the prefix argument is numerical, use it as the number of minutes.
-Pass the rest ARGS to `al/timer-notify'."
-  (interactive
-   (list
-    (cond ((numberp current-prefix-arg)
-           (* 60 current-prefix-arg))
-          ((equal current-prefix-arg '(16))
-           (read-number "Seconds for the timer: "))
-          (t (* 60 (read-number "Minutes for the timer: "))))
-    (and (consp current-prefix-arg)
-         (read-string "Message: " nil nil "You should do something!"))))
-  (al/timer-cancel)
-  (setq al/timer
-        (run-at-time seconds nil
-                     #'apply #'al/timer-notify (or msg "Break!") args))
-  (al/timer-mode 1)
-  (message "The timer has been set on %s."
-           (format-time-string "%T" (timer--time al/timer))))
-
-(defun al/timer-notify (message &rest args)
-  "Notify with MESSAGE.
-Pass the rest ARGS to `notifications-notify'."
+(defun al/notification-notify (&rest args)
+  "Play `al/notification-sound' and send notification.
+Pass ARGS to `notifications-notify'."
   (when (and al/notification-sound
              (require 'al-sound nil t))
     (al/play-sound al/notification-sound))
-  (let* ((args (if (plist-get args :title)
-                   args
-                 (plist-put args :title "Timer")))
-         (args (if (plist-get args :timeout)
-                   args
-                 (plist-put args :timeout al/timer-timeout))))
-    (apply #'notifications-notify :body message args)
-    (al/timer-mode -1)))
+  (apply #'notifications-notify args))
 
-(defun al/timer-funcall-on-active-timer (fun &optional silent)
-  "Call function FUN if current timer is active.
+(defun al/timer-remaining-seconds (timer)
+  "Return the number of seconds left until the deadline of TIMER.
+The result is negative, if TIMER is elapsed.
+Return nil if TIMER is not a proper timer."
+  (and (timerp timer)
+       (- (timer-until timer (current-time)))))
 
-If timer is not active, display a message about it, unless SILENT
-is non-nil.
-
-FUN is called with a single argument - the number of seconds left
-for the current timer."
-  (let ((seconds (al/timer-remaining-seconds)))
-    (if (or (null seconds) (< seconds 0))
-        (or silent (message "No active timer."))
-      (funcall fun seconds))))
-
-(defun al/timer-remaining-seconds ()
-  "Return the number of seconds left until the deadline of `al/timer'.
-The result is negative, if the timer is elapsed.
-Return nil if `al/timer' is not a proper timer."
-  (and (timerp al/timer)
-       (- (timer-until al/timer (current-time)))))
-
-(defun al/timer-remaining-time ()
-  "Show the time left until the deadline of `al/timer'."
-  (interactive)
-  (al/timer-funcall-on-active-timer
-   (lambda (sec)
-     (message "Time left: %s."
-              (format-time-string al/timer-format
-                                  (seconds-to-time sec))))))
-
-(defun al/timer-cancel ()
-  "Cancel current timer."
-  (interactive)
-  (al/timer-mode -1)
-  (al/timer-funcall-on-active-timer
-   (lambda (_sec)
-     (cancel-timer al/timer)
-     (setq al/timer nil)
-     (message "The timer has been cancelled."))))
+(defun al/timer-live? (timer)
+  "Return t if TIMER is not expired."
+  (let ((seconds (al/timer-remaining-seconds timer)))
+    (and seconds (< 0 seconds))))
 
 
-;;; Timer in the mode line
+;;; Transient interface for notifications
+
+(defvar al/notifications nil
+  "Property list of active notifications.
+Each KEYWORD of this plist should be either `:timer' (where the
+currently active timer is stored) or any keyword supported by
+`notifications-notify'.")
+
+(defvar al/notification-time-format "%M:%S"
+  "Format string for notification time.")
+
+(defvar al/notification-time 45
+  "Default time (in minutes) for a new timer.")
+
+(defvar al/notification-quick-time 4
+  "Default time (in minutes) for a new quick timer.")
+
+(defvar al/notification-timeout 0
+  "Default timeout (in seconds) for notification message.")
+
+(defun al/notifications-cleanup ()
+  "Remove expired notifications from `al/notifications'."
+  (setq al/notifications
+        (seq-filter (lambda (notif)
+                      (al/timer-live? (plist-get notif :timer)))
+                    al/notifications)))
+
+(defun al/notification-kill-keys ()
+  "Return a list of transient keys to kill active timers."
+  (seq-map-indexed
+   (lambda (notif index)
+     (let* ((index    (1+ index))
+            (msg      (plist-get notif :body))
+            (timer    (plist-get notif :timer))
+            (seconds  (al/timer-remaining-seconds timer))
+            (time-str (format-time-string
+                       al/notification-time-format
+                       (seconds-to-time (abs seconds))))
+            (time-str (propertize time-str 'face 'font-lock-constant-face))
+            (msg      (propertize msg      'face 'font-lock-string-face)))
+       (list (concat "k" (number-to-string index))
+             (concat "kill timer [" msg ", "
+                     (if (< 0 seconds)
+                         (concat time-str " left")
+                       (concat "expired " time-str " ago"))
+                     "]")
+             (lambda ()
+               (interactive)
+               (al/notification-kill-timer timer)
+               (al/notification)))))
+   al/notifications))
+
+(defun al/notification-kill-timer (timer)
+  "Cancel TIMER and remove its notification from `al/notifications'."
+  (interactive)
+  (setq al/notifications
+        (seq-keep
+         (lambda (notif)
+           (if (not (eq timer (plist-get notif :timer)))
+               notif
+             (cancel-timer timer)
+             nil))
+         al/notifications)))
+
+(transient-define-suffix al/notification:kill-all ()
+  "Cancel all active timers and clear `al/notifications'."
+  (interactive)
+  (dolist (notif al/notifications)
+    (cancel-timer (plist-get notif :timer)))
+  (setq al/notifications nil)
+  (al/timer-mode -1))
+
+(defun al/notification-args ()
+  "Return list of arguments for the current `al/notification' transient.
+The first argument in this list is the number of seconds and the rest
+arguments is a plist suitable for `notifications-notify'."
+  (let* ((args    (transient-args 'al/notification))
+         (time    (transient-arg-value "time=" args))
+         (msg     (transient-arg-value "message=" args))
+         (title   (transient-arg-value "title=" args))
+         (timeout (transient-arg-value "timeout=" args))
+         (seconds (* 60 (string-to-number time)))
+         ;; `:timeout' must be in milliseconds for `notifications-notify'.
+         (timeout (and timeout (* 1000 (string-to-number timeout)))))
+    (list seconds :body msg :title title :timeout timeout)))
+
+(defvar al/timer-mode)  ; defined below (needed to scilence compiler)
+
+(transient-define-suffix al/notification:new (seconds &rest args)
+  "Send notification in SECONDS.
+Pass ARGS to `notifications-notify'."
+  (interactive (al/notification-args))
+  (let ((timer (run-at-time seconds nil
+                            #'apply #'al/notification-notify args)))
+    (push (append (list :timer timer) args)
+          al/notifications)
+    (unless al/timer-mode
+      (al/timer-mode 1))
+    (message "A new notification has been set on %s."
+             (format-time-string "%T" (timer--time timer)))))
+
+(defun al/notification-quick-string ()
+  (format "set %d min timer" al/notification-quick-time))
+
+(transient-define-suffix al/notification:new-quick (_ &rest args)
+  "Send notification in `al/notification-quick-time' minutes.
+Pass ARGS to `notifications-notify'."
+  :description #'al/notification-quick-string
+  :key "M-T"
+  (interactive (al/notification-args))
+  (apply #'al/notification:new
+         (* 60 al/notification-quick-time)
+         args))
+
+(transient-define-argument al/notification:title ()
+  :description "title"
+  :class 'transient-option
+  :key "-T"
+  :always-read t
+  :prompt "Notification title: "
+  :argument "title=")
+
+(transient-define-argument al/notification:message ()
+  :description "message"
+  :class 'transient-option
+  :key "m"
+  :always-read t
+  :prompt "Notification message: "
+  :argument "message=")
+
+(transient-define-argument al/notification:timeout ()
+  :description "timeout (seconds)"
+  :class 'transient-option
+  :key "-t"
+  :prompt "Notification timeout (seconds): "
+  :reader 'al/notification-read-seconds
+  :argument "timeout=")
+
+(defun al/notification-read-number (prompt initial-input history)
+  (number-to-string (read-number prompt initial-input history)))
+
+(transient-define-argument al/notification:time ()
+  :description "time (minutes)"
+  :class 'transient-option
+  :key "t"
+  :always-read t
+  :prompt "Time (minutes): "
+  :reader 'al/notification-read-number
+  :argument "time=")
+
+(defun al/notification:default-value ()
+  (list "title=Timer"
+        "message=Break!"
+        (format "time=%d" al/notification-time)
+        (format "timeout=%d" al/notification-timeout)))
+
+;;;###autoload (autoload 'al/notification "al-notification" nil t)
+(transient-define-prefix al/notification ()
+  "Interface to set and kill timers."
+  :value 'al/notification:default-value
+  'al/notification:kill-group
+  ["Notification parameters"
+   [(al/notification:title)
+    (al/notification:timeout)
+    ""
+    (al/notification:time)]
+   [(al/notification:message)]]
+  ["New notification"
+   [("n" "set new timer" al/notification:new)]
+   [(al/notification:new-quick)]]
+  (interactive)
+  (al/notifications-cleanup)
+  (if al/notifications
+      (eval
+       `(transient-define-group al/notification:kill-group
+          [ ;; :if-non-nil al/notifications
+           :pad-keys t
+           "Active timers"
+           ,@(al/notification-kill-keys)
+           ("K" "kill all timers" al/notification:kill-all)]))
+    (transient-define-group al/notification:kill-group))
+  (transient-setup 'al/notification))
+
+
+;;; Timers in the mode line
 
 (defvar al/timer-mode-line-update-time 3
   "Time (in seconds) to update the mode line.")
@@ -132,16 +246,23 @@ Return nil if `al/timer' is not a proper timer."
 ;; (put 'al/timer-mode-line-string 'risky-local-variable t)
 
 (defun al/timer-update-mode-line ()
-  (al/timer-funcall-on-active-timer
-   (lambda (sec)
-     (setq al/timer-mode-line-string
-           (concat " 🕒 "
-                   (format-time-string al/timer-format
-                                       (seconds-to-time sec)))))
-   (force-mode-line-update)))
+  (let ((times
+         (seq-keep
+          (lambda (notif)
+            (let* ((timer (plist-get notif :timer))
+                   (seconds (al/timer-remaining-seconds timer)))
+              (when (< 0 seconds)
+                (format-time-string al/notification-time-format
+                                    (seconds-to-time seconds)))))
+          al/notifications)))
+    (if times
+        (setq al/timer-mode-line-string
+              (concat " 🕒 " (mapconcat #'identity times ", ")))
+      (al/timer-mode -1))
+    (force-mode-line-update)))
 
 (define-minor-mode al/timer-mode
-  "Toggle displaying timer in the mode line."
+  "Toggle displaying active timers in the mode line."
   :global t
   :group 'al/timer
   (when al/timer-mode-line-timer

@@ -18,6 +18,7 @@
 
 ;;; Global keys
 
+(al/bind-key "M-T" al/notification)
 (al/bind-keys
  :prefix-map al/calendar-map
  :prefix-docstring "Map for calendar, diary, notifications, etc."
@@ -28,12 +29,7 @@
  ("D"   . al/diary-file)
  ("A"   . appt-activate)
  ("a n" . appt-add)
- ("a k" . appt-delete)
- ("M-T"   (al/timer-set (* 4 60)))
- ("T"     (al/timer-set (* 45 60)))
- ("t n" . al/timer-set)
- ("t t" . al/timer-remaining-time)
- ("t k" . al/timer-cancel))
+ ("a k" . appt-delete))
 
 
 ;;; Misc settings and packages
@@ -119,7 +115,7 @@
      al/appt-notify-urgent-sound (al/sound-dir-file "bell.oga"))))
 
 (with-eval-after-load 'al-notification
-  (setq al/timer-format "%Mm %Ss")
+  ;; (setq al/notification-time-format "%Mm %Ss")
   (when (require 'al-file nil t)
     (al/setq-file
      al/notification-sound (al/sound-dir-file "alarm.wav"))))
