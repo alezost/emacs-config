@@ -386,14 +386,4 @@
   (setq rainbow-x-colors t)
   (advice-add 'rainbow-mode :after #'al/refontify))
 
-(setq hl-todo-keyword-faces
-      (mapcar (lambda (word)
-                (cons word 'hl-todo))
-              '("TODO" "FIXME" "XXX" "WARNING" "ERROR"))
-      hl-todo-keywords
-      `(((lambda (_)
-           (let (case-fold-search)
-             (re-search-forward hl-todo-regexp nil t)))
-         (1 (hl-todo-get-face) t t))))
-
 ;;; visual.el ends here

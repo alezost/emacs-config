@@ -196,12 +196,12 @@
     al/show-trailing-whitespace))
 (al/add-hook-maybe 'prog-mode-hook
   '(hl-line-mode
-    hl-todo-mode
+    al/hl-todo-mode
     abbrev-mode
     al/set-comment-column
     al/show-trailing-whitespace))
 (al/add-hook-maybe 'messages-buffer-mode-hook
-  (list 'hl-todo-mode
+  (list 'al/hl-todo-mode
         (lambda () (setq buffer-read-only nil))))
 
 (when (and (fboundp 'smartparens-mode)
