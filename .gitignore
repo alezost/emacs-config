@@ -23,6 +23,7 @@ tmp*
 /data/recentf
 /data/save-places
 /data/smex-items
+/data/transient
 
 /init/custom.el
 /packages
