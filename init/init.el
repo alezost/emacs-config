@@ -143,7 +143,7 @@
         (require 'al-autoloads-make)
         (al/generate-autoloads package-user-dir
                                :output-file al/emacs-elpa-package-autoloads
-                               :add-to-path 'append
+                               :add-to-path 'prepend
                                :subdirs 'only)))
     (al/load al/emacs-elpa-package-autoloads))
 
@@ -161,7 +161,7 @@
         (require 'al-autoloads-make)
         (al/generate-autoloads al/emacs-my-packages-dir
                                :output-file al/emacs-my-package-autoloads
-                               :add-to-path 'append
+                               :add-to-path 'prepend
                                :subdirs t)))
     (al/load al/emacs-my-package-autoloads)))
 

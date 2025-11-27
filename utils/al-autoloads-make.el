@@ -92,8 +92,8 @@ SUBDIRS can have one of the following values:
              (when (and add-to-path load-dirs)
                (pp `(setq load-path
                           ,(if (eq 'prepend add-to-path)
-                               `(append load-path ',load-dirs)
-                             `(append ',load-dirs load-path)))
+                               `(append ',load-dirs load-path)
+                             `(append load-path ',load-dirs)))
                    (current-buffer))
                (insert "\n"))
              (when info-dirs
