@@ -84,7 +84,7 @@ list should be nil.")
   (interactive)
   (let ((dictem-server "localhost"))
     (dictem-run
-     (lambda (a b c)
+     (lambda (_database _query _strategy)
        (dictem-base-show-strategies nil nil nil)
        (dictem-base-show-databases nil nil nil)
        (dictem-base-show-server nil nil nil)))))
