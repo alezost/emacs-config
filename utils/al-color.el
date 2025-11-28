@@ -1,6 +1,6 @@
 ;;; al-color.el --- Additional functionality for working with color themes, faces, ...  -*- lexical-binding: t -*-
 
-;; Copyright © 2013-2016 Alex Kost
+;; Copyright © 2013-2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
 
 ;;; Code:
 
+(require 'al-misc)
+
 
 ;;; Managing themes
 
@@ -29,7 +31,7 @@
                   (mapcar #'symbol-name (custom-available-themes))))))
   (mapc #'disable-theme custom-enabled-themes)
   (load-theme theme t)
-  (message "Current theme: '%S'." theme))
+  (message "Current theme: `%S'." theme))
 
 ;; Idea from <https://gist.github.com/joehakimrahme/6305195>.
 ;;;###autoload
@@ -46,21 +48,16 @@
 (defun al/get-face (&optional pos)
   "Return name of the face at point POS.
 If POS is nil, use current point position."
-  (or pos
-      (setq pos (point)))
-  (or (get-char-property pos 'read-face-name)
-      (get-char-property pos 'face)))
+  (let ((pos (or pos (point))))
+    (or (get-char-property pos 'read-face-name)
+        (get-char-property pos 'face))))
 
 ;;;###autoload
 (defun al/face-to-kill-ring ()
   "Put a name of the current face into kill ring."
   (interactive)
-  (let ((face (al/get-face)))
-    (if (null face)
-        (message "No face at point.")
-      (setq face (symbol-name face))
-      (kill-new face)
-      (message "%s" face))))
+  (or (al/with-eval-to-kill-ring (al/get-face))
+      (message "No face at point.")))
 
 (provide 'al-color)
 
