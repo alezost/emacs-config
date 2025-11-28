@@ -17,7 +17,7 @@
 
 ;;; Code:
 
-(require 'cl-lib)
+(eval-when-compile (require 'cl-lib))
 (require 'w3m)
 (require 'wget nil t)
 (require 'al-buffer)
@@ -122,21 +122,19 @@ Buffers are enumerated from 1."
 
 (defmacro al/w3m-bind-number-keys (fun &optional kbd-prefix)
   "Bind number keys (1-9) to a command that takes a numeric argument.
-For example to bind <N> keys for switching to w3m buffers (tabs)
-and to bind 'k <N>' keys for killing w3m buffers, use:
+For example to bind \"N\" keys for switching to w3m buffers (tabs)
+and to bind \"k N\" keys for killing w3m buffers, use:
 
-  (al/w3m-bind-number-keys 'al/w3m-switch-to-buffer)
-  (al/w3m-bind-number-keys 'al/w3m-kill-buffer \"k\")
-
-To bind the keys, `bind-key' function is used."
+  (al/w3m-bind-number-keys \\='al/w3m-switch-to-buffer)
+  (al/w3m-bind-number-keys \\='al/w3m-kill-buffer \"k\")"
   (let ((numbers (number-sequence 1 9))
         (prefix (and kbd-prefix (concat kbd-prefix " "))))
     `(progn
        ,@(mapcar (lambda (n)
                    `(al/bind-key ,(concat prefix (number-to-string n))
-                                 (lambda () (interactive)
-                                   (funcall ,fun ,n))
-                                 w3m-mode-map))
+                      (lambda () (interactive)
+                        (funcall ,fun ,n))
+                      w3m-mode-map))
                  numbers))))
 
 (provide 'al-w3m)
