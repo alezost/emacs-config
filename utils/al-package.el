@@ -79,7 +79,10 @@ This function is intendend to be used as an `around' advice for
   (let* ((name (al/package-name package))
          (ignore? (memq name al/ignored-packages)))
     (if ignore?
-        (message "Ignoring '%s' package." name)
+        (progn
+          (message "Ignoring '%s' package." name)
+          ;; `quelpa-package-install' returns version string.
+          "99999.9")
       (apply fun package args))))
 
 (defun al/package-compute-transaction (fun packages requirements
