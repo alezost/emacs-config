@@ -79,7 +79,7 @@
   ;; Transient does not put the current value to INITIAL-INPUT ?!!
   ;; OK, than use the first value of history as the initial input.
   (let ((history (symbol-value history)))
-    (read-from-minibuffer prompt (car history) nil nil (cdr history))))
+    (completing-read prompt (cdr history) nil nil (car history))))
 
 (defun al/choose-browser-args (&optional new-window-arg)
   "Return arguments for the current `al/choose-browser' transient."
