@@ -102,6 +102,22 @@ single key or a list of keys.  KEYS are checked using
 PREDICATE (`member' by default)."
   (al/assq-delete-all keys alist #'member))
 
+(defmacro al/with-eval-to-kill-ring (&rest body)
+  "Evaluate BODY and return its result.
+If the result is string or symbol, put it into `kill-ring' and display
+it in minibuffer."
+  (declare (indent 0) (debug (name body)))
+  (let ((res-var     (make-symbol "res"))
+        (res-str-var (make-symbol "res-str")))
+    `(let* ((,res-var (progn ,@body))
+            (,res-str-var (cond
+                           ((stringp ,res-var) ,res-var)
+                           ((symbolp ,res-var) (symbol-name ,res-var)))))
+       (when ,res-str-var
+         (kill-new ,res-str-var)
+         (message ,res-str-var))
+       ,res-var)))
+
 (provide 'al-misc)
 
 ;;; al-misc.el ends here

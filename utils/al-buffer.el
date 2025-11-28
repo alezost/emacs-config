@@ -19,6 +19,7 @@
 
 (eval-when-compile (require 'cl-lib))
 (require 'seq)
+(require 'al-misc)
 
 
 ;;; Getting buffers
@@ -55,44 +56,33 @@ See `sort' for details."
 
 ;;; Putting buffer info into kill ring
 
-(defun al/funcall-to-kill-ring (fun error-msg)
-  "Call function FUN and put its result (string) into `kill-ring'.
-Also display result string in minibuffer.
-ERROR-MSG is a format string with one '%s' form, used as an error
-message for a case when FUN does not return a string."
-  (let ((out (funcall fun)))
-    (or (stringp out)
-        (error error-msg out))
-    (kill-new out)
-    (message out)))
-
 ;;;###autoload
 (defun al/buffer-name-to-kill-ring ()
   "Put a name of the current buffer into `kill-ring'."
   (interactive)
-  (al/funcall-to-kill-ring
-   #'buffer-name "buffer-name has returned %s"))
+  (al/with-eval-to-kill-ring
+    (buffer-name)))
 
 ;;;###autoload
 (defun al/file-name-to-kill-ring ()
   "Put a name of the file visited by the current buffer into `kill-ring'."
   (interactive)
-  (al/funcall-to-kill-ring
-   #'buffer-file-name "buffer-file-name has returned %s"))
+  (al/with-eval-to-kill-ring
+    (buffer-file-name)))
 
 ;;;###autoload
 (defun al/major-mode-to-kill-ring ()
-  "Put major mode name of the current buffer into `kill-ring'."
+  "Put `major-mode' name of the current buffer into `kill-ring'."
   (interactive)
-  (al/funcall-to-kill-ring
-   (lambda () (symbol-name major-mode)) "major-mode is %s"))
+  (al/with-eval-to-kill-ring
+    major-mode))
 
 ;;;###autoload
 (defun al/default-directory-to-kill-ring ()
   "Put `default-directory' into `kill-ring'."
   (interactive)
-  (al/funcall-to-kill-ring
-   (lambda () default-directory) "%s"))
+  (al/with-eval-to-kill-ring
+    default-directory))
 
 
 ;;; Switching to previous buffers
