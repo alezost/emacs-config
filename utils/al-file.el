@@ -66,11 +66,19 @@ v2 will be set, while v1 will not."
   (rx-to-string `(and "." (or ,@extensions) string-end)
                 'no-group))
 
-(defun al/subdirs (directory)
+(defun al/subdirs (directory &optional base)
   "Return list of DIRECTORY sub-directories.
-See `directory-files' for the meaning OF FULL."
-  (seq-filter #'file-directory-p
-              (directory-files directory 'full "\\`[^.]" 'no-sort)))
+If BASE is non-nil, return only directories names, otherwise return full
+absolute file names."
+  (let ((subdirs
+         (seq-filter #'file-directory-p
+                     (directory-files directory 'full "\\`[^.]" 'no-sort))))
+    (if (and subdirs base)
+        (mapcar (lambda (dir)
+                  (file-name-nondirectory
+                   (directory-file-name dir)))
+                subdirs)
+      subdirs)))
 
 (defun al/add-to-auto-mode-alist (specs)
   "Add SPECS to `auto-mode-alist'.
