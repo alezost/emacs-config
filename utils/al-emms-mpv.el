@@ -20,8 +20,8 @@
 (require 'emms-player-mpv)
 
 (defun al/emms-mpv-playing-radio? ()
-  "Return non-nil, if current player is 'mpv' and current track
-type is 'url' or 'streamlist'."
+  "Return non-nil, if current player is `mpv' and current track
+type is `url' or `streamlist'."
   (and emms-player-playing-p
        (eq (emms-player-get emms-player-playing-p 'start)
            'emms-player-mpv-start)
