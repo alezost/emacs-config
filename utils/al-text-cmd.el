@@ -405,16 +405,6 @@ move to end of next one."
 
 ;;; Misc
 
-(defvar al/check-parens-modes
-  '(lisp-data-mode scheme-mode)
-  "List of parent modes where `al/check-parens' is called.")
-
-;;;###autoload
-(defun al/check-parens ()
-  "Run `check-parens' if `major-mode' derived from `al/check-parens-modes'."
-  (when (derived-mode-p al/check-parens-modes)
-    (check-parens)))
-
 ;;; From https://www.emacswiki.org/emacs/OverlaysToText
 ;;;###autoload
 (defun al/copy-region-with-overlays (beg end)

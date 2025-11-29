@@ -99,6 +99,15 @@ no marked region, then the whole buffer is used."
       (message "'%s' has been replaced with '%s' %d time(s)."
                from-string to-string count))))
 
+(defvar al/check-parens-modes
+  '(lisp-data-mode scheme-mode)
+  "List of parent modes where `al/check-parens' is called.")
+
+(defun al/check-parens ()
+  "Run `check-parens' if `major-mode' derived from `al/check-parens-modes'."
+  (when (derived-mode-p al/check-parens-modes)
+    (check-parens)))
+
 (provide 'al-text)
 
 ;;; al-text.el ends here
