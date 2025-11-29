@@ -18,6 +18,7 @@
 ;;; Code:
 
 (require 'seq)
+(require 'quelpa nil t)  ; `quelpa' does not exist in bootstrap case
 
 (defvar al/main-packages nil
   "List of main packages that should be installed in a common way.")
@@ -51,7 +52,7 @@
                        (al/all-packages))))
     (intern (completing-read "Update/install: " names nil t))))
 
-(declare-function quelpa "quelpa" t)
+(defvar al/emacs-my-packages-dir)   ; defined in "init.el"
 
 ;;;###autoload
 (defun al/quelpa (&rest recipes)
@@ -71,11 +72,19 @@ With \\[universal-argument] \\[universal-argument], update all packages."
           (al/all-packages))
          (t (list (al/package-recipe (al/read-package-name))))))
   (unless (fboundp 'quelpa)
+    ;; Bootstrap `quelpa' if it doesn't exist.
     (with-temp-buffer
       (url-insert-file-contents
        "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
       (eval-buffer)))
-  (mapc #'quelpa recipes))
+  (let ((my-packages (and (file-exists-p al/emacs-my-packages-dir)
+                          (mapcar #'intern
+                                  (al/subdirs al/emacs-my-packages-dir t)))))
+    (dolist (recipe recipes)
+      (let ((pkg-name (al/package-name recipe)))
+        (if (memq pkg-name my-packages)
+            (message "Ignoring my package `%S'." pkg-name)
+          (quelpa recipe))))))
 
 (provide 'al-quelpa)
 
