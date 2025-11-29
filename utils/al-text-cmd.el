@@ -406,13 +406,13 @@ move to end of next one."
 ;;; Misc
 
 (defvar al/check-parens-modes
-  '(emacs-lisp-mode lisp-mode scheme-mode)
-  "List of modes where `al/check-parens' is called.")
+  '(lisp-data-mode scheme-mode)
+  "List of parent modes where `al/check-parens' is called.")
 
 ;;;###autoload
 (defun al/check-parens ()
-  "Run `check-parens' if current mode is one of `al/check-parens-modes'."
-  (when (memq major-mode al/check-parens-modes)
+  "Run `check-parens' if `major-mode' derived from `al/check-parens-modes'."
+  (when (derived-mode-p al/check-parens-modes)
     (check-parens)))
 
 ;;; From https://www.emacswiki.org/emacs/OverlaysToText
