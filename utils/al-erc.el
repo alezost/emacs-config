@@ -1,6 +1,6 @@
 ;;; al-erc.el --- Additional functionality for ERC  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2016, 2018 Alex Kost
+;; Copyright © 2013–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -17,6 +17,7 @@
 
 ;;; Code:
 
+(require 'seq)
 (require 'erc)
 (require 'erc-log)
 (require 'erc-networks)
@@ -74,19 +75,17 @@ the server buffer does not exist."
 (defun al/erc-switch-buffer ()
   "Switch to ERC buffer, or start ERC if not already started."
   (interactive)
-  (let ((bufs (mapcar #'buffer-name (erc-buffer-list))))
-    (if bufs
-     	(switch-to-buffer (completing-read "ERC buffer: " bufs))
-      (erc))))
+  (if-let* ((bufs (mapcar #'buffer-name (erc-buffer-list))))
+      (switch-to-buffer (completing-read "ERC buffer: " bufs))
+    (erc)))
 
 ;;;###autoload
 (defun al/erc-track-switch-buffer (arg)
   "Same as `erc-track-switch-buffer', but start ERC if not already started."
   (interactive "p")
-  (let ((buf (al/erc-server-buffer t)))
-    (if buf
-        (erc-track-switch-buffer arg)
-      (erc))))
+  (if-let* ((buf (al/erc-server-buffer t)))
+      (erc-track-switch-buffer arg)
+    (erc)))
 
 (defun al/erc-get-channel-buffer-list ()
   "Return a list of the ERC-channel-buffers."
@@ -98,14 +97,13 @@ the server buffer does not exist."
   "Switch to ERC channel buffer, or run `erc-select'.
 When called repeatedly, cycle through the buffers."
   (interactive)
-  (let ((buffers (al/erc-get-channel-buffer-list)))
-    (if buffers
-        (progn (when (eq (current-buffer) (car buffers))
-                 (bury-buffer)
-                 (setq buffers (cdr buffers)))
-               (and buffers
-                    (switch-to-buffer (car buffers))))
-      (call-interactively 'erc-select))))
+  (if-let* ((buffers (al/erc-get-channel-buffer-list)))
+      (progn (when (eq (current-buffer) (car buffers))
+               (bury-buffer)
+               (setq buffers (cdr buffers)))
+             (and buffers
+                  (switch-to-buffer (car buffers))))
+    (call-interactively 'erc-select)))
 
 (defvar al/erc-channel-list '("#emacs" "#erc" "#gnus")
   "A list of channels used in `al/erc-join-channel'.")
@@ -266,9 +264,9 @@ This function is suitable for `erc-generate-log-file-name-function'."
 Use `al/erc-log-excluded-regexps' to check if BUFFER should be
 logged or not.
 The function is intended to be used for `erc-enable-logging'."
-  (cl-notany (lambda (re)
-               (string-match-p re (buffer-name buffer)))
-             al/erc-log-excluded-regexps))
+  (not (seq-some (lambda (re)
+                   (string-match-p re (buffer-name buffer)))
+                 al/erc-log-excluded-regexps)))
 
 (provide 'al-erc)
 
