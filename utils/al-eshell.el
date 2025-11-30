@@ -106,13 +106,13 @@ Return nil, if the current line is not the input line."
   "Call `eshell-send-input' if the point is on the command line."
   (interactive)
   (when (< (point) eshell-last-output-end)
-    (let ((input (al/eshell-input-at-point)))
-      (if (null input)
-          (user-error (substitute-command-keys "\
-You don't want to do \"\\[al/eshell-send-input-maybe]\" here"))
-        (goto-char eshell-last-output-end)
-        (delete-region eshell-last-output-end (point-max))
-        (insert input))))
+    (if-let* ((input (al/eshell-input-at-point)))
+        (progn
+          (goto-char eshell-last-output-end)
+          (delete-region eshell-last-output-end (point-max))
+          (insert input))
+      (user-error (substitute-command-keys "\
+You don't want to do \"\\[al/eshell-send-input-maybe]\" here"))))
   (eshell-send-input))
 
 
