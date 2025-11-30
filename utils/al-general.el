@@ -47,6 +47,12 @@ This is similar to `cl-pushnew' but uses `seq' library instead of `cl-lib'."
          (concat "XXX " format-string)
          args))
 
+(defun al/title-message (format-string &rest args)
+  "Display title message."
+  (apply #'message
+         (concat "⏺ " format-string)
+         args))
+
 (defun al/p (predicate val &optional message)
   "Return non-nil if PREDICATE returns non-nil on VAL.
 Otherwise display warning MESSAGE on VAL and return nil."

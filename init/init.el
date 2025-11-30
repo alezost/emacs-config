@@ -15,9 +15,6 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-(defun al/title-message (format-string &rest args)
-  (apply #'message (concat "⏺ " format-string) args))
-
 
 ;;; Location of various files
 
@@ -99,10 +96,10 @@
 
 (push al/emacs-utils-dir load-path)
 
+(require 'al-general)
 (al/title-message "Loading necessary utils")
 (require 'al-autoload)
 (require 'al-file)
-(require 'al-general)
 (require 'al-text)
 (require 'al-key)
 
