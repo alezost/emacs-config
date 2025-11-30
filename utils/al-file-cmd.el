@@ -17,6 +17,7 @@
 
 ;;; Code:
 
+(require 'al-general)
 (require 'al-read)
 
 ;;;###autoload
@@ -46,10 +47,11 @@ If ARG is nil use `find-alternate-file', otherwise - `find-file'."
     (set-window-start nil window-start)))
 
 (defvar al/ssh-default-user user-login-name
-  "A default user name for `al/ssh-find-file'.
+  "Default user name for `al/ssh-find-file'.
 Can be a string or a list of strings (names).")
+
 (defvar al/ssh-default-host "remote-host"
-  "A default host name for `al/ssh-find-file'.
+  "Default host name for `al/ssh-find-file'.
 Can be a string or a list of strings (hosts).")
 
 ;;;###autoload
@@ -57,29 +59,21 @@ Can be a string or a list of strings (hosts).")
   "Find a file for a USER on a HOST using tramp ssh method.
 If USER and HOST are not specified, values from
 `al/ssh-default-user' and `al/ssh-default-host' will be used.
-Interactively with \\[universal-argument] prompt for a user name,
-with \\[universal-argument] \\[universal-argument] prompt for a default host as well."
+Interactively, with \\[universal-argument], prompt for a user name,
+with \\[universal-argument] \\[universal-argument], prompt for a default host as well."
   (interactive
    (list (and (or (equal current-prefix-arg '(4))
                   (equal current-prefix-arg '(16)))
-              (ido-completing-read "User: "
-                                   (if (listp al/ssh-default-user)
-                                       al/ssh-default-user
-                                     (list al/ssh-default-user))))
+              (completing-read "User: "
+                               (al/list-maybe al/ssh-default-user)))
          (and (equal current-prefix-arg '(16))
-              (ido-completing-read "Host: "
-                                   (if (listp al/ssh-default-host)
-                                       al/ssh-default-host
-                                     (list al/ssh-default-host))))))
-  (or user (setq user (or (and (listp al/ssh-default-user)
-                               (car al/ssh-default-user))
-                          al/ssh-default-user)))
-  (or host (setq host (or (and (listp al/ssh-default-host)
-                               (car al/ssh-default-host))
-                          al/ssh-default-host)))
-  (with-current-buffer
-      (find-file-noselect (format "/ssh:%s@%s:/" user host))
-    (ido-find-file)))
+              (completing-read "Host: "
+                               (al/list-maybe al/ssh-default-host)))))
+  (let ((user (or user (car (al/list-maybe al/ssh-default-user))))
+        (host (or host (car (al/list-maybe al/ssh-default-host)))))
+    (with-current-buffer
+        (find-file-noselect (format "/ssh:%s@%s:/" user host))
+      (al/find-file))))
 
 
 ;;; Files in PATH
@@ -108,9 +102,8 @@ with \\[universal-argument] \\[universal-argument] prompt for a default host as 
        (al/refresh-path-completions))
      (list (completing-read "Find PATH file: "
                             al/path-completions))))
-  (let ((file (executable-find file)))
-    (when file
-      (find-file file))))
+  (when-let* ((file (executable-find file)))
+    (find-file file)))
 
 
 ;;; Renaming files
