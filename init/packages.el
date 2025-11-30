@@ -44,15 +44,8 @@
 (with-eval-after-load 'al-package
   (setq
    al/ignored-packages
-   '(;; Installed via Guix:
-     pdf-tools
-     bui
-     dash
-     emms
-     geiser
-     magit
-     ;; Redundant dependencies of magit:
-     magit-popup git-commit with-editor))
+   ;; Redundant dependencies of magit:
+   '(magit-section))
 
   (advice-add 'package-installed-p :around #'al/package-installed-p)
   (advice-add 'quelpa-package-install :around #'al/quelpa-package-install)
@@ -78,61 +71,66 @@
      (dvorak-layouts     :fetcher git :url ,(al/emacs-repo "dvorak-layouts"))
      (dim                :fetcher git :url ,(al/emacs-repo "dim"))
      (insert-pair        :fetcher git :url ,(al/emacs-repo "insert-pair"))
+     (shift-number       :fetcher git :url ,(al/emacs-repo "shift-number"))
      (imenus             :fetcher git :url ,(al/emacs-repo "imenus"))
-     smex
+     paredit
      smartparens
      elisp-slime-nav
-
-     (shift-number       :fetcher git :url ,(al/emacs-repo "shift-number"))
+     transient
+     which-key
      (pathify            :fetcher git :url ,(al/emacs-repo "pathify"))
      (point-pos          :fetcher git :url ,(al/emacs-repo "point-pos"))
      (web-search         :fetcher git :url ,(al/emacs-repo "web-search"))
-     (text-search        :fetcher git :url ,(al/emacs-repo "text-search"))
-     (darts-value        :fetcher git :url ,(al/emacs-repo "darts-value"))
      (debpaste           :fetcher git :url ,(al/emacs-repo "debpaste"))
      (aurel              :fetcher git :url ,(al/emacs-repo "aurel"))
      (make-color         :fetcher git :url ,(al/emacs-repo "make-color"))
-     (pretty-sha-path    :fetcher git :url ,(al/emacs-repo "pretty-sha-path"))
      (date-at-point      :fetcher git :url ,(al/emacs-repo "date-at-point"))
-     (journal            :fetcher git :url ,(al/emacs-repo "journal"))
-     pcmpl-args
-     org-emms
-     (dictem             :fetcher github :repo "cheusov/dictem")
-     google-translate
+     ;; With the MELPA's 'magit' package recipe, magit repo can be
+     ;; downloaded several times to build the magit package itself and
+     ;; its dependencies (right now it's only 'magit-section', in the
+     ;; past it was more).  So install everything in one piece.
+     (magit              :fetcher github :repo "magit/magit"
+                         :files ("lisp/*.el" "docs/*.texi"))
+     emms
      (emms-state         :fetcher git :url ,(al/emacs-repo "emms-state"))
+     org-emms
+     google-translate
      browse-kill-ring
      browse-at-remote
-     outline-magic
      markdown-mode
      syslog-mode
+     pkgbuild-mode
      list-environment
-     (mysql              :fetcher github :repo "haxney/mysql")
-     (sql-completion     :fetcher github :repo "emacsmirror/sql-completion")
-     erc-hl-nicks
-     (erc-view-log       :fetcher github :repo "alezost/erc-view-log"
-                         :branch "general-regexps")
-     hl-todo)
+     pcmpl-args
+     geiser
+     geiser-guile
+     geiser-racket
+     w3m
+     (wget               :fetcher github :repo "ataka/emacs-wget")
+     pdf-tools)
 
    al/extra-packages
    `(indent-guide
-     mentor
-     pkgbuild-mode
-
-     ;; With the MELPA's 'magit' package recipe, magit repo will be
-     ;; downloaded 4 times to build the magit package itself and its
-     ;; dependencies (git-commit, magit-popup and with-editor).  So
-     ;; install everything in one piece.
-     (magit              :fetcher github :repo "magit/magit"
-                         :files ("lisp/*.el" "Documentation/*.texi"))
-
-     (rainbow-mode       :fetcher url :url "http://git.savannah.gnu.org/cgit/emacs/elpa.git/plain/packages/rainbow-mode/rainbow-mode.el")
-     (typing-practice    :fetcher url :url "https://raw.github.com/mebubo/dotfiles/master/.emacs.d/site-lisp/typing-practice.el")
+     outline-magic
+     erc-hl-nicks
+     (erc-view-log       :fetcher github :repo "alezost/erc-view-log"
+                         :branch "general-regexps")
+     (mysql              :fetcher github :repo "haxney/mysql")
+     (sql-completion     :fetcher github :repo "emacsmirror/sql-completion")
+     (dictem             :fetcher github :repo "cheusov/dictem")
+     (journal            :fetcher git :url ,(al/emacs-repo "journal"))
      (mana               :fetcher git :url ,(al/emacs-repo "mana"))
      (ducpel             :fetcher git :url ,(al/emacs-repo "ducpel")
                          :files ("*.el"))
-     typing-game
+     (pretty-sha-path    :fetcher git :url ,(al/emacs-repo "pretty-sha-path"))
+     (text-search        :fetcher git :url ,(al/emacs-repo "text-search"))
+     (darts-value        :fetcher git :url ,(al/emacs-repo "darts-value"))
      (sokoban            :fetcher github :repo "leoliu/sokoban"
-                         :files ("*.el" "sokoban.levels")))))
+                         :files ("*.el" "sokoban.levels"))
+     ;; XXX Quelpa can't install packages from ELPA.  So I have to
+     ;; install the following packages manually: `rainbow-mode',
+     ;; `url-scgi' (dependency of `mentor').
+     mentor)))
 
 
 ;;; Guix
