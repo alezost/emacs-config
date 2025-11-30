@@ -299,7 +299,8 @@
                (propertize " ↕"
                            'help-echo "mouse-1: Remove narrowing"
                            'mouse-face 'mode-line-highlight
-                           'local-map (make-mode-line-mouse-map 'mouse-1 #'mode-line-widen))
+                           'local-map (make-mode-line-mouse-map
+                                       'mouse-1 #'mode-line-widen))
              ""))
          "│"
          (propertize "%]"
@@ -342,7 +343,9 @@
 (with-eval-after-load 'scroll-bar
   (setq previous-scroll-bar-mode 'right))
 
-(setq tooltip-delay 0.2)
+(setq
+ use-system-tooltips nil
+ tooltip-delay 0.2)
 
 (with-eval-after-load 'whitespace
   (setq
