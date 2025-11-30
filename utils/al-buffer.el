@@ -203,13 +203,12 @@ See `completing-read' for the meaning of INITIAL-INPUT."
 BUFFER can be nil, a string, a buffer object or a function
 returning one of those.  If there is no such buffer, call
 FUNCTION if it is specified."
-  (let* ((buffer (if (functionp buffer)
-                     (funcall buffer)
-                   buffer))
-         (buffer (and buffer (get-buffer buffer))))
-    (if buffer
-        (switch-to-buffer buffer)
-      (when function (funcall function)))))
+  (if-let* ((buffer (if (functionp buffer)
+                        (funcall buffer)
+                      buffer))
+            (buffer (get-buffer buffer)))
+      (switch-to-buffer buffer)
+    (when function (funcall function))))
 
 ;;;###autoload
 (defun al/switch-to-characters (&optional charset)
