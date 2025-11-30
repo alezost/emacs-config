@@ -1,17 +1,17 @@
 ;;; al-net.el --- Additional functionality for network stuff (including `net-utils' package)  -*- lexical-binding: t -*-
 
-;; Copyright © 2013-2016 Alex Kost
+;; Copyright © 2013–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
 ;; (at your option) any later version.
-
+;;
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-
+;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -26,30 +26,30 @@
 ;;;###autoload
 (defun al/ping (host)
   "Ping HOST.
-Same as `ping' but interactively complete hosts from `al/net-hosts'."
+Same as `ping', except interactively, complete from `al/net-hosts'."
   (interactive
-   (list (ido-completing-read "Ping host: " al/net-hosts)))
+   (list (completing-read "Ping host: " al/net-hosts)))
   (ping host))
 
 ;;;###autoload
 (defun al/traceroute (host)
   "Traceroute HOST.
-Same as `traceroute' but interactively complete hosts from `al/net-hosts'."
+Same as `traceroute', except interactively, complete from `al/net-hosts'."
   (interactive
-   (list (ido-completing-read "Traceroute host: " al/net-hosts)))
+   (list (completing-read "Traceroute host: " al/net-hosts)))
   (traceroute host))
 
 
 ;;; Router log
 
-(defvar al/router-log-path "~/.router-log"
+(defvar al/router-log-directory "~/.router-log"
   "Directory with router log-files.")
 
 (defvar al/router-log-format "%Y-%m-%d_%H:%M.log"
   "Format used for the names of saved router log-files.
 This variable is passed to `format-time-string' with current time.")
 
-(defvar al/router-log-url "http://192.168.1.1/cgi-bin/ExportSyslog.sh"
+(defvar al/router-log-url "https://192.168.1.1/path/to/raw-log"
   "URL with router log.")
 
 (defvar url-handler-regexp)
@@ -72,7 +72,7 @@ This variable is passed to `format-time-string' with current time.")
   (write-file
    (expand-file-name (format-time-string al/router-log-format
                                          (current-time))
-                     al/router-log-path)))
+                     al/router-log-directory)))
 
 (provide 'al-net)
 

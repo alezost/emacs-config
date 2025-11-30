@@ -663,9 +663,9 @@
 
 (with-eval-after-load 'al-net
   (setq
-   al/net-hosts '("zeus" "hyperion" "192.168.1.1" "10.11.149.1"
-                   "10.10.0.1" "google.com" "ya.ru")
-   al/router-log-path "~/docs/net/RT_G32.log/"))
+   al/net-hosts '("zeus" "leviafan" "hyperion" "192.168.1.1"
+                  "google.com" "ya.ru")
+   al/router-log-directory "~/docs/net/router-log/"))
 
 (al/bind-keys
  :prefix-map al/debpaste-map
