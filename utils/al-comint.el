@@ -1,6 +1,6 @@
 ;;; al-comint.el --- Additional functionality for comint  -*- lexical-binding: t -*-
 
-;; Copyright © 2015-2016 Alex Kost
+;; Copyright © 2015-2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -56,18 +56,17 @@ Return nil, if the current line is not the input line."
 (defun al/comint-send-input-maybe ()
   "Call `comint-send-input' if the point is on the command line."
   (interactive)
-  (let ((proc (get-buffer-process (current-buffer))))
-    (when proc
-      (let ((prompt (marker-position (process-mark proc))))
-        (when (< (point) prompt)
-          (let ((input (al/comint-input-at-point)))
-            (if (null input)
-                (user-error (substitute-command-keys "\
-You don't want to do \"\\[al/comint-send-input-maybe]\" here"))
+  (when-let* ((proc (get-buffer-process (current-buffer))))
+    (let ((prompt (marker-position (process-mark proc))))
+      (when (< (point) prompt)
+        (if-let* ((input (al/comint-input-at-point)))
+            (progn
               (goto-char prompt)
               (delete-region prompt (point-max))
-              (insert input)))))
-      (comint-send-input))))
+              (insert input))
+          (user-error (substitute-command-keys "\
+You don't want to do \"\\[al/comint-send-input-maybe]\" here")))))
+    (comint-send-input)))
 
 ;;;###autoload
 (defun al/comint-toggle-move-point ()
