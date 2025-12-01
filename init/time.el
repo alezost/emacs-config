@@ -95,6 +95,12 @@
   (require 'al-calendar nil t)
   (add-hook 'diary-list-entries-hook 'diary-sort-entries t))
 
+(with-eval-after-load 'timer-list
+  (al/bind-keys
+    :map timer-list-mode-map
+    ("k"   . timer-list-cancel)
+    ("C-k" . timer-list-cancel)))
+
 (with-eval-after-load 'appt
   (setq
    appt-audible nil
