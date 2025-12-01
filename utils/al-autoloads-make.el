@@ -70,8 +70,10 @@ SUBDIRS can have one of the following values:
                         (directory-file-name dir))))
         (when add-to-path
           (push elisp-dir load-dirs))
-        (when (file-exists-p (expand-file-name "dir" doc-dir))
-          (push doc-dir info-dirs))
+        (cond ((file-exists-p (expand-file-name "dir" doc-dir))
+               (push doc-dir info-dirs))
+              ((file-exists-p (expand-file-name "dir" dir))
+               (push dir info-dirs)))
         (if (seq-find (lambda (pkg)
                         (string-match-p pkg dir-name))
                       al/ignored-package-autoloads)
