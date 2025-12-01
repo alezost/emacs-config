@@ -121,7 +121,8 @@ currently active timer is stored) or any keyword supported by
   (dolist (notif al/notifications)
     (cancel-timer (plist-get notif :timer)))
   (setq al/notifications nil)
-  (al/timer-mode -1))
+  (al/timer-mode -1)
+  (al/notification))
 
 (defun al/notification-args ()
   "Return list of arguments for the current `al/notification' transient.
