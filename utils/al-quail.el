@@ -27,8 +27,8 @@
 ;; Originates from "latin-prefix" and "TeX" input methods.
 ;; Look at: (find-library "leim/quail/latin-ltx")
 (quail-define-package
- "al/latin-prefix" "UTF-8" "ä" t
- "Latin-1 and UTF-8 characters input method with prefix modifiers.
+ "al/utf" "UTF-8" "ä" t
+ "Latin and UTF-8 characters input method with prefix modifiers.
 
 The main prefixes are:
 
@@ -41,7 +41,7 @@ The main prefixes are:
  t t nil nil nil nil nil nil nil t)
 
 ;;;###autoload(register-input-method
-;;;###autoload "al/latin-prefix" "English" 'quail-use-package "ä"
+;;;###autoload "al/utf" "UTF-8" 'quail-use-package "ä"
 ;;;###autoload "Latin and Unicode characters with prefix modifiers."
 ;;;###autoload "al-quail")
 

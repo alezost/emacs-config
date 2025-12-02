@@ -20,7 +20,7 @@
 (require 'seq)
 
 (defvar al/default-input-methods
-  '((text-mode . "al/latin-prefix"))
+  '((text-mode . "al/utf"))
   "Alist of major modes and default input methods for them.")
 
 ;;;###autoload
