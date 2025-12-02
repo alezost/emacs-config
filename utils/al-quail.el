@@ -35,10 +35,15 @@ The main prefixes are:
   ;   mostly, for latin characters with diaeresis (ä, ü, etc.);
   _   for subscript symbols;
   ^   for superscript symbols;
-  \   for LaTeX-like input similar to `TeX' input method.
+  \\   for LaTeX-like input similar to `TeX' input method.
 "
  '(("\t" . quail-completion))
  t t nil nil nil nil nil nil nil t)
+
+;;;###autoload(register-input-method
+;;;###autoload "al/latin-prefix" "English" 'quail-use-package "ä"
+;;;###autoload "Latin and Unicode characters with prefix modifiers."
+;;;###autoload "al-quail")
 
 (eval-when-compile
   (defconst al/latin-mark-map
