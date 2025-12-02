@@ -35,7 +35,11 @@ If `major-mode' is not derived from one of the modes specified at
                           (derived-mode-p (car assoc)))
                         al/default-input-methods))))
     (unless (equal input-method current-input-method)
-      (set-input-method input-method))))
+      ;; `al/set-default-input-method' is added to
+      ;; `after-change-major-mode-hook' so make sure it is not failed
+      ;; (in case input-method doesn't exist).
+      (with-demoted-errors "ERROR during setting input method: %S"
+        (set-input-method input-method)))))
 
 ;;;###autoload
 (defun al/set-input-method (&optional input-method)
