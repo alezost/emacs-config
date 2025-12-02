@@ -49,8 +49,13 @@ This is the same as `set-input-method', except it also handles
 	    (format-prompt "Set input method" default)
 	    default))))
   (set-input-method input-method)
-  (when isearch-mode
+  (if (null isearch-mode)
+      (message "Current input method: %S." input-method)
+    ;; The following settings are taken from `isearch-toggle-input-method'.
     (setq isearch-input-method-function input-method-function)
+    ;; Without this line, `isearch' may exit after setting some input
+    ;; methods, (in particular, "korean-hangul").
+    (setq-local input-method-function nil)
     (isearch-update)))
 
 (provide 'al-input-method)
