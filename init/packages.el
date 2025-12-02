@@ -1,6 +1,6 @@
 ;;; packages.el --- Emacs packages and interfaces to other package systems  -*- lexical-binding: t -*-
 
-;; Copyright © 2014–2022 Alex Kost
+;; Copyright © 2014–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -18,16 +18,7 @@
 
 ;;; Emacs packages
 
-(al/bind-keys
- :prefix-map al/package-map
- :prefix-docstring "Map for Emacs packages commands."
- :prefix "H-q"
- ("H-q" . al/quelpa)
- ("q"     (let (quelpa-update-melpa-p)
-            (call-interactively #'quelpa)))
- ("l"   . al/switch-to-packages)
- ("a"   . al/add-package-archive)
- ("r"   . al/remove-package-archive))
+(al/bind-key "H-q" al/package-ui)
 
 (with-eval-after-load 'package
   (setq package-archives nil)
