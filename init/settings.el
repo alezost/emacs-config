@@ -854,7 +854,10 @@
 
   (defconst al/transient-base-keys
     '("C-v" "M-v"
-      ("q" . transient-quit-all)
+      ;; Don't bind "q" because transient will quit even for complex
+      ;; bindings such as "-q"!
+      ;;
+      ;; ("q" . transient-quit-all)
       ("C-g" . transient-quit-all)
       ("C-q" . transient-quit-one)
       ("DEL" . transient-quit-one))
