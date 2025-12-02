@@ -201,93 +201,6 @@
   (insert-pair-define-command "dollar" ?$ ?$))
 
 
-;;; Searching, finding and replacing
-
-(al/bind-keys
- :map search-map
- ("s"   . query-replace)
- ("M-s" . query-replace)
- ("SPC"   (al/replace " " "_"))
- ("_"     (al/replace "_" " "))
- ("r"   . query-replace-regexp)
- ("R"   . replace-regexp))
-
-(setq
- isearch-allow-scroll t
- isearch-lax-whitespace nil
- ;; "a" searches for "ä", "à", etc.
- search-default-mode 'char-fold-to-regexp)
-
-(al/bind-keys
- :map isearch-mode-map
- ("M-s" . isearch-query-replace)
- ("M-d" . isearch-edit-string)
- ("M-o" . isearch-occur)
- ("s-6"   (al/set-isearch-input-method))
- ("s-7"   (al/set-isearch-input-method "al/latin-prefix"))
- ("s-8"   (al/set-isearch-input-method "dvorak-russian-computer")))
-
-(defconst al/occur-keys
-  '(("." . occur-prev)
-    ("e" . occur-next)
-    ("u" . occur-mode-goto-occurrence))
-  "Alist of auxiliary keys for `occur-mode-map'.")
-(al/bind-keys-from-vars 'occur-mode-map 'al/occur-keys)
-
-(defun al/occur-set-paragraph ()
-  "Set paragraph to be started from any non-space symbol."
-  (setq-local paragraph-start "[^ ]"))
-(al/add-hook-maybe 'occur-mode-hook 'al/occur-set-paragraph)
-
-(with-eval-after-load 'grep
-  (setq grep-save-buffers nil))
-
-(with-eval-after-load 'misearch
-  (setq multi-isearch-pause nil))
-
-(al/bind-keys
- :prefix-map al/point-pos-map
- :prefix-docstring "Map for point-pos."
- :prefix "M-Z"
- ("M-S" . point-pos-save)
- ("M-D" . point-pos-delete)
- ("M-G" . point-pos-goto)
- ("M-H" . point-pos-previous)
- ("M-N" . point-pos-next)
- ("s" . point-pos-save)
- ("d" . point-pos-delete)
- ("g" . point-pos-goto)
- ("h" . point-pos-previous)
- ("n" . point-pos-next))
-(al/bind-keys
- ("C-M-S-g" . point-pos-goto)
- ("C-M-S-h" . point-pos-previous)
- ("C-M-S-n" . point-pos-next))
-
-(al/bind-key* "C-M-s-m" imenu)
-(with-eval-after-load 'imenu
-  (setq
-   ;; imenu-flatten t
-   imenu-space-replacement nil
-   imenu-level-separator " ⇨ "))
-
-(al/bind-key* "C-M-m" imenus)
-(with-eval-after-load 'imenus
-  (setq imenus-delimiter imenu-level-separator)
-
-  (defconst al/imenus-keys
-    '(("C-r" . imenus-rescan)
-      ("C-s" . imenus-exit-to-isearch)
-      ("M-s" . imenus-exit-to-occur)))
-  (al/bind-keys-from-vars 'imenus-minibuffer-map 'al/imenus-keys)
-  )
-
-(al/bind-key "M-s-s" al/imenus-search-elisp-directories)
-(with-eval-after-load 'al-imenus
-  (setq al/imenus-elisp-directories
-        (list al/emacs-init-dir al/emacs-utils-dir)))
-
-
 ;;; Killing and yanking
 
 (setq
@@ -386,7 +299,7 @@
     comint-mode
     slime-repl-mode
     haskell-interactive-mode)
-  "A list of major modes where default input method should be kept unchanged.")
+  "List of major modes where default input method should be kept unchanged.")
 
 (defun al/set-default-input-method ()
   (when (and al/default-input-method
@@ -400,38 +313,42 @@
 (al/add-hook-maybe 'after-change-major-mode-hook
   'al/set-default-input-method)
 
+(defvar al/input-method-map nil)
+(define-prefix-command 'al/input-method-map)
 (al/bind-keys
-  ("C-\\"  (toggle-input-method t))
-  ("s-6"   (deactivate-input-method))
-  ("s-7"   (set-input-method "al/latin-prefix"))
-  ("s-8" . dvorak-russian-computer)
-  ("s-9" . dvorak-qwerty)
-  ("s-0"   (set-input-method "greek"))
-  ("s-M-7" (ispell-change-dictionary "en"))
-  ("s-M-8" (ispell-change-dictionary "ru-yeyo")))
+  :map al/input-method-map
+  ("<kanji>" . al/set-input-method)
+  ("RET"     . al/set-input-method)
+  ("C-d"     . describe-input-method)
+  ("SPC" (al/set-input-method nil))
+  ("7"   (al/set-input-method "al/latin-prefix"))
+  ("l"   (al/set-input-method "al/latin-prefix"))
+  ("d"   (al/set-input-method "al/latin-prefix"))
+  ("g"   (al/set-input-method "greek"))
+  ("0"   (al/set-input-method "greek"))
+  ("j"   (al/set-input-method "japanese"))
+  ("h"   (al/set-input-method "japanese-hiragana"))
+  ("k"   (al/set-input-method "japanese-katakana"))
+  ("u"   (al/set-input-method "korean-hangul"))
+  ("c"   (al/set-input-method "korean-hangul"))
+  ("t"   (al/set-input-method "TeX"))
+  ("8"   (al/set-input-method "dvorak-russian-computer"))
+  ("r"   (al/set-input-method "dvorak-russian-computer"))
+  ("9"   (al/set-input-method "dvorak-qwerty"))
+  ("q"   (al/set-input-method "dvorak-qwerty")))
 
-(al/bind-keys
-  :prefix-map al/lang-map
-  :prefix-docstring "Map for input methods."
-  :prefix "<kanji>"
-  ("<kanji>" (toggle-input-method t))
-  ("RET"     (toggle-input-method t))
-  ("SPC"     (deactivate-input-method))
-  ("C-d"   . describe-input-method)
-  ("7"       (set-input-method "al/latin-prefix"))
-  ("l"       (set-input-method "al/latin-prefix"))
-  ("d"       (set-input-method "al/latin-prefix"))
-  ("g"       (set-input-method "greek"))
-  ("j"       (set-input-method "japanese"))
-  ("h"       (set-input-method "japanese-hiragana"))
-  ("k"       (set-input-method "japanese-katakana"))
-  ("u"       (set-input-method "korean-hangul"))
-  ("c"       (set-input-method "korean-hangul"))
-  ("t"       (set-input-method "TeX"))
-  ("8"     . dvorak-russian-computer)
-  ("r"     . dvorak-russian-computer)
-  ("9"     . dvorak-qwerty)
-  ("q"     . dvorak-qwerty))
+(defconst al/input-method-keys
+  '(("<kanji>" . al/input-method-map)
+    ("C-\\" . al/set-input-method)
+    ("s-6"   (al/set-input-method nil))
+    ("s-7"   (al/set-input-method "al/latin-prefix"))
+    ("s-8"   (al/set-input-method "dvorak-russian-computer"))
+    ("s-9"   (al/set-input-method "dvorak-qwerty"))
+    ("s-0"   (al/set-input-method "greek"))
+    ("s-M-7" (ispell-change-dictionary "en"))
+    ("s-M-8" (ispell-change-dictionary "ru-yeyo")))
+  "Alist of auxiliary keys for input methods.")
+(al/bind-keys-from-vars nil 'al/input-method-keys)
 
 (with-eval-after-load 'hangul
   (when (require 'al-quail-hangul nil t)
@@ -550,6 +467,93 @@
    ("M-." . company-select-previous)
    ("M-e" . company-select-next))
   (global-company-mode))
+
+
+;;; Searching, finding and replacing
+
+(al/bind-keys
+ :map search-map
+ ("s"   . query-replace)
+ ("M-s" . query-replace)
+ ("SPC"   (al/replace " " "_"))
+ ("_"     (al/replace "_" " "))
+ ("r"   . query-replace-regexp)
+ ("R"   . replace-regexp))
+
+(with-eval-after-load 'isearch
+  (setq
+   isearch-allow-scroll t
+   isearch-lax-whitespace nil
+   ;; "a" searches for "ä", "à", etc.
+   search-default-mode 'char-fold-to-regexp)
+
+  (defconst al/isearch-keys
+    '(("M-s" . isearch-query-replace)
+      ("M-d" . isearch-edit-string)
+      ("M-o" . isearch-occur))
+    "Alist of auxiliary keys for `isearch-mode-map'.")
+  (al/bind-keys-from-vars 'isearch-mode-map
+    '(al/isearch-keys al/input-method-keys)))
+
+(with-eval-after-load 'replace
+  (defconst al/occur-keys
+    '(("." . occur-prev)
+      ("e" . occur-next)
+      ("u" . occur-mode-goto-occurrence))
+    "Alist of auxiliary keys for `occur-mode-map'.")
+  (al/bind-keys-from-vars 'occur-mode-map 'al/occur-keys)
+
+  (defun al/occur-set-paragraph ()
+    "Set paragraph to be started from any non-space symbol."
+    (setq-local paragraph-start "[^ ]"))
+  (al/add-hook-maybe 'occur-mode-hook 'al/occur-set-paragraph))
+
+(with-eval-after-load 'grep
+  (setq grep-save-buffers nil))
+
+(with-eval-after-load 'misearch
+  (setq multi-isearch-pause nil))
+
+(al/bind-keys
+ :prefix-map al/point-pos-map
+ :prefix-docstring "Map for point-pos."
+ :prefix "M-Z"
+ ("M-S" . point-pos-save)
+ ("M-D" . point-pos-delete)
+ ("M-G" . point-pos-goto)
+ ("M-H" . point-pos-previous)
+ ("M-N" . point-pos-next)
+ ("s" . point-pos-save)
+ ("d" . point-pos-delete)
+ ("g" . point-pos-goto)
+ ("h" . point-pos-previous)
+ ("n" . point-pos-next))
+(al/bind-keys
+ ("C-M-S-g" . point-pos-goto)
+ ("C-M-S-h" . point-pos-previous)
+ ("C-M-S-n" . point-pos-next))
+
+(al/bind-key* "C-M-s-m" imenu)
+(with-eval-after-load 'imenu
+  (setq
+   ;; imenu-flatten t
+   imenu-space-replacement nil
+   imenu-level-separator " ⇨ "))
+
+(al/bind-key* "C-M-m" imenus)
+(with-eval-after-load 'imenus
+  (setq imenus-delimiter imenu-level-separator)
+
+  (defconst al/imenus-keys
+    '(("C-r" . imenus-rescan)
+      ("C-s" . imenus-exit-to-isearch)
+      ("M-s" . imenus-exit-to-occur)))
+  (al/bind-keys-from-vars 'imenus-minibuffer-map 'al/imenus-keys))
+
+(al/bind-key "M-s-s" al/imenus-search-elisp-directories)
+(with-eval-after-load 'al-imenus
+  (setq al/imenus-elisp-directories
+        (list al/emacs-init-dir al/emacs-utils-dir)))
 
 
 ;;; TeX
