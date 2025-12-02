@@ -1,6 +1,6 @@
 ;;; al-misc-cmd.el --- Miscellaneous interactive commands  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2016, 2019–2020 Alex Kost
+;; Copyright © 2013–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -17,31 +17,24 @@
 
 ;;; Code:
 
-(require 'org)
+(defvar org-link-plain-re)
 
 ;;;###autoload
 (defun al/next-link (&optional search-backward)
   "Go to the next link."
-  ;; The function is almost the same as `org-next-link'.
+  ;; This is a simplified version of `org-next-link'.
   (interactive)
-  (when (and org-link--search-failed
-             (eq this-command last-command))
-    (goto-char (point-min))
-    (message "Link search wrapped back to beginning of buffer"))
-  (setq org-link--search-failed nil)
-  (let* ((pos (point))
-	 (srch-fun (if search-backward
-                       're-search-backward
-                     're-search-forward)))
-    (when (looking-at org-link-any-re)
-      ;; Don't stay stuck at link without an org-link face.
+  (require 'ol)
+  (let ((pos (point))
+	(search-fun (if search-backward
+                        #'re-search-backward
+                      #'re-search-forward)))
+    (when (looking-at org-link-plain-re)
+      ;; Don't stay stuck at the current link.
       (forward-char (if search-backward -1 1)))
-    (if (funcall srch-fun org-link-any-re nil t)
-	(progn
-	  (goto-char (match-beginning 0))
-	  (when (outline-invisible-p) (org-fold-show-context)))
+    (if (funcall search-fun org-link-plain-re nil t)
+	(goto-char (match-beginning 0))
       (goto-char pos)
-      (setq org-link--search-failed t)
       (message "No further link found"))))
 
 ;;;###autoload
