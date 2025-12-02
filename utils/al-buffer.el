@@ -225,7 +225,8 @@ If CHARSET is nil, use `unicode-bmp'.  With prefix, use `unicode-smp'."
   "Switch to the buffer with packages."
   (interactive)
   (al/switch-to-buffer-or-funcall
-   "*Packages*" #'list-packages))
+   "*Packages*"
+   (lambda () (list-packages 'no-fetch))))
 
 ;;;###autoload
 (defun al/switch-to-faces ()
