@@ -22,10 +22,10 @@
 (require 'al-general)
 
 (defvar al/package-archives
-  '(("gnu"          . "http://elpa.gnu.org/packages/")
-    ("marmalade"    . "https://marmalade-repo.org/packages/")
-    ("melpa"        . "http://melpa.org/packages/")
-    ("melpa-stable" . "http://stable.melpa.org/packages/"))
+  '(("elpa gnu"     . "https://elpa.gnu.org/packages/")
+    ("elpa nongnu"  . "https://elpa.nongnu.org/nongnu/")
+    ("melpa"        . "https://melpa.org/packages/")
+    ("melpa-stable" . "https://stable.melpa.org/packages/"))
   "Alist of package archives used by `al/add-package-archive'.
 This variable has the same form as `package-archives'.")
 
@@ -36,10 +36,9 @@ NAME is an archive name from `al/package-archives'."
   (interactive
    (list (completing-read "Add package archive: "
                           (mapcar #'car al/package-archives))))
-  (let ((archive (assoc name al/package-archives)))
-    (when archive
-      (al/pushnew package-archives archive)
-      (pp-eval-expression 'package-archives))))
+  (when-let* ((archive (assoc name al/package-archives)))
+    (al/pushnew package-archives archive)
+    (pp-eval-expression 'package-archives)))
 
 ;;;###autoload
 (defun al/remove-package-archive (&optional name)
