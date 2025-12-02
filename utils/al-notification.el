@@ -124,6 +124,13 @@ currently active timer is stored) or any keyword supported by
   (al/timer-mode -1)
   (al/notification))
 
+(transient-define-suffix al/notification:list-timers ()
+  "Call `list-timers'."
+  :description "list all timers (including system ones)"
+  :key "l"
+  (interactive)
+  (list-timers))
+
 (defun al/notification-args ()
   "Return list of arguments for the current `al/notification' transient.
 The first argument in this list is the number of seconds and the rest
@@ -231,8 +238,11 @@ Pass ARGS to `notifications-notify'."
            :pad-keys t
            "Active timers"
            ,@(al/notification-kill-keys)
-           ("K" "kill all timers" al/notification:kill-all)]))
-    (transient-define-group al/notification:kill-group))
+           ("K" "kill all timers" al/notification:kill-all)
+           (al/notification:list-timers)]))
+    (transient-define-group al/notification:kill-group
+      ["Active timers"
+       (al/notification:list-timers)]))
   (transient-setup 'al/notification))
 
 
