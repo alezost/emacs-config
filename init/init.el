@@ -182,6 +182,8 @@
 (al/add-after-init-hook 'which-key-mode)
 
 ;; Setting hooks from files that are already loaded.
+(al/add-hook-maybe 'after-change-major-mode-hook
+  'al/set-default-input-method)
 (al/add-hook-maybe 'window-configuration-change-hook
   'al/set-windows-num-property)
 (al/add-hook-maybe 'text-mode-hook

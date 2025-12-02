@@ -286,33 +286,6 @@
 
 ;;; Input methods, abbreviations, completions, etc.
 
-(defvar al/default-input-method nil
-  "My default input method.")
-
-(defun al/init-default-input-method ()
-  (when (and (null al/default-input-method)
-             (require 'al-quail nil t))
-    (setq al/default-input-method "al/latin-prefix")))
-
-(defvar al/default-input-method-modes
-  '(prog-mode
-    comint-mode
-    slime-repl-mode
-    haskell-interactive-mode)
-  "List of major modes where default input method should be kept unchanged.")
-
-(defun al/set-default-input-method ()
-  (when (and al/default-input-method
-             (null (eq major-mode 'fundamental-mode))
-             (null (apply #'derived-mode-p al/default-input-method-modes))
-             (null (string= al/default-input-method
-                            current-input-method)))
-    (set-input-method al/default-input-method)))
-
-(al/add-after-init-hook 'al/init-default-input-method)
-(al/add-hook-maybe 'after-change-major-mode-hook
-  'al/set-default-input-method)
-
 (defvar al/input-method-map nil)
 (define-prefix-command 'al/input-method-map)
 (al/bind-keys

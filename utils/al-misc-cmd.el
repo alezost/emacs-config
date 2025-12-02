@@ -73,25 +73,6 @@ With prefix, prompt for directory as well."
   "Refontify the current buffer."
   (jit-lock-refontify))
 
-
-;;; Spelling and languages
-
-;;;###autoload
-(defun al/set-input-method (&optional input-method)
-  "Activate input method INPUT-METHOD for the current buffer.
-This is the same as `set-input-method', except it also handles
-`isearch'."
-  (interactive
-   (let ((default (or (car input-method-history)
-                      default-input-method)))
-     (list (read-input-method-name
-	    (format-prompt "Set input method" default)
-	    default))))
-  (set-input-method input-method)
-  (when isearch-mode
-    (setq isearch-input-method-function input-method-function)
-    (isearch-update)))
-
 (provide 'al-misc-cmd)
 
 ;;; al-misc-cmd.el ends here
