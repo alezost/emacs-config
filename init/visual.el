@@ -386,7 +386,6 @@
   (al/add-hook-maybe 'make-color-mode-hook 'al/bar-cursor-type))
 
 (with-eval-after-load 'rainbow-mode
-  (setq rainbow-x-colors t)
-  (advice-add 'rainbow-mode :after #'al/refontify))
+  (setq rainbow-x-colors t))
 
 ;;; visual.el ends here

@@ -68,11 +68,6 @@ With prefix, prompt for directory as well."
                   (prin1 symbol)
                   (princ "\n"))))))
 
-;;;###autoload
-(defun al/refontify (&rest _)
-  "Refontify the current buffer."
-  (jit-lock-refontify))
-
 (provide 'al-misc-cmd)
 
 ;;; al-misc-cmd.el ends here
