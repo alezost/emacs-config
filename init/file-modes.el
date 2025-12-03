@@ -287,6 +287,7 @@ will do the right thing."
                    ;;"\\.log\\'" not this because of ~/config/emacs/data/emacs-wget.log
                    )
                   t)
+     (emacs-lisp-mode "/emms/.+\\.pl\\'")  ; my playlists in `emms-directory'
      (pdf-view-mode "\\.[pP][dD][fF]\\'")
      (markdown-mode "\\.mdown\\'")
      (pkgbuild-mode "PKGBUILD\\'")
