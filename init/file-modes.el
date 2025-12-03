@@ -266,20 +266,13 @@ will do the right thing."
 
 (when (require 'al-file nil t)
   (al/add-to-auto-mode-alist
-   '((sh-mode "/etc/profile\\'"
+   `((sh-mode "/etc/profile\\'"
               "bashrc\\'")
-     (conf-xdefaults-mode "\\.Xmodmap\\'")
-     (conf-space-mode "\\.mailmap\\'")
-     (conf-unix-mode "\\.rules\\'"
-                     "\\.hwdb\\'"
-                     "\\.cnf\\'"
-                     "\\.map\\'"
-                     "\\.inc\\'"
-                     "\\.service\\'"
-                     "\\.target\\'"
-                     "\\.socket\\'"
-                     "\\.timer\\'"
-                     "\\.mount\\'")
+     (conf-xdefaults-mode ,(al/file-regexp "Xmodmap"))
+     (conf-space-mode ,(al/file-regexp "mailmap"))
+     (conf-unix-mode ,(al/file-regexp
+                       "rules" "hwdb" "cnf" "map" "inc" "service"
+                       "target" "socket" "timer" "mount"))
      (conf-unix-mode (".*rc\\'"
                       "/etc/.*\\'")
                      t)
@@ -289,12 +282,12 @@ will do the right thing."
                   t)
      (emacs-lisp-mode "/emms/.+\\.pl\\'")  ; my playlists in `emms-directory'
      (pdf-view-mode "\\.[pP][dD][fF]\\'")
-     (markdown-mode "\\.mdown\\'")
+     (markdown-mode ,(al/file-regexp "mdown"))
      (pkgbuild-mode "PKGBUILD\\'")
      (java-mode ".*tmwa-server-data/world/map/npc/.*txt\\'")
-     (gtypist-mode "\\.typ\\'")
-     (gnuplot-mode "\\.plot\\'")
-     (maxima-mode "\\.max\\'"))))
+     (gtypist-mode ,(al/file-regexp "typ"))
+     (gnuplot-mode ,(al/file-regexp "plot"))
+     (maxima-mode ,(al/file-regexp "max")))))
 
 (with-eval-after-load 'conf-mode
   (al/add-hook-maybe 'conf-mode-hook 'hl-line-mode))
