@@ -108,10 +108,6 @@
   (al/bind-keys-from-vars 'ert-results-mode-map
     '(al/button-keys al/ert-results-keys)))
 
-(with-eval-after-load 'dash
-  ;; Highlight `dash' keywords.
-  (dash-enable-font-lock))
-
 (with-eval-after-load 'pp
   (when (require 'al-pp nil t)
     (advice-add 'pp-display-expression :after #'al/pp-enable-undo)))
