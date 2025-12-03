@@ -498,6 +498,9 @@
   (oset (get 'magit-merge 'transient--prefix)
         value '("--ff-only")))
 
+(with-eval-after-load 'magit-tag
+  (transient-suffix-put 'magit-tag 'magit-tag-create :key "n"))
+
 (with-eval-after-load 'magit-mode
   (setq
    magit-bury-buffer-function #'ignore
