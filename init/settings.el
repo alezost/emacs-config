@@ -158,6 +158,7 @@
  ("o"   (al/display-buffer "*Occur*"))
  ("h"   (al/display-buffer "*Help*"))
  ("s"   (al/display-buffer "*scratch*"))
+ ("e" . emoji-list)
  ("w" . al/switch-to-w3m)
  ("m" . woman)
  ("k"   (kill-buffer nil))

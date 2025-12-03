@@ -294,6 +294,7 @@
   ("RET"     . al/set-input-method)
   ("C-d"     . describe-input-method)
   ("SPC" (al/set-input-method nil))
+  ("e"   (al/set-input-method "emoji"))
   ("7"   (al/set-input-method "al/utf"))
   ("l"   (al/set-input-method "al/utf"))
   ("d"   (al/set-input-method "al/utf"))
