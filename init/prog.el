@@ -65,6 +65,7 @@
         lisp-interaction-mode-hook)
     '(al/imenu-add-sections
       al/imenu-add-use-package
+      al/imenu-add-transient
       al/imenu-add-eval-after-load))
 
   (when (require 'al-elisp nil t)

@@ -1,6 +1,6 @@
 ;;; al-imenu.el --- Additional functionality for imenu  -*- lexical-binding: t -*-
 
-;; Copyright © 2014–2017 Alex Kost
+;; Copyright © 2014–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ If APPEND is nil, add the new element at the end."
 ;; (add-hook 'lisp-mode-hook 'al/imenu-add-sections)
 
 (defvar al/imenu-sections-re "^;;; \\(.+\\)$"
-  "Regexp used for \"Sections\" imenu entries.")
+  "Regexp for \"Sections\" imenu entries.")
 
 (defvar al/imenu-sections-group "Sections"
   "Group name in imenu index of \"Sections\" entries.
@@ -59,7 +59,7 @@ If REGEXP is nil, use `al/imenu-sections-re'."
 ;; (add-hook 'js-mode-hook 'al/imenu-add-js-sections)
 
 (defvar al/imenu-js-sections-re "^/// \\(.+\\)$"
-  "Regexp used for \"Sections\" imenu entries in `js-mode'.")
+  "Regexp for \"Sections\" imenu entries in `js-mode'.")
 
 ;;;###autoload
 (defun al/imenu-add-js-sections (&optional _regexp)
@@ -96,7 +96,7 @@ as the latter function and also create elements for
       (? ?\")
       (group (+ (or (syntax word) (syntax symbol))))
       (? ?\"))
-  "Regexp used for `use-package' entries in imenu.")
+  "Regexp for `use-package' entries in imenu.")
 
 (defvar al/imenu-use-package-group "use-package"
   "Group name in imenu index of use-package entries.
@@ -117,8 +117,7 @@ If nil, put the entries in a top level.  See MENU-TITLE in
       (zero-or-one (or ?\" ?'))
       (group (+ (or (syntax word) (syntax symbol))))
       (zero-or-one ?\"))
-  "Regexp used for `eval-after-load' and `with-eval-after-load'
-entries in imenu.")
+  "Regexp for `eval-after-load' and `with-eval-after-load' entries in imenu.")
 
 (defvar al/imenu-eval-after-load-group "(with-)eval-after-load")
 
@@ -127,6 +126,23 @@ entries in imenu.")
   "Add `al/imenu-eval-after-load-re' to `imenu-generic-expression'."
   (al/add-to-imenu al/imenu-eval-after-load-re
                    :title al/imenu-eval-after-load-group))
+
+
+;;; Transient entries
+
+(defvar al/imenu-transient-re
+  (rx bol "(transient-define-" (+ (or (syntax word) (syntax symbol)))
+      (+ whitespace)
+      (group (+ (or (syntax word) (syntax symbol)))))
+  "Regexp for transient entries in imenu.")
+
+(defvar al/imenu-transient-group "transient")
+
+;;;###autoload
+(defun al/imenu-add-transient ()
+  "Add `al/imenu-transient-re' to `imenu-generic-expression'."
+  (al/add-to-imenu al/imenu-transient-re
+                   :title al/imenu-transient-group))
 
 (provide 'al-imenu)
 
