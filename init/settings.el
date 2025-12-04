@@ -160,7 +160,8 @@
  ("s"   (al/display-buffer "*scratch*"))
  ("e" . emoji-list)
  ("w" . al/switch-to-w3m)
- ("m" . woman)
+ ("m" . man)
+ ("M" . woman)
  ("k"   (kill-buffer nil))
  ("8" . al/switch-to-characters))
 
