@@ -138,9 +138,6 @@
  ("C-="         . describe-char)
  ("C-c x"       . exit-recursive-edit)
  ("C-c r"       . revert-buffer)
- ("C-c p"       . list-processes)
- ("C-c e"       . list-environment)
- ("C-c F"       . al/switch-to-faces)
  ("C-c k"       . al/kill-process))
 
 (defalias 'ctl-x-r-prefix ctl-x-r-map)
