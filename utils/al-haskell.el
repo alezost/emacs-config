@@ -1,6 +1,6 @@
 ;;; al-haskell.el --- Additional functionality for `haskell' mode  -*- lexical-binding: t -*-
 
-;; Copyright © 2022 Alex Kost
+;; Copyright © 2022–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -23,12 +23,11 @@
 (defun al/haskell-interactive-switch-or-start ()
   "Switch to Haskell interactive buffer or create it if it does not exist."
   (interactive)
-  (let ((session (if (cdr haskell-sessions)
-                     (haskell-session-choose)
-                   (car haskell-sessions))))
-    (if session
-        (pop-to-buffer (haskell-session-interactive-buffer session))
-      (haskell-session-new))))
+  (if-let* ((session (if (cdr haskell-sessions)
+                         (haskell-session-choose)
+                       (car haskell-sessions))))
+      (pop-to-buffer (haskell-session-interactive-buffer session))
+    (haskell-session-new)))
 
 (provide 'al-haskell)
 
