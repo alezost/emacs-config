@@ -19,6 +19,7 @@
 
 (eval-when-compile (require 'cl-lib))
 (require 'seq)
+(require 'al-general)
 
 (defun al/file-if-exists (file)
   "Return FILE if it exists, or nil."
@@ -90,18 +91,14 @@ Each specification from SPECS list may have one of the following forms:
 REGEXP-OR-LIST is either a regexp (string), or a list of regexps.
 For the first form, specifications are added at the beginning of
 `auto-mode-alist'; for the second form it is added at the end."
-  (cl-flet ((add (mode regexp &optional append?)
-              (add-to-list 'auto-mode-alist (cons regexp mode) append?)))
-    (dolist (spec specs)
-      (pcase spec
-        (`(,mode ,str-or-lst t)
-         (if (stringp str-or-lst)
-             (add mode str-or-lst t)
-           (dolist (regexp str-or-lst)
-             (add mode regexp t))))
-        (`(,mode . ,regexps)
-         (dolist (regexp regexps)
-           (add mode regexp)))))))
+  (dolist (spec specs)
+    (pcase spec
+      (`(,mode ,re-or-lst t)
+       (dolist (regexp (al/list-maybe re-or-lst))
+         (add-to-list 'auto-mode-alist (cons regexp mode) 'append)))
+      (`(,mode . ,regexps)
+       (dolist (regexp regexps)
+         (add-to-list 'auto-mode-alist (cons regexp mode)))))))
 
 (defun al/append-files (in-files out-file &optional insert-file-names)
   "Insert the contents of IN-FILES into OUT-FILE.
