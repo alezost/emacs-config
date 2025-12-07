@@ -149,6 +149,18 @@ Intended to be used for `emms-mode-line-mode-line-function'."
 
 ;;; Misc
 
+(declare-function al/switch-buffer "al-buffer" t)
+
+;;;###autoload
+(defun al/emms-switch-to-playlist-buffer ()
+  "Switch to EMMS playlist buffer prompting for it if necessary."
+  (interactive)
+  (if-let* ((buffers (emms-playlist-buffer-list))
+            (more-than-one (cdr buffers)))
+      (al/switch-buffer "EMMS buffer: "
+                        :buffers buffers)
+    (emms)))
+
 (declare-function wget "wget" t)
 
 ;;;###autoload

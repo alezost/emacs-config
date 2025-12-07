@@ -26,6 +26,7 @@
  :prefix-map al/emms-map
  :prefix-docstring "Map for EMMS."
  :prefix [ctrl-m]
+ ([ctrl-m] . al/emms-switch-to-playlist-buffer)
  ("SPC" . emms-pause)
  ("M-SPC" . emms-stop)
  ("s" . al/emms-show)
