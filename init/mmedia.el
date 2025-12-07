@@ -162,12 +162,14 @@
     t)
   (suppress-keymap emms-playlist-mode-map)
   (al/add-hook-maybe 'emms-playlist-mode-hook
-    ;; `emms-playlist-mode' is not defined properly (with
-    ;; `define-derived-mode'), it is just a `defun', so
-    ;; `after-change-major-mode-hook' doesn't work and `dim' doesn't set
-    ;; `mode-name'.  Because of this, add `dim-set-major-name' to the
-    ;; playlist hook.
-    '(hl-line-mode dim-set-major-name))
+    (list 'hl-line-mode
+          ;; `emms-playlist-mode' is not defined properly (with
+          ;; `define-derived-mode'), it is just a `defun', so
+          ;; `after-change-major-mode-hook' doesn't work and `dim'
+          ;; doesn't set `mode-name'.  Because of this, add
+          ;; `dim-set-major-name' to the playlist hook.
+          'dim-set-major-name
+          (lambda () (setq-local page-delimiter "^—"))))
 
   (al/add-hook-maybe 'kill-emacs-hook 'al/emms-save-playlists))
 
