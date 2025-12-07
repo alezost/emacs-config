@@ -1,6 +1,6 @@
 ;;; al-org.el --- Additional functionality for org-emms  -*- lexical-binding: t -*-
 
-;; Copyright © 2021 Alex Kost
+;; Copyright © 2021–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -49,7 +49,11 @@ If link contains a track position, start there.  Otherwise,
 playback from the start."
   (let* ((path (split-string file "::"))
 	 (file (expand-file-name (car path)))
+         (buf-name (file-name-base file))
+         (buf (get-buffer buf-name))
 	 (time (org-emms-time-string-to-seconds (cadr path))))
+    (setq emms-playlist-buffer
+          (or buf (emms-playlist-new buf-name)))
     (emms-play-playlist file)
     (when time
       (when (> org-emms-delay 0)
