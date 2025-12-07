@@ -1,6 +1,6 @@
 ;;; al-emms.el --- Additional functionality for EMMS  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2016, 2019 Alex Kost
+;; Copyright © 2013–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 ;;; Code:
 
 (require 'emms)
+(require 'emms-playlist-mode)
 
 (defun al/emms-seek-forward (seconds)
   "Seek by SECONDS forward.
@@ -172,6 +173,29 @@ Intended to be used for `emms-mode-line-mode-line-function'."
   (string-match al/emms-split-track-regexp name)
   (list (match-string 1 name)
         (match-string 2 name)))
+
+(defvar emms-source-playlist-ask-before-overwrite)
+
+;;;###autoload
+(defun al/emms-save-playlist ()
+  "Save the current EMMS playlist."
+  (interactive)
+  (when emms-playlist-buffer-p
+    (let ((emms-source-playlist-ask-before-overwrite nil)
+          (emms-playlist-buffer (current-buffer)))
+      (emms-playlist-save
+       'native
+       (expand-file-name (concat (buffer-name) ".pl")
+                         emms-directory)))))
+
+;;;###autoload
+(defun al/emms-save-playlists ()
+  "Save all EMMS playlists."
+  (interactive)
+  (dolist (buf emms-playlist-buffers)
+    (when (buffer-live-p buf)
+      (with-current-buffer buf
+        (al/emms-save-playlist)))))
 
 (provide 'al-emms)
 

@@ -169,13 +169,7 @@
     ;; playlist hook.
     '(hl-line-mode dim-set-major-name))
 
-  (defun al/emms-save-playlist ()
-    (interactive)
-    (let (emms-source-playlist-ask-before-overwrite)
-      (when emms-playlist-buffer
-        (with-current-buffer emms-playlist-buffer
-          (emms-playlist-save 'native (al/music-dir-file "playlist"))))))
-  (al/add-hook-maybe 'kill-emacs-hook 'al/emms-save-playlist))
+  (al/add-hook-maybe 'kill-emacs-hook 'al/emms-save-playlists))
 
 (with-eval-after-load 'emms-later-do
   (setq emms-later-do-interval 0.1))
