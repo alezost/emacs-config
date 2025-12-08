@@ -43,22 +43,37 @@ This function is a substitution for `org-emms-play'."
 
 ;;; Playlist
 
-(defun al/org-emms-playlist-play (file)
-  "Play emms playlist FILE from `org-mode'.
-If link contains a track position, start there.  Otherwise,
-playback from the start."
-  (let* ((path (split-string file "::"))
+(defun al/org-emms-playlist-play (link)
+  "Add or play EMMS playlist from `org-mode' LINK.
+LINK has \"FILE[::TIME]\" form, where FILE is a playlist file and TIME
+is the track position in seconds.
+
+EMMS playlist buffer has the same name as FILE basename.
+If it already exists, just add playlist but don't play it.
+
+If non-zero TIME is specified, start playback from this position.
+If TIME is zero, just add playlist but don't play it.
+If TIME is not specified, play the playlist from the start."
+  (let* ((path (split-string link "::"))
 	 (file (expand-file-name (car path)))
          (buf-name (file-name-base file))
-         (buf (get-buffer buf-name))
-	 (time (org-emms-time-string-to-seconds (cadr path))))
+         (buf (get-buffer buf-name)))
     (setq emms-playlist-buffer
           (or buf (emms-playlist-new buf-name)))
-    (emms-play-playlist file)
-    (when time
-      (when (> org-emms-delay 0)
-        (sleep-for org-emms-delay))
-      (emms-seek-to time))))
+    (emms-add-playlist file)
+    (let* ((time (cadr path))
+           (time (and time
+                      (if (equal "" time)
+                          nil
+                        (org-emms-time-string-to-seconds time)))))
+      (when (and (null buf)     ; playlist did not exist
+                 (or (null time)
+                     (/= 0 time)))
+        (emms-start)
+        (when (and time (/= 0 time))
+          (when (> org-emms-delay 0)
+            (sleep-for org-emms-delay))
+          (emms-seek-to time))))))
 
 (org-link-set-parameters
  "emms-pl"
