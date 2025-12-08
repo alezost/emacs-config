@@ -300,12 +300,9 @@
 
 (with-eval-after-load 'al-shell
   (setq al/shell-buffer-alist
-        (let ((dir al/download-dir))
-          `(("*shell*" . ,dir)
-            ("*shell*<2>" . ,dir)
-            ("*shell*<3>" . ,dir)
-            ("*shell*<4>" . ,dir)
-            ("*shell-math*" . ,(al/math-dir-file "video"))))))
+        `(("*shell*"    . ,al/download-dir)
+          ("*shell*<2>" . ,al/download-dir)
+          ("*shell*<3>" . ,al/download-dir))))
 
 (al/bind-keys
  ("C-z"   . eshell)
