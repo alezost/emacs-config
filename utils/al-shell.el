@@ -37,19 +37,18 @@ If NO-SORT is non-nil, do not sort the list by buffer names."
 ;;;###autoload
 (defun al/shell (&optional arg)
   "Start shell if needed or switch to \\[shell] buffer.
-Interactively, ARG has the same meaning as in `shell'."
+If ARG is non-nil, start a new shell buffer."
   (interactive "P")
   (if arg
-      (call-interactively 'shell)
+      (shell (generate-new-buffer-name "*shell*"))
     (if (derived-mode-p 'shell-mode)
         (let ((buf (current-buffer)))
           (if (get-buffer-process buf)
               (switch-to-buffer (al/next-element (al/shell-buffers) buf))
             (shell buf)))
-      (let ((buf (al/next-element (al/shell-buffers))))
-        (if buf
-            (switch-to-buffer buf)
-          (call-interactively 'shell))))))
+      (if-let* ((buf (al/next-element (al/shell-buffers))))
+          (switch-to-buffer buf)
+        (call-interactively 'shell)))))
 
 ;;;###autoload
 (defun al/switch-to-shell-buffer (&optional arg)
