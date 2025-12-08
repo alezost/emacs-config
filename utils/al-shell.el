@@ -72,7 +72,7 @@ This variable is used by `al/shells' command.")
   (dolist (assoc al/shell-buffer-alist)
     (let ((buf-name (car assoc)))
       (unless (get-buffer buf-name)
-        (let ((default-directory (cdr assoc)))
+        (let ((default-directory (file-name-as-directory (cdr assoc))))
           (shell (get-buffer-create buf-name)))))))
 
 (provide 'al-shell)
