@@ -1,17 +1,17 @@
 ;;; al-w3m.el --- Additional functionality for w3m  -*- lexical-binding: t -*-
 
-;; Copyright © 2013-2016 Alex Kost
+;; Copyright © 2013–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
 ;; (at your option) any later version.
-
+;;
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-
+;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -26,12 +26,7 @@
 (defun al/switch-to-w3m ()
   "Switch to the `w3m' buffer."
   (interactive)
-  (al/switch-to-buffer-or-funcall
-   (lambda ()
-     (if (fboundp 'w3m-alive-p)
-         (w3m-alive-p)
-       (error "w3m is not running")))
-   #'w3m))
+  (al/switch-to-buffer-or-funcall #'w3m-alive-p #'w3m))
 
 
 ;;; Go to the next/previous link
@@ -43,7 +38,7 @@ See `al/w3m-next-url'/`al/w3m-previous-url' for details.")
 (defvar al/w3m-search-re "\\<%s\\>"
   "Regexp for searching next/previous URL.
 The string should contain \"%s\"-expression substituted by a
-searched word. ")
+searched word.")
 
 (defun al/w3m-search-url (word point fun)
   "Search an URL anchor beginning with WORD.
@@ -103,8 +98,9 @@ Same as `w3m-wget' but works."
 (defun al/w3m-buffer-number-action (function buffer-number)
   "Call FUNCTION on a w3m buffer with BUFFER-NUMBER.
 Buffers are enumerated from 1."
-  (let ((buf (nth (- buffer-number 1) (w3m-list-buffers))))
-    (and buf (funcall function buf))))
+  (when-let* ((buf (nth (- buffer-number 1)
+                        (w3m-list-buffers))))
+    (funcall function buf)))
 
 ;;;###autoload
 (defun al/w3m-switch-to-buffer (arg)
