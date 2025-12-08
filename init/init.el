@@ -179,9 +179,9 @@
       ("M-a" . mwim-beginning)
       ("M-i" . mwim-end))))
 
-(al/add-after-init-hook 'which-key-mode)
-
-;; Setting hooks from files that are already loaded.
+;; These hooks cannot be set in my init files because my utils, my
+;; packages, and external packages are autoloaded after loading the init
+;; files.
 (al/add-hook-maybe 'after-change-major-mode-hook
   'al/set-default-input-method)
 (al/add-hook-maybe 'window-configuration-change-hook
@@ -201,6 +201,11 @@
 (al/add-hook-maybe 'messages-buffer-mode-hook
   (list 'al/hl-todo-mode
         (lambda () (setq buffer-read-only nil))))
+(al/add-after-init-hook 'which-key-mode)
+(al/eval-after-init
+  (when (string= server-name "server-emms")
+    (appt-activate)
+    (al/shells)))
 
 (when (and (fboundp 'smartparens-mode)
            (fboundp 'paredit-mode))

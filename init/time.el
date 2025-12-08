@@ -110,9 +110,6 @@
   (when (require 'al-appt nil t)
     (advice-add 'appt-display-message :override #'al/appt-display-message)
     (advice-add 'appt-mode-line :override #'al/appt-mode-line)))
-(al/eval-after-init
-  (when (string= server-name "server-emms")
-    (appt-activate)))
 
 (with-eval-after-load 'al-appt
   (when (require 'al-file nil t)
