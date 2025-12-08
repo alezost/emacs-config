@@ -1,17 +1,17 @@
 ;;; al-package.el --- Additional functionality for Emacs package system  -*- lexical-binding: t -*-
 
-;; Copyright © 2014-2016 Alex Kost
+;; Copyright © 2014–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
 ;; (at your option) any later version.
-
+;;
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-
+;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -79,14 +79,13 @@ This function is intendend to be used as an `around' advice for
   "Do not install PACKAGE if it is one of `al/ignored-packages'.
 This function is intendend to be used as an `around' advice for
 `quelpa-package-install'."
-  (let* ((name (al/package-name package))
-         (ignore? (memq name al/ignored-packages)))
-    (if ignore?
-        (progn
-          (message "Ignoring '%s' package." name)
-          ;; `quelpa-package-install' returns version string.
-          "99999.9")
-      (apply fun package args))))
+  (if-let* ((name (al/package-name package))
+            (ignore? (memq name al/ignored-packages)))
+      (progn
+        (message "Ignoring '%s' package." name)
+        ;; `quelpa-package-install' returns version string.
+        "99999.9")
+    (apply fun package args)))
 
 (defun al/package-compute-transaction (fun packages requirements
                                            &rest args)
