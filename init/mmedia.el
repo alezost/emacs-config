@@ -95,8 +95,7 @@
                             (cons "oga" emms-player-base-format-list)))
     (push 'emms-player-mpv emms-player-list))
 
-  ;; Do not add `emms-cache-save' to `kill-emacs-hook'.
-  (let ((noninteractive t)) (emms-cache 1))
+  (emms-cache 1)
 
   (push 'emms-info-initialize-track emms-track-initialize-functions)
   (al/add-hook-maybe 'emms-player-started-hook
