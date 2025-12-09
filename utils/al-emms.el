@@ -142,9 +142,10 @@ Intended to be used for `emms-track-description-function'."
 (defun al/emms-mode-line-song-string ()
   "Format the currently playing song.
 Intended to be used for `emms-mode-line-mode-line-function'."
-  (format emms-mode-line-format
-          (funcall al/emms-mode-line-song-function
-                   (emms-playlist-current-selected-track))))
+  (if-let* ((track (emms-playlist-current-selected-track)))
+      (format emms-mode-line-format
+              (funcall al/emms-mode-line-song-function track))
+    " (no track)"))
 
 
 ;;; Misc
