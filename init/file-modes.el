@@ -41,9 +41,6 @@
       '(ascii html icalendar latex odt texinfo man))
 (with-eval-after-load 'org
   (require 'org-tempo nil t)
-  (and (require 'org-emms nil t)
-       (require 'al-org-emms nil t)
-       (advice-add 'org-emms-play :override #'al/org-emms-play))
   (when (require 'al-org nil t)
     (advice-add 'org-link-make-string
       :around #'al/org-link-set-description))
@@ -110,6 +107,15 @@
     "Alist of auxiliary keys for `org-mode-map'.")
   (al/bind-keys-from-vars 'org-mode-map 'al/org-keys)
 
+  ;; Do not require `al-org-emms' to avoid loading EMMS at org start.
+  (org-link-set-parameters
+   "emms"
+   :follow #'al/org-emms-play
+   :store #'al/org-emms-store-link)
+  (org-link-set-parameters
+   "emms-pl"
+   :follow #'al/org-emms-playlist-play)
+
   ;; "org-compat.el" adds a hook to set `imenu-create-index-function' to
   ;; `org-imenu-get-tree', but it does this only after `imenu' is loaded.
   ;; This raises the following problem: if an org file is loaded and
@@ -164,16 +170,6 @@ will do the right thing."
    :map org-agenda-mode-map
    ("." . org-agenda-previous-line)
    ("e" . org-agenda-next-line)))
-
-(with-eval-after-load 'org-emms
-  (setq org-emms-delay 2
-        org-emms-time-format "%m:%.2s")
-  (when (require 'al-emms-mpv nil t)
-    (defun al/org-emms-sync-time (&rest _)
-      ;; This is asynchronous, so we need to wait.
-      (al/emms-mpv-sync-playing-time)
-      (sleep-for 1))
-    (advice-add 'org-emms-make-link :before #'al/org-emms-sync-time)))
 
 (with-eval-after-load 'org-ref
   (defvar al/org-ref-cite-keys

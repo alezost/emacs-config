@@ -1,4 +1,4 @@
-;;; al-org.el --- Additional functionality for org-emms  -*- lexical-binding: t -*-
+;;; al-org-emms.el --- Functionality to use org links for EMMS tracks and playlists  -*- lexical-binding: t -*-
 
 ;; Copyright © 2021–2025 Alex Kost
 
@@ -15,18 +15,36 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+;;; Commentary:
+
+;; Most of the code originates from `org-emms' package.
+
 ;;; Code:
 
+(require 'ol)
 (require 'emms)
-(require 'org-emms)
 (require 'emms-source-playlist)
+(require 'emms-playing-time)
+(require 'al-misc)
+(require 'al-emms-mpv)
 
+
+;;; "emms" links
+
+;; TODO Remove this variable and use mpv "file-loaded" event instead.
+(defvar al/org-emms-delay 2
+  "Time in seconds between starting playing and seeking to time.")
+
+(defvar al/org-emms-time-format "%m:%.2s"
+  "Format string for a track position in org links.
+This string is passed to `format-seconds' function.")
+
+;;;###autoload
 (defun al/org-emms-play (file)
-  "Play multimedia FILE from `org-mode'.
-This function is a substitution for `org-emms-play'."
+  "Play EMMS FILE from `org-mode'."
   (let* ((path (split-string file "::"))
 	 (file (expand-file-name (car path)))
-	 (time (org-emms-time-string-to-seconds (cadr path))))
+	 (time (al/time-string-to-seconds (cadr path))))
     ;; If we want to open a link with the current track, then
     ;; start it if it is stopped or just seek to time, otherwise.
     (if (string= file
@@ -36,13 +54,35 @@ This function is a substitution for `org-emms-play'."
           (emms-start))
       (emms-play-file file))
     (when time
-      (and (> org-emms-delay 0)
-           (sleep-for org-emms-delay))
+      (and (> al/org-emms-delay 0)
+           (sleep-for al/org-emms-delay))
       (emms-seek-to time))))
 
-
-;;; Playlist
+(defun al/org-emms-make-link ()
+  "Return org link for the the current EMMS track."
+  (al/emms-mpv-sync-playing-time)
+  ;; TODO use `al/emms-mpv-call-with-property' instead of sleeping
+  (sleep-for 1)
+  (let ((track (emms-playlist-selected-track)))
+    (concat "emms:" (emms-track-name track)
+            (and (/= 0 emms-playing-time)
+                 (concat "::"
+                         (format-seconds al/org-emms-time-format
+                                         emms-playing-time))))))
 
+;;;###autoload
+(defun al/org-emms-store-link ()
+  "Store org link for the current playing track in EMMS."
+  (when (derived-mode-p '(emms-playlist-mode emms-browser-mode))
+    (let ((link (al/org-emms-make-link)))
+      (org-link-store-props
+       :type "emms"
+       :link link))))
+
+
+;;; "emms-pl" links
+
+;;;###autoload
 (defun al/org-emms-playlist-play (link)
   "Add or play EMMS playlist from `org-mode' LINK.
 LINK has \"FILE[::TIME]\" form, where FILE is a playlist file and TIME
@@ -65,20 +105,16 @@ If TIME is not specified, play the playlist from the start."
            (time (and time
                       (if (equal "" time)
                           nil
-                        (org-emms-time-string-to-seconds time)))))
+                        (al/time-string-to-seconds time)))))
       (when (and (null buf)     ; playlist did not exist
                  (or (null time)
                      (/= 0 time)))
         (emms-start)
         (when (and time (/= 0 time))
-          (when (> org-emms-delay 0)
-            (sleep-for org-emms-delay))
+          (when (> al/org-emms-delay 0)
+            (sleep-for al/org-emms-delay))
           (emms-seek-to time))))))
-
-(org-link-set-parameters
- "emms-pl"
- :follow #'al/org-emms-playlist-play)
 
 (provide 'al-org-emms)
 
-;;; al-org.el ends here
+;;; al-org-emms.el ends here

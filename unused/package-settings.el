@@ -236,6 +236,16 @@
 
 ;;; Misc
 
+(with-eval-after-load 'org-emms
+  (setq org-emms-delay 2
+        org-emms-time-format "%m:%.2s")
+  (when (require 'al-emms-mpv nil t)
+    (defun al/org-emms-sync-time (&rest _)
+      ;; This is asynchronous, so we need to wait.
+      (al/emms-mpv-sync-playing-time)
+      (sleep-for 1))
+    (advice-add 'org-emms-make-link :before #'al/org-emms-sync-time)))
+
 (al/bind-keys
  :prefix-map al/echo-msk-map
  :prefix-docstring "Map for echo-msk."
