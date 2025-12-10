@@ -110,8 +110,7 @@
   ;; Do not require `al-org-emms' to avoid loading EMMS at org start.
   (org-link-set-parameters
    "emms"
-   :follow #'al/org-emms-play
-   :store #'al/org-emms-store-link)
+   :follow #'al/org-emms-play)
   (org-link-set-parameters
    "emms-pl"
    :follow #'al/org-emms-playlist-play)

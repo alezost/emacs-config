@@ -113,6 +113,7 @@
 (with-eval-after-load 'emms-playlist-mode
   (defconst al/emms-playlist-keys
     '("r"
+      ("M-r M-l" . al/org-emms-store-link)
       ("SPC" . emms-pause)
       ("S"   . al/emms-save-playlist)
       ("Q"   . emms-stop)

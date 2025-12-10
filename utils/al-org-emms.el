@@ -64,26 +64,35 @@ This function is intended to be added to `emms-mpv-file-loaded-hook'."
           (emms-player-start track))
       (emms-play-file file))))
 
-(defun al/org-emms-make-link ()
-  "Return org link for the the current EMMS track."
-  (al/emms-mpv-sync-playing-time)
-  ;; TODO use `al/emms-mpv-call-with-property' instead of sleeping
-  (sleep-for 1)
-  (let ((track (emms-playlist-selected-track)))
-    (concat "emms:" (emms-track-name track)
-            (and (/= 0 emms-playing-time)
-                 (concat "::"
-                         (format-seconds al/org-emms-time-format
-                                         emms-playing-time))))))
+(defun al/org-emms-make-link (track &optional time)
+  "Return org link for EMMS TRACK.
+TIME is seeking time in seconds."
+  (concat "emms:" (emms-track-name track)
+          (and time (/= 0 time)
+               (concat "::" (format-seconds al/org-emms-time-format
+                                            time)))))
 
 ;;;###autoload
 (defun al/org-emms-store-link ()
   "Store org link for the current playing track in EMMS."
+  (interactive)
   (when (derived-mode-p '(emms-playlist-mode emms-browser-mode))
-    (let ((link (al/org-emms-make-link)))
-      (org-link-store-props
-       :type "emms"
-       :link link))))
+    (if emms-player-playing-p
+        (al/emms-mpv-call-with-property
+         "time-pos"
+         ;; This is performed asynchronously, so save the current (EMMS
+         ;; playlist) buffer to get track and playing time from there.
+         (let ((buf (current-buffer)))
+           (lambda (sec)
+             (with-current-buffer buf
+               (setq emms-playing-time (round sec))
+               (org-link--add-to-stored-links
+                (al/org-emms-make-link (emms-playlist-selected-track)
+                                       emms-playing-time)
+                nil)))))
+      (org-link--add-to-stored-links
+       (al/org-emms-make-link (emms-playlist-selected-track))
+       nil))))
 
 
 ;;; "emms-pl" links
