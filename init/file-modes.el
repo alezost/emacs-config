@@ -176,6 +176,10 @@ will do the right thing."
     '("H-o" "H-u" "H-e"))
   (al/bind-keys-from-vars 'org-ref-cite-keymap 'al/org-ref-cite-keys))
 
+(with-eval-after-load 'al-org-emms
+  (when (require 'emms-mpv nil t)
+    (add-hook 'emms-mpv-file-loaded-hook #'al/org-emms-seek)))
+
 
 ;;; Pdf tools
 

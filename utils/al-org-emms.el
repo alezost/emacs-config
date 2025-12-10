@@ -31,32 +31,38 @@
 
 ;;; "emms" links
 
-;; TODO Remove this variable and use mpv "file-loaded" event instead.
-(defvar al/org-emms-delay 2
-  "Time in seconds between starting playing and seeking to time.")
+(defvar al/org-emms-seek-time nil
+  "Time in seconds the lastly loaded mpv file should be seeked to.
+If nil, do not perform seeking.")
 
 (defvar al/org-emms-time-format "%m:%.2s"
   "Format string for a track position in org links.
 This string is passed to `format-seconds' function.")
+
+(defun al/org-emms-seek ()
+  "Seek the current EMMS track to `al/org-emms-seek-time'.
+This function is intended to be added to `emms-mpv-file-loaded-hook'."
+  (when-let* ((time al/org-emms-seek-time))
+    (setq al/org-emms-seek-time nil)
+    (emms-player-seek-to time)))
 
 ;;;###autoload
 (defun al/org-emms-play (file)
   "Play EMMS FILE from `org-mode'."
   (let* ((path (split-string file "::"))
 	 (file (expand-file-name (car path)))
-	 (time (al/time-string-to-seconds (cadr path))))
+         (time (cadr path))
+	 (time (and time (al/time-string-to-seconds time)))
+         (track (emms-playlist-current-selected-track)))
+    (when time
+        (setq al/org-emms-seek-time time))
     ;; If we want to open a link with the current track, then
     ;; start it if it is stopped or just seek to time, otherwise.
-    (if (string= file
-                 (emms-track-name
-                  (emms-playlist-current-selected-track)))
-        (unless emms-player-playing-p
-          (emms-start))
-      (emms-play-file file))
-    (when time
-      (and (> al/org-emms-delay 0)
-           (sleep-for al/org-emms-delay))
-      (emms-seek-to time))))
+    (if (string= file (emms-track-name track))
+        (if emms-player-playing-p
+            (al/org-emms-seek)
+          (emms-player-start track))
+      (emms-play-file file))))
 
 (defun al/org-emms-make-link ()
   "Return org link for the the current EMMS track."
@@ -111,9 +117,7 @@ If TIME is not specified, play the playlist from the start."
                      (/= 0 time)))
         (emms-start)
         (when (and time (/= 0 time))
-          (when (> al/org-emms-delay 0)
-            (sleep-for al/org-emms-delay))
-          (emms-seek-to time))))))
+          (setq al/org-emms-seek-time time))))))
 
 (provide 'al-org-emms)
 
