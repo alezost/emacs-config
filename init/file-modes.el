@@ -263,7 +263,7 @@ will do the right thing."
   (list t))
 (advice-add 'normal-mode :filter-args #'al/fix-normal-mode)
 
-(when (require 'al-file nil t)
+(al/eval-after-init
   (al/add-to-auto-mode-alist
    `((sh-mode "/etc/profile\\'"
               "bashrc\\'")
