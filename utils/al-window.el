@@ -1,6 +1,6 @@
 ;;; al-window.el --- Additional functionality for working with windows and frames  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2017 Alex Kost
+;; Copyright © 2013–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -24,20 +24,20 @@
 (defun al/make-2-windows (&optional fun)
   "Make 2 windows in the current frame.
 FUN is a function for splitting
-windows (`split-window-vertically' by default)."
+windows (`split-window-below' by default)."
   (interactive)
-  (or fun
-      (setq fun 'split-window-below))
-  (if (one-window-p)
-      (funcall fun)
-    (let ((cur-buffer (current-buffer)))
-      (other-window -1)
-      (delete-other-windows)
-      (funcall fun)
-      (switch-to-buffer cur-buffer))))
+  (let ((fun (or fun #'split-window-below))
+        (windows (window-list nil 'no-minibuffer)))
+    (if (= 1 (length windows))
+        (funcall fun)
+      (let ((cur-buffer (current-buffer)))
+        (other-window -1)
+        (delete-other-windows)
+        (funcall fun)
+        (switch-to-buffer cur-buffer)))))
 
 ;;;###autoload
-(defalias 'al/make-vertical-windows 'al/make-2-windows
+(defalias 'al/make-vertical-windows #'al/make-2-windows
   "Make 2 vertical windows.
 If there is only one window, split it.
 If there are more windows, show current and previous buffer in new
@@ -50,7 +50,7 @@ If there is only one window, split it.
 If there are more windows, show current and previous buffer in new
 windows."
   (interactive)
-  (al/make-2-windows 'split-window-right))
+  (al/make-2-windows #'split-window-right))
 
 
 ;;; Switching windows
@@ -90,10 +90,9 @@ otherwise select the next window."
 (defun al/switch-to-minibuffer ()
   "Switch to minibuffer window."
   (interactive)
-  (let ((mb (active-minibuffer-window)))
-    (if mb
-        (select-window mb)
-      (error "Minibuffer is not active"))))
+  (if-let* ((mb (active-minibuffer-window)))
+      (select-window mb)
+    (error "Minibuffer is not active")))
 
 
 ;;; Frames
