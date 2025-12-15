@@ -27,14 +27,13 @@
 Return a string containing the according LaTeX macro or nil
 if SYMBOL (which can be a character or a one-character string)
 was not converted."
-  (let ((char (cond ((characterp symbol) symbol)
-                    ((stringp symbol) (aref symbol 0)))))
-    (or char
-        (error "SYMBOL must be a character or a string"))
-    ;; Ignore usual letters, digits, newlines, spaces, etc.
-    (unless (string-match-p "[a-zA-Z0-9[:cntrl:][:blank:]]"
-                            (string char))
-      (car (rassoc char tex--prettify-symbols-alist)))))
+  (if-let* ((char (cond ((characterp symbol) symbol)
+                        ((stringp symbol) (aref symbol 0)))))
+      ;; Ignore usual letters, digits, newlines, spaces, etc.
+      (unless (string-match-p "[a-zA-Z0-9[:cntrl:][:blank:]]"
+                              (string char))
+        (car (rassoc char tex--prettify-symbols-alist)))
+    (error "SYMBOL must be a character or a string")))
 
 (defun al/convert-string-to-latex (string)
   "Convert STRING with Unicode symbols to LaTeX."
