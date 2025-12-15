@@ -141,7 +141,7 @@
 
 (al/bind-keys*
   ("M-b" . al/switch-to-previous-buffer)
-  ("C-M-b" (find-file (al/notes-dir-file "bookmarks.org"))))
+  ("C-M-b" (al/find-file (al/notes-dir-file "bookmarks.org"))))
 
 (al/bind-keys*
  :prefix-map al/buffer-map
@@ -605,7 +605,7 @@
  ("h" . journal-insert-subheading)
  ("H" . journal-back-to-entry-heading)
  ("i" . journal-insert-block)
- ("t"   (find-file (al/journal-dir-file "tags"))))
+ ("t"   (al/find-file (al/journal-dir-file "tags"))))
 
 (with-eval-after-load 'journal
   (setq

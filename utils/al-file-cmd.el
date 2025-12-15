@@ -21,12 +21,18 @@
 (require 'al-read)
 
 ;;;###autoload
-(defun al/find-file (&optional dir)
-  "Call `find-file' starting from DIR if it is non-nil."
+(defun al/find-file (&optional filename)
+  "Find FILENAME or switch to its buffer if it is already opened.
+If FILENAME is a directory, call `find-file' starting from it."
   (interactive)
-  (let ((default-directory (file-name-as-directory
-                            (or dir default-directory))))
-    (call-interactively #'find-file)))
+  (if (or (null filename)
+          (file-directory-p filename))
+      (let ((default-directory (file-name-as-directory
+                                (or filename default-directory))))
+        (call-interactively #'find-file))
+    (if-let* ((buf (get-file-buffer filename)))
+        (switch-to-buffer buf)
+      (find-file filename))))
 
 ;;;###autoload
 (defun al/sudo-find-file (&optional arg)

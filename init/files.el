@@ -21,27 +21,27 @@
 (al/bind-key* "M-C-f" find-file-at-point)
 
 (al/bind-keys*
- :prefix-map al/find-file-map
- :prefix-docstring "Map for finding files."
- :prefix "C-f"
- ("C-f"   . find-file)
- ("p"     . al/find-file-in-path)
- ("S"     . al/sudo-find-file)
- ("h"     . al/ssh-find-file)
- ("z"     . al/router-get-log)
- ("u"     . al/choose-browser)
- ("l"     . find-library)
- ("r"     . recentf-open)
- ("e"       (al/find-file al/emacs-dir))
- ("C-c"     (al/find-file al/emacs-init-dir))
- ("C-s"     (find-file (al/emacs-init-dir-file "settings.el")))
- ("k"       (find-file (al/emacs-init-dir-file "keys.el")))
- ("i"       (find-file (al/emacs-init-dir-file "init.el")))
- ("t"       (find-file (al/emacs-init-dir-file "text.el")))
- ("v"       (find-file (al/emacs-init-dir-file "visual.el")))
- ("c"       (al/find-file (al/emacs-my-packages-dir-file "alect-themes")))
- ("C-M-c"   (find-file (al/emacs-my-packages-dir-file
-                        "alect-themes/alect-themes.el"))))
+  :prefix-map al/find-file-map
+  :prefix-docstring "Map for finding files."
+  :prefix "C-f"
+  ("C-f"   . find-file)
+  ("p"     . al/find-file-in-path)
+  ("S"     . al/sudo-find-file)
+  ("h"     . al/ssh-find-file)
+  ("z"     . al/router-get-log)
+  ("u"     . al/choose-browser)
+  ("l"     . find-library)
+  ("r"     . recentf-open)
+  ("e"       (al/find-file al/emacs-dir))
+  ("C-c"     (al/find-file al/emacs-init-dir))
+  ("C-s"     (al/find-file (al/emacs-init-dir-file "settings.el")))
+  ("k"       (al/find-file (al/emacs-init-dir-file "keys.el")))
+  ("i"       (al/find-file (al/emacs-init-dir-file "init.el")))
+  ("t"       (al/find-file (al/emacs-init-dir-file "text.el")))
+  ("v"       (al/find-file (al/emacs-init-dir-file "visual.el")))
+  ("c"       (al/find-file (al/emacs-my-packages-dir-file "alect-themes")))
+  ("C-M-c"   (al/find-file (al/emacs-my-packages-dir-file
+                            "alect-themes/alect-themes.el"))))
 
 (al/bind-keys
  :prefix-map al/bookmark-map
