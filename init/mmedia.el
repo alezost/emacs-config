@@ -122,6 +122,7 @@
       ("w"   . al/emms-playlist-wget)
       ("C-j" . emms-playlist-mode-insert-newline)
       ("C-k"   (beginning-of-line) (emms-playlist-mode-kill-entire-track))
+      ("C-H-M-k" . al/emms-playlist-kill-track-and-file)
       ("C-t" . emms-playlist-mode-kill)
       ("H-u" . emms-playlist-mode-undo)
       ("["   . al/emms-mpv-speed-down)

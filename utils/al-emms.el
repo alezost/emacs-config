@@ -175,6 +175,23 @@ Intended to be used for `emms-mode-line-mode-line-function'."
       (user-error "Current track is not of 'url' type."))
     (wget url)))
 
+;;;###autoload
+(defun al/emms-playlist-kill-track-and-file (&optional no-confirm)
+  "Kill track at point and delete its file.
+If NO-CONFIRM is non-nil, delete without confirmation."
+  (interactive)
+  (if-let* ((track (emms-playlist-track-at)))
+    (let ((type (emms-track-get track 'type))
+          (file (emms-track-get track 'name)))
+      (unless (eq type 'file)
+        (user-error "Current track is not of `file' type"))
+      (when (or no-confirm
+                (y-or-n-p (format "Delete %S?" file)))
+        (message "Deleting file: %S." file)
+        (delete-file file))
+      (emms-playlist-mode-kill-entire-track))
+    (user-error "No track at point")))
+
 (defvar al/emms-split-track-regexp
   (rx (group (+? any))
       " - "
