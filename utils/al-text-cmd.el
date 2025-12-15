@@ -68,10 +68,9 @@ If ARG is non-nil, prompt for a date."
   "Insert the clipboard contents.
 It doesn't destroy what you paste with \\[yank]."
   (interactive)
-  (let ((clp (gui--selection-value-internal 'CLIPBOARD)))
-    (if clp
-        (insert clp)
-      (message "Clipboard is empty."))))
+  (if-let* ((clp (gui--selection-value-internal 'CLIPBOARD)))
+      (insert clp)
+    (message "Clipboard is empty.")))
 
 (defun al/yank-or-pop (n)
   "Replace just-yanked text with the N-th kill.
