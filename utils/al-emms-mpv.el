@@ -1,6 +1,6 @@
 ;;; al-emms-mpv.el --- Additional functionality for using EMMS with mpv  -*- lexical-binding: t -*-
 
-;; Copyright © 2015–2021 Alex Kost
+;; Copyright © 2015–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -17,14 +17,15 @@
 
 ;;; Code:
 
-(require 'emms-player-mpv)
+(require 'seq)
+(require 'emms-mpv)
 
 (defun al/emms-mpv-playing-radio? ()
   "Return non-nil, if current player is `mpv' and current track
 type is `url' or `streamlist'."
   (and emms-player-playing-p
        (eq (emms-player-get emms-player-playing-p 'start)
-           'emms-player-mpv-start)
+           'emms-mpv-start)
        (memq (emms-track-get (emms-playlist-current-selected-track)
                              'type)
              '(url streamlist))))
@@ -32,7 +33,7 @@ type is `url' or `streamlist'."
 (defun al/emms-mpv-call-with-property (property function &optional fallback)
   "Call FUNCTION on the value of PROPERTY of the current mpv track.
 If there is no such PROPERTY, call FALLBACK function without arguments."
-  (emms-player-mpv-cmd
+  (emms-mpv-cmd
    (list "get_property" property)
    (lambda (value error)
      (if error
@@ -50,7 +51,7 @@ If there is no such PROPERTY, call FALLBACK function without arguments."
 
 (defun al/emms-mpv-run-command (command &optional handler)
   "Run mpv COMMAND for the current EMMS mpv process.
-This is a wrapper for `emms-player-mpv-cmd'.
+This is a wrapper for `emms-mpv-cmd'.
 
 Command is what may be put in mpv conf-file, except it
 should be a list of values, e.g.:
@@ -58,7 +59,7 @@ should be a list of values, e.g.:
   (\"cycle\" \"mute\")
   (\"show_text\" \"${playback-time}\")
   (\"add\" \"speed\" 0.2)"
-  (emms-player-mpv-cmd
+  (emms-mpv-cmd
    ;; OSD prefixes are disabled for JSON API by default:
    ;; <https://github.com/mpv-player/mpv/issues/4517>.
    (cons "osd-auto" command)
@@ -92,11 +93,11 @@ should be a list of values, e.g.:
        (message
         (mapconcat #'identity
                    ;; Remove nils and empty strings.
-                   (cl-remove-if (lambda (elt)
-                                   (or (null elt)
-                                       (and (stringp elt)
-                                            (string= elt ""))))
-                                 (list title name description))
+                   (seq-remove (lambda (elt)
+                                 (or (null elt)
+                                     (and (stringp elt)
+                                          (string= elt ""))))
+                               (list title name description))
                    "\n"))))))
 
 (declare-function al/emms-notify "al-emms-notification" ())
