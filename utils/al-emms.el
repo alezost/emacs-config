@@ -20,6 +20,7 @@
 (require 'seq)
 (require 'emms)
 (require 'emms-playlist-mode)
+(require 'emms-state)
 
 (defun al/emms-seek-forward (seconds)
   "Seek by SECONDS forward.
@@ -97,20 +98,12 @@ fontification."
    (unless no-newline
      (insert "\n"))))
 
-(defvar al/emms-track-description-use-time
-  (require 'emms-state nil t)
-  "If non-nil, `al/emms-full-track-description' adds playing time
-to the track description.")
-
-(declare-function emms-state-format-time "emms-state" (time))
-
 (defun al/emms-full-track-description (track)
   "Return a full description of TRACK.
 Intended to be used for `emms-track-description-function'."
   (let ((artist   (emms-track-get track 'info-artist))
         (title    (emms-track-get track 'info-title))
-        (time     (and al/emms-track-description-use-time
-                       (emms-track-get track 'info-playing-time)))
+        (time     (emms-track-get track 'info-playing-time))
         (tracknum (emms-track-get track 'info-tracknumber))
         (album    (emms-track-get track 'info-album))
         (year     (emms-track-get track 'info-year)))
