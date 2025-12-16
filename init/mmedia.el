@@ -76,6 +76,7 @@
   (require 'emms-metaplaylist-mode)
   (require 'emms-i18n)
   (require 'emms-cache)
+  (require 'emms-mpv nil t)
 
   (setq
    emms-playlist-buffer-name "*EMMS Playlist*"
@@ -85,10 +86,6 @@
    emms-info-functions '(emms-info-libtag emms-info-cueinfo)
    emms-show-format "%s"
    emms-source-file-default-directory al/music-dir)
-
-  (when (require 'emms-mpv nil t)
-    (require 'al-emms-mpv nil t)
-    (push 'emms-mpv emms-player-list))
 
   (emms-cache 1)
 
@@ -106,6 +103,12 @@
       :override #'al/emms-source-add-and-play)
     (advice-add 'emms-playlist-mode-insert-track
       :override #'al/emms-playlist-mode-insert-track)))
+
+(with-eval-after-load 'emms-mpv
+  (when (require 'al-emms-mpv nil t)
+    (push '("client-message" . al/emms-mpv-handle-client-message)
+          emms-mpv-event-handlers))
+  (push 'emms-mpv emms-player-list))
 
 (with-eval-after-load 'emms-playlist-mode
   (defconst al/emms-playlist-keys

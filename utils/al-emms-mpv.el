@@ -182,6 +182,15 @@ If prefix argument is numerical, use it for VALUE."
                 emms-playing-time sec)
        (setq emms-playing-time sec)))))
 
+(defun al/emms-mpv-handle-client-message (json-data)
+  "Handler for \"client-message\" event."
+  (when-let* ((args (alist-get 'args json-data))
+              (arg0 (aref args 0))
+              (pl-end (equal arg0 "al/playlist-end")))
+    (with-current-buffer emms-playlist-buffer
+      (emms-mpv-stopped)
+      (emms-mpv-next-noerror))))
+
 (provide 'al-emms-mpv)
 
 ;;; al-emms-mpv.el ends here
