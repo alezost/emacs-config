@@ -104,10 +104,12 @@
     (emms-state-mode))
   (when (require 'al-emms nil t)
     (setq
-     emms-mode-line-mode-line-function 'al/emms-mode-line-song-string
-     emms-track-description-function 'al/emms-full-track-description)
+     emms-mode-line-mode-line-function #'al/emms-mode-line-song-string
+     emms-track-description-function #'al/emms-full-track-description)
     (advice-add 'emms-source-play
-      :override 'al/emms-source-add-and-play)))
+      :override #'al/emms-source-add-and-play)
+    (advice-add 'emms-playlist-mode-insert-track
+      :override #'al/emms-playlist-mode-insert-track)))
 
 (with-eval-after-load 'emms-playlist-mode
   (defconst al/emms-playlist-keys

@@ -83,6 +83,19 @@ If ARG is specified, show metadata of the track."
 
 ;;; Track description
 
+(defun al/emms-playlist-mode-insert-track (track &optional no-newline)
+  "Insert the description of TRACK at point.
+This is a substitution for `emms-playlist-mode-insert-track'.  The only
+difference is that this function does not add `emms-playlist-track-face'
+to the whole track line, so the track description can have custom
+fontification."
+  (emms-playlist-ensure-playlist-buffer)
+  (emms-with-inhibit-read-only-t
+   (insert (emms-propertize (emms-track-force-description track)
+                            'emms-track track))
+   (unless no-newline
+     (insert "\n"))))
+
 (defvar al/emms-track-description-use-time
   (require 'emms-state nil t)
   "If non-nil, `al/emms-full-track-description' adds playing time
