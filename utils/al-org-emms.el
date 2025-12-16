@@ -103,30 +103,30 @@ TIME is seeking time in seconds."
 LINK has \"FILE[::TIME]\" form, where FILE is a playlist file and TIME
 is the track position in seconds.
 
-EMMS playlist buffer has the same name as FILE basename.
-If it already exists, just add playlist but don't play it.
+EMMS playlist buffer has the same name as FILE basename.  If it already
+exists or if TIME is not specified, just add playlist but don't play it.
 
-If non-zero TIME is specified, start playback from this position.
-If TIME is zero, just add playlist but don't play it.
-If TIME is not specified, play the playlist from the start."
+If TIME is specified, start playback from this position.
+If TIME is zero, play from the beginning."
   (let* ((path (split-string link "::"))
 	 (file (expand-file-name (car path)))
          (buf-name (file-name-base file))
          (buf (get-buffer buf-name)))
     (setq emms-playlist-buffer
           (or buf (emms-playlist-new buf-name)))
-    (emms-add-playlist file)
-    (let* ((time (cadr path))
-           (time (and time
-                      (if (equal "" time)
-                          nil
-                        (al/time-string-to-seconds time)))))
-      (when (and (null buf)     ; playlist did not exist
-                 (or (null time)
-                     (/= 0 time)))
-        (emms-start)
-        (when (and time (/= 0 time))
-          (setq al/org-emms-seek-time time))))))
+    (if buf
+        (progn
+          (switch-to-buffer buf)
+          (message "Playlist %S already exists." buf-name))
+      (emms-add-playlist file)
+      (if-let* ((time (cadr path))
+                (time (and (not (equal "" time))
+                           (al/time-string-to-seconds time))))
+          (progn
+            (when (< 0 time)
+              (setq al/org-emms-seek-time time))
+            (emms-start))
+        (switch-to-buffer emms-playlist-buffer)))))
 
 (provide 'al-org-emms)
 
