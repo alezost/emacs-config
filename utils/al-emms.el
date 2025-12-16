@@ -17,6 +17,7 @@
 
 ;;; Code:
 
+(require 'seq)
 (require 'emms)
 (require 'emms-playlist-mode)
 
@@ -163,13 +164,21 @@ Intended to be used for `emms-mode-line-mode-line-function'."
 
 ;;; Misc
 
+(defun al/emms-playlist-buffers ()
+  "Return a list of EMMS playlist buffers.
+This is similar to `emms-playlist-buffer-list' except it does not check
+`buffer-list' for new playlists."
+  (setq emms-playlist-buffers
+        (seq-filter #'buffer-live-p
+		    emms-playlist-buffers)))
+
 (declare-function al/switch-buffer "al-buffer" t)
 
 ;;;###autoload
 (defun al/emms-switch-to-playlist-buffer ()
   "Switch to EMMS playlist buffer prompting for it if necessary."
   (interactive)
-  (if-let* ((buffers (emms-playlist-buffer-list))
+  (if-let* ((buffers (al/emms-playlist-buffers))
             (more-than-one (cdr buffers)))
       (al/switch-buffer "EMMS buffer: "
                         :buffers buffers)
