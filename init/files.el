@@ -299,8 +299,11 @@
 
 (with-eval-after-load 'recentf
   (setq
-   recentf-exclude (list (al/file-regexp "el" "gz"))
-   recentf-keep (list (al/negate #'file-remote-p))
+   recentf-exclude (list (al/file-regexp "el" "gz")
+                         #'file-remote-p)
+   recentf-keep (list #'file-exists-p)
+   recentf-used-hooks '((find-file-hook  recentf-track-opened-file)
+                        (kill-emacs-hook recentf-save-list))
    recentf-auto-cleanup 'never
    recentf-max-saved-items 300
    recentf-save-file (al/emacs-data-dir-file "recentf")))
