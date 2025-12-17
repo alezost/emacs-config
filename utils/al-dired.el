@@ -57,6 +57,27 @@
                    "date")
                   (t dired-actual-switches))))))
 
+
+;;; "Ignored" files
+
+(defvar al/dired-ignored-extensions nil
+  "List of extensions to fontify with `dired-ignored' face in dired buffers.
+
+This variable is used by `al/dired-set-completion-ignored-extensions' to
+set buffer-local value of `completion-ignored-extensions'.
+
+The problem with `completion-ignored-extensions' variable is that it is
+used in 2 different cases:
+
+  - to remove ignored files from completions for `find-file' and similar
+    commands;
+
+  - to fontify ignored files with `dired-ignored' face in dired buffers.")
+
+(defun al/dired-set-completion-ignored-extensions ()
+  "Set `completion-ignored-extensions' to `al/dired-ignored-extensions'."
+  (setq-local completion-ignored-extensions al/dired-ignored-extensions))
+
 (provide 'al-dired)
 
 ;;; al-dired.el ends here

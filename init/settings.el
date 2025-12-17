@@ -49,6 +49,14 @@
  completion-ignore-case t
  enable-recursive-minibuffers t)
 
+(defvar al/completion-ignored-extensions completion-ignored-extensions
+  "Original value of `completion-ignored-extensions'.
+This variable is used to set `al/dired-ignored-extensions'.")
+(setq completion-ignored-extensions
+      '("./" "../"
+        ".o" ".bin" ".lbin" ".so" ".a" ".la" ".lo"
+        ".elc" ".pyc"))
+
 (al/add-hook-maybe 'minibuffer-setup-hook 'al/hbar-cursor-type)
 (al/bind-keys-from-vars 'minibuffer-local-map 'al/minibuffer-keys)
 (al/add-after-init-hook 'icomplete-vertical-mode)

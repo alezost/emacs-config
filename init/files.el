@@ -193,6 +193,10 @@
 
   (require 'dired-x nil t)
   (when (require 'al-dired nil t)
+    (setq al/dired-ignored-extensions
+          (cons ".go" al/completion-ignored-extensions))
+    (al/add-hook-maybe 'dired-mode-hook
+      'al/dired-set-completion-ignored-extensions)
     (advice-add 'dired-sort-set-mode-line
       :override 'al/dired-sort-set-mode-line)))
 
@@ -242,10 +246,6 @@
 
 
 ;;; Misc settings and packages
-
-(al/with-check
-  :var 'completion-ignored-extensions
-  (push ".go" completion-ignored-extensions))
 
 (setq
  directory-free-space-args "-Ph"
