@@ -1,6 +1,6 @@
 ;;; al-server.el --- Code for working with Emacs server  -*- lexical-binding: t -*-
 
-;; Copyright © 2014–2016, 2022 Alex Kost
+;; Copyright © 2014–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -40,14 +40,12 @@ This variable is set by `al/server-start'.")
   "Start server using the first `server-name' from NAMES.
 If there is such server running, try the second name and so on.
 If servers with all NAMES are running, do not start the server."
-  (let ((name (car names))
-        (rest (cdr names)))
-    (if (null name)
-        (setq server-name "server-unused")
+  (if-let* ((name (car names)))
       (if (server-running-p name)
-          (apply #'al/server-named-start rest)
+          (apply #'al/server-named-start (cdr names))
         (setq server-name name)
-        (al/server-start)))))
+        (al/server-start))
+    (setq server-name "server-unused")))
 
 (provide 'al-server)
 
