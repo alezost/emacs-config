@@ -194,6 +194,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
 
       ("z"   . ibuffer-unmark-forward)
       ("Z"     (ibuffer-unmark-all ?\r))
+      ("s r" . ibuffer-do-sort-by-recency)
       ("* o" . ibuffer-mark-old-buffers))
     "Alist of auxiliary keys for `ibuffer-mode-map'.")
   (al/bind-keys-from-vars 'ibuffer-mode-map 'al/ibuffer-keys)
