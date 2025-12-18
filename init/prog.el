@@ -580,7 +580,8 @@
 (with-eval-after-load 'magit-diff
   (setq-default magit-diff-refine-hunk t)
   (defconst al/magit-diff-visit-keys
-    '(("RET" . magit-diff-visit-worktree-file)
+    '(("u" . magit-diff-visit-worktree-file)
+      ("RET" . magit-diff-visit-worktree-file)
       ("<C-return>" . magit-diff-visit-file))
     "Alist of auxiliary keys for visiting files in `magit-diff-mode'.")
   (al/bind-keys-from-vars 'magit-diff-mode-map
@@ -589,7 +590,8 @@
   (al/bind-keys-from-vars 'magit-diff-section-map
     '(al/magit-common-keys al/magit-diff-visit-keys)
     t)
-  (al/bind-keys-from-vars 'magit-staged-section-map 'al/magit-common-keys))
+  (al/bind-keys-from-vars 'magit-staged-section-map 'al/magit-common-keys)
+  (al/bind-key "u" magit-section-toggle magit-file-section-map))
 
 (with-eval-after-load 'magit-sequence
   (transient-suffix-put 'magit-cherry-pick "A" :key "C") ; pick
