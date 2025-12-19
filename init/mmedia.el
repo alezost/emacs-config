@@ -122,6 +122,8 @@
       ("C-k"   (beginning-of-line) (emms-playlist-mode-kill-entire-track))
       ("C-H-M-k" . al/emms-playlist-kill-track-and-file)
       ("C-t" . emms-playlist-mode-kill)
+      ("M-." . emms-playlist-mode-shift-track-up)
+      ("M-e" . emms-playlist-mode-shift-track-down)
       ("H-u" . emms-playlist-mode-undo)
       ("["   . al/emms-mpv-speed-down)
       ("]"   . al/emms-mpv-speed-up)
