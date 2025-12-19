@@ -17,6 +17,7 @@
 
 ;;; Code:
 
+(eval-when-compile (require 'cl-lib))
 (require 'seq)
 (require 'emms)
 (require 'emms-playlist-mode)
@@ -98,32 +99,69 @@ fontification."
    (unless no-newline
      (insert "\n"))))
 
+(defun al/emms-format-artist (artist)
+  "Return ARTIST formatted to display in EMMS playlist."
+  (and artist
+       (propertize artist 'face 'alect-author)))
+
+(defun al/emms-format-title (title)
+  "Return TITLE formatted to display in EMMS playlist."
+  (and title
+       (propertize title 'face 'alect-title)))
+
+(defun al/emms-format-album (album)
+  "Return ALBUM formatted to display in EMMS playlist."
+  (and album
+       (propertize album
+                   'face 'font-lock-function-name-face)))
+
+(defun al/emms-format-track-number (track-number)
+  "Return TRACK-NUMBER formatted to display in EMMS playlist."
+  (and track-number
+       (propertize (format "%02d" (string-to-number track-number))
+                   'face 'bold)))
+
+(defun al/emms-format-playing-time (time)
+  "Return TIME formatted to display in EMMS playlist."
+  (format "%7s "
+          (if time
+              (propertize (emms-state-format-time time)
+                          'face 'alect-time)
+            "")))
+
+(defun al/emms-format-date (date)
+  "Return DATE formatted to display in EMMS playlist."
+  ;; (and date
+  ;;      (propertize date 'face 'font-lock-comment-face))
+  date)
+
 (defun al/emms-full-track-description (track)
   "Return a full description of TRACK.
 Intended to be used for `emms-track-description-function'."
-  (let ((artist   (emms-track-get track 'info-artist))
-        (title    (emms-track-get track 'info-title))
-        (time     (emms-track-get track 'info-playing-time))
-        (tracknum (emms-track-get track 'info-tracknumber))
-        (album    (emms-track-get track 'info-album))
-        (year     (emms-track-get track 'info-year)))
-    (let ((name (cond
-                 ((and artist title) (concat artist " – " title))
-                 (title title))))
-      (if (null name)
-          (emms-track-simple-description track)
-        (when tracknum
-          (setq name (format "%02d. %s" (string-to-number tracknum) name)))
-        (cond
-         ((and album year)
-          (setq name (format "%s [%s – %s]" name year album)))
-         (year
-          (setq name (format "%s [%s]" name year)))
-         (album
-          (setq name (format "%s [%s]" name album))))
-        (if time
-            (concat name " (" (emms-state-format-time time) ")")
-          name)))))
+  (cl-flet ((etg (key) (emms-track-get track key)))
+    (let ((title (al/emms-format-title (etg 'info-title)))
+          (time  (al/emms-format-playing-time (etg 'info-playing-time))))
+      (if (null title)
+          (let ((name (emms-track-name track)))
+            (if (string-match-p page-delimiter name)
+                name
+              (concat time (emms-track-simple-description track))))
+        (let* ((artist (al/emms-format-artist (etg 'info-artist)))
+               (tnum   (al/emms-format-track-number (etg 'info-tracknumber)))
+               (album  (al/emms-format-album (etg 'info-album)))
+               (date   (al/emms-format-date (or (etg 'info-date)
+                                                (etg 'info-year))))
+               (desc artist))
+          (cond
+           ((and album date)
+            (setq desc (format "%s [%s – %s]" desc date album)))
+           (date
+            (setq desc (concat desc " [" date "]")))
+           (album
+            (setq desc (concat desc " [" album "]"))))
+          (when tnum
+            (setq desc (concat desc " " tnum ".")))
+          (concat time desc " " title))))))
 
 (defun al/emms-short-track-description (track)
   "Return a short description of TRACK suitable for mode-line."
