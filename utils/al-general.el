@@ -158,9 +158,23 @@ See `al/add-hook-maybe'."
   (al/add-hook-maybe 'after-init-hook functions))
 
 (defmacro al/eval-after-init (&rest body)
-  "Add to `after-init-hook' a `lambda' expression with BODY."
+  "Add to `after-init-hook' a `lambda' expression with BODY.
+If `:append' keyword argument is specified, then the expression will be
+added to the end/start of `after-init-hook' if `:append' value is t/nil
+respectively."
   (declare (indent 0))
-  `(add-hook 'after-init-hook (lambda () ,@body)))
+  (let ((depth nil))
+    (while (keywordp (car body))
+      (let ((keyword (pop body))
+            (value   (pop body)))
+        (cond
+         ((eq keyword :append)
+          ;; See documentation of `add-hook'.
+          (setq depth (if value 100 -100)))
+         (t
+          (al/warning-message "Unknown keyword for `al/eval-after-init': %s"
+                              keyword)))))
+    `(add-hook 'after-init-hook (lambda () ,@body) ,depth)))
 
 (provide 'al-general)
 
