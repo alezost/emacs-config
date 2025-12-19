@@ -75,7 +75,6 @@
   (require 'emms-last-played)
   (require 'emms-metaplaylist-mode)
   (require 'emms-i18n)
-  (require 'emms-cache)
   (require 'emms-mpv nil t)
 
   (setq
@@ -86,8 +85,6 @@
    emms-info-functions '(emms-info-libtag emms-info-cueinfo)
    emms-show-format "%s"
    emms-source-file-default-directory al/music-dir)
-
-  (emms-cache 1)
 
   (push 'emms-info-initialize-track emms-track-initialize-functions)
   (al/add-hook-maybe 'emms-player-started-hook
