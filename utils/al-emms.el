@@ -22,6 +22,7 @@
 (require 'emms)
 (require 'emms-playlist-mode)
 (require 'emms-state)
+(require 'al-text)
 
 (defun al/emms-seek-forward (seconds)
   "Seek by SECONDS forward.
@@ -112,7 +113,7 @@ fontification."
 (defun al/emms-format-album (album)
   "Return ALBUM formatted to display in EMMS playlist."
   (and album
-       (propertize album
+       (propertize (al/shorten-string album 30)
                    'face 'font-lock-function-name-face)))
 
 (defun al/emms-format-track-number (track-number)

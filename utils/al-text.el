@@ -99,6 +99,13 @@ no marked region, then the whole buffer is used."
       (message "'%s' has been replaced with '%s' %d time(s)."
                from-string to-string count))))
 
+(defun al/shorten-string (string length)
+  "Shorten STRING to make it no longer than LENGTH."
+  (if (<= (length string) length)
+      string
+    (concat (substring string 0 (- length 1))
+            "…")))
+
 (defvar al/check-parens-modes
   '(lisp-data-mode scheme-mode)
   "List of parent modes where `al/check-parens' is called.")
