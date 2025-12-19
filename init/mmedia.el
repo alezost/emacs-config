@@ -182,6 +182,6 @@
   (setq
    al/emms-notification-artist-format "<big>%s</big>"
    al/emms-notification-title-format "<span foreground=\"yellow\">%s</span>"
-   al/emms-notification-year-format "<span foreground=\"#84ebeb\">%s</span>"))
+   al/emms-notification-date-format "<span foreground=\"#84ebeb\">%s</span>"))
 
 ;;; mmedia.el ends here

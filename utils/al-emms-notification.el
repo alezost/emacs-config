@@ -1,6 +1,6 @@
 ;;; al-emms-notification.el --- EMMS notifications  -*- lexical-binding: t -*-
 
-;; Copyright © 2013-2016 Alex Kost
+;; Copyright © 2013–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@
 (defvar al/emms-notification-artist-format "%s")
 (defvar al/emms-notification-title-format "%s")
 (defvar al/emms-notification-album-format "%s")
-(defvar al/emms-notification-year-format "%s")
+(defvar al/emms-notification-date-format "%s")
 
 (defun al/emms-notification-format (value &optional format-str)
   "Return VALUE (string or nil) formatted with FORMAT-STR."
@@ -39,7 +39,7 @@
         val))))
 
 (defun al/emms-notification-track-name (&optional artist title album
-                                                  year track-number)
+                                                  date track-number)
   "Return track description suitable for (dunst) notifications."
   (let ((artist   (al/emms-notification-format
                    artist al/emms-notification-artist-format))
@@ -47,16 +47,16 @@
                    title al/emms-notification-title-format))
         (album    (al/emms-notification-format
                    album al/emms-notification-album-format))
-        (year     (al/emms-notification-format
-                   year al/emms-notification-year-format)))
+        (date     (al/emms-notification-format
+                   date al/emms-notification-date-format)))
     (let ((title (if track-number
                      (format "%02d. %s"
                              (string-to-number track-number) title)
                    title))
-          (album (cond ((and album year)
-                        (format "%s – %s" year album))
-                       (year  (format "%s" year))
-                       (album (format "%s" album)))))
+          (album (cond ((and album date)
+                        (format "%s – %s" date album))
+                       (date  date)
+                       (album album))))
       (mapconcat #'identity
                  (delq nil (list artist title album))
                  "\n"))))
@@ -75,37 +75,36 @@
    (or (emms-track-get track 'info-title)
        (emms-track-simple-description track))
    (emms-track-get track 'info-album)
-   (emms-track-get track 'info-year)
+   (or (emms-track-get track 'info-date)
+       (emms-track-get track 'info-year))
    (emms-track-get track 'info-tracknumber)))
 
 (defun al/emms-notification-notify (state time string)
   "Notify about STATE, TIME and STRING using `notifications-notify'."
   (notifications-notify
    :app-name "emms"
-   :title (format "%s  %s" state time)
+   :title (concat state " " time)
    :body string))
 
 ;;;###autoload
 (defun al/emms-notify ()
   "Notify about the current track using `notifications-notify'."
   (interactive)
-  (let ((track (emms-playlist-current-selected-track)))
-    (when track
-      (let ((state (emms-state))
-            (time (concat emms-state-current-playing-time
-                          (and emms-state-total-playing-time
-                               (concat " ("
-                                       emms-state-total-playing-time
-                                       ")")))))
-        (if (al/emms-mpv-playing-radio?)
-            (al/emms-mpv-call-with-metadata
-             (lambda (data)
-               (al/emms-notification-notify
-                state time
-                (al/emms-notification-radio-description data))))
-          (al/emms-notification-notify
-           state time
-           (al/emms-notification-track-description track)))))))
+  (when-let* ((track (emms-playlist-current-selected-track)))
+    (let ((time (concat emms-state-current-playing-time
+                        (and emms-state-total-playing-time
+                             (concat " ("
+                                     emms-state-total-playing-time
+                                     ")")))))
+      (if (al/emms-mpv-playing-radio?)
+          (al/emms-mpv-call-with-metadata
+           (lambda (data)
+             (al/emms-notification-notify
+              emms-state time
+              (al/emms-notification-radio-description data))))
+        (al/emms-notification-notify
+         emms-state time
+         (al/emms-notification-track-description track))))))
 
 ;;;###autoload
 (define-minor-mode al/emms-notification-mode
