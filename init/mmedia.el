@@ -95,7 +95,15 @@
   (when (require 'al-emms nil t)
     (setq
      emms-mode-line-mode-line-function #'al/emms-mode-line-song-string
-     emms-track-description-function #'al/emms-full-track-description)
+     emms-track-description-function #'al/emms-full-track-description
+     al/emms-file-name-shorten-alist
+     (mapcar (lambda (assoc)
+               (cons (directory-file-name (expand-file-name (car assoc)))
+                     (cdr assoc)))
+             `((,(al/download-dir-file "torrents") . "~t")
+               (,al/download-dir . "~d")
+               ("~/storage/music" . "~M")
+               (,al/music-dir . "~m"))))
     (advice-add 'emms-source-play
       :override #'al/emms-source-add-and-play)
     (advice-add 'emms-playlist-mode-insert-track

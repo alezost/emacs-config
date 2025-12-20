@@ -146,7 +146,7 @@ Intended to be used for `emms-track-description-function'."
           (let ((name (emms-track-name track)))
             (if (string-match-p page-delimiter name)
                 name
-              (concat time (emms-track-simple-description track))))
+              (concat time (al/emms-simple-track-description track))))
         (let* ((artist (al/emms-format-artist (etg 'info-artist)))
                (tnum   (al/emms-format-track-number (etg 'info-tracknumber)))
                (album  (al/emms-format-album (etg 'info-album)))
@@ -167,14 +167,85 @@ Intended to be used for `emms-track-description-function'."
 (defun al/emms-short-track-description (track)
   "Return a short description of TRACK suitable for mode-line."
   (or (emms-track-get track 'info-title)
-      (let ((type (emms-track-type track)))
-        (cond ((eq 'file type)
-               (file-name-nondirectory (emms-track-name track)))
-              ((eq 'url type)
-               (url-file-nondirectory (emms-format-url-track-name
-                                       (emms-track-name track))))
-              (t (concat (symbol-name type)
-                         ": " (emms-track-name track)))))))
+      (let ((type (emms-track-type track))
+            (name (emms-track-name track)))
+        (cl-case type
+         (file (file-name-nondirectory name))
+         (url  (url-file-nondirectory (emms-format-url-track-name name)))
+         (t    (al/emms-fallback-track-description track))))))
+
+(defun al/emms-fallback-track-description (track)
+  "Return \"TYPE: NAME\" description of TRACK."
+  (concat (symbol-name (emms-track-type track))
+          ": " (emms-track-name track)))
+
+(defun al/emms-simple-track-description (track)
+  "Return TRACK description by its type and name.
+This is similar to `emms-track-simple-description' except use
+`al/emms-file-track-description' if TRACK type is `file'."
+  (cl-case (emms-track-type track)
+    (file (al/emms-file-name-description (emms-track-name track)))
+    (url  (emms-format-url-track-name (emms-track-name track)))
+    (t    (al/emms-fallback-track-description track))))
+
+(defvar al/emms-file-name-shorten-alist nil
+  "Alist of file names and their short descriptions.
+This variable is used by `al/emms-file-name-description'.")
+
+(defvar al/emms-file-name-track-number-title-regexp nil)
+(defvar al/emms-file-name-artist-title-regexp nil)
+
+(defun al/emms-file-name-init-regexps-maybe ()
+  "Set regexp variables if needed."
+  (unless al/emms-file-name-track-number-title-regexp
+    (let ((id-re  (rx (? " [" (1+ (regex "[^/[]")) "]")))
+          (ext-re (rx "." (1+ alnum) string-end)))
+      (setq
+       al/emms-file-name-track-number-title-regexp
+       (rx-to-string `(and "/" (group (1+ digit))
+                           (1+ (regex "[ .-]"))
+                           (group (+? (not ?/)))
+                           (regex ,id-re)
+                           (regex ,ext-re))
+                     'no-group)
+       al/emms-file-name-artist-title-regexp
+       (rx-to-string `(and "/" (group (+ (not ?/)))
+                           " - "
+                           (group (+? (not ?/)))
+                           (regex ,id-re)
+                           (regex ,ext-re))
+                     'no-group)))))
+
+(defun al/emms-file-name-description (file-name)
+  "Return track description by its FILE-NAME."
+  (al/emms-file-name-init-regexps-maybe)
+  (let ((alist al/emms-file-name-shorten-alist)
+        (res nil))
+    (while (and alist (null res))
+      (let ((assoc (car alist)))
+        (if (string-match (regexp-quote (car assoc))
+                          file-name)
+            (setq res
+                  (concat (substring file-name 0 (match-beginning 0))
+                          (propertize (cdr assoc)
+                                      'face 'font-lock-function-name-face)
+                          (substring file-name (match-end 0))))
+          (setq alist (cdr alist)))))
+    (let ((file (or res file-name)))
+      (cond
+       ((string-match al/emms-file-name-track-number-title-regexp file)
+        (concat (substring file 0 (match-beginning 1))
+                (al/emms-format-track-number (match-string 1 file))
+                (substring file (match-end 1) (match-beginning 2))
+                (al/emms-format-title (match-string 2 file))
+                (substring file (match-end 2))))
+       ;; ((string-match al/emms-file-name-artist-title-regexp file)
+       ;;  (concat (substring file 0 (match-beginning 1))
+       ;;          (al/emms-format-artist (match-string 1 file))
+       ;;          (substring file (match-end 1) (match-beginning 2))
+       ;;          (al/emms-format-title (match-string 2 file))
+       ;;          (substring file (match-end 2))))
+       (t file)))))
 
 
 ;;; Mode line
