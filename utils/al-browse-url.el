@@ -19,6 +19,33 @@
 
 (require 'browse-url)
 (require 'transient)
+(require 'al-misc)
+
+;;;###autoload
+(defun al/browse-youtube-video (id &optional time)
+  "Browse youtube url for video or playlist with ID.
+TIME should be a string, see `al/time-string-to-seconds' for details.
+Interactively with arg, prompt for TIME."
+  (interactive
+   (list (or (and (require 'al-thingatpt nil t)
+                  (thing-at-point 'youtube))
+             (read-string "YouTube video or playlist ID: "))
+         (and current-prefix-arg
+              (read-string "Time stamp: "))))
+  (let ((yt-url "https://www.youtube.com/"))
+    (cond
+     ((= (length id) 11)
+      (browse-url
+       (concat yt-url "watch?v=" id
+               (and time
+                    (concat "&t="
+                            (number-to-string
+                             (al/time-string-to-seconds time)))))))
+     ((let (case-fold-search)
+        (string-match-p "\\`PL" id))
+      (browse-url (concat yt-url "playlist?list=" id)))
+     (t
+      (error "Unknown youtube ID: %s" id)))))
 
 
 ;;; Browse IRC logs from gnunet

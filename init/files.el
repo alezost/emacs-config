@@ -30,6 +30,7 @@
   ("h"     . al/ssh-find-file)
   ("z"     . al/router-get-log)
   ("u"     . al/choose-browser)
+  ("y"     . al/browse-youtube-video)
   ("l"     . find-library)
   ("r"     . recentf-open)
   ("e"       (al/find-file al/emacs-dir))
