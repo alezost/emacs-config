@@ -25,6 +25,7 @@
 (require 'emms)
 (require 'emms-source-playlist)
 (require 'emms-playing-time)
+(require 'al-url)
 (require 'al-misc)
 (require 'al-emms-mpv)
 
@@ -50,19 +51,22 @@ This function is intended to be added to `emms-mpv-file-loaded-hook'."
 (defun al/org-emms-play (file)
   "Play EMMS FILE from `org-mode'."
   (let* ((path (split-string file "::"))
-	 (file (expand-file-name (car path)))
+	 (file (car path))
          (time (cadr path))
 	 (time (and time (al/time-string-to-seconds time)))
          (track (emms-playlist-current-selected-track)))
     (when time
-        (setq al/org-emms-seek-time time))
+      (setq al/org-emms-seek-time time))
     ;; If we want to open a link with the current track, then
     ;; start it if it is stopped or just seek to time, otherwise.
-    (if (string= file (emms-track-name track))
+    (if (and track
+             (string= file (emms-track-name track)))
         (if emms-player-playing-p
             (al/org-emms-seek)
           (emms-player-start track))
-      (emms-play-file file))))
+      (if (string-match-p al/url-regexp file)
+          (emms-play-url file)
+        (emms-play-file (expand-file-name file))))))
 
 (defun al/org-emms-make-link (track &optional time)
   "Return org link for EMMS TRACK.

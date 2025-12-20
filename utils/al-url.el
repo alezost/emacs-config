@@ -17,6 +17,10 @@
 
 ;;; Code:
 
+(defvar al/url-regexp
+  "https?://"
+  "Regexp matching the beginning of an URL.")
+
 (defvar al/url-mp3-regexp
   (rx "http" (? ?s) "://" (1+ any) ".mp3")
   "Regexp for mp3 file.")
