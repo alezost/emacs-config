@@ -192,6 +192,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
       ("C-d" . ibuffer-visit-buffer-other-window)
       ("C-l"   (ibuffer-update t))
 
+      ("M"   . ibuffer-mark-unsaved-buffers)
       ("z"   . ibuffer-unmark-forward)
       ("Z"     (ibuffer-unmark-all ?\r))
       ("s r" . ibuffer-do-sort-by-recency)
