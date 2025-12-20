@@ -19,7 +19,6 @@
 
 (eval-when-compile (require 'cl-lib))
 (require 'al-text-cmd)
-(require 'al-misc) ; for `al/time-string-to-seconds'
 (require 'org)
 (require 'org-table)
 
@@ -124,22 +123,14 @@ row."
 
 ;;; Links
 
+(declare-function al/browse-youtube-video "al-browse-url")
+
 (defun al/org-browse-youtube (id)
   "Browse youtube video or playlist with ID from `org-mode'."
+  (require 'al-browse-url)
   (cl-multiple-value-bind (id time)
       (split-string id "::")
-    (cond
-     ((= (length id) 11)
-      (browse-url
-       (concat "https://www.youtube.com/watch?v="
-               id
-               (and time (concat "&t=" (number-to-string
-                                        (al/time-string-to-seconds time)))))))
-     ((let (case-fold-search)
-        (string-match-p "\\`PL" id))
-      (browse-url (concat "https://www.youtube.com/playlist?list=" id)))
-     (t
-      (error "Unknown youtube link")))))
+    (al/browse-youtube-video id time)))
 
 (org-link-set-parameters
  "yt"
