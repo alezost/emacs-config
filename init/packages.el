@@ -83,8 +83,8 @@
      (magit              :fetcher github :repo "magit/magit"
                          :files ("lisp/*.el" "docs/*.texi"))
      emms
+     (emms-mpv           :fetcher git :url ,(al/emacs-repo "emms-mpv"))
      (emms-state         :fetcher git :url ,(al/emacs-repo "emms-state"))
-     org-emms
      google-translate
      browse-kill-ring
      browse-at-remote
