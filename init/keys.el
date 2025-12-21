@@ -50,7 +50,7 @@
 (defconst al/free-editing-keys
   '("C-," "M-," "C-M-," "M-<"
     "C-p" "M-p" "C-M-p" "M-P"
-                "C-M-q" "M-Q"
+          "M-q" "C-M-q" "M-Q"
     "C-k" "M-k" "C-M-k" "M-K"
     "C-'" "M-'" "C-M-'" "M-\""
     "C-;" "M-;" "C-M-;"

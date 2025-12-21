@@ -97,6 +97,7 @@
  ("M-P"   . al/backward-kill-line)
  ("H-M-p" . delete-trailing-whitespace)
 
+ ("M-q"   . al/fill-paragraph)
  ("C-M-q" . al/save-sexp)
  ("M-Q"   . al/save-line)
 

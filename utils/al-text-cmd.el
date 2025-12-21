@@ -288,6 +288,21 @@ if it's negative - delete before point."
                 (constrain-to-field nil cur t))))
     (delete-region beg end)))
 
+(defvar al/fill-paragraph-ignore-modes '(org-mode)
+  "See `al/fill-paragraph'.")
+
+;;;###autoload
+(defun al/fill-paragraph (&optional arg)
+  "Call `fill-paragraph'.
+Interactively with ARG, or if `major-mode' is one of
+`al/fill-paragraph-ignore-modes', ignore buffer-local settings."
+  (interactive "P")
+  (if (or arg (derived-mode-p al/fill-paragraph-ignore-modes))
+      (let ((fill-paragraph-function nil)
+            (fill-forward-paragraph-function #'forward-paragraph))
+        (fill-paragraph))
+    (fill-paragraph)))
+
 ;;;###autoload
 (defun al/comment-dwirm (arg)
   "Call the comment command you want (Do What I Really Mean).
