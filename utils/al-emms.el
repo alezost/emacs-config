@@ -140,15 +140,17 @@ fontification."
   "Return a full description of TRACK.
 Intended to be used for `emms-track-description-function'."
   (cl-flet ((etg (key) (emms-track-get track key)))
-    (let ((title (al/emms-format-title (etg 'info-title)))
-          (time  (al/emms-format-playing-time (etg 'info-playing-time))))
+    (let ((artist (al/emms-format-artist (etg 'info-artist)))
+          (title  (al/emms-format-title (etg 'info-title)))
+          (time   (al/emms-format-playing-time (etg 'info-playing-time))))
       (if (null title)
           (let ((name (emms-track-name track)))
             (if (string-match-p page-delimiter name)
                 name
-              (concat time (al/emms-simple-track-description track))))
-        (let* ((artist (al/emms-format-artist (etg 'info-artist)))
-               (tnum   (al/emms-format-track-number (etg 'info-tracknumber)))
+              (concat time
+                      (and artist (concat artist " - "))
+                      (al/emms-simple-track-description track))))
+        (let* ((tnum   (al/emms-format-track-number (etg 'info-tracknumber)))
                (album  (al/emms-format-album (etg 'info-album)))
                (date   (al/emms-format-date (or (etg 'info-date)
                                                 (etg 'info-year))))
