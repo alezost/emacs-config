@@ -41,8 +41,13 @@
  ("b" . describe-personal-keybindings))
 
 (with-eval-after-load 'lisp-mode
+  (when (require 'al-imenu nil t)
+    (al/add-hook-maybe 'lisp-mode-hook 'al/imenu-add-sections))
+
   (when (require 'al-lisp nil t)
-    (al/lisp-add-defcommand-font-lock-keywords))
+    (al/lisp-add-defcommand-font-lock-keywords)
+    (al/add-hook-maybe 'lisp-mode-hook
+      'al/lisp-add-defcommand-to-imenu))
 
   (defconst al/lisp-shared-keys
     '(("<C-M-tab>" . al/indent-sexp))
@@ -50,9 +55,6 @@
   (al/bind-keys-from-vars 'lisp-mode-shared-map 'al/lisp-shared-keys)
   (al/bind-keys-from-vars 'lisp-mode-map)
 
-  (al/add-hook-maybe 'lisp-mode-hook
-    '(al/imenu-add-sections
-      al/lisp-add-defcommand-to-imenu))
   (al/modify-page-break-syntax lisp-mode-syntax-table))
 
 (with-eval-after-load 'elisp-mode
@@ -60,13 +62,14 @@
       '(emacs-lisp-mode-map
         lisp-interaction-mode-map))
 
-  (al/add-hook-maybe
-      '(emacs-lisp-mode-hook
-        lisp-interaction-mode-hook)
-    '(al/imenu-add-sections
-      al/imenu-add-use-package
-      al/imenu-add-transient
-      al/imenu-add-eval-after-load))
+  (when (require 'al-imenu nil t)
+    (al/add-hook-maybe
+        '(emacs-lisp-mode-hook
+          lisp-interaction-mode-hook)
+      '(al/imenu-add-sections
+        al/imenu-add-use-package
+        al/imenu-add-transient
+        al/imenu-add-eval-after-load)))
 
   (when (require 'al-elisp nil t)
     (advice-add 'elisp--form-quoted-p :override #'al/elisp-form-quoted-p)))
@@ -228,15 +231,17 @@
   (when (require 'al-scheme nil t)
     (setq scheme-imenu-generic-expression
           al/scheme-imenu-generic-expression)
+    (al/add-hook-maybe 'scheme-mode-hook 'al/scheme-fix-docstring-font-lock)
     (advice-add 'scheme-indent-function
       :override 'al/scheme-indent-function))
 
   (put 'plist-new 'scheme-indent-function 1)
   (al/modify-page-break-syntax scheme-mode-syntax-table)
-  (al/add-hook-maybe 'scheme-mode-hook
-    '(al/imenu-add-sections
-      al/scheme-fix-docstring-font-lock
-      guix-devel-mode)))
+
+  (when (require 'al-imenu nil t)
+    (al/add-hook-maybe 'scheme-mode-hook 'al/imenu-add-sections))
+
+  (al/add-hook-maybe 'scheme-mode-hook 'guix-devel-mode))
 
 (defconst al/geiser-keys
   '(("C-v"   . al/geiser-eval-dwim)
@@ -699,11 +704,14 @@
       ("C-M-v" . js-eval-defun))
     "Alist of auxiliary keys for `js-mode-map'.")
   (al/bind-keys-from-vars 'js-mode-map 'al/js-keys)
+
   (defun al/js-delimiter ()
     (setq-local al/delimiter
                 (concat (make-string 64 ?/) "\n///")))
-  (al/add-hook-maybe 'js-mode-hook
-    '(al/imenu-add-js-sections al/js-delimiter)))
+  (al/add-hook-maybe 'js-mode-hook 'al/js-delimiter)
+
+  (when (require 'al-imenu nil t)
+    (al/add-hook-maybe 'js-mode-hook 'al/imenu-add-js-sections)))
 
 (al/autoload "python" python-shell-switch-to-shell)
 (with-eval-after-load 'python

@@ -43,7 +43,6 @@ If APPEND is nil, add the new element at the end."
 If nil, put the entries in a top level.  See MENU-TITLE in
 `imenu-generic-expression' variable for details.")
 
-;;;###autoload
 (defun al/imenu-add-sections (&optional regexp)
   "Add REGEXP as a \"Sections\" element to `imenu-generic-expression'.
 If REGEXP is nil, use `al/imenu-sections-re'."
@@ -61,7 +60,6 @@ If REGEXP is nil, use `al/imenu-sections-re'."
 (defvar al/imenu-js-sections-re "^/// \\(.+\\)$"
   "Regexp for \"Sections\" imenu entries in `js-mode'.")
 
-;;;###autoload
 (defun al/imenu-add-js-sections (&optional _regexp)
   "Add REGEXP as a \"Sections\" element to `imenu-generic-expression'.
 If REGEXP is nil, use `al/imenu-sections-re'."
@@ -103,7 +101,6 @@ as the latter function and also create elements for
 If nil, put the entries in a top level.  See MENU-TITLE in
 `imenu-generic-expression' variable for details.")
 
-;;;###autoload
 (defun al/imenu-add-use-package ()
   "Add `al/imenu-use-package-re' to `imenu-generic-expression'."
   (al/add-to-imenu al/imenu-use-package-re
@@ -121,7 +118,6 @@ If nil, put the entries in a top level.  See MENU-TITLE in
 
 (defvar al/imenu-eval-after-load-group "(with-)eval-after-load")
 
-;;;###autoload
 (defun al/imenu-add-eval-after-load ()
   "Add `al/imenu-eval-after-load-re' to `imenu-generic-expression'."
   (al/add-to-imenu al/imenu-eval-after-load-re
@@ -138,7 +134,6 @@ If nil, put the entries in a top level.  See MENU-TITLE in
 
 (defvar al/imenu-transient-group "transient")
 
-;;;###autoload
 (defun al/imenu-add-transient ()
   "Add `al/imenu-transient-re' to `imenu-generic-expression'."
   (al/add-to-imenu al/imenu-transient-re
