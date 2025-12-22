@@ -1,6 +1,6 @@
 ;;; al-lisp.el --- Additional functionality for `lisp-mode'  -*- lexical-binding: t -*-
 
-;; Copyright © 2017 Alex Kost
+;; Copyright © 2017–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -18,6 +18,21 @@
 ;;; Code:
 
 (require 'al-imenu)
+
+
+;;; Highlighting additional macros
+
+(defvar al/lisp-macro-name-regexp
+  (rx "(" (group (or "if-let" "when-let" "when-let*"))
+      symbol-end)
+  "Regexp to match macro names to highlight.")
+
+(defun al/lisp-add-macro-font-lock-keywords ()
+  "Add font-lock keywords to highlight macros.
+Call this function once!"
+  (font-lock-add-keywords
+   'lisp-mode
+   `((,al/lisp-macro-name-regexp 1 font-lock-keyword-face))))
 
 
 ;;; Highlighting "defcommand" (used by StumpWM)
