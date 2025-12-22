@@ -134,24 +134,27 @@ notification for an audio track."
    (lambda (_value _error)
      (al/emms-mpv-show-property "speed"))))
 
+(defvar al/emms-speed-step 0.1
+  "Default value for `al/emms-mpv-speed-up' and `al/emms-mpv-speed-down'.")
+
 (defun al/emms-mpv-speed-up (&optional value)
-  "Increase playback speed by VALUE (0.1 by default).
+  "Increase playback speed by VALUE (`al/emms-speed-step' by default).
 Interactively with prefix, prompt for VALUE."
   (interactive
    (when current-prefix-arg
-     (list (read-number "Increase speed by: " 0.1))))
+     (list (read-number "Increase speed by: " al/emms-speed-step))))
   (al/emms-mpv-run-command
-   (list "add" "speed" (number-to-string (or value 0.1)))
+   (list "add" "speed" (or value al/emms-speed-step))
    (lambda (_value _error)
      (al/emms-mpv-show-property "speed"))))
 
 (defun al/emms-mpv-speed-down (&optional value)
-  "Decrease playback speed by VALUE (0.1 by default).
+  "Decrease playback speed by VALUE (`al/emms-speed-step' by default).
 Interactively with prefix, prompt for VALUE."
   (interactive
    (when current-prefix-arg
-     (list (read-number "Decrease speed by: " 0.1))))
-  (al/emms-mpv-speed-up (- (or value 0.1))))
+     (list (read-number "Decrease speed by: " al/emms-speed-step))))
+  (al/emms-mpv-speed-up (- (or value al/emms-speed-step))))
 
 (defun al/emms-mpv-switch-volume (&optional value)
   "Set volume to VALUE or switch between default values.
