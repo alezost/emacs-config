@@ -37,7 +37,7 @@
  ("r" . emms-streams)
  ("g" . al/emms-seek-to)
  ("y" . al/emms-mpv-sync-playing-time)
- ("S" . emms-cache-save)
+ ("S" . al/emms-save-playlists)
  ("u"   (emms-playlist-simple-uniq)))
 
 (al/bind-keys
