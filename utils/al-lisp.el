@@ -64,6 +64,32 @@ This function is intended to be added to `lisp-mode-hook'."
   (al/add-to-imenu al/lisp-defcommand-regexp
                    :index 2))
 
+
+;;; Highlighting and indenting my macros for StumpWM
+
+(put 'al/defun-with-delay 'lisp-indent-function 3)
+(put 'al/defun-with-delay 'common-lisp-indent-function 3)
+(put 'al/defun-with-delay 'doc-string-elt 4)
+
+(defvar al/lisp-defun-with-delay-regexp
+  (rx "(" (group "al/defun-with-delay")
+      symbol-end
+      (one-or-more blank)
+      (group (one-or-more (or (syntax word) (syntax symbol))))
+      (one-or-more blank)
+      (group (one-or-more (or (syntax word) (syntax symbol)))))
+  "Regexp to match `al/defun-with-delay' macro.")
+
+(defun al/lisp-add-my-macro-font-lock-keywords ()
+  "Add font-lock keywords to highlight my macros.
+Call this function once!"
+  (font-lock-add-keywords
+   'lisp-mode
+   `((,al/lisp-defun-with-delay-regexp
+      (1 font-lock-keyword-face)
+      (2 font-lock-constant-face)
+      (3 font-lock-function-name-face)))))
+
 (provide 'al-lisp)
 
 ;;; al-lisp.el ends here

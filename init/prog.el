@@ -46,6 +46,7 @@
 
   (when (require 'al-lisp nil t)
     (al/lisp-add-macro-font-lock-keywords)
+    (al/lisp-add-my-macro-font-lock-keywords)
     (al/lisp-add-defcommand-font-lock-keywords)
     (al/add-hook-maybe 'lisp-mode-hook
       'al/lisp-add-defcommand-to-imenu))
