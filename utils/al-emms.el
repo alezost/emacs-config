@@ -354,6 +354,15 @@ If NO-CONFIRM is non-nil, delete without confirmation."
       (with-current-buffer buf
         (al/emms-save-playlist)))))
 
+;;;###autoload
+(defun al/emms-update-all-tracks ()
+  "Update all tracks in the current playlist."
+  (interactive)
+  (emms-playlist-ensure-playlist-buffer)
+  (goto-char (point-min))
+  (emms-walk-tracks
+    (emms-playlist-mode-update-track-function)))
+
 (provide 'al-emms)
 
 ;;; al-emms.el ends here
