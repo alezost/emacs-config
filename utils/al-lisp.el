@@ -19,6 +19,11 @@
 
 (require 'al-imenu)
 
+(defun al/put-lisp-indent (symbol value)
+  "Set SYMBOL's lisp indent property to VALUE."
+  (put symbol 'lisp-indent-function value)
+  (put symbol 'common-lisp-indent-function value))
+
 
 ;;; Highlighting additional macros
 
@@ -67,8 +72,7 @@ This function is intended to be added to `lisp-mode-hook'."
 
 ;;; Highlighting and indenting my macros for StumpWM
 
-(put 'al/defun-with-delay 'lisp-indent-function 3)
-(put 'al/defun-with-delay 'common-lisp-indent-function 3)
+(al/put-lisp-indent 'al/defun-with-delay 3)
 (put 'al/defun-with-delay 'doc-string-elt 4)
 
 (defvar al/lisp-defun-with-delay-regexp
