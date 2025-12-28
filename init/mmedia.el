@@ -102,6 +102,7 @@
                      (cdr assoc)))
              `((,(al/download-dir-file "torrents") . "~t")
                (,al/download-dir . "~d")
+               (,(al/math-dir-file "video") . "~math")
                ("~/storage/music" . "~M")
                (,al/music-dir . "~m"))))
     (advice-add 'emms-source-play
