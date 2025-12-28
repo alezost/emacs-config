@@ -25,10 +25,13 @@
   (put symbol 'common-lisp-indent-function value))
 
 
-;;; Highlighting additional macros
+;;; Highlighting and indenting additional macros
+
+(al/put-lisp-indent 'defsystem 1)
 
 (defvar al/lisp-macro-name-regexp
-  (rx "(" (group (or "if-let" "when-let" "when-let*"))
+  (rx "(" (group (or "if-let" "when-let" "when-let*"
+                     "defsystem"))
       symbol-end)
   "Regexp to match macro names to highlight.")
 
