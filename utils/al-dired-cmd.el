@@ -83,15 +83,16 @@ file."
   "Show size of all marked files in dired mode.
 If ARG is non-nil, do not use human readable format (size in bytes)."
   (interactive "P")
-  (let ((args  (concat "-sc"
-                       (if arg "b" "h")))
-        (files (dired-get-marked-files)))
-    (with-temp-buffer
-      (apply #'al/call-process "du" nil t nil args files)
-      (message "Size of all marked files: %s"
-               (progn
+  (let* ((args "-scb")
+         (files (dired-get-marked-files))
+         (size (with-temp-buffer
+                 (apply #'al/call-process "du" nil t nil args files)
                  (re-search-backward "\\(^.+\\)[[:blank:]]*total$")
-                 (match-string 1))))))
+                 (match-string 1))))
+    (message "Size of all marked files: %s"
+             (if arg
+                 size
+               (al/format-bytes (string-to-number size))))))
 
 ;;;###autoload
 (defun al/dired-stat (&optional arg)

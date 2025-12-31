@@ -118,6 +118,44 @@ it in minibuffer."
          (message ,res-str-var))
        ,res-var)))
 
+
+;;; Formatting bytes
+
+(defvar al/format-byte-alist
+  '((1e9 "G" alect-color-level-3)
+    (1e6 "M" alect-color-level-2)
+    (1e3 "k" alect-color-level-1)
+    (nil "b" shadow))
+  "Internal variable for `al/format-bytes'.")
+
+(defun al/format-bytes-1 (bytes)
+  "Return (NUM UNIT) list to format BYTES."
+  (let ((rest al/format-byte-alist)
+        (num nil)
+        (border nil))
+    (while (if (setq border (caar rest))
+               (> 1 (setq num (/ (float bytes) border)))
+             (setq num bytes)
+             nil)
+      (setq rest (cdr rest)))
+    (let ((assoc (car rest)))
+      (list num (propertize (nth 1 assoc) 'face (nth 2 assoc))))))
+
+(defun al/format-bytes (bytes &optional width)
+  "Return human readable string from BYTES.
+Result has WIDTH length plus 1 character for unit."
+  (or (> bytes 0)
+      (error "BYTES should be greater than zero"))
+  (cl-multiple-value-bind (num unit)
+      (al/format-bytes-1 bytes)
+    (let* ((width-str (and width (number-to-string width)))
+           (fmt (if (or (string= "b" unit)
+                        (and width
+                             (>= num (expt 10 (- width 2)))))
+                    (concat "%" width-str "d")
+                  (concat "%" width-str ".1f"))))
+      (concat (format fmt num) unit))))
+
 (provide 'al-misc)
 
 ;;; al-misc.el ends here
