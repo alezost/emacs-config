@@ -1,6 +1,6 @@
 ;;; al-scheme.el --- Additional functionality for `scheme-mode'  -*- lexical-binding: t -*-
 
-;; Copyright © 2015–2017 Alex Kost
+;; Copyright © 2015–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -16,6 +16,8 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Code:
+
+(require 'al-misc)
 
 (defvar al/scheme-imenu-generic-expression
   `((nil
@@ -137,12 +139,13 @@ indents property lists properly and names starting with `default'."
 ;; Another miss is that "scheme.el" contains "docstring rules" only for
 ;; `define' and `lambda*', while there are other things to highlight:
 
-(put 'define* 'scheme-doc-string-elt 2)
-(put 'lambda* 'scheme-doc-string-elt 2)
-(put 'case-lambda 'scheme-doc-string-elt 1)
-(put 'case-lambda* 'scheme-doc-string-elt 1)
-(put 'define-syntax-rule 'scheme-doc-string-elt 2)
-(put 'syntax-rules 'scheme-doc-string-elt 2)
+(al/put scheme-doc-string-elt
+  (1 case-lambda
+     case-lambda*)
+  (2 define*
+     lambda*
+     define-syntax-rule
+     syntax-rules))
 
 (defun al/scheme-fix-docstring-font-lock ()
   "Fix highlighting of the Scheme docstrings.

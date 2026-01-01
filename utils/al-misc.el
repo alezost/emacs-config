@@ -1,6 +1,6 @@
 ;;; al-misc.el --- Miscellaneous additional functionality  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2025 Alex Kost
+;; Copyright © 2013–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -117,6 +117,28 @@ it in minibuffer."
          (kill-new ,res-str-var)
          (message ,res-str-var))
        ,res-var)))
+
+(defmacro al/put (properties &rest args)
+  "Put symbol PROPERTIES to values.
+Each element of ARGS should have (VALUE SYMBOL ...) form.
+PROPERTIES can be a list of symbols or a single symbol.
+Call (put SYMBOL PROPERTY VALUE) for each PROPERTY and each SYMBOL."
+  (declare (indent 1) (debug (name body)))
+  (let ((props (al/list-maybe properties))
+        (val-var (make-symbol "value")))
+    `(progn
+       ,@(mapcar
+          (lambda (arg)
+            (let ((value   (car arg))
+                  (symbols (cdr arg)))
+              `(let ((,val-var ,value))
+                 ,@(mapcan
+                    (lambda (symbol)
+                      (mapcar (lambda (prop)
+                                `(put ',symbol ',prop ,val-var))
+                              props))
+                    symbols))))
+          args))))
 
 
 ;;; Formatting bytes

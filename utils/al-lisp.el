@@ -17,21 +17,21 @@
 
 ;;; Code:
 
+(require 'al-misc)
 (require 'al-imenu)
-
-(defun al/put-lisp-indent (symbol value)
-  "Set SYMBOL's lisp indent property to VALUE."
-  (put symbol 'lisp-indent-function value)
-  (put symbol 'common-lisp-indent-function value))
 
 
 ;;; Highlighting and indenting additional macros
 
-(al/put-lisp-indent 'defsystem 1)
-(al/put-lisp-indent 'al/defun-with-delay 3)
-(al/put-lisp-indent 'al/run-after-sleep 1)
-(put 'defcommand 'doc-string-elt 4)
-(put 'al/defun-with-delay 'doc-string-elt 4)
+(al/put (lisp-indent-function
+         common-lisp-indent-function)
+  (1 defsystem
+     al/run-after-sleep)
+  (3 al/defun-with-delay))
+
+(al/put doc-string-elt
+  (4 defcommand
+     al/defun-with-delay))
 
 (defvar al/lisp-macro-name-regexp
   (rx "(" (group (or "if-let" "when-let" "when-let*"
