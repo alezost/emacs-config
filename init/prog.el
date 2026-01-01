@@ -1,6 +1,6 @@
 ;;; prog.el --- Programming modes and tools  -*- lexical-binding: t -*-
 
-;; Copyright © 2014–2025 Alex Kost
+;; Copyright © 2014–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -45,9 +45,7 @@
     (al/add-hook-maybe 'lisp-mode-hook 'al/imenu-add-sections))
 
   (when (require 'al-lisp nil t)
-    (al/lisp-add-macro-font-lock-keywords)
-    (al/lisp-add-my-macro-font-lock-keywords)
-    (al/lisp-add-defcommand-font-lock-keywords)
+    (al/lisp-add-font-lock-keywords)
     (al/add-hook-maybe 'lisp-mode-hook
       'al/lisp-add-defcommand-to-imenu))
 

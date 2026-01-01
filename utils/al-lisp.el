@@ -1,6 +1,6 @@
 ;;; al-lisp.el --- Additional functionality for `lisp-mode'  -*- lexical-binding: t -*-
 
-;; Copyright © 2017–2025 Alex Kost
+;; Copyright © 2017–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -28,25 +28,16 @@
 ;;; Highlighting and indenting additional macros
 
 (al/put-lisp-indent 'defsystem 1)
+(al/put-lisp-indent 'al/defun-with-delay 3)
+(al/put-lisp-indent 'al/run-after-sleep 1)
+(put 'defcommand 'doc-string-elt 4)
+(put 'al/defun-with-delay 'doc-string-elt 4)
 
 (defvar al/lisp-macro-name-regexp
   (rx "(" (group (or "if-let" "when-let" "when-let*"
-                     "defsystem"))
+                     "defsystem" "al/run-after-sleep"))
       symbol-end)
   "Regexp to match macro names to highlight.")
-
-(defun al/lisp-add-macro-font-lock-keywords ()
-  "Add font-lock keywords to highlight macros.
-Call this function once!"
-  (font-lock-add-keywords
-   'lisp-mode
-   `((,al/lisp-macro-name-regexp 1 font-lock-keyword-face))))
-
-
-;;; Highlighting "defcommand" (used by StumpWM)
-
-;; To highlight docstring properly (with `font-lock-doc-face').
-(put 'defcommand 'doc-string-elt 4)
 
 (defvar al/lisp-defcommand-regexp
   (rx line-start
@@ -58,28 +49,6 @@ Call this function once!"
        (group (one-or-more (or (syntax word) (syntax symbol))))))
   "Regexp to match `defcommand' keyword.")
 
-(defun al/lisp-add-defcommand-font-lock-keywords ()
-  "Add font-lock keywords to highlight `defcommand' properly.
-Call this function once!"
-  (font-lock-add-keywords
-   'lisp-mode
-   `((,al/lisp-defcommand-regexp
-      (1 font-lock-keyword-face)
-      (2 font-lock-function-name-face nil t)))))
-
-(defun al/lisp-add-defcommand-to-imenu ()
-  "Add `defcommand' entries to `imenu-generic-expression'.
-This function is intended to be added to `lisp-mode-hook'."
-  (al/add-to-imenu al/lisp-defcommand-regexp
-                   :index 2))
-
-
-;;; Highlighting and indenting my macros for StumpWM
-
-(al/put-lisp-indent 'al/defun-with-delay 3)
-(al/put-lisp-indent 'al/run-after-sleep 1)
-(put 'al/defun-with-delay 'doc-string-elt 4)
-
 (defvar al/lisp-defun-with-delay-regexp
   (rx "(" (group "al/defun-with-delay")
       symbol-end
@@ -89,21 +58,25 @@ This function is intended to be added to `lisp-mode-hook'."
       (group (one-or-more (or (syntax word) (syntax symbol)))))
   "Regexp to match `al/defun-with-delay' macro.")
 
-(defvar al/lisp-my-macro-name-regexp
-  (rx "(" (group "al/run-after-sleep")
-      symbol-end)
-  "Regexp to match macro names to highlight.")
-
-(defun al/lisp-add-my-macro-font-lock-keywords ()
-  "Add font-lock keywords to highlight my macros.
+(defun al/lisp-add-font-lock-keywords ()
+  "Add font-lock keywords to highlight additional macros.
 Call this function once!"
   (font-lock-add-keywords
    'lisp-mode
-   `((,al/lisp-my-macro-name-regexp 1 font-lock-keyword-face)
+   `((,al/lisp-macro-name-regexp 1 font-lock-keyword-face)
+     (,al/lisp-defcommand-regexp
+      (1 font-lock-keyword-face)
+      (2 font-lock-function-name-face nil t))
      (,al/lisp-defun-with-delay-regexp
       (1 font-lock-keyword-face)
       (2 font-lock-constant-face)
       (3 font-lock-function-name-face)))))
+
+(defun al/lisp-add-defcommand-to-imenu ()
+  "Add `defcommand' entries to `imenu-generic-expression'.
+This function is intended to be added to `lisp-mode-hook'."
+  (al/add-to-imenu al/lisp-defcommand-regexp
+                   :index 2))
 
 (provide 'al-lisp)
 
