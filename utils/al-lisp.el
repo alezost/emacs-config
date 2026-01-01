@@ -49,7 +49,8 @@ Call this function once!"
 (put 'defcommand 'doc-string-elt 4)
 
 (defvar al/lisp-defcommand-regexp
-  (rx "(" (group "defcommand")
+  (rx line-start
+      "(" (group "defcommand")
       symbol-end
       (zero-or-more blank)
       (zero-or-one "(")
