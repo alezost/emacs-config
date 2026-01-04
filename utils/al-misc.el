@@ -166,8 +166,8 @@ Call (put SYMBOL PROPERTY VALUE) for each PROPERTY and each SYMBOL."
 (defun al/format-bytes (bytes &optional width)
   "Return human readable string from BYTES.
 Result has WIDTH length plus 1 character for unit."
-  (or (> bytes 0)
-      (error "BYTES should be greater than zero"))
+  (or (>= bytes 0)
+      (error "BYTES should be a non-negative number"))
   (cl-multiple-value-bind (num unit)
       (al/format-bytes-1 bytes)
     (let* ((width-str (and width (number-to-string width)))
