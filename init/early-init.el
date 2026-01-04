@@ -9,13 +9,15 @@
  package-enable-at-startup nil)
 
 ;; Set `file-name-handler-alist' to nil until Emacs startup is finished.
-(defvar al/file-name-handler-alist file-name-handler-alist)
+(defvar al/file-name-handler-alist file-name-handler-alist
+  "Original value of `file-name-handler-alist'.")
 (setq file-name-handler-alist nil)
 
 (defun al/restore-file-name-handler-alist ()
+  "Restore original value of `file-name-handler-alist'."
   (setq file-name-handler-alist
         (append file-name-handler-alist
-                al/file-name-handler-alist) ))
+                al/file-name-handler-alist)))
 
 (add-hook 'emacs-startup-hook #'al/restore-file-name-handler-alist)
 
