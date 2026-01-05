@@ -1,6 +1,6 @@
 ;;; mmedia.el --- Using multimedia stuff inside Emacs  -*- lexical-binding: t -*-
 
-;; Copyright © 2014–2025 Alex Kost
+;; Copyright © 2014–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -105,6 +105,10 @@
                (,(al/math-dir-file "video") . "~math")
                ("~/storage/music" . "~M")
                (,al/music-dir . "~m"))))
+
+    (al/add-hook-maybe 'emms-playlist-source-inserted-hook
+      'al/emms-add-info-size)
+
     (advice-add 'emms-source-play
       :override #'al/emms-source-add-and-play)
     (advice-add 'emms-playlist-mode-insert-track

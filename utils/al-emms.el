@@ -1,6 +1,6 @@
 ;;; al-emms.el --- Additional functionality for EMMS  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2025 Alex Kost
+;; Copyright © 2013–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
 (require 'emms-playlist-mode)
 (require 'emms-state)
 (require 'al-text)
+(require 'al-misc)
 
 (defun al/emms-seek-forward (seconds)
   "Seek by SECONDS forward.
@@ -87,6 +88,18 @@ If ARG is specified, show metadata of the track."
 
 ;;; Track description
 
+(defun al/emms-add-info-size ()
+  "Add `info-size' to tracks in the current buffer.
+This function is intended to be added to
+`emms-playlist-source-inserted-hook'."
+  (dolist (track (emms-playlist-tracks-in-region
+                  (point-min) (point-max)))
+    (when (and (eq (emms-track-type track) 'file)
+               (not (emms-track-get track 'info-size)))
+      (when-let* ((attr (file-attributes (emms-track-name track)))
+                  (size (file-attribute-size attr)))
+        (emms-track-set track 'info-size size)))))
+
 (defun al/emms-playlist-mode-insert-track (track &optional no-newline)
   "Insert the description of TRACK at point.
 This is a substitution for `emms-playlist-mode-insert-track'.  The only
@@ -124,7 +137,7 @@ fontification."
 
 (defun al/emms-format-playing-time (time)
   "Return TIME formatted to display in EMMS playlist."
-  (format "%7s "
+  (format "%7s"
           (if time
               (propertize (emms-state-format-time time)
                           'face 'alect-time)
@@ -140,14 +153,16 @@ fontification."
   "Return a full description of TRACK.
 Intended to be used for `emms-track-description-function'."
   (cl-flet ((etg (key) (emms-track-get track key)))
-    (let ((artist (al/emms-format-artist (etg 'info-artist)))
-          (title  (al/emms-format-title (etg 'info-title)))
-          (time   (al/emms-format-playing-time (etg 'info-playing-time))))
+    (let* ((size   (etg 'info-size))
+           (size   (if size (al/format-bytes size 3) "    "))
+           (artist (al/emms-format-artist (etg 'info-artist)))
+           (title  (al/emms-format-title (etg 'info-title)))
+           (time   (al/emms-format-playing-time (etg 'info-playing-time))))
       (if (null title)
           (let ((name (emms-track-name track)))
             (if (string-match-p page-delimiter name)
                 name
-              (concat time
+              (concat time " " size " "
                       (and artist (concat artist " - "))
                       (al/emms-simple-track-description track))))
         (let* ((tnum   (al/emms-format-track-number (etg 'info-tracknumber)))
@@ -164,7 +179,7 @@ Intended to be used for `emms-track-description-function'."
             (setq desc (concat desc " [" album "]"))))
           (when tnum
             (setq desc (concat desc " " tnum ".")))
-          (concat time desc " " title))))))
+          (concat time " " size " " desc " " title))))))
 
 (defun al/emms-short-track-description (track)
   "Return a short description of TRACK suitable for mode-line."
