@@ -82,7 +82,7 @@
    emms-mode-line-format " %s"
    emms-playing-time-display-format " %s"
    emms-playlist-default-major-mode 'emms-playlist-mode
-   emms-info-functions '(emms-info-libtag emms-info-cueinfo)
+   emms-info-functions '(emms-info-native emms-info-cueinfo)
    emms-show-format "%s"
    emms-source-file-default-directory al/music-dir)
 
@@ -92,6 +92,7 @@
 
   (when (require 'emms-state nil t)
     (emms-state-mode))
+
   (when (require 'al-emms nil t)
     (setq
      emms-mode-line-mode-line-function #'al/emms-mode-line-song-string
@@ -191,7 +192,7 @@
   (setq emms-later-do-interval 0.1))
 
 (al/autoload "emms-cue" emms-info-cueinfo)
-(al/autoload "emms-info-libtag" emms-info-libtag)
+(al/autoload "emms-info-native" emms-info-native)
 
 (with-eval-after-load 'al-emms-notification
   (setq
