@@ -1,6 +1,6 @@
 ;;; file-modes.el --- Modes for various file types  -*- lexical-binding: t -*-
 
-;; Copyright © 2014–2025 Alex Kost
+;; Copyright © 2014–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -77,12 +77,13 @@
 
   (setq
    org-use-speed-commands t
-   org-speed-commands-user
-   '(("." . (org-speed-move-safe 'outline-previous-visible-heading))
-     ("e" . (org-speed-move-safe 'outline-next-visible-heading))
-     (">" . (org-speed-move-safe 'org-backward-heading-same-level))
-     ("E" . (org-speed-move-safe 'org-forward-heading-same-level))
-     ("n" . org-narrow-to-subtree)))
+   org-speed-commands
+   (append '(("." . (org-speed-move-safe 'org-previous-visible-heading))
+             ("e" . (org-speed-move-safe 'org-next-visible-heading))
+             (">" . (org-speed-move-safe 'org-backward-heading-same-level))
+             ("E" . (org-speed-move-safe 'org-forward-heading-same-level))
+             ("n" . org-narrow-to-subtree))
+           org-speed-commands))
 
   (defconst al/org-keys
     '([remap delete-char]
