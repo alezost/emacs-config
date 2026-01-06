@@ -140,6 +140,12 @@ Call (put SYMBOL PROPERTY VALUE) for each PROPERTY and each SYMBOL."
                     symbols))))
           args))))
 
+(defun al/add-simple-font-lock-keywords (mode names)
+  "Fontify NAMES with `font-lock-keyword-face' in MODE."
+  (let ((re (concat "(" (regexp-opt names 'group) "\\_>")))
+    (font-lock-add-keywords
+     mode `((,re 1 font-lock-keyword-face)))))
+
 
 ;;; Formatting bytes
 
