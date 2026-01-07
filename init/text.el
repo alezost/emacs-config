@@ -543,47 +543,30 @@
 ;;; Working with parentheses (paredit, smartparens)
 
 (al/autoload "paredit"
-  paredit-reindent-defun
-  paredit-newline
   paredit-backward-kill-word
   paredit-forward-kill-word
-  paredit-backward
-  paredit-forward
   paredit-backward-up
   paredit-forward-down
-  paredit-kill
   paredit-splice-sexp
   paredit-splice-sexp-killing-backward
   paredit-splice-sexp-killing-forward
-  paredit-raise-sexp
-  paredit-forward-slurp-sexp
-  paredit-forward-barf-sexp
-  paredit-backward-slurp-sexp
-  paredit-backward-barf-sexp
-  paredit-split-sexp
-  paredit-join-sexps)
+  paredit-raise-sexp)
 
 (al/autoload "smartparens"
   sp-indent-defun
-  sp-backward-kill-word
-  sp-kill-word
-  sp-backward-sexp
-  sp-forward-sexp
-  sp-backward-up-sexp
-  sp-down-sexp
-  sp-splice-sexp
-  sp-splice-sexp-killing-forward
-  sp-splice-sexp-killing-backward
-  sp-splice-sexp-killing-around
   sp-backward-kill-sexp
-  sp-backward-copy-sexp
   sp-kill-sexp
-  sp-copy-sexp
   sp-transpose-sexp
   sp-forward-slurp-sexp
   sp-forward-barf-sexp
   sp-backward-slurp-sexp
-  sp-backward-barf-sexp)
+  sp-backward-barf-sexp
+  sp-cheat-sheet
+  sp-absorb-sexp
+  sp-emit-sexp
+  sp-convolute-sexp
+  sp-join-sexp
+  sp-split-sexp)
 
 (with-eval-after-load 'smartparens
   (require 'smartparens-config nil t)
