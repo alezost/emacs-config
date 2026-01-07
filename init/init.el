@@ -97,8 +97,6 @@
 (push al/emacs-utils-dir load-path)
 
 (require 'al-general)
-(al/title-message "Loading necessary utils")
-(require 'al-text)
 (require 'al-key)
 
 (al/title-message "Loading init files")

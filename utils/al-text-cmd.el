@@ -37,6 +37,40 @@ the search from the beginning of the buffer if it did not succeed."
 	  (goto-char pos)
 	  nil))))
 
+;;;###autoload
+(defun al/replace (from-string to-string &optional start end)
+  "This is similar to `query-replace' but without querying.
+
+Replace some occurrences of FROM-STRING with TO-STRING in the
+current buffer.
+
+START and END specify the region to operate on.  If they are not
+specified, then the currenty marked region is used.  If there is
+no marked region, then the whole buffer is used."
+  (interactive "MReplace what: \nMReplace with: ")
+  (let* ((count 0)
+         (regionp (use-region-p))
+         (from-re (regexp-quote from-string))
+         (str-diff (- (length to-string)
+                      (length from-string)))
+         (beg (cond
+               (start start)
+               (regionp (region-beginning))))
+         (end (cond
+               (end end)
+               (regionp (region-end)))))
+    (save-excursion
+      (when beg (goto-char beg))
+      (while (re-search-forward from-re end t)
+        (replace-match to-string)
+        (setq count (1+ count))
+        (when end
+          ;; Extend/shrink the end bound after replacing.
+          (setq end (+ end str-diff)))))
+    (unless (= 0 count)
+      (message "'%s' has been replaced with '%s' %d time(s)."
+               from-string to-string count))))
+
 
 ;;; Editing
 
