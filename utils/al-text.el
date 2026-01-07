@@ -17,9 +17,6 @@
 
 ;;; Code:
 
-(defun al/beginning-of-buffer ()
-  (goto-char (point-min)))
-
 (defun al/show-trailing-whitespace ()
   (setq-local show-trailing-whitespace t))
 

@@ -1,6 +1,6 @@
 ;;; al-text-cmd.el --- Various interactive commands for working with text  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2025 Alex Kost
+;; Copyright © 2013–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -415,6 +415,22 @@ move to end of next one."
   (goto-char (point-max))
   (recenter-top-bottom 0)
   (forward-line -2))
+
+;;;###autoload
+(defun al/beginning-of-buffer ()
+  "Move point to the beginning of the buffer.
+Interactively, push mark at previous position.
+This is a simplified version of `beginning-of-buffer'."
+  (interactive (progn (push-mark) nil))
+  (goto-char (point-min)))
+
+;;;###autoload
+(defun al/end-of-buffer ()
+  "Move point to the end of the buffer.
+Interactively, push mark at previous position.
+This is a simplified version of `end-of-buffer'."
+  (interactive (progn (push-mark) nil))
+  (goto-char (point-max)))
 
 
 ;;; Misc

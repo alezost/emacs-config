@@ -1,6 +1,6 @@
 ;;; text.el --- Working with text: editing, searching, …  -*- lexical-binding: t -*-
 
-;; Copyright © 2014–2025 Alex Kost
+;; Copyright © 2014–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -51,11 +51,11 @@
 
  ("C-M-a" . beginning-of-defun)
  ("M-A"   . al/beginning-of-line)
- ("H-a"   . beginning-of-buffer)
+ ("H-a"   . al/beginning-of-buffer)
 
  ("C-M-i" . end-of-defun)
  ("M-I"   . al/end-of-line)
- ("H-i"   . end-of-buffer)
+ ("H-i"   . al/end-of-buffer)
 
  ("C-3"   . recenter-top-bottom)
  ("C-H-3" . al/recenter-top)
