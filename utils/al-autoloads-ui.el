@@ -1,6 +1,6 @@
 ;;; al-autoloads-ui.el --- User interface to generate autoloads of Emacs packages  -*- lexical-binding: t -*-
 
-;; Copyright © 2025 Alex Kost
+;; Copyright © 2025–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 ;;; Code:
 
 (require 'transient)
-(require 'al-autoloads-make)
+(require 'al-autoload)
 (require 'al-misc)
 
 ;; Defined in "init.el"

@@ -1,6 +1,6 @@
 ;;; init.el --- File symlinked by `user-init-file'  -*- lexical-binding: t -*-
 
-;; Copyright © 2012–2025 Alex Kost
+;; Copyright © 2012–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -125,7 +125,7 @@
 (al/title-message "Autoloading utils")
 (unless (file-exists-p al/emacs-utils-autoloads)
   (with-demoted-errors "ERROR during generating utils autoloads: %S"
-    (require 'al-autoloads-make)
+    (require 'al-autoload)
     (al/generate-autoloads al/emacs-utils-dir
                            :output-file al/emacs-utils-autoloads)))
 (al/load al/emacs-utils-autoloads)
@@ -136,7 +136,7 @@
     (al/title-message "Autoloading ELPA packages")
     (unless (file-exists-p al/emacs-elpa-package-autoloads)
       (with-demoted-errors "ERROR during generating ELPA packages autoloads: %S"
-        (require 'al-autoloads-make)
+        (require 'al-autoload)
         (al/generate-autoloads package-user-dir
                                :output-file al/emacs-elpa-package-autoloads
                                :add-to-path 'prepend
@@ -154,7 +154,7 @@
     (al/title-message "Autoloading my packages")
     (unless (file-exists-p al/emacs-my-package-autoloads)
       (with-demoted-errors "ERROR during generating my packages autoloads: %S"
-        (require 'al-autoloads-make)
+        (require 'al-autoload)
         (al/generate-autoloads al/emacs-my-packages-dir
                                :output-file al/emacs-my-package-autoloads
                                :add-to-path 'prepend
