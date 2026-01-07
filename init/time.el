@@ -1,6 +1,6 @@
 ;;; time.el --- Time, calendar, diary, appointments, notifications, …  -*- lexical-binding: t -*-
 
-;; Copyright © 2014–2025 Alex Kost
+;; Copyright © 2014–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -114,13 +114,13 @@
 (with-eval-after-load 'al-appt
   (when (require 'al-file nil t)
     (al/setq-file
-     al/appt-notify-normal-sound (al/sound-dir-file "drums.wav")
-     al/appt-notify-urgent-sound (al/sound-dir-file "bell.oga"))))
+      al/appt-notify-normal-sound (al/sound-dir-file "drums.wav")
+      al/appt-notify-urgent-sound (al/sound-dir-file "bell.oga"))))
 
 (with-eval-after-load 'al-notification
   ;; (setq al/notification-time-format "%Mm %Ss")
   (when (require 'al-file nil t)
     (al/setq-file
-     al/notification-sound (al/sound-dir-file "alarm.wav"))))
+      al/notification-sound (al/sound-dir-file "alarm.wav"))))
 
 ;;; time.el ends here

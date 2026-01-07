@@ -1,6 +1,6 @@
 ;;; al-file.el --- Additional functionality for working with files  -*- lexical-binding: t -*-
 
-;; Copyright © 2016–2025 Alex Kost
+;; Copyright © 2016–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -38,21 +38,7 @@ Example:
                 v2 \"/tmp\")
 
 v2 will be set, while v1 will not."
-  ;; The following implementation works, but the compiler complains that
-  ;; `setqs' is not defined.  Apparently, it doesn't like recursive
-  ;; functions inside a macro.
-  ;;
-  ;; (defun setqs (lst)
-  ;;   (if (null lst)
-  ;;       '()
-  ;;     (cons (let ((var  (car lst))
-  ;;                 (file (cadr lst)))
-  ;;             `(let ((file ,file))
-  ;;                (when (file-exists-p file)
-  ;;                  (setq ,var file))))
-  ;;           (setqs (cddr lst)))))
-  ;; `(progn ,@(setqs body))
-
+  (declare (indent 0) (debug t))
   `(progn
      ,@(mapcar (lambda (lst)
                  (let ((var  (car lst))
