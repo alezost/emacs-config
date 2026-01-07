@@ -98,7 +98,6 @@
 
 (require 'al-general)
 (al/title-message "Loading necessary utils")
-(require 'al-file)
 (require 'al-text)
 (require 'al-key)
 

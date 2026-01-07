@@ -483,10 +483,11 @@ This variable is used to set `al/dired-ignored-extensions'.")
   ;; `Info-insert-dir'), so the default manuals are searched first,
   ;; while I want my dirs to be searched first.
   (info-initialize)
-  (setq Info-directory-list
-        (append (al/existing-files
-                 (al/devel-dir-file "guix/doc"))
-                Info-directory-list))
+  (when (require 'al-file nil t)
+    (setq Info-directory-list
+          (append (al/existing-files
+                   (al/devel-dir-file "guix/doc"))
+                  Info-directory-list)))
 
   (al/bind-keys
    :map Info-mode-map
