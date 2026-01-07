@@ -85,6 +85,12 @@
              ("n" . org-narrow-to-subtree))
            org-speed-commands))
 
+  ;; A hack to fontify keys in "*Org Select*" buffer.  Ideally,
+  ;; `org-mks' should be improved to prettify output in "*Org Select*"
+  ;; buffer.
+  (dolist (assoc org-structure-template-alist)
+    (setcar assoc (propertize (car assoc) 'face 'alect-key)))
+
   (defconst al/org-keys
     '([remap delete-char]
       [remap delete-backward-char]
