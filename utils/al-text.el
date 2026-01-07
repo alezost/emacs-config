@@ -41,8 +41,10 @@ no marked region, then the whole buffer is used."
       (when beg (goto-char beg))
       (while (re-search-forward from-re end t)
         (replace-match to-string)
-        (setq end (+ end str-diff) ; extend/shrink the end bound after replacing
-              count (1+ count))))
+        (setq count (1+ count))
+        (when end
+          ;; Extend/shrink the end bound after replacing.
+          (setq end (+ end str-diff)))))
     (unless (= 0 count)
       (message "'%s' has been replaced with '%s' %d time(s)."
                from-string to-string count))))
