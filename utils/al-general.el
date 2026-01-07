@@ -20,6 +20,34 @@
 (require 'seq)
 
 
+;;; Wrappers for local variables
+
+(defun al/show-trailing-whitespace ()
+  (setq-local show-trailing-whitespace t))
+
+(defun al/no-truncate-lines ()
+  (setq-local truncate-lines nil))
+
+(defun al/inhibit-field-motion ()
+  (setq-local inhibit-field-text-motion t))
+
+(defun al/bar-cursor-type ()
+  (setq-local cursor-type 'bar))
+
+(defun al/hbar-cursor-type ()
+  (setq-local cursor-type 'hbar))
+
+(defun al/no-syntactic-font-lock ()
+  (setq-local font-lock-keywords-only t))
+
+(defun al/set-comment-column ()
+  (setq-local comment-column 32))
+
+(defun al/set-default-paragraph ()
+  (setq-local paragraph-start    (default-value 'paragraph-start)
+              paragraph-separate (default-value 'paragraph-separate)))
+
+
 ;;; Function utils
 
 (defun al/negate (fun)
@@ -233,6 +261,33 @@ non-nil."))
          ,(concat "Execute `" var-name-str "' until success.")
          (interactive)
          (,subfun-name ,var-name)))))
+
+
+;;; Syntax table utils
+
+(defmacro al/modify-syntax (table-name &rest specs)
+  "Update syntax table according to SPECS.
+TABLE-NAME is a name (unquoted symbol) of a syntax table variable.
+SPECS are (CHAR NEWENTRY) elements.  See `modify-syntax-entry'
+for details."
+  (declare (indent 1))
+  (let ((table-var (make-symbol "table")))
+    `(al/with-check
+       :var ',table-name
+       (let ((,table-var (symbol-value ',table-name)))
+         ,@(mapcar
+            (lambda (spec)
+              (pcase spec
+                (`(,char ,entry)
+                 `(modify-syntax-entry ,char ,entry ,table-var))))
+            specs)))))
+
+(defmacro al/modify-page-break-syntax (table-name)
+  "Set non-whitespace syntax for ^L in syntax table TABLE-NAME.
+Page break should not belong to whitespace syntax, because
+`back-to-indentation' moves the point after ^L character which is not good.
+Also it (default syntax) breaks `indent-guide-mode'."
+  `(al/modify-syntax ,table-name (?\f ">   ")))
 
 (provide 'al-general)
 
