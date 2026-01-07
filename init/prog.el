@@ -18,7 +18,9 @@
 
 ;;; Working with elisp: eldoc, edebug, debugger, …
 
-(setq eval-expression-print-length nil)
+(setq
+ eval-expression-print-length nil
+ parens-require-spaces nil)
 
 (put 'advice-add 'lisp-indent-function 1)
 

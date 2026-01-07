@@ -1,6 +1,6 @@
 ;;; al-parens.el --- Additional functionality for working with parentheses  -*- lexical-binding: t -*-
 
-;; Copyright © 2015–2026 Alex Kost
+;; Copyright © 2013–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -16,6 +16,23 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Code:
+
+
+;;; Checking parentheses
+
+(defvar al/check-parens-modes
+  '(lisp-data-mode scheme-mode)
+  "List of parent modes where `al/check-parens' is called.")
+
+;;;###autoload
+(defun al/check-parens ()
+  "Run `check-parens' if `major-mode' derived from `al/check-parens-modes'."
+  (interactive)
+  (when (derived-mode-p al/check-parens-modes)
+    (check-parens)))
+
+
+;;; Commands for moving and editing
 
 (declare-function sp-kill-sexp "smartparens")
 (declare-function sp-backward-kill-sexp "smartparens")

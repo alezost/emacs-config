@@ -256,9 +256,6 @@
  save-abbrevs nil
  dabbrev-abbrev-char-regexp "\\sw\\|[-_+*]")
 
-(setq parens-require-spaces nil)
-(al/add-hook-maybe 'after-save-hook 'al/check-parens)
-
 ;; Smooth scrolling.
 (setq
  mouse-wheel-scroll-amount '(3 ((shift) . 1))

@@ -1,6 +1,6 @@
 ;;; al-text.el --- Additional functionality related to text editing  -*- lexical-binding: t -*-
 
-;; Copyright © 2014–2025 Alex Kost
+;; Copyright © 2020–2025 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -53,15 +53,6 @@ no marked region, then the whole buffer is used."
       string
     (concat (substring string 0 (- length 1))
             "…")))
-
-(defvar al/check-parens-modes
-  '(lisp-data-mode scheme-mode)
-  "List of parent modes where `al/check-parens' is called.")
-
-(defun al/check-parens ()
-  "Run `check-parens' if `major-mode' derived from `al/check-parens-modes'."
-  (when (derived-mode-p al/check-parens-modes)
-    (check-parens)))
 
 (provide 'al-text)
 
