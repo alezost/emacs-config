@@ -1,6 +1,6 @@
 ;;; al-file-cmd.el --- Interactive commands for working with files  -*- lexical-binding: t -*-
 
-;; Copyright © 2012–2025 Alex Kost
+;; Copyright © 2012–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -87,27 +87,24 @@ with \\[universal-argument] \\[universal-argument], prompt for a default host as
 (defvar al/path-completions nil
   "List of names of executable files from PATH.")
 
-(defun al/refresh-path-completions ()
-  "Refresh `al/path-completions'."
+(defun al/path-completions ()
+  "Return names of executable files from PATH."
   (interactive)
-  (let ((regexp (rx "." (zero-or-one ".") "/")))
-    (setq al/path-completions
-          (sort (locate-file-completion-table
-                 exec-path exec-suffixes ""
-                 (lambda (name)
-                   (not (string-match-p regexp name)))
-                 t)
-                #'string<))))
+  (or al/path-completions
+      (let ((regexp (rx "." (zero-or-one ".") "/")))
+        (setq al/path-completions
+              (locate-file-completion-table
+               exec-path exec-suffixes ""
+               (lambda (name)
+                 (not (string-match-p regexp name)))
+               t)))))
 
 ;;;###autoload
 (defun al/find-file-in-path (file)
   "Edit executable FILE found in PATH environment variable."
   (interactive
-   (progn
-     (unless al/path-completions
-       (al/refresh-path-completions))
-     (list (completing-read "Find PATH file: "
-                            al/path-completions))))
+   (list (completing-read "Find PATH file: "
+                          (al/path-completions))))
   (when-let* ((file (executable-find file)))
     (find-file file)))
 
@@ -119,14 +116,13 @@ with \\[universal-argument] \\[universal-argument], prompt for a default host as
 ;;;###autoload
 (defun al/replace-space-in-file-names (dir &optional recursive string)
   "Rename files in DIR by replacing space in their names with STRING.
-Rename DIR itself if needed.  If recursive is non-nil, rename
-files in all sub-directories recursively.  If STRING is nil, use
-'_'."
+Rename DIR itself if needed.  If recursive is non-nil, rename files in
+all sub-directories recursively.  If STRING is nil, use \"_\"."
   (interactive
-   (list (let* ((dir (and (derived-mode-p 'dired-mode)
-                          (dired-get-filename)))
-                (dir (and (file-directory-p dir) dir)))
-           (read-directory-name "Directory: " dir))
+   (list (let ((dir (and (derived-mode-p 'dired-mode)
+                         (dired-get-filename))))
+           (read-directory-name "Directory: "
+                                (and (file-directory-p dir) dir)))
          (y-or-n-p "Recursively? ")
          (al/read-string "Replace space with: " nil nil "_")))
   (or string (setq string "_"))
