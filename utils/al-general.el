@@ -1,6 +1,6 @@
 ;;; al-general.el --- Additional functionality essential for my config  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2025 Alex Kost
+;; Copyright © 2013–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -139,6 +139,14 @@ FILE may omit an extension.  See `load' for details."
     (or (load file 'noerror)
         (progn (al/warning-message "Failed to load '%s'." file)
                nil))))
+
+(defmacro al/autoload (file &rest symbols)
+  "Autoload (unquoted) SYMBOLS from file as interactive commands."
+  (declare (indent 1))
+  `(progn
+     ,@(mapcar (lambda (symbol)
+                 `(autoload ',symbol ,file nil t))
+               symbols)))
 
 (defun al/add-hook-maybe (hooks functions &optional append local)
   "Add all bound FUNCTIONS to all HOOKS.

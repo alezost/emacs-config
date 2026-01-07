@@ -21,14 +21,6 @@
   (rx "-autoloads.el" string-end)
   "Regexp to match Emacs `autoloads' file.")
 
-(defmacro al/autoload (file &rest symbols)
-  "Autoload (unquoted) SYMBOLS from file as interactive commands."
-  (declare (indent 1))
-  `(progn
-     ,@(mapcar (lambda (symbol)
-                 `(autoload ',symbol ,file nil t))
-               symbols)))
-
 (defun al/autoloads-file (directory)
   "Return the name of `autoloads' file for DIRECTORY."
   (let* ((dir  (expand-file-name directory))
