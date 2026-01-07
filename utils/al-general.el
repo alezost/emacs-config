@@ -1,4 +1,4 @@
-;;; al-general.el --- Additional functionality essential for my config  -*- lexical-binding: t -*-
+;;; al-general.el --- Essential functionality for my config files  -*- lexical-binding: t -*-
 
 ;; Copyright © 2013–2026 Alex Kost
 
@@ -19,6 +19,30 @@
 
 (require 'seq)
 
+
+;;; Function utils
+
+(defun al/negate (fun)
+  "Return a function that negates the result of FUN."
+  (lambda (&rest args)
+    (not (apply fun args))))
+
+(defun al/funcall-or-dolist (val function)
+  "Call FUNCTION on VAL if VAL is not a list.
+If VAL is a list, call FUNCTION on each element of the list."
+  (declare (indent 1))
+  (if (listp val)
+      (dolist (v val)
+        (funcall function v))
+    (funcall function val)))
+
+
+;;; List utils
+
+(defun al/list-maybe (obj)
+  "Return OBJ if it is a list, or a list with OBJ otherwise."
+  (if (listp obj) obj (list obj)))
+
 (defmacro al/pushnew (place newelt &optional testfn)
   "Push NEWELT to PLACE if not already present.
 This is similar to `cl-pushnew' but uses `seq' library instead of `cl-lib'."
@@ -26,14 +50,8 @@ This is similar to `cl-pushnew' but uses `seq' library instead of `cl-lib'."
      (unless (seq-contains-p ,place elt ,testfn)
        (push elt ,place))))
 
-(defun al/negate (fun)
-  "Return a function that negates the result of FUN."
-  (lambda (&rest args)
-    (not (apply fun args))))
-
-(defun al/list-maybe (obj)
-  "Return OBJ if it is a list, or a list with OBJ otherwise."
-  (if (listp obj) obj (list obj)))
+
+;;; Auxiliary messages
 
 (defun al/warning-message (format-string &rest args)
   "Display a warning message."
@@ -52,6 +70,9 @@ This is similar to `cl-pushnew' but uses `seq' library instead of `cl-lib'."
   (apply #'message
          (concat "⏺ " format-string)
          args))
+
+
+;;; Auxiliary predicates
 
 (defun al/p (predicate val &optional message)
   "Return non-nil if PREDICATE returns non-nil on VAL.
@@ -115,14 +136,8 @@ Return nil if checks are not passed."
                 ,(or (null dir)  `(al/directory? ,dir)))
        ,@body)))
 
-(defun al/funcall-or-dolist (val function)
-  "Call FUNCTION on VAL if VAL is not a list.
-If VAL is a list, call FUNCTION on each element of the list."
-  (declare (indent 1))
-  (if (listp val)
-      (dolist (v val)
-        (funcall function v))
-    (funcall function val)))
+
+;;; (Auto)loading utils
 
 (defun al/add-to-load-path-maybe (&rest dirs)
   "Add existing directories from DIRS to `load-path'."
@@ -147,6 +162,9 @@ FILE may omit an extension.  See `load' for details."
      ,@(mapcar (lambda (symbol)
                  `(autoload ',symbol ,file nil t))
                symbols)))
+
+
+;;; Hook utils
 
 (defun al/add-hook-maybe (hooks functions &optional append local)
   "Add all bound FUNCTIONS to all HOOKS.
