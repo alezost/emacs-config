@@ -184,6 +184,38 @@ respectively."
                               keyword)))))
     `(add-hook 'after-init-hook (lambda () ,@body) ,depth)))
 
+
+;;; Command utils
+
+(defmacro al/define-multi-command (name &rest functions)
+  "Define NAME interactive command.
+This command will execute FUNCTIONS in order until one of them returns
+non-nil value."
+  (declare (indent 1) (debug t))
+  (let* ((name-str        (symbol-name name))
+         (subfun-name-str (concat name-str "-1"))
+         (subfun-name     (intern subfun-name-str))
+         (var-name-str    (concat name-str "-functions"))
+         (var-name        (intern var-name-str)))
+    `(progn
+       (defvar ,var-name '(,@functions)
+         ,(concat "List of functions for `" name-str "'.
+Each element should be a function called without arguments.  If it
+returns nil, the next function is called, and so on until the end of
+this list or until success i.e., until one of the functions returns
+non-nil."))
+
+       (defun ,subfun-name (funs)
+         ,(concat "Sub-function for `" name-str "'.")
+         (when funs
+           (or (funcall      (car funs))
+               (,subfun-name (cdr funs)))))
+
+       (defun ,name ()
+         ,(concat "Execute `" var-name-str "' until success.")
+         (interactive)
+         (,subfun-name ,var-name)))))
+
 (provide 'al-general)
 
 ;;; al-general.el ends here
