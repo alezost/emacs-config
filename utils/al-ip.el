@@ -47,6 +47,6 @@ Return nil if IP address is not obtained."
                  url-str (propertize ip 'face 'bold))
       (message "Cannot retrieve IP address from <%s>." url-str))))
 
-(provide 'al-url)
+(provide 'al-ip)
 
-;;; al-url.el ends here
+;;; al-ip.el ends here
