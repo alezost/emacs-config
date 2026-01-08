@@ -1,6 +1,6 @@
 ;;; keys.el --- Miscellaneous global key bindings and relative settings  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2025 Alex Kost
+;; Copyright © 2013–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@
     "C-e" "M-e" "C-M-e" "M-E"
     "C-a" "M-a" "C-M-a" "M-A"
     "<ctrl-i>" "M-i" "C-M-i" "M-I")
-  "Alist of moving keys that should be unbound.")
+  "List of moving keys that should be unbound.")
 
 (defconst al/free-editing-keys
   '("C-," "M-," "C-M-," "M-<"
@@ -55,18 +55,18 @@
     "C-'" "M-'" "C-M-'" "M-\""
     "C-;" "M-;" "C-M-;"
     "C-t" "M-x" "C-M-x")
-  "Alist of editing keys that should be unbound.")
+  "List of editing keys that should be unbound.")
 
 (defconst al/free-important-keys
   '("M-g")
-  "Alist of important keys that should be unbound.")
+  "List of important keys that should be unbound.")
 
 (defconst al/free-misc-keys
   '("M-_" "M-+"
     "M-/" "C-M-/" "M-?"
     "C-w"
     "<C-tab>" "<M-tab>" "<C-M-tab>")
-  "Alist of miscellaneous keys that should be unbound.")
+  "List of miscellaneous keys that should be unbound.")
 
 (defconst al/lazy-moving-keys
   '(("o" . backward-char)
@@ -93,7 +93,9 @@
   "Alist of auxiliary keys for minibuffer modes.")
 
 (setq al/default-keys-variables
-      '(al/free-moving-keys al/free-editing-keys al/free-important-keys))
+      '(al/free-moving-keys
+        al/free-editing-keys
+        al/free-important-keys))
 
 
 ;;; Global keys
