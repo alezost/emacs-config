@@ -458,6 +458,7 @@
  ("d" . magit-dispatch)
  ("s" . magit-status)
  ("l" . magit-log-current)
+ ("k" . browse-at-remote-kill)
  ("u" . browse-at-remote))
 
 (defconst al/magit-common-keys
