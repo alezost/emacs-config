@@ -667,6 +667,11 @@
     "Alist of auxiliary keys for `git-rebase-mode-map'.")
   (al/bind-keys-from-vars 'git-rebase-mode-map 'al/git-rebase-keys))
 
+(with-eval-after-load 'browse-at-remote
+  (when (require 'al-browse-at-remote nil t)
+    (advice-add 'browse-at-remote-get-url
+      :around #'al/browse-at-remote-get-url)))
+
 
 ;;; Misc settings and packages
 
