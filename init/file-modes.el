@@ -40,7 +40,6 @@
 (setq org-export-backends
       '(ascii html icalendar latex odt texinfo man))
 (with-eval-after-load 'org
-  (require 'org-tempo nil t)
   (when (require 'al-org nil t)
     (advice-add 'org-link-make-string
       :around #'al/org-link-set-description))
@@ -52,6 +51,7 @@
     (setq org-emphasis-alist
           (al/assoc-delete-all '("/" "_") org-emphasis-alist)))
   (setq
+   org-modules '(org-tempo ol-info)
    org-imenu-depth 6
    org-completion-use-ido t
    org-confirm-elisp-link-function nil
