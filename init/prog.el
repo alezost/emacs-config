@@ -233,6 +233,7 @@
   (when (require 'al-scheme nil t)
     (setq scheme-imenu-generic-expression
           al/scheme-imenu-generic-expression)
+    (al/scheme-add-font-lock-keywords)
     (al/add-hook-maybe 'scheme-mode-hook 'al/scheme-fix-docstring-font-lock)
     (advice-add 'scheme-indent-function
       :override 'al/scheme-indent-function))

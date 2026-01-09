@@ -153,6 +153,32 @@ This function is intended to be added to `scheme-mode-hook'."
   (setq-local font-lock-syntactic-face-function
               'lisp-font-lock-syntactic-face-function))
 
+
+;;; Highlighting and indenting additional macros
+
+(al/put scheme-indent-function
+  (0 case-lambda*
+     and-let)
+  (1 if
+     if-let
+     when-let))
+
+(defvar al/scheme-keywords
+  '("push!"
+    "define-delayed"
+    "define-osd"
+    "case-lambda*"
+    "and-let"
+    "if-let"
+    "when-let")
+  "List of additional keywords to highlight in `scheme-mode'.")
+
+(defun al/scheme-add-font-lock-keywords ()
+  "Add `font-lock-keywords' to highlight additional macros.
+Call this function once!"
+  (al/add-simple-font-lock-keywords
+   'scheme-mode al/scheme-keywords))
+
 (provide 'al-scheme)
 
 ;;; al-scheme.el ends here
