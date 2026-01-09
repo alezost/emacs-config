@@ -179,8 +179,8 @@
 ;; packages, and external packages are autoloaded after loading the init
 ;; files.
 (al/add-hook-maybe 'after-save-hook 'al/check-parens)
-(al/add-hook-maybe 'after-change-major-mode-hook
-  'al/set-default-input-method)
+;; (al/add-hook-maybe 'after-change-major-mode-hook
+;;   'al/set-default-input-method)
 (al/add-hook-maybe 'window-configuration-change-hook
   'al/set-windows-num-property)
 (al/add-hook-maybe 'text-mode-hook
