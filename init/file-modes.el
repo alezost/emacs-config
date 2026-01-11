@@ -276,7 +276,7 @@ will do the right thing."
      `((sh-mode "/etc/profile\\'"
                 "bashrc\\'")
        (conf-xdefaults-mode ,(al/file-regexp "Xmodmap"))
-       (conf-space-mode ,(al/file-regexp "mailmap"))
+       (conf-space-mode ,(al/file-regexp "mailmap" "gitignore"))
        (conf-unix-mode ,(al/file-regexp
                          "rules" "hwdb" "cnf" "map" "inc" "service"
                          "target" "socket" "timer" "mount"))
