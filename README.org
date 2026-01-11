@@ -41,25 +41,45 @@ are the main features of my config.
   in a way that will break your system, and you'll have to fix your
   config without using it.
 
+  *Update:* =use-package= is shipped with Emacs nowadays but I don't see
+  any benefits to use it again.
+
 - My Emacs start time is always less than a second according to =M-x
   emacs-init-time= (actually, I have this value in my
-  =initial-scratch-message= so I know the init time very well), because
-  I don't =require= packages without a reason as some people do.
-  Instead, I use =with-eval-after-load= everywhere.
+  =initial-scratch-message= so I know the init time very well), because:
+
+  + I use some hacks to reduce startup time in my [[file:init/early-init.el][early-init.el]].
+
+  + I don't =require= packages without a reason as some people do.
+    Instead, I use =with-eval-after-load= everywhere.
+
+  + I don't load =…-autoloads.el= files for every installed package
+    (Emacs does it by default).  I disable this autoloading by setting
+    =package-enable-at-startup= to nil in [[file:init/early-init.el][early-init.el]].  Instead, I
+    generate and load only a couple of autoloads:
+
+    * one file for all Emacs packages (installed from MELPA, etc.),
+
+    * one file for my [[file:utils][utils]],
+
+    * one file for my [[file:packages][packages]].
+
+    Search for =al/generate-autoloads= at [[file:utils/al-autoload.el][al-autoload.el]] and [[file:init/init.el][init.el]] to
+    see how autoloads are generated.  I also use [[file:utils/al-autoloads-ui.el][al/autoloads-ui]]
+    transient interface to quickly update these autoloads.
 
 ** Files
 
 As you can see, this repository consists of the following directories:
 
-- [[file:init][init]]: The files that are loaded on Emacs start.  As described above,
-  [[file:init/init.el][init.el]] is the "main" init file.  It defines some major
-  things and loads the rest files from this directory.
+- [[file:init][init]]: files that are loaded on Emacs start.  As described above,
+  [[file:init/init.el][init.el]] is the "main" init file.  It defines some major things and
+  loads the rest files from this directory.
 
-- [[file:utils][utils]]: These are my various auxiliary small packages with the
-  additional code (for Emacs itself and for external packages) that is
-  not needed for start-up.  All of the code there have "al/" prefix and
-  are placed in files that provide "al-…" features.  My init files are
-  full of things like:
+- [[file:utils][utils]]: various utilities and additional code (for Emacs itself and for
+  external packages) that is not needed for start-up.  All of the code
+  here has =al/= prefix and is placed in files that provide =al-…=
+  features.  My init files are full of things like this:
 
   #+BEGIN_SRC emacs-lisp
   (with-eval-after-load 'eshell
@@ -70,8 +90,7 @@ As you can see, this repository consists of the following directories:
   #+END_SRC
 
   So these utils are loaded only if and when they are needed.  Also
-  there are many interactive commands there which are autoloaded (I use
-  =al/update-autoloads= command to update these autoloads).
+  there are many interactive commands there which are autoloaded.
 
   In the past these utils were placed in a [[https://github.com/alezost/emacs-utils][separate repository]] and had
   "utl-" prefix.
@@ -82,5 +101,5 @@ As you can see, this repository consists of the following directories:
 
 - [[file:unused][unused]]: files with old and unused code.
 
-- [[file:data][data]]: Just some Emacs related data (like eshell aliases, auto save and
+- [[file:data][data]]: just some Emacs related data (like eshell aliases, auto save and
   backup files, gnus archive, elpa packages, etc.).
