@@ -26,5 +26,5 @@ tmp*
 /data/transient
 
 /init/custom.el
-/packages
+/packages/*/
 *-autoloads.el

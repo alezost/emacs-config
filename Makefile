@@ -1,6 +1,6 @@
 # Makefile
 
-# Copyright (C) 2016, 2019, 2021 Alex Kost <alezost@gmail.com>
+# Copyright (C) 2016-2026 Alex Kost <alezost@gmail.com>
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,8 +17,9 @@
 
 # Commentary:
 
-# This file is used to byte-compile various *.el files of my Emacs
-# config so that I can see and fix compilation warnings.
+# This file is not intended to be used to "install" my config in any
+# way.  Its only purpose is to byte-compile various *.el files so that I
+# can see and fix compilation warnings.
 
 # Code:
 
@@ -38,6 +39,7 @@ L_dirs = $(shell test -d $(1) &&				\
                  -exec echo -L {} \;)
 
 LOAD_PATH =							\
+  -L $(MY_ELPA_DIR)						\
   -L $(MY_UTILS_DIR)						\
   $(call L_dirs,$(MY_ELPA_DIR))					\
   -L $(GUIX_DIR)						\
@@ -47,21 +49,28 @@ LOAD_PATH =							\
 
 EMACS_BATCH = $(EMACS) -batch -Q $(LOAD_PATH)
 
-UTILS_ELS = $(shell find -L $(MY_UTILS_DIR) -maxdepth 1 -name 'al-*el')
+UTILS_ELS = $(shell find -L $(MY_UTILS_DIR) -maxdepth 1 -name 'al-*.el')
 UTILS_ELCS = $(UTILS_ELS:.el=.elc)
+
+PACKAGES_ELS = $(shell find -L $(MY_ELPA_DIR) -maxdepth 1 -name '*.el')
+PACKAGES_ELCS = $(PACKAGES_ELS:.el=.elc)
 
 # "init.el" and "keys.el" should be compiled first.
 INIT_ELS =							\
   $(MY_INIT_DIR)/init.el					\
   $(MY_INIT_DIR)/keys.el					\
-  $(shell find -L $(MY_INIT_DIR) -maxdepth 1 -name '*el'	\
+  $(shell find -L $(MY_INIT_DIR) -maxdepth 1 -name '*.el'	\
           ! -name 'init.el' ! -name 'keys.el')
 INIT_ELCS = $(INIT_ELS:.el=.elc)
 
-all: $(UTILS_ELCS)
+packages: $(PACKAGES_ELCS)
+
+utils: $(UTILS_ELCS)
+
+all: $(PACKAGES_ELCS) $(UTILS_ELCS)
 
 %.elc: %.el
-	@printf "Compiling $<\n"
+	@printf "  ----------------\nCompiling $<\n"
 	-@$(EMACS_BATCH) --eval "(setq load-prefer-newer t)" \
 	-f batch-byte-compile $< ;
 
@@ -73,6 +82,10 @@ init: $(INIT_ELS)
 	@printf "Compiling init files\n"
 	@$(EMACS_BATCH) -f batch-byte-compile $^ ;
 
+clean-packages:
+	@printf "Removing packages/*.elc...\n"
+	$(RM) $(PACKAGES_ELCS)
+
 clean-utils:
 	@printf "Removing utils/*.elc...\n"
 	$(RM) $(UTILS_ELCS)
@@ -81,7 +94,7 @@ clean-init:
 	@printf "Removing init/*.elc...\n"
 	$(RM) $(INIT_ELCS)
 
-clean: clean-utils clean-init
+clean: clean-packages clean-utils clean-init
 
 .PHONY: all init clean clean-utils clean-init
 

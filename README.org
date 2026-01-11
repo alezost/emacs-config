@@ -76,6 +76,10 @@ As you can see, this repository consists of the following directories:
   In the past these utils were placed in a [[https://github.com/alezost/emacs-utils][separate repository]] and had
   "utl-" prefix.
 
+- [[file:packages][packages]]: small packages that do not deserve their own repositories.
+  I also clone all my "big" packages to this directory (they are ignored
+  by [[file:.gitignore][.gitignore]]).
+
 - [[file:unused][unused]]: files with old and unused code.
 
 - [[file:data][data]]: Just some Emacs related data (like eshell aliases, auto save and

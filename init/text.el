@@ -526,7 +526,9 @@
 (al/bind-key "M-s-s" al/imenus-search-elisp-directories)
 (with-eval-after-load 'al-imenus
   (setq al/imenus-elisp-directories
-        (list al/emacs-init-dir al/emacs-utils-dir)))
+        (list al/emacs-init-dir
+              al/emacs-utils-dir
+              al/emacs-my-packages-dir)))
 
 
 ;;; TeX
