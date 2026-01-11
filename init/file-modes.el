@@ -108,6 +108,7 @@
       ("<C-M-kp-enter>" . al/org-table-next-table)
       ("C-j" . al/org-return-indent)
       ("C-c e" . org-export-dispatch)
+      ("C-c C-b" . org-insert-structure-template)
       ("C-c M-x" . org-copy-special)
       ("C-c C-t" . org-cut-special)
       ("C-c C-y" . org-paste-special))
