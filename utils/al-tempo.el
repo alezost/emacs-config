@@ -18,6 +18,7 @@
 ;;; Code:
 
 (require 'tempo)
+(require 'al-general)
 
 (defvar al/tempo-start ","
   "Starting string for all template tags.")
@@ -62,6 +63,9 @@ nil.  Otherwise, it should return (TAGLIST [ARGS]) list, where
 
 TEMPLATES function should return a list of (TAG ELEMENTS NAME) entries
 for `tempo-define-template'.")
+
+
+;;; Lisp and Scheme templates
 
 (defun al/tempo-let-like-template (symbol-name key &optional prefix)
   "Return `let'-like template for SYMBOL-NAME."
@@ -203,6 +207,9 @@ for `tempo-define-template'.")
   (and (derived-mode-p 'scheme-mode)
        '(al/tempo-scheme-tags)))
 
+
+;;; Generating templates for the current buffer
+
 (defun al/tempo-setup-buffer-maybe ()
   "Setup templates for the current buffer if needed.
 Return nil, if there are no templates for the current buffer.
@@ -230,13 +237,16 @@ Return non-nil otherwise."
        (`(,var . ,args)
         (unless (boundp var)
           (set var nil)
-          (push var al/tempo-tags)
+          (al/pushnew al/tempo-tags var)
           (pcase-dolist (`(,tag ,name ,template)
                          (apply templates args))
             (tempo-define-template name template tag nil var)))
         (tempo-use-tag-list var)
         (setq tempo-match-finder al/tempo-regexp
               al/tempo-configured t))))))
+
+
+;;; Interactive commands
 
 ;;;###autoload
 (defun al/tempo-complete-maybe ()
