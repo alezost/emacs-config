@@ -1,4 +1,4 @@
-;;; al-ip.el --- Obtaining external ip address  -*- lexical-binding: t -*-
+;;; ip.el --- Obtaining external ip address  -*- lexical-binding: t -*-
 
 ;; Copyright © 2025 Alex Kost
 
@@ -47,6 +47,6 @@ Return nil if IP address is not obtained."
                  url-str (propertize ip 'face 'bold))
       (message "Cannot retrieve IP address from <%s>." url-str))))
 
-(provide 'al-ip)
+(provide 'ip)
 
-;;; al-ip.el ends here
+;;; ip.el ends here
