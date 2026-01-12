@@ -441,6 +441,11 @@
    ("M-e" . company-select-next))
   (global-company-mode))
 
+(al/define-multi-command al/tab
+  al/tempo-complete-maybe
+  indent-for-tab-command)
+(al/bind-key "TAB" al/tab)
+
 
 ;;; Searching, finding and replacing
 
