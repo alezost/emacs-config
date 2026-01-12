@@ -1,6 +1,6 @@
 ;;; al-buffer.el --- Additional functionality for working with buffers  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2025 Alex Kost
+;; Copyright © 2013–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 
 (eval-when-compile (require 'cl-lib))
 (require 'seq)
+(require 'let-macros)
 (require 'al-misc)
 
 
@@ -140,12 +141,11 @@ name.")
 (defun al/switch-to-next-buffer ()
   "Switch to next buffer."
   (interactive)
-  (let ((buf (pop al/next-buffers)))
-    (if buf
-        (progn
-          (push (current-buffer) al/previous-buffers)
-          (switch-to-buffer buf))
-      (message "The first buffer is reached.")))
+  (if-let ((buf (pop al/next-buffers)))
+      (progn
+        (push (current-buffer) al/previous-buffers)
+        (switch-to-buffer buf))
+    (message "The first buffer is reached."))
   (set-transient-map al/switch-buffer-map))
 
 (defun al/switch-to-other-buffer ()
@@ -203,10 +203,10 @@ See `completing-read' for the meaning of INITIAL-INPUT."
 BUFFER can be nil, a string, a buffer object or a function
 returning one of those.  If there is no such buffer, call
 FUNCTION if it is specified."
-  (if-let* ((buffer (if (functionp buffer)
-                        (funcall buffer)
-                      buffer))
-            (buffer (get-buffer buffer)))
+  (if-let ((buffer (if (functionp buffer)
+                       (funcall buffer)
+                     buffer))
+           (buffer (get-buffer buffer)))
       (switch-to-buffer buffer)
     (when function (funcall function))))
 
