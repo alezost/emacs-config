@@ -1,4 +1,4 @@
-;;; al-hl-todo.el --- Highlight TODO and other keywords  -*- lexical-binding: t -*-
+;;; hl-todo.el --- Highlight TODO and other keywords  -*- lexical-binding: t -*-
 
 ;; Copyright © 2025 Alex Kost
 
@@ -48,6 +48,6 @@
     (font-lock-remove-keywords nil al/hl-todo-font-lock-keywords))
   (font-lock-flush))
 
-(provide 'al-hl-todo)
+(provide 'hl-todo)
 
-;;; al-hl-todo.el ends here
+;;; hl-todo.el ends here
