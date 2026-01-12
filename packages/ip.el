@@ -1,6 +1,6 @@
 ;;; ip.el --- Obtaining external ip address  -*- lexical-binding: t -*-
 
-;; Copyright © 2025 Alex Kost
+;; Copyright © 2025–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -15,9 +15,16 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+;;; Commentary:
+
+;; This file provides `ip' command that allows you to check your
+;; external IP address.
+
 ;;; Code:
 
-(defvar al/ip-urls
+(require 'let-macros)
+
+(defvar ip-urls
   '("http://ifconfig.me/ip"
     "http://4.ident.me"
     "http://icanhazip.com")
@@ -25,11 +32,11 @@
 
 (defvar url-http-end-of-headers)
 
-(defun al/get-ip (url)
+(defun ip-get (url)
   "Return external IP address with the help of URL.
 URL should contain only IP address in its output.
 Return nil if IP address is not obtained."
-  (when-let* ((buffer (url-retrieve-synchronously url)))
+  (when-let ((buffer (url-retrieve-synchronously url)))
     (with-current-buffer buffer
       (goto-char url-http-end-of-headers)
       (skip-chars-forward " \t\n")
@@ -37,15 +44,15 @@ Return nil if IP address is not obtained."
         (match-string 0)))))
 
 ;;;###autoload
-(defun al/ip (url)
+(defun ip (url)
   "Get external IP address from URL and report about it."
   (interactive
-   (list (completing-read "URL to get IP address from: " al/ip-urls)))
-  (let ((url-str (propertize url 'face 'link)))
-    (if-let* ((ip (al/get-ip url)))
-        (message "IP address reported by <%s>: [%s]."
-                 url-str (propertize ip 'face 'bold))
-      (message "Cannot retrieve IP address from <%s>." url-str))))
+   (list (completing-read "URL to get IP address from: " ip-urls)))
+  (if-letn ((url-str (propertize url 'face 'link))
+            (ip (ip-get url)))
+      (message "IP address reported by <%s>: [%s]."
+               url-str (propertize ip 'face 'bold))
+    (message "Cannot retrieve IP address from <%s>." url-str)))
 
 (provide 'ip)
 
