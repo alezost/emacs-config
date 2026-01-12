@@ -1,6 +1,6 @@
 ;;; hl-todo.el --- Highlight TODO and other keywords  -*- lexical-binding: t -*-
 
-;; Copyright © 2025 Alex Kost
+;; Copyright © 2025–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -17,35 +17,36 @@
 
 ;;; Commentary:
 
-;; This is a much simplified version of `hl-todo' package.
-;; It just highlights `al/hl-todo-keywords' and that's it.
+;; This is a much simplified version of `hl-todo' package:
+;; <https://github.com/tarsius/hl-todo>.  It just highlights
+;; `hl-todo-keywords' and that's it.
 
 ;;; Code:
 
-(defvar al/hl-todo-keywords '("TODO" "FIXME" "XXX" "WARNING" "ERROR")
-  "List of words to highlight by `al/hl-todo-mode'.")
+(defvar hl-todo-keywords '("TODO" "FIXME" "XXX" "WARNING" "ERROR")
+  "List of words to highlight by `hl-todo-mode'.")
 
-(defvar al/hl-todo-font-lock-keywords nil
+(defvar hl-todo-font-lock-keywords nil
   "List of keywords for `font-lock-add-keywords'.")
 
-(defun al/hl-todo-setup ()
-  "Set `al/hl-todo-font-lock-keywords' if needed."
-  (unless al/hl-todo-font-lock-keywords
+(defun hl-todo-setup ()
+  "Set `hl-todo-font-lock-keywords' if needed."
+  (unless hl-todo-font-lock-keywords
     (let ((re (concat "\\<\\("
-                      (mapconcat #'identity al/hl-todo-keywords "\\|")
+                      (mapconcat #'identity hl-todo-keywords "\\|")
                       "\\)\\>")))
-      (setq al/hl-todo-font-lock-keywords
+      (setq hl-todo-font-lock-keywords
             `((,re 1 'error prepend t))))))
 
 ;;;###autoload
-(define-minor-mode al/hl-todo-mode
-  "Highlight `al/hl-todo-keywords' in the current buffer."
+(define-minor-mode hl-todo-mode
+  "Highlight `hl-todo-keywords' in the current buffer."
   :lighter ""
-  :group 'al/hl-todo
-  (al/hl-todo-setup)
-  (if al/hl-todo-mode
-      (font-lock-add-keywords nil al/hl-todo-font-lock-keywords t)
-    (font-lock-remove-keywords nil al/hl-todo-font-lock-keywords))
+  :group 'hl-todo
+  (hl-todo-setup)
+  (if hl-todo-mode
+      (font-lock-add-keywords nil hl-todo-font-lock-keywords t)
+    (font-lock-remove-keywords nil hl-todo-font-lock-keywords))
   (font-lock-flush))
 
 (provide 'hl-todo)
