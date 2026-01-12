@@ -208,6 +208,16 @@ for `tempo-define-template'.")
        '(al/tempo-scheme-tags)))
 
 
+;;; Additional `tempo' elements
+
+(defun al/tempo-kill-ring-element (element)
+  "Return the last killed string if ELEMENT is `k'."
+  (and (eq element 'k)
+       (car kill-ring)))
+
+(al/pushnew tempo-user-element-functions #'al/tempo-kill-ring-element)
+
+
 ;;; Generating templates for the current buffer
 
 (defun al/tempo-setup-buffer-maybe ()
