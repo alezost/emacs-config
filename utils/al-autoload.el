@@ -25,7 +25,7 @@
   (rx "-autoloads.el" string-end)
   "Regexp to match Emacs `autoloads' file.")
 
-(defvar al/ignored-package-autoloads
+(defvar al/ignored-packages-autoloads
   '("magit"  ; too verbose (≈ 2500 lines for "autoloads.el"?!!)
     "auctex" ; cointains (require 'tex-site)
     ;; Geiser implementations have the following line in their
@@ -87,7 +87,7 @@ SUBDIRS can have one of the following values:
                (push dir info-dirs)))
         (if (seq-find (lambda (pkg)
                         (string-match-p pkg dir-name))
-                      al/ignored-package-autoloads)
+                      al/ignored-packages-autoloads)
             (message "Ignoring %s" dir)
           (push elisp-dir auto-dirs))))
     (let ((extra-data

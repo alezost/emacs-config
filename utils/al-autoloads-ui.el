@@ -25,8 +25,8 @@
 (defvar al/emacs-utils-dir)
 (defvar al/emacs-my-packages-dir)
 (defvar al/emacs-utils-autoloads)
-(defvar al/emacs-my-package-autoloads)
-(defvar al/emacs-elpa-package-autoloads)
+(defvar al/emacs-my-packages-autoloads)
+(defvar al/emacs-elpa-packages-autoloads)
 
 (defun al/autoloads-ui-read-directory (prompt initial-input history)
   "Read directory for `al/autoloads-ui'."
@@ -40,8 +40,8 @@
   "Read output autoloads file for `al/autoloads-ui'."
   (completing-read prompt
                    (list al/emacs-utils-autoloads
-                         al/emacs-my-package-autoloads
-                         al/emacs-elpa-package-autoloads)
+                         al/emacs-my-packages-autoloads
+                         al/emacs-elpa-packages-autoloads)
                    nil nil initial-input history))
 
 

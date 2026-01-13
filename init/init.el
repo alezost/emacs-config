@@ -81,9 +81,9 @@
 
 (defvar al/emacs-utils-autoloads (al/emacs-utils-dir-file "utils-autoloads.el")
   "`autoloads' file for my utils.")
-(defvar al/emacs-my-package-autoloads (al/emacs-data-dir-file "my-autoloads.el")
+(defvar al/emacs-my-packages-autoloads (al/emacs-data-dir-file "my-autoloads.el")
   "`autoloads' file for my packages.")
-(defvar al/emacs-elpa-package-autoloads (al/emacs-data-dir-file "elpa-autoloads.el")
+(defvar al/emacs-elpa-packages-autoloads (al/emacs-data-dir-file "elpa-autoloads.el")
   "`autoloads' file for ELPA packages.")
 
 (setq
@@ -142,13 +142,13 @@ Additional ARGS are sent to `al/generate-autoloads'."
 
 (al/load-autoloads "my packages"
   al/emacs-my-packages-dir
-  al/emacs-my-package-autoloads
+  al/emacs-my-packages-autoloads
   :add-to-path 'prepend
   :subdirs t)
 
 (al/load-autoloads "ELPA packages"
   package-user-dir
-  al/emacs-elpa-package-autoloads
+  al/emacs-elpa-packages-autoloads
   :add-to-path 'prepend
   :subdirs 'only)
 
