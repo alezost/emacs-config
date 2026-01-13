@@ -79,9 +79,6 @@
 
 ;;; (Auto)loading various files
 
-(defvar al/pure-config? (getenv "EMPURE")
-  "Non-nil, if external packages should not be loaded.")
-
 (defvar al/emacs-utils-autoloads (al/emacs-utils-dir-file "utils-autoloads.el")
   "`autoloads' file for my utils.")
 (defvar al/emacs-my-package-autoloads (al/emacs-data-dir-file "my-autoloads.el")
@@ -127,36 +124,34 @@
                            :output-file al/emacs-utils-autoloads)))
 (al/load al/emacs-utils-autoloads)
 
-;; Autoloading external packages.
-(unless al/pure-config?
-  (when (file-exists-p package-user-dir)
-    (al/title-message "Autoloading ELPA packages")
-    (unless (file-exists-p al/emacs-elpa-package-autoloads)
-      (with-demoted-errors "ERROR during generating ELPA packages autoloads: %S"
-        (require 'al-autoload)
-        (al/generate-autoloads package-user-dir
-                               :output-file al/emacs-elpa-package-autoloads
-                               :add-to-path 'prepend
-                               :subdirs 'only)))
-    (al/load al/emacs-elpa-package-autoloads))
+(when (file-exists-p package-user-dir)
+  (al/title-message "Autoloading ELPA packages")
+  (unless (file-exists-p al/emacs-elpa-package-autoloads)
+    (with-demoted-errors "ERROR during generating ELPA packages autoloads: %S"
+      (require 'al-autoload)
+      (al/generate-autoloads package-user-dir
+                             :output-file al/emacs-elpa-package-autoloads
+                             :add-to-path 'prepend
+                             :subdirs 'only)))
+  (al/load al/emacs-elpa-package-autoloads))
 
-  (when (file-exists-p al/guix-profile-dir)
-    (al/title-message "Autoloading Guix packages")
-    (with-demoted-errors "ERROR during autoloading Guix packages: %S"
-      (when (require 'al-guix-autoload nil t)
-        (apply #'al/guix-autoload-emacs-packages
-               (al/guix-profiles)))))
+(when (file-exists-p al/guix-profile-dir)
+  (al/title-message "Autoloading Guix packages")
+  (with-demoted-errors "ERROR during autoloading Guix packages: %S"
+    (when (require 'al-guix-autoload nil t)
+      (apply #'al/guix-autoload-emacs-packages
+             (al/guix-profiles)))))
 
-  (when (file-exists-p al/emacs-my-packages-dir)
-    (al/title-message "Autoloading my packages")
-    (unless (file-exists-p al/emacs-my-package-autoloads)
-      (with-demoted-errors "ERROR during generating my packages autoloads: %S"
-        (require 'al-autoload)
-        (al/generate-autoloads al/emacs-my-packages-dir
-                               :output-file al/emacs-my-package-autoloads
-                               :add-to-path 'prepend
-                               :subdirs t)))
-    (al/load al/emacs-my-package-autoloads)))
+(when (file-exists-p al/emacs-my-packages-dir)
+  (al/title-message "Autoloading my packages")
+  (unless (file-exists-p al/emacs-my-package-autoloads)
+    (with-demoted-errors "ERROR during generating my packages autoloads: %S"
+      (require 'al-autoload)
+      (al/generate-autoloads al/emacs-my-packages-dir
+                             :output-file al/emacs-my-package-autoloads
+                             :add-to-path 'prepend
+                             :subdirs t)))
+  (al/load al/emacs-my-package-autoloads))
 
 
 ;;; Final settings
