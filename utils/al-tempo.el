@@ -62,7 +62,8 @@ nil.  Otherwise, it should return (TAGLIST [ARGS]) list, where
   ARGS is a list of arguments for TEMPLATES function.
 
 TEMPLATES function should return a list of (TAG ELEMENTS NAME) entries
-for `tempo-define-template'.")
+for `tempo-define-template'.  Alternatively, TEMPLATES can be a variable
+with (TAG ELEMENTS NAME) entries.")
 
 
 ;;; Lisp and Scheme templates
@@ -249,7 +250,9 @@ Return non-nil otherwise."
           (set var nil)
           (al/pushnew al/tempo-tags var)
           (pcase-dolist (`(,tag ,name ,template)
-                         (apply templates args))
+                         (if (fboundp templates)
+                             (apply templates args)
+                           (symbol-value templates)))
             (tempo-define-template name template tag nil var)))
         (tempo-use-tag-list var)
         (setq tempo-match-finder al/tempo-regexp
