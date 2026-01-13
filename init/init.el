@@ -116,42 +116,48 @@
         "games"
         "custom"))
 
-(al/title-message "Autoloading utils")
-(unless (file-exists-p al/emacs-utils-autoloads)
-  (with-demoted-errors "ERROR during generating utils autoloads: %S"
-    (require 'al-autoload)
-    (al/generate-autoloads al/emacs-utils-dir
-                           :output-file al/emacs-utils-autoloads)))
-(al/load al/emacs-utils-autoloads)
+(defun al/load-autoloads (name directory autoloads-file &rest args)
+  "Load AUTOLOADS-FILE, generate it for DIRECTORY if needed.
+NAME is a string used for messages.
+Additional ARGS are sent to `al/generate-autoloads'."
+  (declare (indent 1))
+  (when (file-exists-p directory)
+    (al/title-message (concat "Autoloading " name))
+    (unless (file-exists-p autoloads-file)
+      (condition-case error
+          (progn
+            (require 'al-autoload)
+            (apply #'al/generate-autoloads directory
+                   :output-file autoloads-file
+                   args))
+        (error (message (concat "ERROR during generating "
+                                name " autoloads: %S")
+                        error)
+               nil)))
+    (al/load autoloads-file)))
 
-(when (file-exists-p package-user-dir)
-  (al/title-message "Autoloading ELPA packages")
-  (unless (file-exists-p al/emacs-elpa-package-autoloads)
-    (with-demoted-errors "ERROR during generating ELPA packages autoloads: %S"
-      (require 'al-autoload)
-      (al/generate-autoloads package-user-dir
-                             :output-file al/emacs-elpa-package-autoloads
-                             :add-to-path 'prepend
-                             :subdirs 'only)))
-  (al/load al/emacs-elpa-package-autoloads))
+(al/load-autoloads "utils"
+  al/emacs-utils-dir
+  al/emacs-utils-autoloads)
 
-(when (file-exists-p al/guix-profile-dir)
-  (al/title-message "Autoloading Guix packages")
-  (with-demoted-errors "ERROR during autoloading Guix packages: %S"
-    (when (require 'al-guix-autoload nil t)
-      (apply #'al/guix-autoload-emacs-packages
-             (al/guix-profiles)))))
+(al/load-autoloads "my packages"
+  al/emacs-my-packages-dir
+  al/emacs-my-package-autoloads
+  :add-to-path 'prepend
+  :subdirs t)
 
-(when (file-exists-p al/emacs-my-packages-dir)
-  (al/title-message "Autoloading my packages")
-  (unless (file-exists-p al/emacs-my-package-autoloads)
-    (with-demoted-errors "ERROR during generating my packages autoloads: %S"
-      (require 'al-autoload)
-      (al/generate-autoloads al/emacs-my-packages-dir
-                             :output-file al/emacs-my-package-autoloads
-                             :add-to-path 'prepend
-                             :subdirs t)))
-  (al/load al/emacs-my-package-autoloads))
+(al/load-autoloads "ELPA packages"
+  package-user-dir
+  al/emacs-elpa-package-autoloads
+  :add-to-path 'prepend
+  :subdirs 'only)
+
+;; (when (file-exists-p al/guix-profile-dir)
+;;   (al/title-message "Autoloading Guix packages")
+;;   (with-demoted-errors "ERROR during autoloading Guix packages: %S"
+;;     (when (require 'al-guix-autoload nil t)
+;;       (apply #'al/guix-autoload-emacs-packages
+;;              (al/guix-profiles)))))
 
 
 ;;; Final settings
