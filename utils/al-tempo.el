@@ -50,7 +50,8 @@ Otherwise, the current buffer has been configured and:
 (defvar al/tempo-alist
   '((al/tempo-elisp-case  . al/tempo-elisp-templates)
     (al/tempo-clisp-case  . al/tempo-clisp-templates)
-    (al/tempo-scheme-case . al/tempo-scheme-templates))
+    (al/tempo-scheme-case . al/tempo-scheme-templates)
+    (al/tempo-commit-message-case . al/tempo-commit-message-templates))
   "Alist of (CASE . TEMPLATES) pairs for generating templates.
 
 CASE is a function called without arguments.  It should check if the
@@ -207,6 +208,20 @@ with (TAG ELEMENTS NAME) entries.")
 (defun al/tempo-scheme-case ()
   (and (derived-mode-p 'scheme-mode)
        '(al/tempo-scheme-tags)))
+
+
+;;; Other templates
+
+(defvar al/tempo-commit-message-templates
+  `((,(al/tempo-tag "f") "commit-followup"
+     ("This is a followup to commit " p k "." n)))
+  "Templates for commit message editing buffer.")
+
+(defun al/tempo-commit-message-case ()
+  (and buffer-file-name
+       (string-match-p "COMMIT_EDITMSG\\'"
+                       buffer-file-name)
+       '(al/tempo-commit-message-tags)))
 
 
 ;;; Additional `tempo' elements
