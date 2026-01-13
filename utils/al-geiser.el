@@ -1,6 +1,6 @@
 ;;; al-geiser.el --- Additional functionality for geiser  -*- lexical-binding: t -*-
 
-;; Copyright © 2014–2025 Alex Kost
+;; Copyright © 2014–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 ;;; Code:
 
 (require 'geiser-mode)
+(require 'let-macros)
 
 (defun al/geiser-repl ()
   "Return the current Geiser REPL."
@@ -81,12 +82,11 @@ This function refers to `geiser-doc-symbol-at-point' as
 `geiser-doc-edit-symbol-at-point' refers to
 `geiser-edit-symbol-at-point'."
   (interactive)
-  (let* ((impl (geiser-doc--implementation))
-         (module (geiser-doc--module)))
-    (unless (and impl module)
-      (error "I don't know what module this buffer refers to."))
-    (with--geiser-implementation impl
-      (geiser-doc-symbol-at-point))))
+  (if-let ((impl (geiser-doc--implementation))
+           (module (geiser-doc--module)))
+      (with--geiser-implementation impl
+        (geiser-doc-symbol-at-point))
+    (error "I don't know what module this buffer refers to.")))
 
 (defun al/geiser-repl-buffer-name (impl)
   "Return buffer name of Geiser REPL for IMPL."
