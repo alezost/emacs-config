@@ -44,7 +44,9 @@
     ("grave-accents"                ?` ?`)
     ("grave-accent-quotation"       ?` ?')
     ("top-corners"                  ?⌜ ?⌝)
-    ("bottom-corners"               ?⌞ ?⌟))
+    ("bottom-corners"               ?⌞ ?⌟)
+    ("japanese-quotations"          ?「 ?」)
+    ("dollars"                      ?$ ?$))
   "List of pair specifications used to generate commands.")
 
 (defmacro insert-pair-define-command (name open close)

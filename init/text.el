@@ -173,14 +173,10 @@
 (define-key key-translation-map [?\C--] [?–])
 (define-key key-translation-map [?\C-\M--] [?—])
 
-(when (boundp 'insert-pair-specifications)
-  (push '("japanese-quotations" ?「 ?」)
-        insert-pair-specifications))
-
 (al/bind-keys
  ("C->"     (insert "->"))
  ("H-4"   . insert-parentheses)
- ("H-M-4" . insert-pair-dollar)
+ ("H-M-4" . insert-pair-dollars)
  ("H-5"   . insert-pair-square-brackets)
  ("H-6"   . insert-pair-curly-brackets)
  ("H-,"   . insert-pair-angle-brackets)
@@ -204,10 +200,6 @@
  ("d"   . al/insert-date)
  ("M-'" . insert-pair-top-corners)
  ("M-;" . insert-pair-bottom-corners))
-
-(al/autoload "insert-pair" insert-pair-dollar)
-(with-eval-after-load 'insert-pair
-  (insert-pair-define-command "dollar" ?$ ?$))
 
 
 ;;; Killing and yanking
