@@ -511,7 +511,7 @@
    erc-part-reason 'al/erc-quit-part-reason)
 
   (defconst al/erc-keys
-    '(("<tab>" . pcomplete)
+    '(("<tab>" . completion-at-point)
       ("M-." . erc-previous-command)
       ("M-e" . erc-next-command)
       ("C-a" . erc-bol)

@@ -97,7 +97,7 @@
       [remap forward-paragraph]
       [remap backward-paragraph]
       "<C-tab>"
-      ("<M-tab>" . pcomplete)
+      ("<M-tab>" . completion-at-point)
       ("<M-return>" . org-meta-return)
       ("M->" . outline-previous-visible-heading)
       ("M-E" . outline-next-visible-heading)
