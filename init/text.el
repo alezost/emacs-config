@@ -18,15 +18,23 @@
 
 ;;; Global keys for moving
 
+(al/define-multi-command al/skip-parens-or-forward-word
+  al/skip-parens-forward
+  forward-word)
+
+(al/define-multi-command al/skip-parens-or-backward-word
+  al/skip-parens-backward
+  backward-word)
+
 (al/bind-keys
  ("C-o"   . backward-char)
- ("M-o"   . backward-word)
+ ("M-o"   . al/skip-parens-or-backward-word)
  ("C-M-o" . backward-sexp)
  ("M-O"   . backward-sentence)
  ("C-H-M-o" (scroll-right 1))
 
  ("C-u"   . forward-char)
- ("M-u"   . forward-word)
+ ("M-u"   . al/skip-parens-or-forward-word)
  ("C-M-u" . forward-sexp)
  ("M-U"   . forward-sentence)
  ("C-H-M-u" (scroll-left 1))

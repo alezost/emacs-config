@@ -17,6 +17,8 @@
 
 ;;; Code:
 
+(eval-when-compile (require 'cl-lib))
+
 
 ;;; Checking parentheses
 
@@ -33,6 +35,32 @@
 
 
 ;;; Commands for moving and editing
+
+(defun al/skip-parens (direction)
+  "Skip parentheses at point and whitespaces after that.
+DIRECTION should be either `forward' or `backward' symbol.
+Return non-nil, if something is skipped.
+Return nil, if there is nothing to skip."
+  (let* ((skip (cl-ecase direction
+                 (forward  #'skip-chars-forward)
+                 (backward #'skip-chars-backward)))
+         (skipped (funcall skip ")")))
+    (unless (= 0 skipped)
+      (funcall skip " \t\n"))))
+
+;;;###autoload
+(defun al/skip-parens-forward ()
+  "Skip parentheses at point forward and whitespaces after them.
+See `al/skip-parens' for the returning value."
+  (interactive)
+  (al/skip-parens 'forward))
+
+;;;###autoload
+(defun al/skip-parens-backward ()
+  "Skip parentheses at point backward and whitespaces before them.
+See `al/skip-parens' for the returning value."
+  (interactive)
+  (al/skip-parens 'backward))
 
 (declare-function sp-kill-sexp "smartparens")
 (declare-function sp-backward-kill-sexp "smartparens")
