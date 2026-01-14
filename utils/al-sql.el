@@ -1,6 +1,6 @@
 ;;; al-sql.el --- Additional functionality for sql stuff  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2025 Alex Kost
+;; Copyright © 2013–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 ;;; Code:
 
 (require 'sql)
+(require 'let-macros)
 (require 'al-buffer)
 
 ;;;###autoload
@@ -39,7 +40,7 @@ With prefix, prompt for connection."
    (list (if current-prefix-arg
              (sql-read-connection "Connection: ")
            (caar sql-connection-alist))))
-  (if-let* ((buffer (sql-find-sqli-buffer)))
+  (if-let ((buffer (sql-find-sqli-buffer)))
       (al/display-buffer buffer)
     (sql-connect conn)))
 
@@ -52,12 +53,12 @@ With prefix, prompt for connection."
 (defun al/sql-password-from-auth-source (host &optional user)
   "Return sql password from authinfo file by HOST and USER.
 Return nil if credentials not found."
-  (when-let* ((auth (car (auth-source-search :host host :user user))))
-    (let* ((secret (plist-get auth :secret))
-           (password (if (functionp secret)
-                         (funcall secret)
-                       secret)))
-      (or password ""))))
+  (when-let1 ((auth (car (auth-source-search :host host :user user)))
+              (secret (plist-get auth :secret))
+              (password (if (functionp secret)
+                            (funcall secret)
+                          secret)))
+    (or password "")))
 
 
 ;;; Miscellaneous
