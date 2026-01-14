@@ -61,7 +61,6 @@
      (alect-themes       :fetcher git :url ,(al/emacs-repo "alect-themes"))
      (dvorak-layouts     :fetcher git :url ,(al/emacs-repo "dvorak-layouts"))
      (dim                :fetcher git :url ,(al/emacs-repo "dim"))
-     (insert-pair        :fetcher git :url ,(al/emacs-repo "insert-pair"))
      (shift-number       :fetcher git :url ,(al/emacs-repo "shift-number"))
      (imenus             :fetcher git :url ,(al/emacs-repo "imenus"))
      paredit
