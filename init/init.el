@@ -116,10 +116,17 @@
         "games"
         "custom"))
 
+(defvar al/load-paths nil)
+
 (defun al/load-autoloads (name directory autoloads-file &rest args)
   "Load AUTOLOADS-FILE, generate it for DIRECTORY if needed.
+
 NAME is a string used for messages.
-Additional ARGS are sent to `al/generate-autoloads'."
+
+Additional ARGS are sent to `al/generate-autoloads'.
+
+Do not alter `load-path'.  Instead, push added `load-path' to
+`al/load-paths' for further use."
   (declare (indent 1))
   (when (file-exists-p directory)
     (al/title-message (concat "Autoloading " name))
@@ -134,7 +141,9 @@ Additional ARGS are sent to `al/generate-autoloads'."
                                 name " autoloads: %S")
                         error)
                nil)))
-    (al/load autoloads-file)))
+    (let ((load-path nil))
+      (al/load autoloads-file)
+      (push load-path al/load-paths))))
 
 (al/load-autoloads "utils"
   al/emacs-utils-dir
@@ -158,6 +167,13 @@ Additional ARGS are sent to `al/generate-autoloads'."
 ;;     (when (require 'al-guix-autoload nil t)
 ;;       (apply #'al/guix-autoload-emacs-packages
 ;;              (al/guix-profiles)))))
+
+;; Prepend paths added by the above autoloads to `load-path' in reverse
+;; order.  So the first loaded autoloads have precedence over the last
+;; ones.
+(setq load-path
+      (nconc (apply #'nconc (nreverse al/load-paths))
+             load-path))
 
 
 ;;; Final settings
