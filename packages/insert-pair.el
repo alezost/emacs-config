@@ -56,11 +56,9 @@ The command name is `insert-pair-NAME'."
      (interactive "P")
      (insert-pair arg ,open ,close)))
 
-(dolist (spec insert-pair-specifications)
-  (eval `(insert-pair-define-command
-          ,(nth 0 spec)
-          ,(nth 1 spec)
-          ,(nth 2 spec))))
+(pcase-dolist (`(,name ,open ,close)
+               insert-pair-specifications)
+  (eval `(insert-pair-define-command ,name ,open ,close)))
 
 ;;;###autoload(dolist (spec insert-pair-specifications)
 ;;;###autoload  (autoload (intern (concat "insert-pair-" (car spec)))
