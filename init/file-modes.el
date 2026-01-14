@@ -132,9 +132,7 @@
   ;; `imenu-default-create-index-function' instead of a specialized index
   ;; made by `org-imenu-get-tree'.  So imenu is required here to be sure
   ;; it is loaded before enabling `org-mode'.
-  (require 'imenu nil t)
-
-  (org-add-link-type "pdfview" 'org-pdfview-open 'org-pdfview-export))
+  (require 'imenu nil t))
 
 (defun al/autoload-org-protocol (fun files &rest args)
   "Load `org-protocol' if needed.
