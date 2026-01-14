@@ -278,6 +278,7 @@
       ("e"     . gnus-summary-next-article)
       (">"     . gnus-summary-prev-unread-article)
       ("E"     . gnus-summary-next-unread-article)
+      ("D"     . gnus-summary-delete-article)
       ("n"     . gnus-summary-reply)
       ("m"     . gnus-summary-mark-as-read-forward)
       ("r"     . gnus-summary-mark-as-read-forward)
