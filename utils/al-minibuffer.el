@@ -1,6 +1,6 @@
 ;;; al-minibuffer.el --- Additional functionality for minibuffer  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2025 Alex Kost
+;; Copyright © 2013–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -16,6 +16,8 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Code:
+
+(require 'let-macros)
 
 (defun al/completion-all-completions (fun string table pred point
                                       &optional metadata)
@@ -137,20 +139,22 @@ into
   ;; Originates from `completion-substring--all-completions' and
   ;; `completion-flex-all-completion'.
   "Get completions of STRING in TABLE, given PRED and POINT."
-  (let* ((beforepoint (substring string 0 point))
-         (afterpoint (substring string point))
-         (bounds (completion-boundaries beforepoint table pred afterpoint))
-         (prefix (substring beforepoint 0 (car bounds)))
-         (basic-pattern (completion-basic--pattern
-                         beforepoint afterpoint bounds))
-         (pattern (if (not (stringp (car basic-pattern)))
-                      basic-pattern
-                    (cons 'prefix basic-pattern)))
-         (pattern (al/completion-make-split-pattern pattern))
-         (all (completion-pcm--all-completions prefix pattern table pred)))
-    (when all
-      (nconc (completion-pcm--hilit-commonality pattern all)
-             (length prefix)))))
+  (when-letn
+      ((beforepoint   (substring string 0 point))
+       (afterpoint    (substring string point))
+       (bounds        (completion-boundaries beforepoint table
+                                             pred afterpoint))
+       (prefix        (substring beforepoint 0 (car bounds)))
+       (basic-pattern (completion-basic--pattern
+                       beforepoint afterpoint bounds))
+       (pattern       (if (not (stringp (car basic-pattern)))
+                          basic-pattern
+                        (cons 'prefix basic-pattern)))
+       (pattern       (al/completion-make-split-pattern pattern))
+       (all           (completion-pcm--all-completions
+                       prefix pattern table pred)))
+    (nconc (completion-pcm--hilit-commonality pattern all)
+           (length prefix))))
 
 (when (boundp 'completion-styles-alist)
   (push '(al/split
