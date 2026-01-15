@@ -51,6 +51,7 @@ Otherwise, the current buffer has been configured and:
   '((al/tempo-elisp-case  . al/tempo-elisp-templates)
     (al/tempo-clisp-case  . al/tempo-clisp-templates)
     (al/tempo-scheme-case . al/tempo-scheme-templates)
+    (al/tempo-org-case    . al/tempo-org-templates)
     (al/tempo-commit-message-case . al/tempo-commit-message-templates))
   "Alist of (CASE . TEMPLATES) pairs for generating templates.
 
@@ -211,6 +212,17 @@ with (TAG ELEMENTS NAME) entries.")
 
 
 ;;; Other templates
+
+(defvar al/tempo-org-templates
+  `((,(al/tempo-tag "e") "org-example"
+     ("#+begin_example" n p n "#+end_example" n))
+    (,(al/tempo-tag "s") "org-source"
+     ("#+begin_src " p n n "#+end_src" n)))
+  "Templates for `org-mode' buffers.")
+
+(defun al/tempo-org-case ()
+  (and (derived-mode-p 'org-mode)
+       '(al/tempo-org-tags)))
 
 (defvar al/tempo-commit-message-templates
   `((,(al/tempo-tag "f") "commit-followup"

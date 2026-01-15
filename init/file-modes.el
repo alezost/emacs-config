@@ -51,7 +51,7 @@
     (setq org-emphasis-alist
           (al/assoc-delete-all '("/" "_") org-emphasis-alist)))
   (setq
-   org-modules '(org-tempo ol-info)
+   org-modules '(ol-info)
    org-imenu-depth 6
    org-completion-use-ido t
    org-confirm-elisp-link-function nil
@@ -91,11 +91,16 @@
   (dolist (assoc org-structure-template-alist)
     (setcar assoc (propertize (car assoc) 'face 'alect-key)))
 
+  (al/define-multi-command al/org-tab
+    al/tempo-complete-maybe
+    org-cycle)
+
   (defconst al/org-keys
     '([remap delete-char]
       [remap delete-backward-char]
       [remap forward-paragraph]
       [remap backward-paragraph]
+      ("TAB" . al/org-tab)
       "<C-tab>"
       ("<M-tab>" . completion-at-point)
       ("<M-return>" . org-meta-return)
