@@ -19,6 +19,7 @@
 
 (require 'seq)
 (require 'quelpa nil t)  ; `quelpa' does not exist in bootstrap case
+(require 'al-file)
 
 (defvar al/main-packages nil
   "List of main packages that should be installed in a common way.")
