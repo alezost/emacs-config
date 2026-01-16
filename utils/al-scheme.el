@@ -19,56 +19,6 @@
 
 (require 'al-misc)
 
-(defvar al/scheme-imenu-generic-expression
-  `((nil
-     ,(rx bol "(define"
-          (zero-or-one "*")
-          (zero-or-one "-public")
-          (one-or-more space)
-          (zero-or-one "(")
-          (group (one-or-more (or word (syntax symbol)))))
-     1)
-    ("Methods"
-     ,(rx bol "(define-"
-          (or "generic" "method" "accessor")
-          (one-or-more space)
-          (zero-or-one "(")
-          (group (one-or-more (or word (syntax symbol)))))
-     1)
-    ("Classes"
-     ,(rx bol "(define-class"
-          (one-or-more space)
-          (zero-or-one "(")
-          (group (one-or-more (or word (syntax symbol)))))
-     1)
-    ("Records"
-     ,(rx bol "(define-record-type"
-          (zero-or-one "*")
-          (one-or-more space)
-          (group (one-or-more (or word (syntax symbol)))))
-     1)
-    ("Conditions"
-     ,(rx bol "(define-condition-type"
-          (one-or-more space)
-          (group (one-or-more (or word (syntax symbol)))))
-     1)
-    ("Modules"
-     ,(rx bol "(define-module"
-          (one-or-more space)
-          (group "(" (one-or-more any) ")"))
-     1)
-    ("Macros"
-     ,(rx bol "("
-          (or (and "defmacro"
-                   (zero-or-one "*")
-                   (zero-or-one "-public"))
-              "define-macro" "define-syntax" "define-syntax-rule")
-          (one-or-more space)
-          (zero-or-one "(")
-          (group (one-or-more (or word (syntax symbol)))))
-     1))
-  "Improved substitution for `scheme-imenu-generic-expression'.")
-
 
 (defvar calculate-lisp-indent-last-sexp)
 
