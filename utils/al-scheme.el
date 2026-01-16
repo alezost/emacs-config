@@ -107,20 +107,26 @@ This function is intended to be added to `scheme-mode-hook'."
 ;;; Highlighting and indenting additional macros
 
 (al/put scheme-indent-function
-  (0 case-lambda*
-     and-let)
+  (0 case-lambda*)
   (1 if
      if-let
-     when-let))
+     if-let1
+     if-letn
+     when-let
+     when-let1
+     when-letn))
 
 (defvar al/scheme-keywords
   '("push!"
     "define-delayed"
     "define-osd"
     "case-lambda*"
-    "and-let"
     "if-let"
-    "when-let")
+    "if-let1"
+    "if-letn"
+    "when-let"
+    "when-let1"
+    "when-letn")
   "List of additional keywords to highlight in `scheme-mode'.")
 
 (defun al/scheme-add-font-lock-keywords ()
