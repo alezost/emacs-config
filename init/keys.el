@@ -102,7 +102,7 @@
 
 (al/bind-keys
  :map ctl-x-map
- ("A"   . al/autoloads-ui)
+ ("A"   . al/generate-autoloads-from-presets)
  ("C"   . save-buffers-kill-emacs)
  ("C-8" . insert-char))
 

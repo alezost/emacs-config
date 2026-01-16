@@ -127,6 +127,20 @@ SUBDIRS can have one of the following values:
                            (or output-file (al/autoloads-file directory))
                            nil extra-data nil t)))))
 
+(defvar al/autoloads-presets)   ; defined in "init.el"
+
+;;;###autoload
+(defun al/generate-autoloads-from-presets (name)
+  "Generate autoloads from preset NAME.
+NAME should be one of `al/autoloads-presets' names."
+  (interactive
+   (list (completing-read "Generate autoloads for: "
+                          al/autoloads-presets nil t)))
+  (pcase (assoc name al/autoloads-presets)
+    (`(,_name ,dir ,file . ,args)
+     (apply #'al/generate-autoloads
+            dir :output-file file args))))
+
 (provide 'al-autoload)
 
 ;;; al-autoload.el ends here

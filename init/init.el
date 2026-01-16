@@ -145,28 +145,25 @@ Do not alter `load-path'.  Instead, push added `load-path' to
       (al/load autoloads-file)
       (push load-path al/load-paths))))
 
-(al/load-autoloads "utils"
-  al/emacs-utils-dir
-  al/emacs-utils-autoloads)
+(defvar al/autoloads-presets
+  `(("utils"
+     ,al/emacs-utils-dir
+     ,al/emacs-utils-autoloads)
+    ("my packages"
+     ,al/emacs-my-packages-dir
+     ,al/emacs-my-packages-autoloads
+     :add-to-path prepend
+     :subdirs t)
+    ("ELPA packages"
+     ,package-user-dir
+     ,al/emacs-elpa-packages-autoloads
+     :add-to-path prepend
+     :subdirs only))
+  "Presets for \"autoloads.el\" files.")
 
-(al/load-autoloads "my packages"
-  al/emacs-my-packages-dir
-  al/emacs-my-packages-autoloads
-  :add-to-path 'prepend
-  :subdirs t)
-
-(al/load-autoloads "ELPA packages"
-  package-user-dir
-  al/emacs-elpa-packages-autoloads
-  :add-to-path 'prepend
-  :subdirs 'only)
-
-;; (when (file-exists-p al/guix-profile-dir)
-;;   (al/title-message "Autoloading Guix packages")
-;;   (with-demoted-errors "ERROR during autoloading Guix packages: %S"
-;;     (when (require 'al-guix-autoload nil t)
-;;       (apply #'al/guix-autoload-emacs-packages
-;;              (al/guix-profiles)))))
+(pcase-dolist (`(,name ,dir ,file . ,args)
+               al/autoloads-presets)
+  (apply #'al/load-autoloads name dir file args))
 
 ;; Prepend paths added by the above autoloads to `load-path' in reverse
 ;; order.  So the first loaded autoloads have precedence over the last

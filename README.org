@@ -65,8 +65,9 @@ are the main features of my config.
     * one file for my [[file:packages][packages]].
 
     Search for =al/generate-autoloads= at [[file:utils/al-autoload.el][al-autoload.el]] and [[file:init/init.el][init.el]] to
-    see how autoloads are generated.  I also use [[file:utils/al-autoloads-ui.el][al/autoloads-ui]]
-    transient interface to quickly update these autoloads.
+    see how autoloads are generated.  I also use
+    [[file:utils/al-autoload.el][al/generate-autoloads-from-presets]] command to quickly update these
+    autoloads when I need.
 
 ** Files
 
