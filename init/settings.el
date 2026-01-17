@@ -299,7 +299,8 @@ This variable is used to set `al/dired-ignored-extensions'.")
 
 (with-eval-after-load 'shell
   (defconst al/shell-keys
-    '(("M-O" . shell-backward-command)
+    '("M-?"
+      ("M-O" . shell-backward-command)
       ("M-U" . shell-forward-command))
     "Alist of auxiliary keys for `shell-mode-map'.")
   (al/bind-keys-from-vars 'shell-mode-map 'al/shell-keys t)
