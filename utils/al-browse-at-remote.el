@@ -20,6 +20,7 @@
 (require 'browse-at-remote)
 (require 'magit-section)
 (require 'magit-git)
+(require 'al-misc)
 
 (defun al/browse-at-remote-get-url (fun &rest args)
   "Return URL with full commit hash to browse.
@@ -31,6 +32,15 @@ This function is intended to be used as an `around' advice for
             (value (oref section value)))
       (browse-at-remote--commit-url (magit-rev-parse value))
     (apply fun args)))
+
+;;;###autoload
+(defun al/browse-at-remote-kill ()
+  "Add the current `browse-at-remote' URL to the kill ring.
+This is the same as `browse-at-remote-kill' except it also shows the
+killed URL in echo area."
+  (interactive)
+  (al/with-eval-to-kill-ring
+    (browse-at-remote-get-url)))
 
 (provide 'al-browse-at-remote)
 
