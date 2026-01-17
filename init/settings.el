@@ -254,7 +254,6 @@ This variable is used to set `al/dired-ignored-extensions'.")
 (setq shell-file-name "bash")
 
 (al/bind-key "s-s" al/shell)
-(al/bind-key "s-s" al/shells ctl-x-map)
 (al/bind-keys*
  :prefix-map al/repl-map
  :prefix-docstring "Map for various REPLs."
