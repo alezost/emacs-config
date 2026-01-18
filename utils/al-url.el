@@ -1,6 +1,6 @@
 ;;; al-url.el --- Code for searching and downloading various stuff  -*- lexical-binding: t -*-
 
-;; Copyright © 2015–2025 Alex Kost
+;; Copyright © 2015–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
 
 ;;; Code:
 
+(require 'al-misc)
+
 (defvar al/url-regexp
   "https?://"
   "Regexp matching the beginning of an URL.")
@@ -24,6 +26,34 @@
 (defvar al/url-mp3-regexp
   (rx "http" (? ?s) "://" (1+ any) ".mp3")
   "Regexp for mp3 file.")
+
+
+;;; YouTube URLs
+
+(defvar al/url-youtube-base-url
+  "https://www.youtube.com/"
+  "YouTube base URL.")
+
+(defun al/url-youtube-video (&optional id time)
+  "Return URL for youtube video with ID.
+If ID is nil, return an incomplete URL with missing video ID.
+TIME can be an integer (number of seconds) or a string with time format
+supported by `al/time-string-to-seconds'."
+  (concat al/url-youtube-base-url "watch?v=" id
+          (and time
+               (concat "&t="
+                       (number-to-string
+                        (if (integerp time)
+                            time
+                          (al/time-string-to-seconds time)))))))
+
+(defun al/url-youtube-playlist (&optional id)
+  "Return URL for youtube playlist with ID.
+If ID is nil, return an incomplete URL with missing video ID."
+  (concat al/url-youtube-base-url "playlist?list=" id))
+
+
+;;; wget
 
 (declare-function wget "wget")
 

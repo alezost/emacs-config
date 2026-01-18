@@ -1,6 +1,6 @@
 ;;; al-browse-url.el --- Additional functionality for browse-url package  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2025 Alex Kost
+;; Copyright © 2013–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
 
 (require 'browse-url)
 (require 'transient)
-(require 'al-misc)
+(require 'al-url)
 
 ;;;###autoload
 (defun al/browse-youtube-video (id &optional time)
@@ -32,20 +32,14 @@ Interactively with arg, prompt for TIME."
              (read-string "YouTube video or playlist ID: "))
          (and current-prefix-arg
               (read-string "Time stamp: "))))
-  (let ((yt-url "https://www.youtube.com/"))
-    (cond
-     ((= (length id) 11)
-      (browse-url
-       (concat yt-url "watch?v=" id
-               (and time
-                    (concat "&t="
-                            (number-to-string
-                             (al/time-string-to-seconds time)))))))
-     ((let (case-fold-search)
-        (string-match-p "\\`PL" id))
-      (browse-url (concat yt-url "playlist?list=" id)))
-     (t
-      (error "Unknown youtube ID: %s" id)))))
+  (cond
+   ((= (length id) 11)
+    (browse-url (al/url-youtube-video id time)))
+   ((let (case-fold-search)
+      (string-match-p "\\`PL" id))
+    (browse-url (al/url-youtube-playlist id)))
+   (t
+    (error "Unknown youtube ID: %s" id))))
 
 
 ;;; Browse IRC logs from gnunet
