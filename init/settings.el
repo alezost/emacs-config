@@ -55,7 +55,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
 (setq completion-ignored-extensions
       '("./" "../"
         ".o" ".bin" ".lbin" ".so" ".a" ".la" ".lo"
-        ".elc" ".pyc"))
+        ".elc" ".go" ".pyc"))
 
 (al/add-hook-maybe 'minibuffer-setup-hook 'al/hbar-cursor-type)
 (al/bind-keys-from-vars 'minibuffer-local-map 'al/minibuffer-keys)
