@@ -1,4 +1,4 @@
-;;; al-parens.el --- Additional functionality for working with parentheses  -*- lexical-binding: t -*-
+;;; parens.el --- Additional functionality for working with parentheses  -*- lexical-binding: t -*-
 
 ;; Copyright © 2013–2026 Alex Kost
 
@@ -99,6 +99,6 @@ list/string, as `sp-backward-kill-sexp' does."
       (progn (backward-kill-sexp) (sp-backward-kill-sexp arg))
     (backward-kill-sexp (prefix-numeric-value arg))))
 
-(provide 'al-parens)
+(provide 'parens)
 
-;;; al-parens.el ends here
+;;; parens.el ends here
