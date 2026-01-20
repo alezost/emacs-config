@@ -33,9 +33,16 @@
 ;;
 ;; - `parens-skip-forward'
 ;; - `parens-skip-backward'
+;; - `parens-forward-sexp'
+;; - `parens-backward-sexp'
+;; - `parens-backward-up'
+;; - `parens-backward-down'
 ;; - `parens-forward-up'
 ;; - `parens-forward-down'
 ;; - `parens-forward-down*'
+;; - `parens-transpose-sexps'
+;; - `parens-kill-word-forward'
+;; - `parens-kill-word-backward'
 ;; - `parens-kill-sexp-forward'
 ;; - `parens-kill-sexp-backward'
 
@@ -101,6 +108,22 @@ See `parens-skip' for the returning value."
 ;;; Moving
 
 ;;;###autoload
+(defun parens-forward-sexp ()
+  "Move forward across one sexp."
+  (interactive)
+  (if parens-packages-loaded-p
+      (paredit-forward)
+    (forward-sexp)))
+
+;;;###autoload
+(defun parens-backward-sexp ()
+  "Move backward across one sexp."
+  (interactive)
+  (if parens-packages-loaded-p
+      (paredit-backward)
+    (backward-sexp)))
+
+;;;###autoload
 (defun parens-forward-up ()
   "Move forward up one level of parentheses."
   (interactive)
@@ -131,8 +154,48 @@ move down, then move forward up and down again."
            (parens-forward-down*))
        (message "Cannot move down")))))
 
+;;;###autoload
+(defun parens-backward-up ()
+  "Move backward up one level of parentheses."
+  (interactive)
+  (if parens-packages-loaded-p
+      (paredit-backward-up)
+    (backward-up-list)))
+
+;;;###autoload
+(defun parens-backward-down ()
+  "Move backward down one level of parentheses."
+  (interactive)
+  (if parens-packages-loaded-p
+      (paredit-backward-down)
+    (down-list -1)))
+
 
 ;;; Editing
+
+;;;###autoload
+(defun parens-transpose-sexps ()
+  "Interchange sexps around point."
+  (interactive)
+  (if parens-packages-loaded-p
+      (sp-transpose-sexp)
+    (transpose-sexps 1)))
+
+;;;###autoload
+(defun parens-kill-word-forward ()
+  "Kill word forward skipping parentheses if possible."
+  (interactive)
+  (if parens-packages-loaded-p
+      (paredit-forward-kill-word)
+    (kill-word 1)))
+
+;;;###autoload
+(defun parens-kill-word-backward ()
+  "Kill word backward skipping parentheses if possible."
+  (interactive)
+  (if parens-packages-loaded-p
+      (paredit-backward-kill-word)
+    (backward-kill-word 1)))
 
 ;;;###autoload
 (defun parens-kill-sexp-forward (&optional arg)

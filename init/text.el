@@ -29,19 +29,19 @@
 (al/bind-keys
  ("C-o"   . backward-char)
  ("M-o"   . al/skip-parens-or-backward-word)
- ("C-M-o" . backward-sexp)
+ ("C-M-o" . parens-backward-sexp)
  ("M-O"   . backward-sentence)
  ("C-H-M-o" (scroll-right 1))
 
  ("C-u"   . forward-char)
  ("M-u"   . al/skip-parens-or-forward-word)
- ("C-M-u" . forward-sexp)
+ ("C-M-u" . parens-forward-sexp)
  ("M-U"   . forward-sentence)
  ("C-H-M-u" (scroll-left 1))
 
  ("C-."   . previous-line)
  ("M-."   . backward-paragraph)
- ("C-M-." . backward-up-list)
+ ("C-M-." . parens-backward-up)
  ("M->"   . backward-page)
  ("C-H-M-." (scroll-down 1))
  ("H-."   . scroll-down-command)
@@ -50,7 +50,7 @@
 
  ("C-e"   . next-line)
  ("M-e"   . forward-paragraph)
- ("C-M-e" . down-list)
+ ("C-M-e" . parens-forward-down*)
  ("M-E"   . forward-page)
  ("C-H-M-e" (scroll-up 1))
  ("H-e"   . scroll-up-command)
@@ -94,14 +94,14 @@
 
 (al/bind-keys
  ("C-,"   . delete-char)
- ("M-,"   . kill-word)
- ("C-M-," . kill-sexp)
+ ("M-,"   . parens-kill-word-forward)
+ ("C-M-," . parens-kill-sexp-forward)
  ("M-<"   . kill-line)
  ("H-M-," . al/delete-blank-lines)
 
  ("C-p"   . delete-backward-char)
- ("M-p"   . backward-kill-word)
- ("C-M-p" . backward-kill-sexp)
+ ("M-p"   . parens-kill-word-backward)
+ ("C-M-p" . parens-kill-sexp-backward)
  ("M-P"   . al/backward-kill-line)
  ("H-M-p" . delete-trailing-whitespace)
 
@@ -117,7 +117,7 @@
 
  ("C-'"   . transpose-chars)
  ("M-'"     (transpose-words -1))
- ("C-M-'" . transpose-sexps)
+ ("C-M-'" . parens-transpose-sexps)
  ("M-\""  . transpose-lines)
 
  ("C-;"   . open-line)
@@ -587,17 +587,10 @@
 (al/bind-keys
   :map al/parens-mode-map
   ("<H-M-tab>" . sp-indent-defun)
-  ("M-p"       . paredit-backward-kill-word)
-  ("M-,"       . paredit-forward-kill-word)
-  ("C-M-."     . paredit-backward-up)
-  ("C-M-e"     . parens-forward-down*)
   ("H-E"       . paredit-splice-sexp)
   ("H-P"       . paredit-splice-sexp-killing-backward)
   ("H-<"       . paredit-splice-sexp-killing-forward)
   ("H->"       . paredit-raise-sexp)
-  ("C-M-p"     . parens-kill-sexp-backward)
-  ("C-M-,"     . parens-kill-sexp-forward)
-  ("C-M-'"     . sp-transpose-sexp)
   ("C-)"       . sp-forward-slurp-sexp)
   ("C-M-0"     . sp-forward-barf-sexp)
   ("C-("       . sp-backward-slurp-sexp)
