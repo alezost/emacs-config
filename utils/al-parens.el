@@ -36,17 +36,28 @@
 
 ;;; Commands for moving and editing
 
+(defvar al/parens-string "()[]\"\""
+  "String with parentheses skipped by `al/skip-parens'.")
+
 (defun al/skip-parens (direction)
   "Skip parentheses at point and whitespaces after that.
+
+If there are no parentheses at point, then skip whitespaces at first and
+parentheses after that.
+
 DIRECTION should be either `forward' or `backward' symbol.
-Return non-nil, if something is skipped.
-Return nil, if there is nothing to skip."
-  (let* ((skip (cl-ecase direction
-                 (forward  #'skip-chars-forward)
-                 (backward #'skip-chars-backward)))
-         (skipped (funcall skip ")")))
-    (unless (= 0 skipped)
-      (funcall skip " \t\n"))))
+
+Return non-nil, if anything was skipped.  Return nil otherwise."
+  (cl-flet ((skip (str)
+              (abs (funcall (cl-ecase direction
+                              (forward  #'skip-chars-forward)
+                              (backward #'skip-chars-backward))
+                            str))))
+    (let* ((skipped1 (skip al/parens-string))
+           (skipped2 (skip " \t\n"))
+           (skipped3 (if (= 0 skipped1) (skip al/parens-string) 0))
+           (skipped  (+ skipped1 skipped2 skipped3)))
+      (> skipped 0))))
 
 ;;;###autoload
 (defun al/skip-parens-forward ()
