@@ -19,10 +19,13 @@
 
 (eval-when-compile (require 'cl-lib))
 
-(defvar al/parens-string "()[]\"\""
-  "String with parentheses skipped by `al/skip-parens'.")
+
+;;; Skipping parentheses
 
-(defun al/skip-parens (direction)
+(defvar parens-string "()[]\"\""
+  "String with parentheses skipped by `parens-skip'.")
+
+(defun parens-skip (direction)
   "Skip parentheses at point and whitespaces after that.
 
 If there are no parentheses at point, then skip whitespaces at first and
@@ -30,37 +33,40 @@ parentheses after that.
 
 DIRECTION should be either `forward' or `backward' symbol.
 
-Return non-nil, if anything was skipped.  Return nil otherwise."
+Return non-nil, if something was skipped.  Return nil otherwise."
   (cl-flet ((skip (str)
               (abs (funcall (cl-ecase direction
                               (forward  #'skip-chars-forward)
                               (backward #'skip-chars-backward))
                             str))))
-    (let* ((skipped1 (skip al/parens-string))
+    (let* ((skipped1 (skip parens-string))
            (skipped2 (skip " \t\n"))
-           (skipped3 (if (= 0 skipped1) (skip al/parens-string) 0))
+           (skipped3 (if (= 0 skipped1) (skip parens-string) 0))
            (skipped  (+ skipped1 skipped2 skipped3)))
       (> skipped 0))))
 
 ;;;###autoload
-(defun al/skip-parens-forward ()
+(defun parens-skip-forward ()
   "Skip parentheses at point forward and whitespaces after them.
-See `al/skip-parens' for the returning value."
+See `parens-skip' for the returning value."
   (interactive)
-  (al/skip-parens 'forward))
+  (parens-skip 'forward))
 
 ;;;###autoload
-(defun al/skip-parens-backward ()
+(defun parens-skip-backward ()
   "Skip parentheses at point backward and whitespaces before them.
-See `al/skip-parens' for the returning value."
+See `parens-skip' for the returning value."
   (interactive)
-  (al/skip-parens 'backward))
+  (parens-skip 'backward))
+
+
+;;; Moving
 
 (declare-function paredit-forward-up "paredit")
 (declare-function paredit-forward-down "paredit")
 
 ;;;###autoload
-(defun al/forward-down-sexp ()
+(defun parens-forward-down* ()
   "Move forward down into a list.
 This is similar to `paredit-forward-down' except if it is impossible to
 move down, then move forward up and down again."
@@ -71,14 +77,17 @@ move down, then move forward up and down again."
      (if (looking-at ")")
          (progn
            (paredit-forward-up)
-           (al/forward-down-sexp))
+           (parens-forward-down*))
        (message "Cannot move down")))))
+
+
+;;; Editing
 
 (declare-function sp-kill-sexp "smartparens")
 (declare-function sp-backward-kill-sexp "smartparens")
 
 ;;;###autoload
-(defun al/kill-sexp (&optional arg)
+(defun parens-kill-sexp-forward (&optional arg)
   "Kill sexp forward.
 Similar to `kill-sexp', except if ARG is a raw prefix
 \\[universal-argument], kill from point to the end of current
@@ -89,7 +98,7 @@ list/string, as `sp-kill-sexp' does."
     (kill-sexp (prefix-numeric-value arg))))
 
 ;;;###autoload
-(defun al/backward-kill-sexp (&optional arg)
+(defun parens-kill-sexp-backward (&optional arg)
   "Kill sexp backward.
 Similar to `backward-kill-sexp', except if ARG is a raw prefix
 \\[universal-argument], kill from point to the end of current

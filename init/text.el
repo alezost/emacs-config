@@ -19,11 +19,11 @@
 ;;; Global keys for moving
 
 (al/define-multi-command al/skip-parens-or-forward-word
-  al/skip-parens-forward
+  parens-skip-forward
   forward-word)
 
 (al/define-multi-command al/skip-parens-or-backward-word
-  al/skip-parens-backward
+  parens-skip-backward
   backward-word)
 
 (al/bind-keys
@@ -590,13 +590,13 @@
   ("M-p"       . paredit-backward-kill-word)
   ("M-,"       . paredit-forward-kill-word)
   ("C-M-."     . paredit-backward-up)
-  ("C-M-e"     . al/forward-down-sexp)
+  ("C-M-e"     . parens-forward-down*)
   ("H-E"       . paredit-splice-sexp)
   ("H-P"       . paredit-splice-sexp-killing-backward)
   ("H-<"       . paredit-splice-sexp-killing-forward)
   ("H->"       . paredit-raise-sexp)
-  ("C-M-p"     . al/backward-kill-sexp)
-  ("C-M-,"     . al/kill-sexp)
+  ("C-M-p"     . parens-kill-sexp-backward)
+  ("C-M-,"     . parens-kill-sexp-forward)
   ("C-M-'"     . sp-transpose-sexp)
   ("C-)"       . sp-forward-slurp-sexp)
   ("C-M-0"     . sp-forward-barf-sexp)
