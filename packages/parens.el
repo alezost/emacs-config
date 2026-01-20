@@ -1,4 +1,4 @@
-;;; parens.el --- Additional functionality for working with parentheses  -*- lexical-binding: t -*-
+;;; parens.el --- Additional commands for working with parentheses  -*- lexical-binding: t -*-
 
 ;; Copyright © 2013–2026 Alex Kost
 
@@ -15,9 +15,47 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+;;; Commentary:
+
+;; This package provides some interactive commands to work with sexps
+;; and parentheses.  I find `paredit-mode' and `smartparens-mode' very
+;; inconvinient: they try to control too much and do unnecessary extra
+;; stuff behind the scenes.  So instead of using one of them as a
+;; stand-alone mode, I use some functionality they provide.  This
+;; package is basically a wrapper for some of the `paredit' and
+;; `smartparens' commands.  Finally, even if `paredit' and `smartparens'
+;; are not available (for sure, a use-case interesting only for me),
+;; this package still works providing restricted functionality thanks to
+;; commands that come with Emacs itself (like `kill-word', `down-list',
+;; etc.).
+
+;; Provided commands:
+;;
+;; - `parens-skip-forward'
+;; - `parens-skip-backward'
+;; - `parens-forward-up'
+;; - `parens-forward-down'
+;; - `parens-forward-down*'
+;; - `parens-kill-sexp-forward'
+;; - `parens-kill-sexp-backward'
+
 ;;; Code:
 
 (eval-when-compile (require 'cl-lib))
+
+(require 'paredit nil t)
+(require 'smartparens nil t)
+
+(defvar parens-packages-loaded-p
+  (and (require 'paredit nil t)
+       (require 'smartparens nil t))
+  "Non-nil, if `paredit' and `smartparens' are loaded.")
+
+(defun parens-assert-packages ()
+  "Make sure `paredit' and `smartparens' are available.
+If not, throw an error."
+  (unless parens-packages-loaded-p
+    (error "Cannot do this operation without `paredit' or `smartparens'")))
 
 
 ;;; Skipping parentheses
@@ -62,29 +100,39 @@ See `parens-skip' for the returning value."
 
 ;;; Moving
 
-(declare-function paredit-forward-up "paredit")
-(declare-function paredit-forward-down "paredit")
+;;;###autoload
+(defun parens-forward-up ()
+  "Move forward up one level of parentheses."
+  (interactive)
+  (if parens-packages-loaded-p
+      (paredit-forward-up)
+    (up-list)))
+
+;;;###autoload
+(defun parens-forward-down ()
+  "Move forward down one level of parentheses."
+  (interactive)
+  (if parens-packages-loaded-p
+      (paredit-forward-down)
+    (down-list)))
 
 ;;;###autoload
 (defun parens-forward-down* ()
   "Move forward down into a list.
-This is similar to `paredit-forward-down' except if it is impossible to
+This is similar to `parens-forward-down' except if it is impossible to
 move down, then move forward up and down again."
   (interactive)
   (condition-case nil
-      (paredit-forward-down)
+      (parens-forward-down)
     (error
      (if (looking-at ")")
          (progn
-           (paredit-forward-up)
+           (parens-forward-up)
            (parens-forward-down*))
        (message "Cannot move down")))))
 
 
 ;;; Editing
-
-(declare-function sp-kill-sexp "smartparens")
-(declare-function sp-backward-kill-sexp "smartparens")
 
 ;;;###autoload
 (defun parens-kill-sexp-forward (&optional arg)
@@ -94,7 +142,10 @@ Similar to `kill-sexp', except if ARG is a raw prefix
 list/string, as `sp-kill-sexp' does."
   (interactive "P")
   (if (equal arg '(4))
-      (progn (kill-sexp) (sp-kill-sexp arg))
+      (progn
+        (parens-assert-packages)
+        (kill-sexp)
+        (sp-kill-sexp arg))
     (kill-sexp (prefix-numeric-value arg))))
 
 ;;;###autoload
@@ -105,7 +156,10 @@ Similar to `backward-kill-sexp', except if ARG is a raw prefix
 list/string, as `sp-backward-kill-sexp' does."
   (interactive "P")
   (if (equal arg '(4))
-      (progn (backward-kill-sexp) (sp-backward-kill-sexp arg))
+      (progn
+        (parens-assert-packages)
+        (backward-kill-sexp)
+        (sp-backward-kill-sexp arg))
     (backward-kill-sexp (prefix-numeric-value arg))))
 
 (provide 'parens)
