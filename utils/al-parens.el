@@ -19,23 +19,6 @@
 
 (eval-when-compile (require 'cl-lib))
 
-
-;;; Checking parentheses
-
-(defvar al/check-parens-modes
-  '(lisp-data-mode scheme-mode)
-  "List of parent modes where `al/check-parens' is called.")
-
-;;;###autoload
-(defun al/check-parens ()
-  "Run `check-parens' if `major-mode' derived from `al/check-parens-modes'."
-  (interactive)
-  (when (derived-mode-p al/check-parens-modes)
-    (check-parens)))
-
-
-;;; Commands for moving and editing
-
 (defvar al/parens-string "()[]\"\""
   "String with parentheses skipped by `al/skip-parens'.")
 

@@ -184,6 +184,20 @@ Result has WIDTH length plus 1 character for unit."
                   (concat "%" width-str ".1f"))))
       (concat (format fmt num) unit))))
 
+
+;;; Checking parentheses
+
+(defvar al/check-parens-modes
+  '(lisp-data-mode scheme-mode)
+  "List of parent modes where `al/check-parens' is called.")
+
+;;;###autoload
+(defun al/check-parens ()
+  "Run `check-parens' if `major-mode' derived from `al/check-parens-modes'."
+  (interactive)
+  (when (derived-mode-p al/check-parens-modes)
+    (check-parens)))
+
 (provide 'al-misc)
 
 ;;; al-misc.el ends here
