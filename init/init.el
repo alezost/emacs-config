@@ -220,10 +220,6 @@ Do not alter `load-path'.  Instead, push added `load-path' to
     (appt-activate)
     (al/shells)))
 
-(when (and (fboundp 'smartparens-mode)
-           (fboundp 'paredit-mode))
-  (al/global-parens-mode))
-
 (when (require 'al-process nil t)
   (advice-add 'insert-directory :around #'al/call-with-locale)
   (al/enable-process-hooks))

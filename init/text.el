@@ -549,12 +549,6 @@
 ;;; Working with parentheses (paredit, smartparens)
 
 (al/autoload "paredit"
-  paredit-backward-kill-word
-  paredit-forward-kill-word
-  paredit-backward-up
-  paredit-backward-down
-  paredit-forward-up
-  paredit-forward-down
   paredit-splice-sexp
   paredit-splice-sexp-killing-backward
   paredit-splice-sexp-killing-forward
@@ -562,9 +556,6 @@
 
 (al/autoload "smartparens"
   sp-indent-defun
-  sp-backward-kill-sexp
-  sp-kill-sexp
-  sp-transpose-sexp
   sp-forward-slurp-sexp
   sp-forward-barf-sexp
   sp-backward-slurp-sexp
@@ -583,9 +574,7 @@
    sp-ignore-modes-list nil
    sp-wrap-entire-symbol 'globally))
 
-(defvar al/parens-mode-map (make-sparse-keymap))
 (al/bind-keys
-  :map al/parens-mode-map
   ("<H-M-tab>" . sp-indent-defun)
   ("H-E"       . paredit-splice-sexp)
   ("H-P"       . paredit-splice-sexp-killing-backward)
@@ -596,7 +585,6 @@
   ("C-("       . sp-backward-slurp-sexp)
   ("C-M-9"     . sp-backward-barf-sexp))
 (al/bind-keys
-  :map al/parens-mode-map
   :prefix-map al/parens-misc-map
   :prefix-docstring "Map for misc parens commands."
   :prefix "H-p"
@@ -606,23 +594,5 @@
   ("c" . sp-convolute-sexp)
   ("j" . sp-join-sexp)
   ("s" . sp-split-sexp))
-
-(define-minor-mode al/parens-mode
-  "Minor mode for working with parentheses."
-  :init-value nil
-  :lighter " ()")
-
-(defconst al/parens-ignore-modes
-  '(c-mode c++-mode ; because of "<H-M-tab>" (better ideas?)
-    nxml-mode)
-  "List of modes where `al/parens-mode' should not be enabled.")
-
-(defun al/turn-on-parens-mode ()
-  (unless (or (apply #'derived-mode-p al/parens-ignore-modes)
-              (boundp 'ido-completing-read)) ; inside ido
-    (al/parens-mode)))
-
-(define-globalized-minor-mode al/global-parens-mode
-  al/parens-mode al/turn-on-parens-mode)
 
 ;;; text.el ends here
