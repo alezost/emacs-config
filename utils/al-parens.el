@@ -73,6 +73,24 @@ See `al/skip-parens' for the returning value."
   (interactive)
   (al/skip-parens 'backward))
 
+(declare-function paredit-forward-up "paredit")
+(declare-function paredit-forward-down "paredit")
+
+;;;###autoload
+(defun al/forward-down-sexp ()
+  "Move forward down into a list.
+This is similar to `paredit-forward-down' except if it is impossible to
+move down, then move forward up and down again."
+  (interactive)
+  (condition-case nil
+      (paredit-forward-down)
+    (error
+     (if (looking-at ")")
+         (progn
+           (paredit-forward-up)
+           (al/forward-down-sexp))
+       (message "Cannot move down")))))
+
 (declare-function sp-kill-sexp "smartparens")
 (declare-function sp-backward-kill-sexp "smartparens")
 

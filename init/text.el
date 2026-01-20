@@ -552,6 +552,8 @@
   paredit-backward-kill-word
   paredit-forward-kill-word
   paredit-backward-up
+  paredit-backward-down
+  paredit-forward-up
   paredit-forward-down
   paredit-splice-sexp
   paredit-splice-sexp-killing-backward
@@ -588,7 +590,7 @@
   ("M-p"       . paredit-backward-kill-word)
   ("M-,"       . paredit-forward-kill-word)
   ("C-M-."     . paredit-backward-up)
-  ("C-M-e"     . paredit-forward-down)
+  ("C-M-e"     . al/forward-down-sexp)
   ("H-E"       . paredit-splice-sexp)
   ("H-P"       . paredit-splice-sexp-killing-backward)
   ("H-<"       . paredit-splice-sexp-killing-forward)
