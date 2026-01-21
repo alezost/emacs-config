@@ -199,12 +199,7 @@ move down, then move forward up and down again."
        (message "Cannot move down")))))
 
 ;;;###autoload
-(defun parens-backward-up ()
-  "Move backward up one level of parentheses."
-  (interactive)
-  (if parens-packages-loaded-p
-      (paredit-backward-up)
-    (backward-up-list)))
+(defalias 'parens-backward-up #'backward-up-list)
 
 ;;;###autoload
 (defun parens-backward-down ()
