@@ -41,7 +41,7 @@
 
  ("C-."   . previous-line)
  ("M-."   . backward-paragraph)
- ("C-M-." . parens-backward-up)
+ ("C-M-." . parens-backward-up-sexp)
  ("M->"   . backward-page)
  ("C-H-M-." (scroll-down 1))
  ("H-."   . scroll-down-command)
@@ -50,7 +50,7 @@
 
  ("C-e"   . next-line)
  ("M-e"   . forward-paragraph)
- ("C-M-e" . parens-forward-down*)
+ ("C-M-e" . parens-forward-down)
  ("M-E"   . forward-page)
  ("C-H-M-e" (scroll-up 1))
  ("H-e"   . scroll-up-command)

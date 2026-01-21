@@ -37,11 +37,11 @@
 ;; - `parens-backward-sexp'
 ;; - `parens-forward'
 ;; - `parens-backward'
-;; - `parens-backward-up'
-;; - `parens-backward-down'
-;; - `parens-forward-up'
+;; - `parens-forward-up-sexp'
+;; - `parens-forward-down-sexp'
 ;; - `parens-forward-down'
-;; - `parens-forward-down*'
+;; - `parens-backward-up-sexp'
+;; - `parens-backward-down-sexp'
 ;; - `parens-transpose-sexps'
 ;; - `parens-kill-word-forward'
 ;; - `parens-kill-word-backward'
@@ -144,9 +144,9 @@ buffer."
   (interactive)
   (parens-handle-scan-error
       (forward-sexp)
-    (parens-forward-up)
+    (parens-forward-up-sexp)
     (ignore-errors
-      (parens-forward-down))
+      (parens-forward-down-sexp))
     (parens-forward)))
 
 ;;;###autoload
@@ -162,13 +162,13 @@ buffer."
   (interactive)
   (parens-handle-scan-error
       (backward-sexp)
-    (parens-backward-up)
+    (parens-backward-up-sexp)
     (ignore-errors
-      (parens-backward-down))
+      (parens-backward-down-sexp))
     (parens-backward)))
 
 ;;;###autoload
-(defun parens-forward-up ()
+(defun parens-forward-up-sexp ()
   "Move forward up one level of parentheses."
   (interactive)
   (if parens-packages-loaded-p
@@ -176,7 +176,7 @@ buffer."
     (up-list)))
 
 ;;;###autoload
-(defun parens-forward-down ()
+(defun parens-forward-down-sexp ()
   "Move forward down one level of parentheses."
   (interactive)
   (if parens-packages-loaded-p
@@ -184,25 +184,25 @@ buffer."
     (down-list)))
 
 ;;;###autoload
-(defun parens-forward-down* ()
+(defun parens-forward-down ()
   "Move forward down into a list.
 This is similar to `parens-forward-down' except if it is impossible to
 move down, then move forward up and down again."
   (interactive)
   (condition-case nil
-      (parens-forward-down)
+      (parens-forward-down-sexp)
     (error
      (if (looking-at ")")
          (progn
-           (parens-forward-up)
-           (parens-forward-down*))
+           (parens-forward-up-sexp)
+           (parens-forward-down))
        (message "Cannot move down")))))
 
 ;;;###autoload
-(defalias 'parens-backward-up #'backward-up-list)
+(defalias 'parens-backward-up-sexp #'backward-up-list)
 
 ;;;###autoload
-(defun parens-backward-down ()
+(defun parens-backward-down-sexp ()
   "Move backward down one level of parentheses."
   (interactive)
   (if parens-packages-loaded-p
