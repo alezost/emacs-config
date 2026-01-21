@@ -1,6 +1,6 @@
 ;;; files.el --- Working with files, dired, etc.  -*- lexical-binding: t -*-
 
-;; Copyright © 2014–2025 Alex Kost
+;; Copyright © 2014–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -141,8 +141,6 @@
       ("e"     . dired-next-line)
       (">"     . dired-prev-dirline)
       ("E"     . dired-next-dirline)
-      ("C-M-." . dired-prev-dirline)
-      ("C-M-e" . dired-next-dirline)
       ("H-a"   . al/dired-beginning-of-buffer)
       ("H-i"   . al/dired-end-of-buffer)
       ("M-d"   . dired-toggle-read-only)
