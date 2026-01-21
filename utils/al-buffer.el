@@ -36,18 +36,22 @@ See `sort' for details."
         (sort buffers sort-pred)
       buffers)))
 
-(defun al/buffers-by-regexp (regexp)
-  "Return a list of buffers which names match REGEXP."
+(defun al/buffers-by-regexp (regexp &optional sort-pred)
+  "Return a list of buffers which names match REGEXP.
+See `al/buffers' for the meaning of SORT-PRED."
   (al/buffers
    (lambda (buf)
-     (string-match-p regexp (buffer-name buf)))))
+     (string-match-p regexp (buffer-name buf)))
+   sort-pred))
 
-(defun al/buffers-by-mode (mode)
-  "Return a list of buffers which `major-mode' is derived from MODE."
+(defun al/buffers-by-mode (mode &optional sort-pred)
+  "Return a list of buffers which `major-mode' is derived from MODE.
+See `al/buffers' for the meaning of SORT-PRED."
   (al/buffers
    (lambda (buf)
      (with-current-buffer buf
-       (derived-mode-p mode)))))
+       (derived-mode-p mode)))
+   sort-pred))
 
 (defun al/buffer-name< (b1 b2)
   "Call `string<' on names of buffers B1 and B2."
