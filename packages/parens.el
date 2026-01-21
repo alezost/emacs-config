@@ -50,13 +50,11 @@
 
 (eval-when-compile (require 'cl-lib))
 
-(require 'paredit nil t)
-(require 'smartparens nil t)
-
-(defvar parens-packages-loaded-p
-  (and (require 'paredit nil t)
-       (require 'smartparens nil t))
-  "Non-nil, if `paredit' and `smartparens' are loaded.")
+(eval-and-compile
+  (defvar parens-packages-loaded-p
+    (and (require 'paredit nil t)
+         (require 'smartparens nil t))
+    "Non-nil, if `paredit' and `smartparens' are loaded."))
 
 (defun parens-assert-packages ()
   "Make sure `paredit' and `smartparens' are available.
