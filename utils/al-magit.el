@@ -43,7 +43,7 @@ If ALL is non-nil, select from all magit buffers, not only statuses."
 (defun al/git-commit-co-authored (name mail)
   "Insert a header acknowledging that you have co-authored the commit."
   (interactive (git-commit-self-ident))
-  (git-commit-insert-header "Co-authored-by" name mail))
+  (git-commit--insert-ident-trailer "Co-authored-by" name mail))
 
 ;;;###autoload
 (defun al/magit-show-commit (commit)
