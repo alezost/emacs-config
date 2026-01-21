@@ -29,13 +29,13 @@
 (al/bind-keys
  ("C-o"   . backward-char)
  ("M-o"   . al/skip-parens-or-backward-word)
- ("C-M-o" . parens-backward-sexp)
+ ("C-M-o" . parens-backward)
  ("M-O"   . backward-sentence)
  ("C-H-M-o" (scroll-right 1))
 
  ("C-u"   . forward-char)
  ("M-u"   . al/skip-parens-or-forward-word)
- ("C-M-u" . parens-forward-sexp)
+ ("C-M-u" . parens-forward)
  ("M-U"   . forward-sentence)
  ("C-H-M-u" (scroll-left 1))
 

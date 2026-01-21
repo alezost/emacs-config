@@ -35,6 +35,8 @@
 ;; - `parens-skip-backward'
 ;; - `parens-forward-sexp'
 ;; - `parens-backward-sexp'
+;; - `parens-forward'
+;; - `parens-backward'
 ;; - `parens-backward-up'
 ;; - `parens-backward-down'
 ;; - `parens-forward-up'
@@ -61,6 +63,14 @@
 If not, throw an error."
   (unless parens-packages-loaded-p
     (error "Cannot do this operation without `paredit' or `smartparens'")))
+
+(defmacro parens-handle-scan-error (body &rest on-error-body)
+  "Evaluate BODY expression.
+If `scan-error' is signalled, evaluate ON-ERROR-BODY."
+  (declare (indent 1) (debug t))
+  `(condition-case nil
+       ,body
+     (scan-error ,@on-error-body)))
 
 
 ;;; Skipping parentheses
@@ -120,6 +130,42 @@ See `parens-skip' for the returning value."
   (if parens-packages-loaded-p
       (paredit-backward)
     (backward-sexp)))
+
+;;;###autoload
+(defun parens-forward ()
+  "Move forward across one sexp.
+
+If impossible to move at the current level of parentheses, move forward
+across the next sibling sexp i.e., move up, then move down, and move
+forward again.
+
+In any case, this function should be able to move until the end of
+buffer."
+  (interactive)
+  (parens-handle-scan-error
+      (forward-sexp)
+    (parens-forward-up)
+    (ignore-errors
+      (parens-forward-down))
+    (parens-forward)))
+
+;;;###autoload
+(defun parens-backward ()
+  "Move backward across one sexp.
+
+If impossible to move at the current level of parentheses, move backward
+across the next sibling sexp i.e., move up, then move down, and move
+backward again.
+
+In any case, this function should be able to move until the beginning of
+buffer."
+  (interactive)
+  (parens-handle-scan-error
+      (backward-sexp)
+    (parens-backward-up)
+    (ignore-errors
+      (parens-backward-down))
+    (parens-backward)))
 
 ;;;###autoload
 (defun parens-forward-up ()
