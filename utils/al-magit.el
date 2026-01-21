@@ -1,6 +1,6 @@
 ;;; al-magit.el --- Additional functionality for magit  -*- lexical-binding: t -*-
 
-;; Copyright © 2015–2025 Alex Kost
+;; Copyright © 2015–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -29,10 +29,7 @@ TYPE can be one of the following symbols:
   (let ((mode (if (eq type 'status)
                   'magit-status-mode
                 'magit-mode)))
-    (seq-filter (lambda (buf)
-                  (with-current-buffer buf
-                    (derived-mode-p mode)))
-                (buffer-list))))
+    (al/buffers-by-mode mode)))
 
 ;;;###autoload
 (defun al/magit-switch-buffer (&optional all)
