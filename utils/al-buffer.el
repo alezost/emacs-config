@@ -199,7 +199,7 @@ See `completing-read' for the meaning of INITIAL-INPUT."
   (interactive (list "Switch to buffer: "))
   (let ((buffer-names (mapcar #'buffer-name
                               (or buffers (buffer-list)))))
-    (switch-to-buffer
+    (al/display-buffer
      (completing-read prompt buffer-names nil nil initial-input))))
 
 (defun al/switch-to-buffer-or-funcall (buffer &optional function)
@@ -211,7 +211,7 @@ FUNCTION if it is specified."
                        (funcall buffer)
                      buffer))
            (buffer (get-buffer buffer)))
-      (switch-to-buffer buffer)
+      (al/display-buffer buffer)
     (when function (funcall function))))
 
 ;;;###autoload
