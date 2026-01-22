@@ -315,7 +315,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
           ("*shell*<3>" . ,al/download-dir))))
 
 (al/bind-keys
- ("C-z"   . eshell)
+ ("C-z"   . al/eshell)
  ("C-M-z" . al/eshell-cd))
 
 (with-eval-after-load 'eshell

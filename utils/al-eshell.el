@@ -21,6 +21,20 @@
 (require 'em-dirs)
 (require 'em-unix)
 (require 'em-prompt)
+(require 'al-buffer)
+
+(defun al/eshell-buffers ()
+  "Return a list of all eshell buffers."
+  (al/buffers-by-mode 'eshell-mode))
+
+;;;###autoload
+(defun al/eshell (&optional arg)
+  "Start eshell if needed or switch to the next \\[eshell] buffer.
+If ARG is non-nil, start a new eshell buffer."
+  (interactive "P")
+  (if arg
+      (eshell 'new)
+    (al/rotate-or-select-buffer (al/eshell-buffers) #'eshell)))
 
 ;;;###autoload
 (defun al/eshell-cd (arg)
