@@ -1,6 +1,6 @@
 ;;; al-eshell.el --- Additional functionality for eshell  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2025 Alex Kost
+;; Copyright © 2013–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -17,17 +17,10 @@
 
 ;;; Code:
 
+(require 'em-alias)
 (require 'em-dirs)
 (require 'em-unix)
 (require 'em-prompt)
-
-(defun al/eshell-kill-whole-line (arg)
-  "Similar to `kill-whole-line', but respect eshell prompt."
-  (interactive "p")
-  (if (< (point) eshell-last-output-end)
-      (kill-whole-line arg)
-    (kill-region eshell-last-output-end
-                 (progn (forward-line arg) (point)))))
 
 ;;;###autoload
 (defun al/eshell-cd (arg)
@@ -37,6 +30,19 @@ ARG has the same meaning as in `eshell'"
   (let ((dir default-directory))
     (eshell arg)
     (eshell/cd dir)))
+
+(defun al/eshell-refresh-aliases ()
+  "Refresh aliases for the current eshell buffer."
+  (interactive)
+  (eshell-alias-initialize))
+
+(defun al/eshell-kill-whole-line (arg)
+  "Similar to `kill-whole-line', but respect eshell prompt."
+  (interactive "p")
+  (if (< (point) eshell-last-output-end)
+      (kill-whole-line arg)
+    (kill-region eshell-last-output-end
+                 (progn (forward-line arg) (point)))))
 
 (declare-function Info-find-node "info" t)
 (declare-function Info-menu "info" t)

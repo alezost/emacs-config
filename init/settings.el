@@ -330,7 +330,8 @@ This variable is used to set `al/dired-ignored-extensions'.")
    eshell-history-size 9999)
 
   (defconst al/eshell-keys
-    '(("<M-tab>" . eshell-complete-lisp-symbol)
+    '(("C-c r" . al/eshell-refresh-aliases)
+      ("<M-tab>" . eshell-complete-lisp-symbol)
       ("RET" . al/eshell-send-input-maybe)
       ("C-k" . al/eshell-kill-whole-line)
       ("M-." . eshell-previous-input)
