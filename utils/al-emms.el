@@ -23,6 +23,7 @@
 (require 'emms-playlist-mode)
 (require 'emms-state)
 (require 'al-text)
+(require 'al-buffer)
 (require 'al-misc)
 
 (defun al/emms-seek-forward (seconds)
@@ -292,17 +293,20 @@ This is similar to `emms-playlist-buffer-list' except it does not check
         (seq-filter #'buffer-live-p
 		    emms-playlist-buffers)))
 
-(declare-function al/switch-buffer "al-buffer" t)
-
 ;;;###autoload
-(defun al/emms-switch-to-playlist-buffer ()
-  "Switch to EMMS playlist buffer prompting for it if necessary."
-  (interactive)
-  (if-let* ((buffers (al/emms-playlist-buffers))
-            (more-than-one (cdr buffers)))
-      (al/switch-buffer "EMMS buffer: "
-                        :buffers buffers)
-    (emms)))
+(defun al/emms-switch-to-playlist-buffer (&optional arg)
+  "Switch to the next EMMS playlist.
+If ARG is non-nil, prompt for the playlist."
+  (interactive "P")
+  (let ((buffers (al/emms-playlist-buffers)))
+    (if (or arg
+            emms-playlist-buffer-p
+            (null buffers))
+        (al/rotate-or-select-buffer
+         buffers
+         "There are no EMMS playlists."
+         (when arg "EMMS buffer: "))
+      (al/display-buffer emms-playlist-buffer))))
 
 (declare-function wget "wget" t)
 
