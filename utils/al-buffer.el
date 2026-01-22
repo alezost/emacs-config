@@ -203,6 +203,39 @@ See `completing-read' for the meaning of INITIAL-INPUT."
     (al/display-buffer
      (completing-read prompt buffer-names nil nil initial-input))))
 
+(defun al/rotate-or-select-buffer (buffers &optional fallback select)
+  "Switch to buffer from BUFFERS.
+
+BUFFERS can be a list of buffers or a function returning such list.
+
+If BUFFERS is nil, call FALLBACK function.  Alternatively, FALLBACK can
+be a string.  In this case, show message with this string.
+
+Buffer for switching is defined as the next buffer after the current one
+in BUFFERS.  If current buffer is not in the list, switch to the first
+buffer.
+
+If SELECT is non-nil, prompt for buffer to switch in the minibuffer
+instead of automatic switching.  If SELECT is a string, use it as the
+prompt string."
+  (let ((buffers
+         (cond ((listp     buffers) buffers)
+               ((functionp buffers) (funcall buffers))
+               (t (error "Unknown buffers: %S" buffers)))))
+    (pcase buffers
+      ('()
+       (cond
+        ((functionp fallback) (funcall fallback))
+        ((stringp   fallback) (message fallback))))
+      (`(,buf)
+       (unless (eq buf (current-buffer))
+         (al/display-buffer buf)))
+      (_
+       (if select
+           (al/switch-buffer :prompt (and (stringp select) select)
+                             :buffers buffers)
+         (al/display-buffer (al/next-element buffers (current-buffer))))))))
+
 (defun al/switch-to-buffer-or-funcall (buffer &optional function)
   "Switch to BUFFER or call FUNCTION.
 BUFFER can be nil, a string, a buffer object or a function

@@ -17,7 +17,7 @@
 
 ;;; Code:
 
-(require 'magit-diff)
+(require 'magit)
 (require 'git-commit)
 (require 'al-buffer)
 
@@ -33,11 +33,13 @@ TYPE can be one of the following symbols:
 
 ;;;###autoload
 (defun al/magit-switch-buffer (&optional all)
-  "Prompt for a magit status buffer and switch to it.
+  "Switch to the next magit status buffer.
 If ALL is non-nil, select from all magit buffers, not only statuses."
   (interactive "P")
-  (al/switch-buffer "Magit buffer: "
-                    :buffers (al/magit-buffers (if all 'all 'status))))
+  (al/rotate-or-select-buffer
+   (al/magit-buffers (if all 'all 'status))
+   #'magit-status
+   (when all "Magit buffer: ") ))
 
 ;;;###autoload
 (defun al/git-commit-co-authored (name mail)

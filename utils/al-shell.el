@@ -1,6 +1,6 @@
 ;;; al-shell.el --- Additional functionality for `shell'  -*- lexical-binding: t -*-
 
-;; Copyright © 2019–2025 Alex Kost
+;; Copyright © 2019–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -36,19 +36,15 @@ If NO-SORT is non-nil, do not sort the list by buffer names."
 
 ;;;###autoload
 (defun al/shell (&optional arg)
-  "Start shell if needed or switch to \\[shell] buffer.
+  "Start shell if needed or switch to the next \\[shell] buffer.
 If ARG is non-nil, start a new shell buffer."
   (interactive "P")
-  (if arg
-      (shell (generate-new-buffer-name "*shell*"))
-    (if (derived-mode-p 'shell-mode)
-        (let ((buf (current-buffer)))
-          (if (get-buffer-process buf)
-              (switch-to-buffer (al/next-element (al/shell-buffers) buf))
-            (shell buf)))
-      (if-let* ((buf (al/next-element (al/shell-buffers))))
-          (switch-to-buffer buf)
-        (call-interactively 'shell)))))
+  (cond
+   (arg (shell (generate-new-buffer-name "*shell*")))
+   ((and (derived-mode-p 'shell-mode)
+         (null (get-buffer-process (current-buffer))))
+    (shell (current-buffer)))
+   (t (al/rotate-or-select-buffer (al/shell-buffers) #'shell))))
 
 ;;;###autoload
 (defun al/switch-to-shell-buffer (&optional arg)
