@@ -56,7 +56,7 @@ If ARG is non-nil, start a new shell buffer."
   (interactive "P")
   (let ((buffers (al/shell-buffers nil t)))
     (if (and buffers (null arg))
-        (al/switch-buffer "Switch to shell buffer: "
+        (al/switch-buffer :prompt "Switch to shell buffer: "
                           :buffers buffers)
       (call-interactively 'shell))))
 

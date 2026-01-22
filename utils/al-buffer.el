@@ -192,12 +192,13 @@ This is similar to `mode-line-other-buffer' but with a transient
                     display-buffer-same-window))))
 
 ;;;###autoload
-(cl-defun al/switch-buffer (prompt &key buffers initial-input)
+(cl-defun al/switch-buffer (&key prompt buffers initial-input)
   "Switch to a buffer prompting with PROMPT for a buffer from BUFFERS.
 If the list of BUFFERS is not specified, use all buffers.
 See `completing-read' for the meaning of INITIAL-INPUT."
-  (interactive (list "Switch to buffer: "))
-  (let ((buffer-names (mapcar #'buffer-name
+  (interactive)
+  (let ((prompt (or prompt "Switch to buffer: "))
+        (buffer-names (mapcar #'buffer-name
                               (or buffers (buffer-list)))))
     (al/display-buffer
      (completing-read prompt buffer-names nil nil initial-input))))

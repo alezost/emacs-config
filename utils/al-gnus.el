@@ -1,6 +1,6 @@
 ;;; al-gnus.el --- Additional functionality for Gnus  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2025 Alex Kost
+;; Copyright © 2013–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 
 (require 'gnus-sum)
 (require 'gnus-art)
+(require 'let-macros)
 (require 'al-buffer)
 
 (defun al/gnus-buffer-p ()
@@ -38,11 +39,10 @@
 (defun al/gnus-switch-buffer ()
   "Switch to a gnus buffer."
   (interactive)
-  (let ((buffers (gnus-buffers)))
-    (if buffers
-     	(al/switch-buffer "Gnus buffer: "
-                          :buffers buffers)
-      (user-error "No Gnus buffers"))))
+  (if-let ((buffers (gnus-buffers)))
+      (al/switch-buffer :prompt "Gnus buffer: "
+                        :buffers buffers)
+    (user-error "No Gnus buffers")))
 
 (defvar al/gnus-unbuttonized-mime-types-original
   gnus-unbuttonized-mime-types)
