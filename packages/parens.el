@@ -75,7 +75,7 @@ If `scan-error' is signalled, evaluate ON-ERROR-BODY."
 
 ;;; Skipping parentheses
 
-(defvar parens-string "()[]\"\""
+(defvar parens-string "()[]\""
   "String with parentheses skipped by `parens-skip'.")
 
 (defun parens-skip (direction)
@@ -114,6 +114,9 @@ See `parens-skip' for the returning value."
 
 
 ;;; Moving
+
+(defvar parens-open-regexp (rx (or ?\[ ?\( ?\" ?`))
+  "Regexp matching a single open parenthesis-like symbol.")
 
 ;;;###autoload
 (defun parens-forward-sexp ()
@@ -184,21 +187,6 @@ buffer."
     (down-list)))
 
 ;;;###autoload
-(defun parens-forward-down ()
-  "Move forward down into a list.
-This is similar to `parens-forward-down' except if it is impossible to
-move down, then move forward up and down again."
-  (interactive)
-  (condition-case nil
-      (parens-forward-down-sexp)
-    (error
-     (if (looking-at ")")
-         (progn
-           (parens-forward-up-sexp)
-           (parens-forward-down))
-       (message "Cannot move down")))))
-
-;;;###autoload
 (defalias 'parens-backward-up-sexp #'backward-up-list)
 
 ;;;###autoload
@@ -208,6 +196,42 @@ move down, then move forward up and down again."
   (if parens-packages-loaded-p
       (paredit-backward-down)
     (down-list -1)))
+
+(defun parens-inside-comment-or-string ()
+  "Return non-nil, if point is inside comment or string."
+  (or (ppss-comment-or-string-start (syntax-ppss))
+      ;; ↑ this returns nil when the point is at the very beginning of a
+      ;; commentary (e.g., on the starting ";" symbol in `lisp-mode'),
+      ;; so we also check the next character.  XXX Is there a better way
+      ;; to do this?
+      (save-excursion
+        (forward-char)
+        (ppss-comment-or-string-start (syntax-ppss)))))
+
+;;;###autoload
+(defun parens-forward-down ()
+  "Move forward down one level of parentheses.
+
+This is similar to `parens-forward-down-sexp' except if it is impossible to
+move down, then move forward up and down again.
+
+Also this function tries to do something useful inside comments and
+strings."
+  (interactive)
+  ;; `down-list' does not support strings and comments at all.
+  ;; `paredit-forward-down' does not move down inside a string/comment
+  ;; and doesn't support symbol quotes (`').  `sp-down-sexp' works
+  ;; inside strings/comments but it is highly unreliable (it can
+  ;; suddenly stuck or show "Search failed" message which can't be
+  ;; handled because it is not an error).  So instead, we simply search
+  ;; for parentheses inside a string/comment.
+  (if (parens-inside-comment-or-string)
+      (re-search-forward parens-open-regexp nil t)
+    (parens-handle-scan-error
+        (parens-forward-down-sexp)
+      (parens-forward-up-sexp)
+      (ignore-errors
+        (parens-forward-down)))))
 
 
 ;;; Editing
