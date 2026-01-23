@@ -282,9 +282,13 @@ list/string, as `sp-kill-sexp' does."
   (if (equal arg '(4))
       (progn
         (parens-assert-packages)
-        (kill-sexp)
-        (sp-kill-sexp arg))
-    (kill-sexp (prefix-numeric-value arg))))
+        ;; `sp-kill-sexp' kills the current sexp (if the point is inside
+        ;; it) and all whitespaces.  So we add a fake sexp here, then
+        ;; remove everything after it, and remove the fake.
+        (insert " a ")
+        (sp-kill-sexp arg)
+        (delete-char -2))
+    (kill-sexp (prefix-numeric-value arg) t)))
 
 ;;;###autoload
 (defun parens-kill-sexp-backward (&optional arg)
@@ -296,9 +300,13 @@ list/string, as `sp-backward-kill-sexp' does."
   (if (equal arg '(4))
       (progn
         (parens-assert-packages)
-        (backward-kill-sexp)
-        (sp-backward-kill-sexp arg))
-    (backward-kill-sexp (prefix-numeric-value arg))))
+        ;; We add a fake sexp here, then remove everything before it,
+        ;; and remove the fake.
+        (insert " a ")
+        (backward-char 2)
+        (sp-backward-kill-sexp arg)
+        (delete-char 2))
+    (backward-kill-sexp (prefix-numeric-value arg) t)))
 
 (provide 'parens)
 
