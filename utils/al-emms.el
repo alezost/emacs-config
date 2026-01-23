@@ -285,6 +285,8 @@ Intended to be used for `emms-mode-line-mode-line-function'."
 
 ;;; Misc
 
+(defvar al/emms-switch-playlist-map (make-sparse-keymap))
+
 (defun al/emms-playlist-buffers ()
   "Return a list of EMMS playlist buffers.
 This is similar to `emms-playlist-buffer-list' except it does not check
@@ -306,7 +308,8 @@ If ARG is non-nil, prompt for the playlist."
          buffers
          "There are no EMMS playlists."
          (when arg "EMMS buffer: "))
-      (al/display-buffer emms-playlist-buffer))))
+      (al/display-buffer emms-playlist-buffer)))
+  (set-transient-map al/emms-switch-playlist-map))
 
 (declare-function wget "wget" t)
 

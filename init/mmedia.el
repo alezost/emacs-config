@@ -107,6 +107,10 @@
                ("~/storage/music" . "~M")
                (,al/music-dir . "~m"))))
 
+    (al/bind-keys
+      :map al/emms-switch-playlist-map
+      ([ctrl-m] . al/emms-switch-to-playlist-buffer))
+
     (al/add-hook-maybe 'emms-playlist-source-inserted-hook
       'al/emms-add-info-size)
 
