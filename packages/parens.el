@@ -35,13 +35,14 @@
 ;; - `parens-skip-backward'
 ;; - `parens-forward-sexp'
 ;; - `parens-backward-sexp'
-;; - `parens-forward'
-;; - `parens-backward'
 ;; - `parens-forward-up-sexp'
 ;; - `parens-forward-down-sexp'
-;; - `parens-forward-down'
 ;; - `parens-backward-up-sexp'
 ;; - `parens-backward-down-sexp'
+;; - `parens-forward'
+;; - `parens-backward'
+;; - `parens-forward-down'
+;; - `parens-backward-up'
 ;; - `parens-transpose-sexps'
 ;; - `parens-kill-word-forward'
 ;; - `parens-kill-word-backward'
@@ -232,6 +233,17 @@ strings."
       (parens-forward-up-sexp)
       (ignore-errors
         (parens-forward-down)))))
+
+;;;###autoload
+(defun parens-backward-up ()
+  "Move backward up one level of parentheses.
+
+This is similar to `parens-backward-up-sexp' except it also tries to do
+something useful inside comments and strings."
+  (interactive)
+  (if (parens-inside-comment-or-string)
+      (re-search-backward parens-open-regexp nil t)
+    (call-interactively #'parens-backward-up-sexp)))
 
 
 ;;; Editing

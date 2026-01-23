@@ -41,7 +41,7 @@
 
  ("C-."   . previous-line)
  ("M-."   . backward-paragraph)
- ("C-M-." . parens-backward-up-sexp)
+ ("C-M-." . parens-backward-up)
  ("M->"   . backward-page)
  ("C-H-M-." (scroll-down 1))
  ("H-."   . scroll-down-command)
