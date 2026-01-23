@@ -53,18 +53,6 @@
 
 (eval-when-compile (require 'cl-lib))
 
-(eval-and-compile
-  (defvar parens-packages-loaded-p
-    (and (require 'paredit nil t)
-         (require 'smartparens nil t))
-    "Non-nil, if `paredit' and `smartparens' are loaded."))
-
-(defun parens-assert-packages ()
-  "Make sure `paredit' and `smartparens' are available.
-If not, throw an error."
-  (unless parens-packages-loaded-p
-    (error "Cannot do this operation without `paredit' or `smartparens'")))
-
 (defmacro parens-handle-scan-error (body &rest on-error-body)
   "Evaluate BODY expression.
 If `scan-error' is signalled, evaluate ON-ERROR-BODY."
@@ -72,6 +60,50 @@ If `scan-error' is signalled, evaluate ON-ERROR-BODY."
   `(condition-case nil
        ,body
      (scan-error ,@on-error-body)))
+
+
+;;; Checking and loading `paredit' and `smartparens'
+
+(defvar parens-paredit-loaded-p nil)
+(defvar parens-smartparens-loaded-p nil)
+
+(defun parens-paredit-loaded-p ()
+  "Return non-nil if `paredit' is loaded."
+  (or parens-paredit-loaded-p
+      (setq parens-paredit-loaded-p
+            (require 'paredit nil t))))
+
+(defun parens-smartparens-loaded-p ()
+  "Return non-nil if `smartparens' is loaded."
+  (or parens-smartparens-loaded-p
+      (setq parens-smartparens-loaded-p
+            (require 'smartparens nil t))))
+
+(defun parens-assert-paredit ()
+  "Make sure `paredit' is available.
+If not, throw an error."
+  (unless (parens-paredit-loaded-p)
+    (error "Cannot do this operation without `paredit'")))
+
+(defun parens-assert-smartparens ()
+  "Make sure `smartparens' is available.
+If not, throw an error."
+  (unless (parens-smartparens-loaded-p)
+    (error "Cannot do this operation without `smartparens'")))
+
+
+;;; Declarations of the used functions for byte-compiler
+
+(declare-function paredit-forward               "paredit")
+(declare-function paredit-forward-up            "paredit")
+(declare-function paredit-forward-down          "paredit")
+(declare-function paredit-backward              "paredit")
+(declare-function paredit-backward-down         "paredit")
+(declare-function paredit-backward-kill-word    "paredit")
+(declare-function paredit-forward-kill-word     "paredit")
+(declare-function sp-transpose-sexp             "smartparens")
+(declare-function sp-kill-sexp                  "smartparens")
+(declare-function sp-backward-kill-sexp         "smartparens")
 
 
 ;;; Skipping parentheses
@@ -123,7 +155,7 @@ See `parens-skip' for the returning value."
 (defun parens-forward-sexp ()
   "Move forward across one sexp."
   (interactive)
-  (if parens-packages-loaded-p
+  (if (parens-paredit-loaded-p)
       (paredit-forward)
     (forward-sexp)))
 
@@ -131,7 +163,7 @@ See `parens-skip' for the returning value."
 (defun parens-backward-sexp ()
   "Move backward across one sexp."
   (interactive)
-  (if parens-packages-loaded-p
+  (if (parens-paredit-loaded-p)
       (paredit-backward)
     (backward-sexp)))
 
@@ -175,7 +207,7 @@ buffer."
 (defun parens-forward-up-sexp ()
   "Move forward up one level of parentheses."
   (interactive)
-  (if parens-packages-loaded-p
+  (if (parens-paredit-loaded-p)
       (paredit-forward-up)
     (up-list)))
 
@@ -183,7 +215,7 @@ buffer."
 (defun parens-forward-down-sexp ()
   "Move forward down one level of parentheses."
   (interactive)
-  (if parens-packages-loaded-p
+  (if (parens-paredit-loaded-p)
       (paredit-forward-down)
     (down-list)))
 
@@ -194,7 +226,7 @@ buffer."
 (defun parens-backward-down-sexp ()
   "Move backward down one level of parentheses."
   (interactive)
-  (if parens-packages-loaded-p
+  (if (parens-paredit-loaded-p)
       (paredit-backward-down)
     (down-list -1)))
 
@@ -252,7 +284,7 @@ something useful inside comments and strings."
 (defun parens-transpose-sexps ()
   "Interchange sexps around point."
   (interactive)
-  (if parens-packages-loaded-p
+  (if (parens-smartparens-loaded-p)
       (sp-transpose-sexp)
     (transpose-sexps 1)))
 
@@ -260,7 +292,7 @@ something useful inside comments and strings."
 (defun parens-kill-word-forward ()
   "Kill word forward skipping parentheses if possible."
   (interactive)
-  (if parens-packages-loaded-p
+  (if (parens-paredit-loaded-p)
       (paredit-forward-kill-word)
     (kill-word 1)))
 
@@ -268,7 +300,7 @@ something useful inside comments and strings."
 (defun parens-kill-word-backward ()
   "Kill word backward skipping parentheses if possible."
   (interactive)
-  (if parens-packages-loaded-p
+  (if (parens-paredit-loaded-p)
       (paredit-backward-kill-word)
     (backward-kill-word 1)))
 
@@ -281,7 +313,7 @@ list/string, as `sp-kill-sexp' does."
   (interactive "P")
   (if (equal arg '(4))
       (progn
-        (parens-assert-packages)
+        (parens-assert-smartparens)
         ;; `sp-kill-sexp' kills the current sexp (if the point is inside
         ;; it) and all whitespaces.  So we add a fake sexp here, then
         ;; remove everything after it, and remove the fake.
@@ -299,7 +331,7 @@ list/string, as `sp-backward-kill-sexp' does."
   (interactive "P")
   (if (equal arg '(4))
       (progn
-        (parens-assert-packages)
+        (parens-assert-smartparens)
         ;; We add a fake sexp here, then remove everything before it,
         ;; and remove the fake.
         (insert " a ")
