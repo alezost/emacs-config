@@ -452,7 +452,8 @@
  :prefix-docstring "Map for magit and git stuff."
  :prefix "M-m"
  ("M-m" . al/magit-switch-buffer)
- ("b" . magit-blame)
+ ("b"   (al/magit-switch-buffer 'all))
+ ("B" . magit-blame)
  ("c" . al/magit-show-commit)
  ("d" . magit-dispatch)
  ("s" . magit-status)
