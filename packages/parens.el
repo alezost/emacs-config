@@ -108,7 +108,7 @@ If not, throw an error."
 
 ;;; Skipping parentheses
 
-(defvar parens-string "()[]\""
+(defvar parens-string "()[]{}<>\""
   "String with parentheses skipped by `parens-skip'.")
 
 (defun parens-skip (direction)
@@ -148,7 +148,7 @@ See `parens-skip' for the returning value."
 
 ;;; Moving
 
-(defvar parens-open-regexp (rx (or ?\[ ?\( ?\" ?`))
+(defvar parens-open-regexp (rx (or ?\[ ?\( ?{ ?< ?\" ?`))
   "Regexp matching a single open parenthesis-like symbol.")
 
 ;;;###autoload
