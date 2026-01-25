@@ -86,10 +86,6 @@ This function is intended to be used as a substitution for
 
 ;; Idea from <http://www.emacswiki.org/emacs/EshellPrompt>.
 
-;; TODO improve regexp
-(defvar al/eshell-prompt-regexp "^[#$] "
-  "Regexp for `eshell-prompt-regexp'.")
-
 (defmacro al/with-face (str &rest properties)
   `(propertize ,str 'face (list ,@properties)))
 

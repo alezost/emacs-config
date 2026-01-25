@@ -361,10 +361,8 @@ This variable is used to set `al/dired-ignored-extensions'.")
 
   (require 'tramp nil t)
   (when (require 'al-eshell nil t)
-    (setq
-     eshell-prompt-function 'al/eshell-prompt
-     eshell-prompt-regexp al/eshell-prompt-regexp)
-    (advice-add 'eshell/info :override 'al/eshell/info)))
+    (setq eshell-prompt-function #'al/eshell-prompt)
+    (advice-add 'eshell/info :override #'al/eshell/info)))
 
 
 ;;; Button, custom, widget
