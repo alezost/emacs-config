@@ -1,6 +1,6 @@
 ;;; al-org-emms.el --- Functionality to use org links for EMMS tracks and playlists  -*- lexical-binding: t -*-
 
-;; Copyright © 2021–2025 Alex Kost
+;; Copyright © 2021–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -25,6 +25,8 @@
 (require 'emms)
 (require 'emms-source-playlist)
 (require 'emms-playing-time)
+(require 'let-macros)
+(require 'al-buffer)
 (require 'al-url)
 (require 'al-misc)
 (require 'al-emms-mpv)
@@ -43,7 +45,7 @@ This string is passed to `format-seconds' function.")
 (defun al/org-emms-seek ()
   "Seek the current EMMS track to `al/org-emms-seek-time'.
 This function is intended to be added to `emms-mpv-file-loaded-hook'."
-  (when-let* ((time al/org-emms-seek-time))
+  (when-let ((time al/org-emms-seek-time))
     (setq al/org-emms-seek-time nil)
     (emms-player-seek-to time)))
 
@@ -112,25 +114,23 @@ exists or if TIME is not specified, just add playlist but don't play it.
 
 If TIME is specified, start playback from this position.
 If TIME is zero, play from the beginning."
-  (let* ((path (split-string link "::"))
-	 (file (expand-file-name (car path)))
-         (buf-name (file-name-base file))
-         (buf (get-buffer buf-name)))
-    (setq emms-playlist-buffer
-          (or buf (emms-playlist-new buf-name)))
-    (if buf
+  (if-letn ((path (split-string link "::"))
+	    (file (expand-file-name (car path)))
+            (buf-name (file-name-base file))
+            (buf (get-buffer buf-name)))
+      (progn
+        (al/display-buffer buf)
+        (message "Playlist %S already exists." buf-name))
+    (emms-mpv-set-current-playlist (emms-playlist-new buf-name))
+    (emms-add-playlist file)
+    (if-let ((time (cadr path))
+             (time (and (not (equal "" time))
+                        (al/time-string-to-seconds time))))
         (progn
-          (switch-to-buffer buf)
-          (message "Playlist %S already exists." buf-name))
-      (emms-add-playlist file)
-      (if-let* ((time (cadr path))
-                (time (and (not (equal "" time))
-                           (al/time-string-to-seconds time))))
-          (progn
-            (when (< 0 time)
-              (setq al/org-emms-seek-time time))
-            (emms-start))
-        (switch-to-buffer emms-playlist-buffer)))))
+          (when (< 0 time)
+            (setq al/org-emms-seek-time time))
+          (emms-start))
+      (al/display-buffer emms-playlist-buffer))))
 
 (provide 'al-org-emms)
 
