@@ -22,6 +22,7 @@
 (require 'emms)
 (require 'emms-playlist-mode)
 (require 'emms-state)
+(require 'let-macros)
 (require 'al-text)
 (require 'al-buffer)
 (require 'al-misc)
@@ -88,6 +89,18 @@ If ARG is specified, show metadata of the track."
 
 
 ;;; Track description
+
+(defvar al/emms-split-track-regexp
+  (rx (group (+? any))
+      " - "
+      (group (+ any)))
+  "Regexp used by `al/emms-split-track-name'.")
+
+(defun al/emms-split-track-name (name)
+  "Assuming NAME is \"ARTIST - TITLE\" string, return (ALIST TITLE) list."
+  (string-match al/emms-split-track-regexp name)
+  (list (match-string 1 name)
+        (match-string 2 name)))
 
 (defun al/emms-add-info-size ()
   "Add `info-size' to tracks in the current buffer.
@@ -283,7 +296,70 @@ Intended to be used for `emms-mode-line-mode-line-function'."
     " (no track)"))
 
 
-;;; Misc
+;;; Playlists
+
+(defvar al/emms-all-playlists nil
+  "List of names of all available EMMS playlists.")
+
+(defvar al/emms-playlist-alias-alist
+  '(("m"  . "EMMS-main")
+    ("b"  . "EMMS-background")
+    ("b2" . "EMMS-background2"))
+  "Alist of aliases and full playlist names.")
+
+(defun al/emms-all-playlists ()
+  "Return names of all EMMS playlists."
+  (or al/emms-all-playlists
+      (setq al/emms-all-playlists
+            (mapcar #'file-name-base
+                    (directory-files emms-directory nil "EMMS-.+.\pl")))))
+
+(defun al/emms-get-playlist (string)
+  "Return EMMS playlist buffer matching STRING.
+Open this playlist if is not opened yet.
+
+STRING can be a full playlist name, its alias from
+`al/emms-playlist-alias-alist', or regexp matching playlist name."
+  (if-let ((name (or (alist-get string al/emms-playlist-alias-alist
+                                nil nil #'string=)
+                     (seq-find (lambda (name)
+                                 ;; Skip starting "EMMS-" part.
+                                 (string-match-p string name 5))
+                               (al/emms-all-playlists)))))
+      (or (get-buffer name)
+          (let ((buf  (emms-playlist-new name))
+                (file (expand-file-name (concat name ".pl")
+                                        emms-directory)))
+            (if (file-exists-p file)
+                (with-current-buffer buf
+                  (al/emms-add-source 'emms-source-playlist file)
+                  buf)
+              ;; Actually this error should never happen: if NAME is
+              ;; found then FILE should exist.
+              (error "File <%s> does not exist" file))))
+    (error "Cannot define playlist by %S" string)))
+
+(defun al/emms-add-source (source &rest args)
+  "Add SOURCE tracks to the current (playlist) buffer."
+  ;; Originates from `emms-source-add'.
+  (save-excursion
+    (goto-char (point-max))
+    (apply #'emms-playlist-insert-source source args))
+  (when (or (not emms-playlist-selected-marker)
+	    (not (marker-position emms-playlist-selected-marker)))
+    (emms-playlist-select-first)))
+
+(defun al/emms-add-source-to-playlist (name source &rest args)
+  "Add SOURCE tracks to playlist NAME.
+See `al/emms-get-playlist' for the meaning of NAME string."
+  (with-current-buffer (al/emms-get-playlist name)
+    (apply #'al/emms-add-source source args)))
+
+(defun al/emms-add-file-to-playlist (name file)
+  "Add FILE to playlist NAME.
+See `al/emms-get-playlist' for the meaning of NAME string."
+  (al/emms-add-source-to-playlist
+   name 'emms-source-file (substring-no-properties file)))
 
 (defvar al/emms-switch-playlist-map (make-sparse-keymap))
 
@@ -340,18 +416,6 @@ If NO-CONFIRM is non-nil, delete without confirmation."
         (delete-file file))
       (emms-playlist-mode-kill-entire-track))
     (user-error "No track at point")))
-
-(defvar al/emms-split-track-regexp
-  (rx (group (+? any))
-      " - "
-      (group (+ any)))
-  "Regexp used by `al/emms-split-track-name'.")
-
-(defun al/emms-split-track-name (name)
-  "Assuming NAME is \"ARTIST - TITLE\" string, return (ALIST TITLE) list."
-  (string-match al/emms-split-track-regexp name)
-  (list (match-string 1 name)
-        (match-string 2 name)))
 
 (defvar emms-source-playlist-ask-before-overwrite)
 
