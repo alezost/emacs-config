@@ -1,6 +1,6 @@
 ;;; dict.el --- Spelling, translating, …  -*- lexical-binding: t -*-
 
-;; Copyright © 2014–2025 Alex Kost
+;; Copyright © 2014–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -143,6 +143,8 @@
       ("C-e" . google-translate-next-translation-direction))
     "Alist of auxiliary keys for `google-translate-minibuffer-keymap'.")
   (al/bind-keys-from-vars 'google-translate-minibuffer-keymap
-    '(al/minibuffer-keys al/google-translate-keys)))
+    '(al/minibuffer-keys al/google-translate-keys))
+
+  (al/add-hook-maybe 'google-translate-mode-hook 'al/text-scale+1))
 
 ;;; dict.el ends here

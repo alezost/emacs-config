@@ -20,7 +20,7 @@
 (require 'seq)
 
 
-;;; Wrappers for local variables
+;;; Simple wrappers for hooks
 
 (defun al/show-trailing-whitespace ()
   (setq-local show-trailing-whitespace t))
@@ -46,6 +46,10 @@
 (defun al/set-default-paragraph ()
   (setq-local paragraph-start    (default-value 'paragraph-start)
               paragraph-separate (default-value 'paragraph-separate)))
+
+(defun al/text-scale+1 ()
+  "Increase the font size in the current buffer by 1."
+  (text-scale-increase 1))
 
 
 ;;; Function utils
