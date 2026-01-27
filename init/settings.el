@@ -318,13 +318,24 @@ This variable is used to set `al/dired-ignored-extensions'.")
  ("C-z"   . al/eshell)
  ("C-M-z" . al/eshell-cd))
 
+(setq eshell-directory-name (al/emacs-data-dir-file "eshell"))
+
 (with-eval-after-load 'eshell
-  (setq eshell-directory-name (al/emacs-data-dir-file "eshell"))
   (setq
    eshell-modules-list
-   '(eshell-smart eshell-alias eshell-basic eshell-cmpl eshell-dirs
-     eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt
-     eshell-script eshell-term eshell-unix eshell-tramp)
+   '(eshell-alias
+     eshell-basic
+     eshell-cmpl
+     eshell-dirs
+     eshell-glob
+     eshell-hist
+     eshell-ls
+     eshell-pred
+     eshell-prompt
+     eshell-script
+     eshell-term
+     eshell-unix
+     eshell-tramp)
    eshell-highlight-prompt nil
    eshell-hist-ignoredups t
    eshell-history-size 9999)
