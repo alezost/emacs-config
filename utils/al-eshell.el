@@ -23,9 +23,11 @@
 (require 'em-prompt)
 (require 'al-buffer)
 
-(defun al/eshell-buffers ()
-  "Return a list of all eshell buffers."
-  (al/buffers-by-mode 'eshell-mode))
+(defun al/eshell-buffers (&optional no-sort)
+  "Return a list of all eshell buffers.
+If NO-SORT is non-nil, do not sort the list by buffer names."
+  (al/buffers-by-mode 'eshell-mode
+                      (unless no-sort #'al/buffer-name<)))
 
 ;;;###autoload
 (defun al/eshell (&optional arg)
