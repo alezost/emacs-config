@@ -370,6 +370,13 @@ This variable is used to set `al/dired-ignored-extensions'.")
   (al/add-hook-maybe 'eshell-mode-hook
     '(al/eshell-bind-keys al/eshell-set-paragraph))
 
+  ;; eshell does horrible thing with aliases: "alias foo" not only
+  ;; removes "foo" alias from the current eshell buffer (which is
+  ;; already bad enough), it also immediately overwrites (!)
+  ;; `eshell-aliases-file'.  How could anyone come up with this
+  ;; brilliant idea?
+  (advice-add 'eshell-write-aliases-list :override #'ignore)
+
   (require 'tramp nil t)
   (when (require 'al-eshell nil t)
     (setq eshell-prompt-function #'al/eshell-prompt)
