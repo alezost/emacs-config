@@ -382,6 +382,10 @@ This variable is used to set `al/dired-ignored-extensions'.")
     (setq eshell-prompt-function #'al/eshell-prompt)
     (advice-add 'eshell/info :override #'al/eshell/info)))
 
+(with-eval-after-load 'em-cmpl
+  ;; This mode does nothing except for binding keys that I don't need.
+  (advice-add 'eshell-cmpl-mode :override #'ignore))
+
 
 ;;; Button, custom, widget
 
