@@ -534,7 +534,12 @@
     '(al/lazy-scrolling-keys
       al/magit-common-keys
       al/magit-moving-keys
-      al/magit-keys)))
+      al/magit-keys))
+
+  (when (require 'al-magit nil t)
+    (al/bind-keys
+      :map al/magit-switch-map
+      ("M-m" . al/magit-switch-buffer))))
 
 (with-eval-after-load 'magit-popup
   (setq

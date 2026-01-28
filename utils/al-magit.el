@@ -31,6 +31,8 @@ TYPE can be one of the following symbols:
                 'magit-mode)))
     (al/buffers-by-mode mode)))
 
+(defvar al/magit-switch-map (make-sparse-keymap))
+
 ;;;###autoload
 (defun al/magit-switch-buffer (&optional all)
   "Switch to the next magit status buffer.
@@ -39,7 +41,8 @@ If ALL is non-nil, select from all magit buffers, not only statuses."
   (al/rotate-or-select-buffer
    (al/magit-buffers (if all 'all 'status))
    #'magit-status
-   (when all "Magit buffer: ") ))
+   (when all "Magit buffer: "))
+  (set-transient-map al/magit-switch-map))
 
 ;;;###autoload
 (defun al/git-commit-co-authored (name mail)
