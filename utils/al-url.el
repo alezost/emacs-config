@@ -17,6 +17,7 @@
 
 ;;; Code:
 
+(require 'let-macros)
 (require 'al-misc)
 
 (defvar al/url-regexp
@@ -26,6 +27,19 @@
 (defvar al/url-mp3-regexp
   (rx "http" (? ?s) "://" (1+ any) ".mp3")
   "Regexp for mp3 file.")
+
+(defun al/check-url (value)
+  "Check if VALUE is a string matching `al/url-regexp'.
+Return value if it is, return nil otherwise."
+  (and (stringp value)
+       (string-match-p al/url-regexp value)
+       value))
+
+(defun al/url-query-parameters (url)
+  "Return alist of query parameters from URL.
+Return nil, if URL does not contain query parameters."
+  (when-let ((query (cadr (split-string url "?"))))
+    (url-parse-query-string query)))
 
 
 ;;; YouTube URLs
