@@ -21,6 +21,7 @@
 (require 'em-dirs)
 (require 'em-unix)
 (require 'em-prompt)
+(require 'al-general)
 (require 'al-buffer)
 
 (defun al/eshell-buffers (&optional no-sort)
@@ -82,6 +83,30 @@ This function is intended to be used as a substitution for
         (Info-find-node file "Top")
       (Info-directory)
       (Info-menu name))))
+
+
+;;; Replacing eshell commands
+
+(defun al/eshell-command (command &rest args)
+  "Return parsed eshell object for COMMAND and its ARGS."
+  ;; Taken from `eshell-parse-command' output, e.g.:
+  ;; (eshell-parse-command "echo" '("hello"))
+  `(eshell-with-copied-handles
+    (eshell-trap-errors
+     (eshell-named-command ,command (list ,@args)))))
+
+(defun al/eshell-title-command (format-string &rest args)
+  "Return parsed eshell object with title string."
+  (al/eshell-command "echo" (apply #'al/title-string format-string args)))
+
+(defun al/eshell-replace-command (&rest body)
+  "Replace the current eshell command with BODY.
+BODY should consist of parsed eshell commands."
+  ;; Originates from `eshell-maybe-replace-by-alias'.
+  (throw 'eshell-replace-command
+         `(let ((eshell-command-name      ',eshell-last-command-name)
+                (eshell-command-arguments ',eshell-last-arguments))
+            (progn ,@body))))
 
 
 ;;; Prompt
