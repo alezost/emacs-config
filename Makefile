@@ -63,11 +63,11 @@ INIT_ELS =							\
           ! -name 'init.el' ! -name 'keys.el')
 INIT_ELCS = $(INIT_ELS:.el=.elc)
 
+all: packages utils
+
 packages: $(PACKAGES_ELCS)
 
 utils: $(UTILS_ELCS)
-
-all: $(PACKAGES_ELCS) $(UTILS_ELCS)
 
 %.elc: %.el
 	@printf "  ----------------\nCompiling $<\n"
