@@ -97,11 +97,15 @@ This is similar to `cl-pushnew' but uses `seq' library instead of `cl-lib'."
          (concat "XXX " format-string)
          args))
 
-(defun al/title-message (format-string &rest args)
-  "Display title message."
-  (apply #'message
+(defun al/title-string (format-string &rest args)
+  "Return title string."
+  (apply #'format
          (concat "⏺ " format-string)
          args))
+
+(defun al/title-message (format-string &rest args)
+  "Display title message."
+  (message (apply #'al/title-string format-string args)))
 
 
 ;;; Auxiliary predicates
