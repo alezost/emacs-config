@@ -1,6 +1,6 @@
 ;;; al-text.el --- Additional functionality related to text editing  -*- lexical-binding: t -*-
 
-;; Copyright © 2025 Alex Kost
+;; Copyright © 2025–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -23,6 +23,17 @@
       string
     (concat (substring string 0 (- length 1))
             "…")))
+
+(defun al/parse-ytdlp-file-name-output (string)
+  "Parse and return file name from `yt-dlp' output.
+STRING is the output of \"yt-dlp --print filename\" or similar command.
+Return nil if string cannot be parsed."
+  (if (string-match-p "ERROR" string)
+      (error "Cannot parse file name output: %S" string)
+    (let* ((string (substring-no-properties string))
+           (file-name (string-trim-right string "\n")))
+      ;; Something probably went wrong if the name is so long.
+      (al/shorten-string file-name 256))))
 
 (provide 'al-text)
 

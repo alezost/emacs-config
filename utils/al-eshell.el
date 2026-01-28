@@ -109,6 +109,40 @@ BODY should consist of parsed eshell commands."
             (progn ,@body))))
 
 
+;;; ytdlp command
+
+(defvar-local al/eshell-ytdlp-file-name nil
+  "File name of the currently downloading file.")
+
+(defun al/eshell-ytdlp (playlist &rest args)
+  "Download file using `yt-dlp' shell command with ARGS.
+After that, add this file to EMMS PLAYLIST.
+See `al/emms-get-playlist' for the meaning of PLAYLIST string."
+  (let ((get-file-args `("--no-warnings" "--print" "filename" ,@args))
+        (download-args `("-o" al/eshell-ytdlp-file-name ,@args)))
+    (require 'al-text)
+    (require 'al-emms)
+    ;; XXX Do not try to improve the following code.  In particular, do
+    ;; not replace `al/eshell-ytdlp-file-name' with local variable.  How
+    ;; eshell internals work is a mystery: `let*' (and more complex
+    ;; structures) does not work at all inside
+    ;; `al/eshell-replace-command', `let' works but unreliable.
+    (al/eshell-replace-command
+     (al/eshell-title-command "Requesting file name...")
+     `(setq al/eshell-ytdlp-file-name
+            (al/download-dir-file
+             (al/parse-ytdlp-file-name-output
+              (eshell-command-to-value
+               (eshell-as-subcommand
+                ,(apply #'al/eshell-command "yt-dlp" get-file-args))))))
+     (al/eshell-command "echo" 'al/eshell-ytdlp-file-name)
+     (al/eshell-title-command "Downloading the file...")
+     (apply #'al/eshell-command "yt-dlp" download-args)
+     (al/eshell-title-command "Adding the file to playlist...")
+     (al/eshell-command "al/emms-add-file-to-playlist"
+                        playlist 'al/eshell-ytdlp-file-name))))
+
+
 ;;; Prompt
 
 ;; Idea from <http://www.emacswiki.org/emacs/EshellPrompt>.
