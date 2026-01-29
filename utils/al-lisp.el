@@ -23,8 +23,7 @@
 
 ;;; Highlighting and indenting additional macros
 
-(al/put (lisp-indent-function
-         common-lisp-indent-function)
+(al/put common-lisp-indent-function
   (1 defsystem
      al/run-after-sleep)
   (3 al/defun-with-delay))
