@@ -15,63 +15,10 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-;;; Location of various files
 
-(defmacro al/file-accessors (name val)
-  "Define variable and function for accessing my directories."
-  (declare (indent 1))
-  (let ((dir-var  (intern (concat "al/" name "-dir")))
-        (file-fun (intern (concat "al/" name "-dir-file"))))
-    `(progn
-       (defvar ,dir-var ,val)
-       (defun ,file-fun (file)
-         ,(format "Return full file name of a FILE placed in `%s'."
-                  dir-var)
-         (expand-file-name file ,dir-var)))))
-
-(al/file-accessors "emacs-init"
-                    (file-name-directory
-                     (file-truename load-file-name)))
-(al/file-accessors "emacs"         (al/emacs-init-dir-file "../"))
-(al/file-accessors "emacs-data"    (al/emacs-dir-file "data"))
-(al/file-accessors "emacs-utils"   (al/emacs-dir-file "utils"))
-(al/file-accessors "emacs-my-packages" (al/emacs-dir-file "packages"))
-
-(al/file-accessors "config"        "~/config")
-(al/file-accessors "notes"         "~/notes")
-(al/file-accessors "progs"         "~/progs")
-(al/file-accessors "journal"       (al/notes-dir-file  "journal"))
-(al/file-accessors "music"         "~/music")
-(al/file-accessors "sound"         "~/docs/audio/small")
-(al/file-accessors "tmp"           "~/tmp")
-(al/file-accessors "src"           "~/src")
-(al/file-accessors "devel"         "~/devel")
-(al/file-accessors "download"      "~/downloads")
-(al/file-accessors "math"          "~/maths")
-
-
-;;; Guix stuff
-
-(al/file-accessors "guix-profile" "~/.guix-profiles")
-(al/file-accessors "guix-system-profile" "/run/current-system/profile")
-
-(defvar al/guix-system?
-  (file-exists-p al/guix-system-profile-dir)
-  "Non-nil, if current OS is GuixSD.")
-
-(defvar al/guix-profile-names
-  '("emacs" "fonts" "games" "build" "guile" "misc" "main"))
-
-(defun al/guix-profile (name)
-  "Return file name of my guix profile with NAME."
-  (al/guix-profile-dir-file (concat name "/" name)))
-
-(defun al/guix-profiles ()
-  "Return a list of all my guix profiles."
-  (mapcar #'al/guix-profile al/guix-profile-names))
-
-(al/file-accessors "guix-user-profile" (al/guix-profile "main"))
+(load (expand-file-name "../utils/al-places"
+                        (file-name-directory
+                         (file-truename load-file-name))))
 
 
 ;;; (Auto)loading various files
@@ -90,6 +37,8 @@
 
 (push al/emacs-utils-dir load-path)
 
+;; These packages (along with `al-places' loaded above) are required for
+;; the rest config.
 (require 'al-general)
 (require 'al-key)
 
