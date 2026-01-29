@@ -1,6 +1,6 @@
 ;;; net.el --- Browsing, mail, chat, network utils; w3m, wget, …  -*- lexical-binding: t -*-
 
-;; Copyright © 2014–2025 Alex Kost
+;; Copyright © 2014–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -136,17 +136,20 @@
 ;;; Mail, news, gnus
 
 (setq
- user-full-name "Alex Kost"
- user-mail-address (concat "alezost" '(?@ ?g) "mail" '(?.) "com"))
+ mail-user-agent 'gnus-user-agent
+ user-full-name "Alex Kost")
 
-(setq
- gnus-home-directory al/gnus-dir
- gnus-directory      al/gnus-news-dir
- message-directory   al/gnus-mail-dir
- ;; gnus-message-archive-group "sent"
- gnus-update-message-archive-method t)
-
-(setq mail-user-agent 'gnus-user-agent)
+(al/eval-after-init
+  ;; Append to make sure `al/mail-user-name' is available (defined in
+  ;; "custom.el").
+  :append t
+  (al/file-accessors "gnus"
+    (al/emacs-data-dir-file (concat "gnus-" al/mail-user-name)))
+  (setopt
+   ;; Set `gnus-home-directory' before loading Gnus.  Otherwise,
+   ;; `gnus-startup-file' will be set to "~/.newsrc" for some reason.
+   gnus-home-directory al/gnus-dir
+   user-mail-address (concat al/mail-user-name "@gmail.com")))
 
 (al/bind-keys
  :prefix-map al/gnus-map
@@ -162,15 +165,18 @@
   (setq nntp-connection-timeout 10))
 
 (with-eval-after-load 'gnus
-  (require 'al-gnus nil t)
   (setq
+   gnus-directory (al/gnus-dir-file "news")
+   gnus-article-save-directory (al/gnus-dir-file "saved")
+   gnus-update-message-archive-method t
    gnus-select-method '(nnml "")
    gnus-secondary-select-methods
-   '((nnimap "gmail"
+   `((nnimap "gmail"
+             (nnimap-user ,al/mail-user-name)
              (nnimap-address "imap.gmail.com")
-             ;; (nnimap-server-port 'imaps)  ; this is default
-             (nnimap-stream ssl))
-     (nntp "gmane" (nntp-address "news.gmane.io"))))
+             (nnimap-stream tls))
+     ;; (nntp "gmane" (nntp-address "news.gmane.io"))
+     ))
 
   (setq
    gnus-group-buffer "*Gnus Groups*"
@@ -205,7 +211,9 @@
   (setq gnus-article-truncate-lines nil)
 
   (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
-  (al/add-hook-maybe 'dired-mode-hook 'turn-on-gnus-dired-mode))
+  (al/add-hook-maybe 'dired-mode-hook 'turn-on-gnus-dired-mode)
+
+  (require 'al-gnus))
 
 (with-eval-after-load 'gnus-srvr
   (defconst al/gnus-server-keys
@@ -323,10 +331,7 @@
    gnus-unbuttonized-mime-types '("text/plain")
    gnus-blocked-images "githubusercontent"
    gnus-prompt-before-saving t
-   gnus-default-article-saver 'gnus-summary-save-in-mail
-   ;; `gnus-article-save-directory' is placed in "gnus.el" actually, but
-   ;; I don't care.
-   gnus-article-save-directory al/gnus-saved-dir)
+   gnus-default-article-saver 'gnus-summary-save-in-mail)
 
   (defconst al/gnus-article-keys
     '("C-d")
@@ -366,6 +371,7 @@
 
 (with-eval-after-load 'message
   (setq
+   message-directory (al/gnus-dir-file "mail")
    message-signature "Alex"
    message-send-mail-function 'smtpmail-send-it
    message-citation-line-function 'message-insert-formatted-citation-line

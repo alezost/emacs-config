@@ -1,5 +1,9 @@
-*.elc
 tmp*
+*.elc
+*-autoloads.el
+
+/packages/*/
+/init/custom.el
 
 /data/auto-save*
 /data/backup
@@ -11,7 +15,7 @@ tmp*
 /data/eshell/*
 !/data/eshell/alias
 /data/games
-/data/gnus
+/data/gnus*
 /data/snippets/yas
 /data/sql
 /data/url
@@ -24,7 +28,3 @@ tmp*
 /data/save-places
 /data/smex-items
 /data/transient
-
-/init/custom.el
-/packages/*/
-*-autoloads.el

@@ -20,6 +20,7 @@
 
 (defmacro al/file-accessors (name val)
   "Define variable and function for accessing my directories."
+  (declare (indent 1))
   (let ((dir-var  (intern (concat "al/" name "-dir")))
         (file-fun (intern (concat "al/" name "-dir-file"))))
     `(progn
@@ -36,10 +37,6 @@
 (al/file-accessors "emacs-data"    (al/emacs-dir-file "data"))
 (al/file-accessors "emacs-utils"   (al/emacs-dir-file "utils"))
 (al/file-accessors "emacs-my-packages" (al/emacs-dir-file "packages"))
-(al/file-accessors "gnus"          (al/emacs-data-dir-file "gnus"))
-(al/file-accessors "gnus-news"     (al/gnus-dir-file "news"))
-(al/file-accessors "gnus-mail"     (al/gnus-dir-file "mail"))
-(al/file-accessors "gnus-saved"    (al/gnus-dir-file "saved"))
 
 (al/file-accessors "config"        "~/config")
 (al/file-accessors "notes"         "~/notes")
