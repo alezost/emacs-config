@@ -1,6 +1,6 @@
 ;;; al-imenu.el --- Additional functionality for imenu  -*- lexical-binding: t -*-
 
-;; Copyright © 2014–2025 Alex Kost
+;; Copyright © 2014–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -110,7 +110,8 @@ If nil, put the entries in a top level.  See MENU-TITLE in
 ;;; (with-)eval-after-load entries
 
 (defvar al/imenu-eval-after-load-re
-  (rx bol "(" (zero-or-one "with-") "eval-after-load" (+ whitespace)
+  (rx bol "(" (zero-or-one (or "al/with-" "with-"))
+      "eval-after-load" (+ whitespace)
       (zero-or-one (or ?\" ?'))
       (group (+ (or (syntax word) (syntax symbol))))
       (zero-or-one ?\"))

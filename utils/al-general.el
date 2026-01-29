@@ -238,6 +238,18 @@ respectively."
                               keyword)))))
     `(add-hook 'after-init-hook (lambda () ,@body) ,depth)))
 
+(defmacro al/with-eval-after-load (file &rest body)
+  "Execute BODY after FILE is loaded.
+
+This is similar to `with-eval-after-load' except it does not produce
+unneeded compilation warnings at compile time.
+
+File should be an unquoted symbol (a feature to require)."
+  (declare (indent 1) (debug (form def-body)))
+  (when (bound-and-true-p byte-compile-current-file)
+    (require file nil t))
+  `(eval-after-load ',file (lambda () ,@body)))
+
 
 ;;; Command utils
 
