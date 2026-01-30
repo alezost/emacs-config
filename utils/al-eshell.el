@@ -26,6 +26,7 @@
 (require 'al-places)
 (require 'al-buffer)
 (require 'al-url)
+(require 'al-color)
 
 (defun al/eshell-buffers (&optional no-sort)
   "Return a list of all eshell buffers.
@@ -159,22 +160,20 @@ find out how a playlist name may look like."
 
 ;; Idea from <http://www.emacswiki.org/emacs/EshellPrompt>.
 
-(defmacro al/with-face (str &rest properties)
-  `(propertize ,str 'face (list ,@properties)))
-
 (defun al/eshell-prompt ()
   "Function for `eshell-prompt-function'."
   (format "%s %s%s%s %s\n%s "
-          (al/with-face (format-time-string "%H:%M" (current-time))
-                        'font-lock-comment-face)
+          (al/with-face 'font-lock-comment-face
+            (format-time-string "%H:%M" (current-time)))
           (eshell/whoami)
-          (al/with-face "@"
-                        'escape-glyph)
+          (al/with-face 'escape-glyph "@")
           (system-name)
-          (al/with-face (abbreviate-file-name (eshell/pwd))
-                        'dired-directory)
-          (al/with-face (if (= (user-uid) 0) "#" "$")
-                        'comint-highlight-prompt)))
+          ;; Using `font-lock-function-name-face' instead
+          ;; `dired-directory' because `dired' may not be loaded yet.
+          (al/with-face 'font-lock-function-name-face
+            (abbreviate-file-name (eshell/pwd)))
+          (al/with-face 'comint-highlight-prompt
+            (if (= (user-uid) 0) "#" "$"))))
 
 
 ;;; Input (command) line
