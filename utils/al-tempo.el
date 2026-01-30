@@ -51,6 +51,7 @@ Otherwise, the current buffer has been configured and:
   '((al/tempo-elisp-case  . al/tempo-elisp-templates)
     (al/tempo-clisp-case  . al/tempo-clisp-templates)
     (scheme-mode          . al/tempo-scheme-templates)
+    (eshell-mode          . al/tempo-eshell-templates)
     (org-mode             . al/tempo-org-templates)
     (al/tempo-commit-message-case . al/tempo-commit-message-templates))
   "Alist of (CASE . TEMPLATES) pairs for generating templates.
@@ -209,6 +210,21 @@ with (TAG ELEMENTS NAME) entries.")
 
 
 ;;; Other templates
+
+(defvar al/tempo-eshell-templates
+  `((,(al/tempo-tag "yb")  "eshell-ytdlp-background"
+     ("yb" p " '" c "' b"))
+    (,(al/tempo-tag "yb2") "eshell-ytdlp-background2"
+     ("yg" p " '" c "' b2"))
+    (,(al/tempo-tag "ym")  "eshell-ytdlp-main"
+     ("yg" p " '" c "' m"))
+    (,(al/tempo-tag "ye")  "eshell-ytdlp-evening"
+     ("yg" p " '" c "' eve"))
+    (,(al/tempo-tag "ycl") "eshell-ytdlp-cl"
+     ("yg" p " '" c "' cl"))
+    (,(al/tempo-tag "yf")  "eshell-ytdlp-formats"
+     ("yt-dlp -F '" c "'" p)))
+  "Templates for `eshell' buffer.")
 
 (defvar al/tempo-org-templates
   `((,(al/tempo-tag "e") "org-example"
