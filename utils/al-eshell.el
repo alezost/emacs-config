@@ -232,6 +232,12 @@ input is not forced to begin with the current input."
   (interactive "p")
   (al/eshell-previous-matching-input-from-input (- arg)))
 
+;;;###autoload
+(defun al/eshell-save-history ()
+  "Save history of the current Eshell buffers."
+  (interactive)
+  (eshell-save-some-history))
+
 (provide 'al-eshell)
 
 ;;; al-eshell.el ends here
