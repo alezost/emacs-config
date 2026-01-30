@@ -1,6 +1,6 @@
 ;;; settings.el --- Miscellaneous settings  -*- lexical-binding: t -*-
 
-;; Copyright © 2012–2025 Alex Kost
+;; Copyright © 2012–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -207,28 +207,29 @@ This variable is used to set `al/dired-ignored-extensions'.")
 
 (setq split-width-threshold 120)
 
-;; Open some buffers in the same window.
-(setq
- same-window-buffer-names
- '("*Apropos"
-   "*Character List*"
-   "*Character Set List*"
-   "*Colors*"
-   "*Diff*"
-   "*Faces*"
-   "*Google Translate*"
-   "*Help*"
-   "*Messages*"
-   "*Occur*"
-   "*Personal Keybindings*"
-   "*Proced*"
-   "*Process-Environment*"
-   "*Process List*"
-   "*Shadows*"
-   "*YASnippet tables*")
- same-window-regexps
- '(".*\\.el\\.gz$"
-   "shell\\*"))
+(defvar al/display-buffer-regexp
+  (rx (or "*Apropos"
+          "*Character List*"
+          "*Character Set List*"
+          "*Colors*"
+          "*Diff*"
+          "*Faces*"
+          "*Google Translate*"
+          "*Help*"
+          "*Messages*"
+          "*Occur*"
+          "*Personal Keybindings*"
+          "*Proced*"
+          "*Process"
+          "*Shadows*"
+          "*magit:"))
+  "Regexp for buffers that should be displayed specially.")
+
+(setq display-buffer-alist
+      `(;; Open some buffers in the same window.
+        (,al/display-buffer-regexp
+         (display-buffer-reuse-window
+          display-buffer-same-window))))
 
 (al/bind-keys
  ("<H-XF86AudioRaiseVolume>"   (enlarge-window 1 t))
@@ -426,6 +427,8 @@ This variable is used to set `al/dired-ignored-extensions'.")
 (setq apropos-do-all t)
 
 (with-eval-after-load 'help
+  (setq help-window-keep-selected t)
+
   (al/bind-keys
    :map help-map
    ("v" . al/describe-variable)
