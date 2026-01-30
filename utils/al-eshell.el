@@ -21,8 +21,11 @@
 (require 'em-dirs)
 (require 'em-unix)
 (require 'em-prompt)
+(require 'let-macros)
 (require 'al-general)
+(require 'al-places)
 (require 'al-buffer)
+(require 'al-url)
 
 (defun al/eshell-buffers (&optional no-sort)
   "Return a list of all eshell buffers.
@@ -114,33 +117,42 @@ BODY should consist of parsed eshell commands."
 (defvar-local al/eshell-ytdlp-file-name nil
   "File name of the currently downloading file.")
 
-(defun al/eshell-ytdlp (playlist &rest args)
+(defun al/eshell-ytdlp (&rest args)
   "Download file using `yt-dlp' shell command with ARGS.
-After that, add this file to EMMS PLAYLIST.
-See `al/emms-get-playlist' for the meaning of PLAYLIST string."
-  (let ((get-file-args `("--no-warnings" "--print" "filename" ,@args))
-        (download-args `("-o" al/eshell-ytdlp-file-name ,@args)))
-    (require 'al-text)
-    (require 'al-emms)
-    ;; XXX Do not try to improve the following code.  In particular, do
-    ;; not replace `al/eshell-ytdlp-file-name' with local variable.  How
-    ;; eshell internals work is a mystery: `let*' (and more complex
-    ;; structures) does not work at all inside
-    ;; `al/eshell-replace-command', `let' works but unreliable.
+If the last argument is not URL, use it as an EMMS playlist name and add
+the downloaded file to this playlist.  See `al/emms-get-playlist' to
+find out how a playlist name may look like."
+  (if-letn ((args (nreverse args))
+            (last-arg (car args))
+            (last-arg-is-url? (al/check-url last-arg))
+            (args (nreverse (if last-arg-is-url? args (cdr args))))
+            (playlist (unless last-arg-is-url? last-arg)))
+      (let ((get-file-args `("--no-warnings" "--print" "filename" ,@args))
+            (download-args `("-o" al/eshell-ytdlp-file-name ,@args)))
+        (require 'al-text)
+        (require 'al-emms)
+        ;; XXX Do not try to improve the following code.  In particular, do
+        ;; not replace `al/eshell-ytdlp-file-name' with local variable.  How
+        ;; eshell internals work is a mystery: `let*' (and more complex
+        ;; structures) does not work at all inside
+        ;; `al/eshell-replace-command', `let' works but unreliable.
+        (al/eshell-replace-command
+         (al/eshell-title-command "Requesting file name...")
+         `(setq al/eshell-ytdlp-file-name
+                (al/download-dir-file
+                 (al/parse-ytdlp-file-name-output
+                  (eshell-command-to-value
+                   (eshell-as-subcommand
+                    ,(apply #'al/eshell-command "yt-dlp" get-file-args))))))
+         (al/eshell-command "echo" 'al/eshell-ytdlp-file-name)
+         (al/eshell-title-command "Downloading the file...")
+         (apply #'al/eshell-command "yt-dlp" download-args)
+         (al/eshell-title-command "Adding the file to playlist...")
+         (al/eshell-command "al/emms-add-file-to-playlist"
+                            playlist 'al/eshell-ytdlp-file-name)))
     (al/eshell-replace-command
-     (al/eshell-title-command "Requesting file name...")
-     `(setq al/eshell-ytdlp-file-name
-            (al/download-dir-file
-             (al/parse-ytdlp-file-name-output
-              (eshell-command-to-value
-               (eshell-as-subcommand
-                ,(apply #'al/eshell-command "yt-dlp" get-file-args))))))
-     (al/eshell-command "echo" 'al/eshell-ytdlp-file-name)
-     (al/eshell-title-command "Downloading the file...")
-     (apply #'al/eshell-command "yt-dlp" download-args)
-     (al/eshell-title-command "Adding the file to playlist...")
-     (al/eshell-command "al/emms-add-file-to-playlist"
-                        playlist 'al/eshell-ytdlp-file-name))))
+     (al/eshell-title-command "Running yt-dlp command...")
+     (apply #'al/eshell-command "yt-dlp" `("--paths" ,al/download-dir ,@args)))))
 
 
 ;;; Prompt
@@ -183,7 +195,7 @@ Return nil, if the current line is not the input line."
   "Call `eshell-send-input' if the point is on the command line."
   (interactive)
   (when (< (point) eshell-last-output-end)
-    (if-let* ((input (al/eshell-input-at-point)))
+    (if-let ((input (al/eshell-input-at-point)))
         (progn
           (goto-char eshell-last-output-end)
           (delete-region eshell-last-output-end (point-max))
