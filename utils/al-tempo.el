@@ -50,14 +50,15 @@ Otherwise, the current buffer has been configured and:
 (defvar al/tempo-alist
   '((al/tempo-elisp-case  . al/tempo-elisp-templates)
     (al/tempo-clisp-case  . al/tempo-clisp-templates)
-    (al/tempo-scheme-case . al/tempo-scheme-templates)
-    (al/tempo-org-case    . al/tempo-org-templates)
+    (scheme-mode          . al/tempo-scheme-templates)
+    (org-mode             . al/tempo-org-templates)
     (al/tempo-commit-message-case . al/tempo-commit-message-templates))
   "Alist of (CASE . TEMPLATES) pairs for generating templates.
 
-CASE is a function called without arguments.  It should check if the
-current buffer is suitable for TEMPLATES.  If not, CASE should return
-nil.  Otherwise, it should return (TAGLIST [ARGS]) list, where
+CASE can either be a `major-mode' symbol or a function called without
+arguments.  It should check if the current buffer is suitable for
+TEMPLATES.  If not, CASE should return nil.  Otherwise, it should
+return (TAGLIST [ARGS]) list, where
 
   TAGLIST is a variable name for `tempo-define-template';
 
@@ -206,10 +207,6 @@ with (TAG ELEMENTS NAME) entries.")
          (list (intern (concat "al/tempo-elisp-" prefix "tags"))
                prefix))))
 
-(defun al/tempo-scheme-case ()
-  (and (derived-mode-p 'scheme-mode)
-       '(al/tempo-scheme-tags)))
-
 
 ;;; Other templates
 
@@ -219,10 +216,6 @@ with (TAG ELEMENTS NAME) entries.")
     (,(al/tempo-tag "s") "org-source"
      ("#+begin_src " p n n "#+end_src" n)))
   "Templates for `org-mode' buffers.")
-
-(defun al/tempo-org-case ()
-  (and (derived-mode-p 'org-mode)
-       '(al/tempo-org-tags)))
 
 (defvar al/tempo-commit-message-templates
   `((,(al/tempo-tag "f") "commit-followup"
@@ -262,6 +255,17 @@ Return nil, if there are no templates for the current buffer.
 Return non-nil otherwise."
   (al/tempo-setup-buffer-1 al/tempo-alist))
 
+(defun al/tempo-check-case (case)
+  "Check if the current buffer suits CASE.
+See `al/tempo-alist' for details."
+  (let ((case-name (symbol-name case)))
+    (if (string-match "\\(.+\\)-mode\\'" case-name)
+        (and (derived-mode-p case)
+             (list (intern (concat "al/tempo-"
+                                   (match-string 1 case-name)
+                                   "-tags"))))
+      (funcall case))))
+
 (defun al/tempo-setup-buffer-1 (alist)
   "Recursive sub-procedure of `al/tempo-setup-buffer'."
   (pcase (car alist)
@@ -269,7 +273,7 @@ Return non-nil otherwise."
      (setq al/tempo-configured 'no-templates)
      nil)
     (`(,case . ,templates)
-     (pcase (funcall case)
+     (pcase (al/tempo-check-case case)
        ('()
         (al/tempo-setup-buffer-1 (cdr alist)))
        (`(,var . ,args)
