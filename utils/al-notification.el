@@ -1,6 +1,6 @@
 ;;; al-notification.el --- Interface for timers and notifications  -*- lexical-binding: t -*-
 
-;; Copyright © 2014–2025 Alex Kost
+;; Copyright © 2014–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
 (require 'transient)
 (require 'al-misc)
 (require 'al-file)
+(require 'al-color)
 
 (defvar al/notification-sound
   (al/file-if-exists "/usr/share/sounds/freedesktop/stereo/bell.oga")
@@ -89,8 +90,8 @@ currently active timer is stored) or any keyword supported by
             (time-str (format-time-string
                        al/notification-time-format
                        (seconds-to-time (abs seconds))))
-            (time-str (propertize time-str 'face 'font-lock-constant-face))
-            (msg      (propertize msg      'face 'font-lock-string-face)))
+            (time-str (al/with-face 'font-lock-constant-face time-str))
+            (msg      (al/with-face 'font-lock-string-face   msg)))
        (list (concat "k" (number-to-string index))
              (concat "kill timer [" msg ", "
                      (if (< 0 seconds)
