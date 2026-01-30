@@ -48,6 +48,15 @@ alias Start   Herd start $*
 alias Restart Herd restart $*
 
 
+### yt-dlp
+
+alias y al/eshell-ytdlp $@*
+alias yg y --format bv[height=720]+ba --format-sort lang $@*
+alias yb y -f18 $@*
+alias ya y -fba $@*
+alias yf yt-dlp -F $@*
+
+
 ### Misc
 
 alias f find-file $1
@@ -65,8 +74,3 @@ alias g goto $1
 alias temperature sudo hddtemp /dev/sd[ab]
 alias texet mount /mnt/texet ; dired /mnt/texet
 alias gc guile-compile $*
-
-alias y youtube-dl $*
-alias yg youtube-dl -f22 $*
-alias yb youtube-dl -f18 $*
-alias ya youtube-dl -f140 $*
