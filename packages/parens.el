@@ -180,7 +180,10 @@ buffer."
   (interactive)
   (parens-handle-scan-error
       (forward-sexp)
-    (parens-forward-up-sexp)
+    ;; Error may happen if there are non-balanced parentheses (e.g., in
+    ;; a diff buffer).
+    (ignore-errors
+      (parens-forward-up-sexp))
     (ignore-errors
       (parens-forward-down-sexp))
     (parens-forward)))
