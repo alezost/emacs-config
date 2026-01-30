@@ -236,7 +236,13 @@ with (TAG ELEMENTS NAME) entries.")
   (and (eq element 'k)
        (car kill-ring)))
 
+(defun al/tempo-clipboard-element (element)
+  "Return the clipboard contents if ELEMENT is `c'."
+  (and (eq element 'c)
+       (gui--selection-value-internal 'CLIPBOARD)))
+
 (al/pushnew tempo-user-element-functions #'al/tempo-kill-ring-element)
+(al/pushnew tempo-user-element-functions #'al/tempo-clipboard-element)
 
 
 ;;; Generating templates for the current buffer
