@@ -26,6 +26,7 @@
 (require 'al-text)
 (require 'al-buffer)
 (require 'al-misc)
+(require 'al-color)
 
 (defun al/emms-seek-forward (seconds)
   "Seek by SECONDS forward.
@@ -130,37 +131,35 @@ fontification."
 (defun al/emms-format-artist (artist)
   "Return ARTIST formatted to display in EMMS playlist."
   (and artist
-       (propertize artist 'face 'alect-author)))
+       (al/with-face 'alect-author artist)))
 
 (defun al/emms-format-title (title)
   "Return TITLE formatted to display in EMMS playlist."
   (and title
-       (propertize title 'face 'alect-title)))
+       (al/with-face 'alect-title title)))
 
 (defun al/emms-format-album (album)
   "Return ALBUM formatted to display in EMMS playlist."
   (and album
-       (propertize (al/shorten-string album 30)
-                   'face 'font-lock-function-name-face)))
+       (al/with-face 'font-lock-function-name-face
+         (al/shorten-string album 30))))
 
 (defun al/emms-format-track-number (track-number)
   "Return TRACK-NUMBER formatted to display in EMMS playlist."
   (and track-number
-       (propertize (format "%02d" (string-to-number track-number))
-                   'face 'bold)))
+       (al/with-face 'bold
+         (format "%02d" (string-to-number track-number)))))
 
 (defun al/emms-format-playing-time (time)
   "Return TIME formatted to display in EMMS playlist."
   (format "%7s"
           (if time
-              (propertize (emms-state-format-time time)
-                          'face 'alect-time)
+              (al/with-face 'alect-time
+                (emms-state-format-time time))
             "")))
 
 (defun al/emms-format-date (date)
   "Return DATE formatted to display in EMMS playlist."
-  ;; (and date
-  ;;      (propertize date 'face 'font-lock-comment-face))
   date)
 
 (defun al/emms-full-track-description (track)
@@ -258,8 +257,8 @@ This variable is used by `al/emms-file-name-description'.")
                           file-name)
             (setq res
                   (concat (substring file-name 0 (match-beginning 0))
-                          (propertize (cdr assoc)
-                                      'face 'font-lock-function-name-face)
+                          (al/with-face 'font-lock-function-name-face
+                            (cdr assoc))
                           (substring file-name (match-end 0))))
           (setq alist (cdr alist)))))
     (let ((file (or res file-name)))
