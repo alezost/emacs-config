@@ -1,6 +1,6 @@
 ;;; al-package-cmd.el --- Interactive commands related to Emacs package system  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2025 Alex Kost
+;; Copyright © 2013–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 (require 'transient)
 (require 'al-general)
 (require 'al-quelpa)
+(require 'al-color)
 
 (defvar al/package-archives
   '(("elpa gnu"     . "https://elpa.gnu.org/packages/")
@@ -62,16 +63,16 @@ remove all archives (i.e., set it to nil)."
 
 (transient-define-argument al/package-ui:main-packages ()
   :description (concat "recipes from "
-                       (propertize (symbol-name 'al/main-packages)
-                                   'face 'font-lock-constant-face))
+                       (al/with-face 'font-lock-constant-face
+                         (symbol-name 'al/main-packages)))
   :class 'transient-switch
   :key "-m"
   :argument "main")
 
 (transient-define-argument al/package-ui:extra-packages ()
   :description (concat "recipes from "
-                       (propertize (symbol-name 'al/extra-packages)
-                                   'face 'font-lock-constant-face))
+                       (al/with-face 'font-lock-constant-face
+                         (symbol-name 'al/extra-packages)))
   :class 'transient-switch
   :key "-e"
   :argument "extra")
@@ -79,7 +80,7 @@ remove all archives (i.e., set it to nil)."
 (defun al/package-ui-archives-info ()
   "Return a fontified string with `package-archives' value."
   (concat
-   (propertize "package-archives" 'face 'font-lock-constant-face)
+   (al/with-face 'font-lock-constant-face "package-archives")
    " value:"
    (if (null package-archives)
        " nil"
@@ -141,8 +142,8 @@ remove all archives (i.e., set it to nil)."
    [("l" "package list" al/switch-to-packages)]]
   ["Install/upgrade package(s)"
    [(:info
-     (concat (propertize " using " 'face 'transient-heading)
-             (propertize "quelpa" 'face 'font-lock-constant-face)
+     (concat (al/with-face 'transient-heading " using ")
+             (al/with-face 'font-lock-constant-face "quelpa")
              ":")
      :format "%d")
     ("iq" "package from melpa recipe" quelpa)
@@ -152,8 +153,8 @@ remove all archives (i.e., set it to nil)."
     (al/package-ui:extra-packages)
     ("iA" "packages from my recipes" al/package-ui:install-from-recipes)]
    [(:info
-     (concat (propertize " using " 'face 'transient-heading)
-             (propertize "package-install" 'face 'font-lock-constant-face)
+     (concat (al/with-face 'transient-heading " using ")
+             (al/with-face 'font-lock-constant-face "package-install")
              ":")
      :format "%d")
     ("ia" "package from archives" package-install)
