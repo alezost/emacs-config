@@ -1,6 +1,6 @@
 ;;; al-elisp-cmd.el --- Various interactive commands for elisp  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2025 Alex Kost
+;; Copyright © 2013–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -48,6 +48,14 @@ ARG is passed to `pp-eval-last-sexp'."
         (eval-region (region-beginning) (region-end))
         (deactivate-mark))
     (pp-eval-last-sexp arg)))
+
+;;;###autoload
+(defun al/complete-elisp-symbol ()
+  "Complete the current emacs-lisp symbol."
+  ;; Originates from `eshell-complete-lisp-symbol'.
+  (interactive)
+  (let ((completion-at-point-functions '(elisp-completion-at-point)))
+    (completion-at-point)))
 
 ;;;###autoload
 (defun al/indent-sexp (&optional no-offset pp)

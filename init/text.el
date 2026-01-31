@@ -82,8 +82,7 @@
     ("M->"   . scroll-down-command)
     ("M-E"   . scroll-up-command)
     ("C-x a" . beginning-of-buffer)
-    ("C-x i" . end-of-buffer)
-    ("C-M-i" . complete-symbol)))
+    ("C-x i" . end-of-buffer)))
 
 (al/bind-keys
   :map narrow-map
@@ -161,11 +160,10 @@
  ("<H-M-kanji>" . al/upcase-dwim))
 
 (al/bind-keys
- ("<M-tab>" . complete-symbol) ; shadows "\M-\t" ("C-M-i") in any mode, so be careful
- ("<C-tab>" . indent-relative)
- ("<M-S-iso-lefttab>" . tab-to-tab-stop)
- ("<H-tab>" . indent-region)
- ("C-c u" . al/decode-region))
+  ("<C-tab>" . indent-relative)
+  ("<M-S-iso-lefttab>" . tab-to-tab-stop)
+  ("<H-tab>" . indent-region)
+  ("C-c u" . al/decode-region))
 
 
 ;;; Global keys for inserting text
@@ -283,7 +281,7 @@
                        'end-of-visual-line))
 
 
-;;; Input methods, abbreviations, completions, etc.
+;;; Input methods, abbreviations, etc.
 
 (defvar al/input-method-map nil)
 (define-prefix-command 'al/input-method-map)
@@ -414,6 +412,9 @@
     (al/make-number-alist "⁰¹²³⁴⁵⁶⁷⁸⁹")
     (al/make-number-alist "₀₁₂₃₄₅₆₇₈₉" "M-"))))
 
+
+;;; Completions
+
 (with-eval-after-load 'pcomplete
   ;; Although `pcomplete-suffix-list' is marked as obsolete, it is used
   ;; by `pcomplete-insert-entry', and its default value prevents
@@ -446,7 +447,10 @@
   al/tempo-complete-maybe
   al/indent-maybe
   completion-at-point)
-(al/bind-key "TAB" al/tab)
+
+(al/bind-keys
+  ("TAB" . al/tab)
+  ("<M-tab>" . al/complete-elisp-symbol))
 
 
 ;;; Searching, finding and replacing

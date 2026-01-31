@@ -102,7 +102,6 @@
       [remap backward-paragraph]
       ("TAB" . al/org-tab)
       "<C-tab>"
-      ("<M-tab>" . completion-at-point)
       ("<M-return>" . org-meta-return)
       ("M->" . outline-previous-visible-heading)
       ("M-E" . outline-next-visible-heading)
