@@ -1,6 +1,6 @@
 ;;; al-misc-cmd.el --- Miscellaneous interactive commands  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2025 Alex Kost
+;; Copyright © 2013–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -16,6 +16,9 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Code:
+
+(require 'let-macros)
+(require 'al-buffer)
 
 (defvar org-link-plain-re)
 
@@ -42,6 +45,38 @@
   "Go to the previous link."
   (interactive)
   (al/next-link t))
+
+;;;###autoload
+(defun al/next-error (&optional num reset)
+  "Like `next-error' but display the popped buffer in current window.
+NUM is an integer specifying how many error messages to move.
+If RESET is non-nil (interactively, with prefix argument), restart
+error messages from the beginning."
+  (interactive (list 1 current-prefix-arg))
+  (when-let ((buffer (next-error-find-buffer)))
+    (with-current-buffer buffer
+      ;; With `occur', it is possible to show popped buffer in the
+      ;; current window but with `grep' and other compilation-like
+      ;; buffers, it is not possible because `compilation-goto-locus'
+      ;; (eventually called by `next-error') pops the grep buffer at
+      ;; first and then switches to the target error buffer.
+      (if (eq next-error-function 'compilation-next-error-function)
+          (funcall next-error-function num reset)
+        (al/with-pop-to-current-window
+          (funcall next-error-function num reset)))
+      (next-error-found buffer (current-buffer))
+      (message "%s locus from %s"
+               (cond (reset      "First")
+                     ((eq num 0) "Current")
+                     ((< num 0)  "Previous")
+                     (t          "Next"))
+               next-error-last-buffer))))
+
+;;;###autoload
+(defun al/previous-error ()
+  "Like `previous-error' but display the popped buffer in current window."
+  (interactive)
+  (al/next-error -1))
 
 ;;;###autoload
 (defun al/create-tags (shell-cmd)

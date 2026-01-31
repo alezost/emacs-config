@@ -18,7 +18,7 @@
 
 ;;; Frame specific settings
 
-(defun al/frame-keys-actions (&optional frame)
+(defun al/frame-keys-actions (&optional _frame)
   "Configure key bindings specific to a FRAME type."
   (keyboard-translate ?\C-x ?\C-t)
   (keyboard-translate ?\C-t ?\C-x)
@@ -156,9 +156,8 @@
  ("C-M-g" . goto-line)
  ("c"     . move-to-column)
  ("p"     . goto-char)
- ("h"     . previous-error)
- ("C-M-h" . previous-error)
- ("C-M-n" . next-error))
+ ("C-M-h" . al/previous-error)
+ ("C-M-n" . al/next-error))
 
 (al/bind-keys
  :prefix-map al/modes-map
