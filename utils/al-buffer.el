@@ -184,12 +184,36 @@ This is similar to `mode-line-other-buffer' but with a transient
 
 ;;; Switching to some buffers
 
+(defmacro al/with-pop-to-other-window (&rest body)
+  "Display buffer popped by evaluating BODY in other window."
+  (declare (indent 0) (debug t))
+  `(let ((display-buffer-overriding-action
+          '((display-buffer-pop-up-window)
+            (inhibit-same-window . t))))
+     ,@body))
+
+(defmacro al/with-pop-to-current-window (&rest body)
+  "Display buffer popped by evaluating BODY in current window."
+  (declare (indent 0) (debug t))
+  `(let ((display-buffer-overriding-action
+          '((display-buffer-same-window))))
+     ,@body))
+
+(defmacro al/with-pop-to-default-window (&rest body)
+  "Display buffer popped by evaluating BODY in default window.
+Default means current window except if some window already displays the
+popped buffer, reuse it."
+  (declare (indent 0) (debug t))
+  `(let ((display-buffer-overriding-action
+          '((display-buffer-reuse-window
+             display-buffer-same-window))))
+     ,@body))
+
 ;;;###autoload
 (defun al/display-buffer (buffer)
   "Switch to BUFFER, preferably reusing a window displaying this buffer."
-  (pop-to-buffer buffer
-                 '((display-buffer-reuse-window
-                    display-buffer-same-window))))
+  (al/with-pop-to-default-window
+    (pop-to-buffer buffer)))
 
 ;;;###autoload
 (cl-defun al/switch-buffer (&key prompt buffers initial-input)
