@@ -444,7 +444,8 @@
 
 (al/define-multi-command al/tab
   al/tempo-complete-maybe
-  indent-for-tab-command)
+  al/indent-maybe
+  completion-at-point)
 (al/bind-key "TAB" al/tab)
 
 

@@ -385,6 +385,17 @@ Like `dabbrev-expand' but use word symbols only."
   (let ((dabbrev-abbrev-char-regexp "\\sw"))
     (dabbrev-expand arg)))
 
+(defvar al/indent-modes '(prog-mode)
+  "List of modes where `al/indent-maybe' should work.")
+
+;;;###autoload
+(defun al/indent-maybe ()
+  "Call `indent-for-tab-command' for `al/indent-modes' buffer.
+Return nil if current mode is not derived from `al/indent-modes'."
+  (interactive)
+  (when (derived-mode-p al/indent-modes)
+    (indent-for-tab-command)))
+
 
 ;;; Changing the case of previous word(s)
 
