@@ -124,8 +124,8 @@
  ("M-;"   . al/comment-dwirm)
  ("C-M-;" . split-line)
 
- ("C-t"   . kill-region)
- ("M-x"   . kill-ring-save)
+ ("C-t"   . al/kill-region)
+ ("M-x"   . al/kill-ring-save)
  ("C-M-x" . append-next-kill)
 
  ("S-SPC"     . just-one-space)
@@ -137,7 +137,7 @@
 
  ("C-y" . al/yank-or-prev)
  ("M-y" . al/yank-or-next)
- ("C-M-y" . al/insert-clipboard)
+ ("H-y" . al/insert-clipboard)
 
  ("C-j" . newline-and-indent)
  ("M-J"   (delete-indentation -1))
@@ -212,9 +212,9 @@
  mouse-drag-copy-region t
  select-active-regions nil)
 
-(setq select-enable-primary t
-      ;; Using clipboard for external programs (like Firefox).
-      select-enable-clipboard t)
+(setq
+ select-enable-primary nil
+ select-enable-clipboard nil)
 
 (al/bind-key "C-H-y" browse-kill-ring)
 (with-eval-after-load 'browse-kill-ring

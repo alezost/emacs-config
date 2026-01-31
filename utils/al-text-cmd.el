@@ -98,13 +98,20 @@ If ARG is non-nil, prompt for a date."
             (format-time-string "%Y-%m-%d"))))
 
 ;;;###autoload
-(defun al/insert-clipboard ()
-  "Insert the clipboard contents.
-It doesn't destroy what you paste with \\[yank]."
-  (interactive)
-  (if-let* ((clp (gui--selection-value-internal 'CLIPBOARD)))
-      (insert clp)
-    (message "Clipboard is empty.")))
+(defun al/insert-clipboard (&optional arg)
+  "Insert CLIPBOARD or PRIMARY contents.
+With ARG, PRIMARY has the priority over CLIPBOARD."
+  (interactive "P")
+  ;; Not using `gui-selection-value' here because it returns value only
+  ;; once (!) i.e., the first call returns the value and successive
+  ;; calls return nil until CLIPBOARD/PRIMARY is changed.
+  (let ((clip (gui--selection-value-internal 'CLIPBOARD))
+        (prim (gui--selection-value-internal 'PRIMARY)))
+    (if-let* ((str (if arg
+                       (or prim clip)
+                     (or clip prim))))
+        (insert str)
+      (message "Clipboard is empty."))))
 
 (defun al/yank-or-pop (n)
   "Replace just-yanked text with the N-th kill.
@@ -126,6 +133,22 @@ See `al/yank-or-pop' for details."
 See `al/yank-or-pop' for details."
   (interactive "p")
   (al/yank-or-pop (- arg)))
+
+;;;###autoload
+(defun al/kill-ring-save ()
+  "Call `kill-ring-save' interactively and save region to clipboard."
+  (interactive)
+  (let ((select-enable-clipboard t)
+        (select-enable-primary t))
+    (call-interactively #'kill-ring-save)))
+
+;;;###autoload
+(defun al/kill-region ()
+  "Call `kill-region' interactively and save region to clipboard."
+  (interactive)
+  (let ((select-enable-clipboard t)
+        (select-enable-primary t))
+    (call-interactively #'kill-region)))
 
 ;;;###autoload
 (defun al/flush-blank-lines (start end)
