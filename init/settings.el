@@ -355,21 +355,16 @@ This variable is used to set `al/dired-ignored-extensions'.")
     '(("M-r" . al/eshell-previous-matching-input-from-input)
       ("M-s" . al/eshell-next-matching-input-from-input))
     "Alist of auxiliary keys for `eshell-hist-mode-map'.")
-  ;; For some strange reason `eshell-mode-map' is buffer local, so key
-  ;; bindings should be put in a hook.
-  (defun al/eshell-bind-keys ()
-    (al/bind-keys-from-vars 'eshell-mode-map
-      '(al/free-editing-keys al/free-misc-keys al/eshell-keys))
-    (al/bind-keys-from-vars 'eshell-hist-mode-map
-      '(al/free-editing-keys al/eshell-keys)))
+
+  (al/bind-keys-from-vars 'eshell-mode-map 'al/eshell-keys)
+  (al/bind-keys-from-vars 'eshell-hist-mode-map 'al/eshell-hist-keys)
 
   ;; Default value of `paragraph-separate' breaks
   ;; `eshell-next-prompt'/`eshell-previous-prompt'.
   (defun al/eshell-set-paragraph ()
     (setq-local paragraph-separate "useLESS var"))
 
-  (al/add-hook-maybe 'eshell-mode-hook
-    '(al/eshell-bind-keys al/eshell-set-paragraph))
+  (al/add-hook-maybe 'eshell-mode-hook 'al/eshell-set-paragraph)
 
   ;; eshell does horrible thing with aliases: "alias foo" not only
   ;; removes "foo" alias from the current eshell buffer (which is
