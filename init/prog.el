@@ -60,9 +60,13 @@
   (al/modify-page-break-syntax lisp-mode-syntax-table))
 
 (with-eval-after-load 'elisp-mode
+  (defconst al/elisp-keys
+    '(("C-c C-z" . al/ielm-other-window))
+    "Alist of auxiliary keys for `emacs-lisp-mode-map'.")
   (al/bind-keys-from-vars
       '(emacs-lisp-mode-map
-        lisp-interaction-mode-map))
+        lisp-interaction-mode-map)
+    'al/elisp-keys)
 
   (when (require 'al-imenu nil t)
     (al/add-hook-maybe

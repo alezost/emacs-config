@@ -18,6 +18,7 @@
 ;;; Code:
 
 (require 'pp)
+(require 'al-buffer)
 
 ;;;###autoload
 (defun al/pp-eval-expression (expression)
@@ -81,6 +82,12 @@ If PP is non-nil (with \\[universal-argument] \\[universal-argument]), pretty-pr
               (search-forward "lexical-binding" end t))
       (end-of-line)
       (insert "  -*- lexical-binding: t -*-"))))
+
+;;;###autoload
+(defun al/ielm-other-window ()
+  "Switch to `ielm' buffer in other window."
+  (interactive)
+  (al/with-pop-to-other-window (ielm)))
 
 (provide 'al-elisp-cmd)
 
