@@ -107,22 +107,15 @@ Used in `al/gnus-summary-find-link-url'.")
   "Regexp for multimedia links.
 Used in `al/gnus-summary-find-mm-url'.")
 
-(defun al/widget-next ()
-  "Move point to the next field or button.
-After the last widget, move point to the end of buffer."
-  ;; The code is a rework of `widget-move'.
-  (let ((old (widget-tabable-at))
-        (move (if widget-use-overlay-change
-                  (lambda () (goto-char (next-overlay-change (point))))
-                (lambda () (forward-char 1)))))
-    (funcall move)
-    (while (let ((new (widget-tabable-at)))
-             (and (or (null new) (eq new old))
-                  (not (eobp))))
-      (funcall move))))
+(defun al/button-next ()
+  "Move point to the next button.
+After the last button, move point to the end of buffer."
+  (if-let ((next (next-button (point))))
+      (goto-char next)
+    (goto-char (point-max))))
 
 (defun al/gnus-article-find-url (predicate)
-  "Return the first widget URL matching PREDICATE.
+  "Return the first URL matching PREDICATE.
 Return nil if no matches found."
   (save-excursion
     (article-goto-body)
@@ -130,7 +123,7 @@ Return nil if no matches found."
     (al/gnus-article-find-url-1 predicate)))
 
 (defun al/gnus-article-find-url-1 (predicate)
-  (al/widget-next)
+  (al/button-next)
   (unless (eobp)
     (let* ((point (point))
            ;; Text property with URL depends on `mm-text-html-renderer'.
@@ -141,7 +134,7 @@ Return nil if no matches found."
         (al/gnus-article-find-url-1 predicate)))))
 
 (defun al/gnus-article-find-url-by-re (regexp &optional group)
-  "Return the first widget URL matching REGEXP.
+  "Return the first URL matching REGEXP.
 If GROUP is non-nil, it should be a number specifying a
 parenthesized expression from REGEXP that should be returned.
 Return nil if no matches found."
@@ -153,7 +146,7 @@ Return nil if no matches found."
       (match-string group url))))
 
 (defun al/gnus-article-find-url-by-name (regexp)
-  "Return the first widget URL with widget name matching REGEXP.
+  "Return the first URL with name matching REGEXP.
 Return nil if no matches found."
   (al/gnus-article-find-url
    (lambda (_) (looking-at regexp))))
@@ -161,6 +154,7 @@ Return nil if no matches found."
 (defmacro al/gnus-summary-eval-in-article (&rest body)
   "Display an article buffer and evaluate BODY there."
   ;; The code is taken from `gnus-summary-next-page'.
+  (declare (indent 0) (debug (name body)))
   `(let ((article (gnus-summary-article-number)))
      (or article
          (error "No article to select"))
@@ -178,13 +172,13 @@ Return nil if no matches found."
   "Return the first URL from the gnus article matching REGEXP.
 See `al/gnus-article-find-url-by-re' for details."
   (al/gnus-summary-eval-in-article
-   (al/gnus-article-find-url-by-re regexp group)))
+    (al/gnus-article-find-url-by-re regexp group)))
 
 (defun al/gnus-summary-find-url-by-name (regexp)
   "Return the first URL from the gnus article with name matching REGEXP.
 See `al/gnus-article-find-url-by-name' for details."
   (al/gnus-summary-eval-in-article
-   (al/gnus-article-find-url-by-name regexp)))
+    (al/gnus-article-find-url-by-name regexp)))
 
 (defun al/gnus-summary-find-link-url ()
   "Return the first \"link\" URL from the gnus article.
