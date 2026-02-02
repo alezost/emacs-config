@@ -404,7 +404,7 @@
   (defun al/make-number-alist (numbers &optional modifier)
     (seq-map-indexed
      (lambda (char i)
-       (cons (kbd (concat modifier (number-to-string i)))
+       (cons (key-parse (concat modifier (number-to-string i)))
              (vector char)))
      numbers))
   (iso-transl-define-keys
