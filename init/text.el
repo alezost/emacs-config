@@ -413,46 +413,6 @@
     (al/make-number-alist "₀₁₂₃₄₅₆₇₈₉" "M-"))))
 
 
-;;; Completions
-
-(with-eval-after-load 'pcomplete
-  ;; Although `pcomplete-suffix-list' is marked as obsolete, it is used
-  ;; by `pcomplete-insert-entry', and its default value prevents
-  ;; inserting space after ":" (while completing ERC nicks).
-  (setq pcomplete-suffix-list nil)
-
-  (when (require 'al-pcomplete nil t)
-    (al/add-hook-maybe '(shell-mode-hook eshell-mode-hook)
-      'al/pcomplete-no-space)))
-
-(with-eval-after-load 'pcmpl-args
-  (setq
-   pcmpl-args-debug-parse-help t
-   pcmpl-args-cache-default-duration 999999
-   pcmpl-args-cache-max-duration pcmpl-args-cache-default-duration))
-
-(al/bind-key "<C-H-tab>" company-complete)
-(al/autoload "company" company-complete)
-(with-eval-after-load 'company
-  (setq
-   company-idle-delay nil
-   company-show-numbers t)
-  (al/bind-keys
-   :map company-active-map
-   ("M-." . company-select-previous)
-   ("M-e" . company-select-next))
-  (global-company-mode))
-
-(al/define-multi-command al/tab
-  al/tempo-complete-maybe
-  al/indent-maybe
-  completion-at-point)
-
-(al/bind-keys
-  ("TAB" . al/tab)
-  ("<M-tab>" . al/complete-elisp-symbol))
-
-
 ;;; Searching, finding and replacing
 
 (al/bind-keys
