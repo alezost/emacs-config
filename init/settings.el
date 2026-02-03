@@ -744,10 +744,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
  find-function-C-source-directory (al/src-dir-file "emacs-git/src"))
 
 (setq
- ;; `bibtex-completion-get-entry1' uses :warning as a TYPE instead of
- ;; LEVEL (TODO this should be reported).  So it cannot be suppressed;
- ;; that's why I just ignore all the warnings.
- warning-minimum-level :error
+ warning-minimum-level :warning
  warning-suppress-types      ; do not pop up the *Warnings* buffer when:
  '(;; something long is executed in *shell*.
    (undo discard-info)))
