@@ -16,22 +16,6 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-;;; External processes
-
-(with-eval-after-load 'al-process
-  (defun al/set-zathura-theme (name)
-    (make-symbolic-link name (al/config-dir-file "zathura/theme") t))
-
-  (defun al/sync-zathura-theme (&rest args)
-    "Synchronize zathura theme with the current emacs theme."
-    (when (al/process-is-program args "zathura")
-      (al/set-zathura-theme
-       (format "%S-theme" (frame-parameter nil 'background-mode)))))
-
-  (al/add-hook-maybe 'al/before-process-functions
-    'al/sync-zathura-theme))
-
-
 ;;; Minibuffer and completions
 
 (al/bind-key* "M-t" execute-extended-command)

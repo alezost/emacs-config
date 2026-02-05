@@ -1,6 +1,6 @@
 ;;; al-process.el --- Additional functionality for working with processs  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2025 Alex Kost
+;; Copyright © 2013–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -16,6 +16,8 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Code:
+
+(require 'al-places)
 
 (defun al/start-process (program &rest args)
   "Same as `start-process', but don't bother about name and buffer."
@@ -77,7 +79,9 @@ Interactively prompt for PROCESS name."
 
 ;; Hooks for starting/calling processes
 
-(defvar al/before-process-functions '(al/process-message)
+(defvar al/before-process-functions
+  '(al/process-message
+    al/sync-zathura-theme)
   "Functions to be called before Emacs starts an external process.
 Each function is called by applying to ARGS.  The first element
 of ARGS is a program name of the process, and the rest are
@@ -115,6 +119,18 @@ program arguments.")
   (interactive)
   (advice-remove 'call-process #'al/run-before-call-process-hook)
   (advice-remove 'start-process #'al/run-before-start-process-hook))
+
+
+;;; Synchronizing zathura theme
+
+(defun al/set-zathura-theme (name)
+  (make-symbolic-link name (al/config-dir-file "zathura/theme") t))
+
+(defun al/sync-zathura-theme (&rest args)
+  "Synchronize zathura theme with the current emacs theme."
+  (when (al/process-is-program args "zathura")
+    (al/set-zathura-theme
+     (format "%S-theme" (frame-parameter nil 'background-mode)))))
 
 (provide 'al-process)
 
