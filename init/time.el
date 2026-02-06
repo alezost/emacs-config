@@ -34,13 +34,13 @@
 
 ;;; Misc settings and packages
 
-(with-eval-after-load 'time
+(al/with-eval-after-load time
   (setq
    display-time-interval 5
    display-time-format " %H:%M:%S"))
 
-(setq calendar-date-style 'iso)
-(with-eval-after-load 'calendar
+(setopt calendar-date-style 'iso)
+(al/with-eval-after-load calendar
   (setq
    diary-file (al/notes-dir-file "diary")
    calendar-week-start-day 1
@@ -75,11 +75,11 @@
   (al/add-hook-maybe 'calendar-mode-hook 'al/bar-cursor-type)
   (add-hook 'calendar-today-visible-hook 'calendar-mark-today))
 
-(with-eval-after-load 'al-calendar
+(al/with-eval-after-load al-calendar
   (setq al/calendar-date-display-form
         '((format "%s %.3s %2s" year monthname day))))
 
-(with-eval-after-load 'solar
+(al/with-eval-after-load solar
   (setq
    calendar-latitude 50.6
    calendar-longitude 36.6
@@ -88,37 +88,37 @@
    '(24-hours ":" minutes
      (if time-zone " (") time-zone (if time-zone ")"))))
 
-(with-eval-after-load 'diary-lib
+(al/with-eval-after-load diary-lib
   (setq
    diary-number-of-entries 3
    diary-comment-start "#")
   (require 'al-calendar nil t)
   (add-hook 'diary-list-entries-hook 'diary-sort-entries t))
 
-(with-eval-after-load 'timer-list
+(al/with-eval-after-load timer-list
   (al/bind-keys
     :map timer-list-mode-map
     ("k"   . timer-list-cancel)
     ("C-k" . timer-list-cancel)))
 
-(with-eval-after-load 'appt
+(al/with-eval-after-load appt
   (setq
    appt-audible nil
    appt-display-diary nil
    appt-message-warning-time 5
    appt-display-interval 1)
-  (when (require 'al-appt nil t)
-    (advice-add 'appt-display-message :override #'al/appt-display-message)
-    (advice-add 'appt-mode-line :override #'al/appt-mode-line)))
+  (require 'al-appt nil t))
 
-(with-eval-after-load 'al-appt
+(al/with-eval-after-load al-appt
+  (advice-add 'appt-display-message :override #'al/appt-display-message)
+  (advice-add 'appt-mode-line :override #'al/appt-mode-line)
+
   (when (require 'al-file nil t)
     (al/setq-file
       al/appt-notify-normal-sound (al/sound-dir-file "drums.wav")
       al/appt-notify-urgent-sound (al/sound-dir-file "bell.oga"))))
 
-(with-eval-after-load 'al-notification
-  ;; (setq al/notification-time-format "%Mm %Ss")
+(al/with-eval-after-load al-notification
   (when (require 'al-file nil t)
     (al/setq-file
       al/notification-sound (al/sound-dir-file "alarm.wav"))))
