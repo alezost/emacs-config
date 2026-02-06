@@ -18,6 +18,7 @@
 ;;; Code:
 
 (require 'shell)
+(require 'al-places)
 (require 'al-buffer)
 (require 'al-misc)
 
@@ -44,7 +45,11 @@ If ARG is non-nil, start a new shell buffer."
    ((and (derived-mode-p 'shell-mode)
          (null (get-buffer-process (current-buffer))))
     (shell (current-buffer)))
-   (t (al/rotate-or-select-buffer (al/shell-buffers) #'shell))))
+   (t (al/rotate-or-select-buffer
+       (al/shell-buffers)
+       (lambda ()
+         (let ((default-directory al/download-dir))
+           (shell)))))))
 
 ;;;###autoload
 (defun al/switch-to-shell-buffer (&optional arg)
