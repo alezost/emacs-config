@@ -160,11 +160,8 @@ Do not alter `load-path'.  Instead, push added `load-path' to
         (lambda () (setq buffer-read-only nil))))
 (al/add-after-init-hook 'which-key-mode)
 (al/eval-after-init
-  ;; Append to make `dim' work for the started shell buffers.
-  :append t
   (when (string= server-name "server-emms")
-    (appt-activate)
-    (al/shells)))
+    (appt-activate)))
 
 (when (require 'al-process nil t)
   (advice-add 'insert-directory :around #'al/call-with-locale)
