@@ -19,6 +19,7 @@
 
 (require 'tempo)
 (require 'al-general)
+(require 'al-misc)
 
 (defvar al/tempo-start ","
   "Starting string for all template tags.")
@@ -320,9 +321,8 @@ See `al/tempo-alist' for details."
 Return non-nil if completion succeeds, nil otherwise."
   (interactive)
   (and (al/tempo-setup-buffer-maybe)
-       (let ((pos (point)))
-         (tempo-complete-tag 'silent)
-         (/= pos (point)))))
+       (al/with-check-point
+         (tempo-complete-tag 'silent))))
 
 (defun al/tempo-refresh-templates ()
   "Remove all created templates."

@@ -19,6 +19,7 @@
 
 (eval-when-compile (require 'cl-lib))
 (require 'al-general)
+(require 'al-misc)
 
 
 ;;; Searching and replacing
@@ -394,7 +395,8 @@ Like `dabbrev-expand' but use word symbols only."
 Return nil if current mode is not derived from `al/indent-modes'."
   (interactive)
   (when (derived-mode-p al/indent-modes)
-    (indent-for-tab-command)))
+    (al/with-check-point
+      (indent-for-tab-command))))
 
 
 ;;; Changing the case of previous word(s)

@@ -102,6 +102,15 @@ single key or a list of keys.  KEYS are checked using
 PREDICATE (`member' by default)."
   (al/assq-delete-all keys alist #'member))
 
+(defmacro al/with-check-point (&rest body)
+  "Evaluate BODY.
+Return non-nil, if point position is changed after evaluating.
+Return nil otherwise."
+  (declare (indent 0) (debug t))
+  `(let ((pos (point)))
+     ,@body
+     (/= pos (point))))
+
 (defmacro al/with-eval-to-kill-ring (&rest body)
   "Evaluate BODY and return its result.
 If the result is string or symbol, put it into `kill-ring' and display
