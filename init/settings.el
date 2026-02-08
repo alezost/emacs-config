@@ -58,7 +58,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
   ("." . previous-completion)
   ("e" . next-completion))
 
-(with-eval-after-load 'icomplete
+(al/with-eval-after-load icomplete
   (setq
    icomplete-scroll t
    icomplete-tidy-shadowed-file-names t
@@ -87,7 +87,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
     'al/icomplete-vertical-keys))
 
 (al/eval-after-init (require 'al-minibuffer nil t))
-(with-eval-after-load 'al-minibuffer
+(al/with-eval-after-load al-minibuffer
   (setq completion-styles '(al/split))
   (al/bind-keys
     :map al/minibuffer-buffer-map
@@ -121,28 +121,28 @@ This variable is used to set `al/dired-ignored-extensions'.")
   (advice-add 'describe-face            :around #'al/minibuffer-fallback-or-funcall)
   (advice-add 'describe-symbol          :around #'al/minibuffer-fallback-or-funcall))
 
-(with-eval-after-load 'pcomplete
-  ;; Although `pcomplete-suffix-list' is marked as obsolete, it is used
-  ;; by `pcomplete-insert-entry', and its default value prevents
-  ;; inserting space after ":" (while completing ERC nicks).
-  (setq pcomplete-suffix-list nil)
+(al/with-eval-after-load pcomplete
+  (with-suppressed-warnings ((obsolete pcomplete-suffix-list))
+    ;; Although `pcomplete-suffix-list' is marked as obsolete, it is used
+    ;; by `pcomplete-insert-entry', and its default value prevents
+    ;; inserting space after ":" (while completing ERC nicks).
+    (setq pcomplete-suffix-list nil))
 
   (when (require 'al-pcomplete nil t)
     (al/add-hook-maybe '(shell-mode-hook eshell-mode-hook)
       'al/pcomplete-no-space)))
 
-(with-eval-after-load 'pcmpl-args
+(al/with-eval-after-load pcmpl-args
   (setq
    pcmpl-args-debug-parse-help t
    pcmpl-args-cache-default-duration 999999
    pcmpl-args-cache-max-duration pcmpl-args-cache-default-duration))
 
-(al/autoload "company" company-complete)
 (al/bind-key "<C-H-tab>" company-complete)
-(with-eval-after-load 'company
+(al/with-eval-after-load company
   (setq
    company-idle-delay nil
-   company-show-numbers t)
+   company-show-quick-access t)
   (al/bind-keys
     :map company-active-map
     ("M-." . company-select-previous)
@@ -161,7 +161,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
 
 ;;; Working with buffers: ibuffer, uniquify, …
 
-(with-eval-after-load 'al-buffer
+(al/with-eval-after-load al-buffer
   (al/bind-keys
     :map al/switch-buffer-map
     ("M-b" . al/switch-to-other-buffer)
@@ -197,10 +197,10 @@ This variable is used to set `al/dired-ignored-extensions'.")
  ("k"   (kill-buffer nil))
  ("8" . al/switch-to-characters))
 
-(with-eval-after-load 'uniquify
+(al/with-eval-after-load uniquify
   (setq uniquify-buffer-name-style 'post-forward))
 
-(with-eval-after-load 'ibuffer
+(al/with-eval-after-load ibuffer
   (setq ibuffer-default-sorting-mode 'recency)
   (defconst al/ibuffer-keys
     '(("u"   . ibuffer-visit-buffer)
@@ -295,7 +295,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
  ("m"   . maxima)
  ("x"   . guix-switch-to-repl))
 
-(with-eval-after-load 'comint
+(al/with-eval-after-load comint
   (setq comint-move-point-for-output nil
         comint-buffer-maximum-size 5000
         comint-password-prompt-regexp
@@ -318,7 +318,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
     "Alist of auxiliary keys for comint modes.")
   (al/bind-keys-from-vars 'comint-mode-map 'al/comint-keys))
 
-(with-eval-after-load 'shell
+(al/with-eval-after-load shell
   (defconst al/shell-keys
     '("M-?"
       ("M-O" . shell-backward-command)
@@ -329,7 +329,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
     '(abbrev-mode
       al/no-truncate-lines)))
 
-(with-eval-after-load 'al-shell
+(al/with-eval-after-load al-shell
   (setq al/shell-buffer-alist
         `(("*shell*"    . ,al/download-dir)
           ("*shell*<2>" . ,al/download-dir)
@@ -339,9 +339,9 @@ This variable is used to set `al/dired-ignored-extensions'.")
  ("C-z"   . al/eshell)
  ("C-M-z" . al/eshell-cd))
 
-(setq eshell-directory-name (al/emacs-data-dir-file "eshell"))
+(setopt eshell-directory-name (al/emacs-data-dir-file "eshell"))
 
-(with-eval-after-load 'eshell
+(al/with-eval-after-load eshell
   (setq
    eshell-modules-list
    '(eshell-alias
@@ -356,10 +356,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
      eshell-script
      eshell-term
      eshell-unix
-     eshell-tramp)
-   eshell-highlight-prompt nil
-   eshell-hist-ignoredups t
-   eshell-history-size 9999)
+     eshell-tramp))
 
   (defconst al/eshell-keys
     '(("C-c r" . al/eshell-refresh-aliases)
@@ -392,26 +389,35 @@ This variable is used to set `al/dired-ignored-extensions'.")
   ;; brilliant idea?
   (advice-add 'eshell-write-aliases-list :override #'ignore)
 
-  (require 'tramp nil t)
-  (when (require 'al-eshell nil t)
-    (setq eshell-prompt-function #'al/eshell-prompt)
-    (advice-add 'eshell/info :override #'al/eshell/info)))
+  (require 'al-eshell nil t))
 
-(with-eval-after-load 'em-cmpl
+(al/with-eval-after-load em-prompt
+   (setq eshell-highlight-prompt nil))
+
+(al/with-eval-after-load em-hist
+  (setq
+   eshell-hist-ignoredups t
+   eshell-history-size 9999))
+
+(al/with-eval-after-load em-cmpl
   ;; This mode does nothing except for binding keys that I don't need.
   (advice-add 'eshell-cmpl-mode :override #'ignore))
+
+(al/with-eval-after-load al-eshell
+  (setq eshell-prompt-function #'al/eshell-prompt)
+  (advice-add 'eshell/info :override #'al/eshell/info))
 
 
 ;;; Button, custom, widget
 
-(with-eval-after-load 'button
+(al/with-eval-after-load button
   (defconst al/button-map-keys
     '(("u" . push-button))
     "Alist of auxiliary keys for `button-map'.")
   (al/bind-keys-from-vars 'button-map 'al/button-map-keys t)
   (al/bind-keys-from-vars 'button-buffer-map 'al/button-keys t))
 
-(with-eval-after-load 'wid-edit
+(al/with-eval-after-load wid-edit
   (defconst al/widget-button-keys
     '(("." . widget-backward)
       ("e" . widget-forward)
@@ -428,7 +434,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
   (al/bind-keys-from-vars 'widget-keymap 'al/widget-button-keys t)
   (al/bind-keys-from-vars 'widget-field-keymap 'al/widget-field-keys))
 
-(with-eval-after-load 'cus-edit
+(al/with-eval-after-load cus-edit
   (al/bind-keys-from-vars 'custom-mode-map 'al/widget-button-keys t)
   (al/bind-keys
    :map custom-mode-map
@@ -438,9 +444,10 @@ This variable is used to set `al/dired-ignored-extensions'.")
 
 ;;; Help, apropos, man, info
 
-(setq apropos-do-all t)
+(al/with-eval-after-load apropos
+  (setq apropos-do-all t))
 
-(with-eval-after-load 'help
+(al/with-eval-after-load help
   (setq help-window-keep-selected t)
 
   (al/bind-keys
@@ -474,14 +481,17 @@ This variable is used to set `al/dired-ignored-extensions'.")
   ;; `help-command' helps.
   (fset 'help-command help-map))
 
-(with-eval-after-load 'help-mode
+(al/with-eval-after-load help-mode
   (al/bind-keys
    :map help-mode-map
    ("," . help-go-back)
    ("p" . help-go-forward))
   (al/add-hook-maybe 'help-mode-hook 'al/no-truncate-lines))
 
-(with-eval-after-load 'man
+(declare-function al/file-if-exists "al-file")
+(declare-function al/mode-line-default-buffer-identification "al/mode-line")
+
+(al/with-eval-after-load man
   (setq Man-notify-method 'pushy)
   (when (require 'al-file nil t)
     (setq Man-header-file-path
@@ -504,7 +514,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
   (al/bind-keys-from-vars 'Man-mode-map
     '(al/button-keys al/man-keys)))
 
-(with-eval-after-load 'woman
+(al/with-eval-after-load woman
   (setq
    woman-fill-column (default-value 'fill-column)
    woman-default-indent 4)
@@ -514,7 +524,9 @@ This variable is used to set `al/dired-ignored-extensions'.")
     "Alist of auxiliary keys for `woman-mode'.")
   (al/bind-keys-from-vars 'woman-mode-map 'al/woman-keys))
 
-(with-eval-after-load 'info
+(declare-function al/existing-files "al-file")
+
+(al/with-eval-after-load info
   ;; `Info-additional-directory-list' is USELESS as it is appended to
   ;; `Info-directory-list' (by `Info-find-file' or by
   ;; `Info-insert-dir'), so the default manuals are searched first,
@@ -542,7 +554,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
    ("n" . Info-next)
    ("H" . Info-help)))
 
-(with-eval-after-load 'texinfo
+(al/with-eval-after-load texinfo
   (require 'al-texinfo nil t)
   (defconst al/texinfo-keys
     '(("C-c c" . texinfo-insert-@code)
@@ -558,7 +570,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
   (al/bind-keys-from-vars 'texinfo-mode-map 'al/texinfo-keys))
 
 (al/bind-key "w" which-key-mode ctl-x-map)
-(with-eval-after-load 'which-key
+(al/with-eval-after-load which-key
   (setq
    which-key-use-C-h-commands nil
    which-key-separator " "
@@ -571,7 +583,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
 
 ;;; SQL
 
-(with-eval-after-load 'sql
+(al/with-eval-after-load sql
   (setq
    sql-product 'postgres
    sql-database "darts"
@@ -617,20 +629,20 @@ This variable is used to set `al/dired-ignored-extensions'.")
   (sql-set-product-feature 'mysql :prompt-regexp
                            "^\\(?:mysql\\|mariadb\\).*> "))
 
-(with-eval-after-load 'mysql
+(al/with-eval-after-load mysql
   (setq mysql-user sql-user)
   (when (require 'al-mysql nil t)
     (advice-add 'mysql-shell-query
       :override 'al/mysql-shell-query)))
 
-(with-eval-after-load 'sql-completion
+(al/with-eval-after-load sql-completion
   (setq
    sql-mysql-database sql-database
    sql-mysql-exclude-databases
    '("mysql" "information_schema" "performance_schema"))
   (require 'cl nil t))
 
-(with-eval-after-load 'al-sql
+(al/with-eval-after-load al-sql
   (setq al/sql-history-dir (al/emacs-data-dir-file "sql")))
 
 
@@ -655,7 +667,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
  ("i" . journal-insert-block)
  ("t"   (al/find-file (al/journal-dir-file "tags"))))
 
-(with-eval-after-load 'journal
+(al/with-eval-after-load journal
   (setq
    org-id-files (al/with-check
                   :dir al/journal-dir
@@ -684,7 +696,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
   darts-day-template
   darts-day-select)
 
-(with-eval-after-load 'darts-daydata
+(al/with-eval-after-load darts-daydata
   :config
   (setq
    darts-database "darts"
@@ -739,7 +751,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
 
 (al/bind-keys-from-vars 'special-mode-map 'al/lazy-moving-keys t)
 
-(with-eval-after-load 'server
+(al/with-eval-after-load server
   (setq
    server-kill-new-buffers nil
    server-temp-file-regexp
@@ -748,22 +760,21 @@ This variable is used to set `al/dired-ignored-extensions'.")
 
 ;; Default value of `tramp-ssh-controlmaster-options' variable slows
 ;; down loading tramp significantly.  This should be set before tramp
-;; was loaded.
-(setq tramp-ssh-controlmaster-options "")
-
-(with-eval-after-load 'tramp-sh
+;; is loaded.
+(setopt tramp-ssh-controlmaster-options "")
+(al/with-eval-after-load tramp-sh
   (push 'tramp-own-remote-path tramp-remote-path)
   (push "LC_ALL=en_US.UTF-8" tramp-remote-process-environment)
   (push "DISPLAY=:0" tramp-remote-process-environment))
 
-(with-eval-after-load 'gnutls
+(al/with-eval-after-load gnutls
   ;; http://comments.gmane.org/gmane.emacs.gnus.general/83413
   (setq gnutls-min-prime-bits nil))
 
-(with-eval-after-load 'calc
+(al/with-eval-after-load calc
   (setq calc-angle-mode 'rad))
 
-(with-eval-after-load 'picture
+(al/with-eval-after-load picture
   (defconst al/picture-keys
     '(("M-O" . picture-movement-left)
       ("M-U" . picture-movement-right)
@@ -776,7 +787,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
     "Alist of auxiliary keys for `picture-mode-map'.")
   (al/bind-keys-from-vars 'picture-mode-map 'al/picture-keys))
 
-(with-eval-after-load 'artist
+(al/with-eval-after-load artist
   (defconst al/artist-keys
     '(("C-o" . artist-backward-char)
       ("C-u" . artist-forward-char)
@@ -785,7 +796,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
     "Alist of auxiliary keys for `artist-mode-map'.")
   (al/bind-keys-from-vars 'artist-mode-map 'al/artist-keys))
 
-(with-eval-after-load 'hexl
+(al/with-eval-after-load hexl
   (al/bind-keys
    :map hexl-mode-map
    ("C-." . hexl-previous-line)
@@ -800,7 +811,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
    ("H-a" . hexl-beginning-of-buffer)
    ("H-i" . hexl-end-of-buffer)))
 
-(with-eval-after-load 'diff-mode
+(al/with-eval-after-load diff-mode
   (defconst al/diff-shared-keys
     '(("." . diff-hunk-prev)
       (">" . diff-file-prev)
@@ -817,7 +828,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
   (al/bind-keys-from-vars 'diff-mode-shared-map 'al/diff-shared-keys t)
   (al/bind-keys-from-vars 'diff-mode-map 'al/diff-keys))
 
-(with-eval-after-load 'ediff
+(al/with-eval-after-load ediff
   (when (require 'al-ediff nil t)
     (al/add-hook-maybe 'ediff-before-setup-hook
       'al/ediff-save-window-configuration)
@@ -839,7 +850,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
     (al/bind-keys-from-vars 'ediff-mode-map 'al/ediff-keys))
   (al/add-hook-maybe 'ediff-startup-hook 'al/ediff-bind-keys))
 
-(with-eval-after-load 'view
+(al/with-eval-after-load view
   (defconst al/view-keys
     '(("v" . View-exit))
     "Alist of auxiliary keys for `view-mode-map'.")
@@ -847,7 +858,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
     '(al/lazy-moving-keys al/view-keys)
     t))
 
-(with-eval-after-load 'epa
+(al/with-eval-after-load epa
   (require 'wid-edit) ; for `al/widget-button-keys' (it is required anyway)
   (al/bind-keys-from-vars 'epa-key-list-mode-map
     'al/widget-button-keys t)
@@ -855,7 +866,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
    :map epa-key-list-mode-map
    ("z" . epa-unmark-key)))
 
-(with-eval-after-load 'tabulated-list
+(al/with-eval-after-load tabulated-list
   (defconst al/tabulated-list-keys
     '(("s" . tabulated-list-sort))
     "Alist of auxiliary keys for `tabulated-list-mode-map'.")
@@ -864,21 +875,21 @@ This variable is used to set `al/dired-ignored-extensions'.")
     t)
   (add-hook 'tabulated-list-mode-hook 'hl-line-mode))
 
-(with-eval-after-load 'simple
+(al/with-eval-after-load simple
   (defconst al/process-menu-mode-keys
     '(("C-k" . process-menu-delete-process))
     "Alist of auxiliary keys for `process-menu-mode-map'.")
   (al/bind-keys-from-vars 'process-menu-mode-map
     'al/process-menu-mode-keys))
 
-(with-eval-after-load 'bui
+(al/with-eval-after-load bui
   (defconst al/bui-keys
     '(("," . bui-history-back)
       ("p" . bui-history-forward))
     "Alist of auxiliary keys for `bui-map'.")
   (al/bind-keys-from-vars 'bui-map 'al/bui-keys))
 
-(with-eval-after-load 'bui-list
+(al/with-eval-after-load bui-list
   (defconst al/bui-list-keys
     '(("u" . bui-list-describe)
       ("z" . bui-list-unmark)
@@ -886,7 +897,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
     "Alist of auxiliary keys for `bui-list-mode-map'.")
   (al/bind-keys-from-vars 'bui-list-mode-map 'al/bui-list-keys))
 
-(with-eval-after-load 'transient
+(al/with-eval-after-load transient
   (setq
    transient-levels-file  (al/emacs-data-dir-file "transient/levels.el")
    transient-history-file (al/emacs-data-dir-file "transient/history.el")
