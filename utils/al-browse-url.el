@@ -29,7 +29,12 @@ Interactively with arg, prompt for TIME."
   (interactive
    (list (or (and (require 'al-thingatpt nil t)
                   (thing-at-point 'youtube))
-             (read-string "YouTube video or playlist ID: "))
+             (let ((prompt "YouTube video or playlist ID: ")
+                   (ids (al/url-youtube-video-id-candidates)))
+               (pcase ids
+                 ('() (read-string prompt))
+                 (`(,id) id)
+                 (_ (completing-read prompt ids)))))
          (and current-prefix-arg
               (read-string "Time stamp: "))))
   (cond

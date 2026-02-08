@@ -66,6 +66,24 @@ supported by `al/time-string-to-seconds'."
 If ID is nil, return an incomplete URL with missing video ID."
   (concat al/url-youtube-base-url "playlist?list=" id))
 
+(defun al/url-youtube-video-id (url)
+  "Return youtube video ID from URL.
+Return nil if URL does not contain video ID."
+  (when-let ((url    (al/check-url url))
+             (params (al/url-query-parameters url))
+             (ids    (alist-get "v" params nil nil #'string=)))
+    (car ids)))
+
+(defun al/url-youtube-video-id-candidates ()
+  "Return list of video IDs from various places."
+  (delq nil
+        (list
+         (and (require 'al-thingatpt nil t)
+              (thing-at-point 'youtube 'no-properties))
+         (al/url-youtube-video-id (gui--selection-value-internal 'CLIPBOARD))
+         (al/url-youtube-video-id (gui--selection-value-internal 'PRIMARY))
+         (al/url-youtube-video-id (car kill-ring)))))
+
 
 ;;; wget
 
