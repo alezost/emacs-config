@@ -170,12 +170,12 @@ with (TAG ELEMENTS NAME) entries.")
        > "(syntax-rules ()" n
        > "((_ ()) )" n
        > "((_ ()) )" n
-       > ")"))
+       > "))"))
      (,(al/tempo-tag "lam") "scheme-lambda*"
       ("(lambda* (#:key " p " #:optional #:rest)" n
        > r ")"))
      (,(al/tempo-tag "f") "scheme-function"
-      ("(define (" p " )" n
+      ("(define (" p ")" n
        > ")"))
      (,(al/tempo-tag "fk") "scheme-key-function"
       ("(define* (" p "#:key)" n
