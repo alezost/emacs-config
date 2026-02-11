@@ -258,7 +258,8 @@ prompt string."
        (if select
            (al/switch-buffer :prompt (and (stringp select) select)
                              :buffers buffers)
-         (al/display-buffer (al/next-element buffers (current-buffer))))))))
+         (al/with-pop-to-current-window
+           (pop-to-buffer (al/next-element buffers (current-buffer)))))))))
 
 (defun al/switch-to-buffer-or-funcall (buffer &optional function)
   "Switch to BUFFER or call FUNCTION.
