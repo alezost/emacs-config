@@ -152,7 +152,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
 (al/define-multi-command al/tab
   al/tempo-complete-maybe
   al/indent-maybe
-  completion-at-point)
+  company-complete)
 
 (al/bind-keys
   ("TAB" . al/tab)
