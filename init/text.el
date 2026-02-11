@@ -248,7 +248,7 @@
  major-mode 'text-mode
  truncate-lines t
  indent-tabs-mode nil
- tab-always-indent 'complete
+ tab-always-indent t
  fill-column 72)
 
 (setq
