@@ -94,6 +94,7 @@ indents property lists properly and names starting with `default'."
      case-lambda*)
   (2 define*
      lambda*
+     define-lazy
      define-syntax-rule
      syntax-rules))
 
@@ -118,7 +119,6 @@ This function is intended to be added to `scheme-mode-hook'."
 
 (defvar al/scheme-keywords
   '("push!"
-    "define-delayed"
     "define-osd"
     "case-lambda*"
     "if-let"
@@ -129,11 +129,23 @@ This function is intended to be added to `scheme-mode-hook'."
     "when-letn")
   "List of additional keywords to highlight in `scheme-mode'.")
 
+(defvar al/scheme-define-lazy-regexp
+  (rx "(" (group "define-lazy")
+      symbol-end
+      (one-or-more blank)
+      (group (one-or-more (or (syntax word) (syntax symbol)))))
+  "Regexp to match `define-lazy' macro.")
+
 (defun al/scheme-add-font-lock-keywords ()
   "Add `font-lock-keywords' to highlight additional macros.
 Call this function once!"
   (al/add-simple-font-lock-keywords
-   'scheme-mode al/scheme-keywords))
+   'scheme-mode al/scheme-keywords)
+  (font-lock-add-keywords
+   'scheme-mode
+   `((,al/scheme-define-lazy-regexp
+      (1 font-lock-keyword-face)
+      (2 font-lock-function-name-face)))))
 
 (provide 'al-scheme)
 
