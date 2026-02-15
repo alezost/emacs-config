@@ -758,6 +758,9 @@ This variable is used to set `al/dired-ignored-extensions'.")
    (concat server-temp-file-regexp
            "\\|COMMIT_EDITMSG\\|git-rebase-todo")))
 
+(al/with-eval-after-load al-server
+  (advice-add 'server-visit-files :around #'al/autoload-org-protocol))
+
 ;; Default value of `tramp-ssh-controlmaster-options' variable slows
 ;; down loading tramp significantly.  This should be set before tramp
 ;; is loaded.
