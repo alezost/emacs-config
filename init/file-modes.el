@@ -37,12 +37,13 @@
   org-read-date
   org-open-file)
 
-(setq org-export-backends
-      '(ascii html icalendar latex odt texinfo man))
-(with-eval-after-load 'org
-  (when (require 'al-org nil t)
-    (advice-add 'org-link-make-string
-      :around #'al/org-link-set-description))
+(declare-function al/assoc-delete-all "al-misc")
+(declare-function al/file-regexp "al-file")
+
+(setopt org-export-backends
+        '(ascii html icalendar latex odt texinfo man))
+
+(al/with-eval-after-load org
   (when (require 'al-text nil t)
     (al/add-hook-maybe 'org-mode-hook 'al/set-default-paragraph))
 
@@ -50,11 +51,23 @@
     ;; "/" and "_" are common for file names, so don't fontify them:
     (setq org-emphasis-alist
           (al/assoc-delete-all '("/" "_") org-emphasis-alist)))
+
+  (when (require 'al-file nil t)
+    (setq
+     org-file-apps
+     `(("\\.mm\\'" . default)
+       ("\\.x?html?\\'" . al/choose-browser)
+       (,(al/file-regexp "jpg" "png" "gif") . "sxiv %s")
+       (,(al/file-regexp "pdf") . "zathura %s")
+       (,(al/file-regexp "djvu") . "zathura %s")
+       ("\\.pdf::\\([0-9]+\\)\\'" . "zathura --page %1 %s")
+       ("\\.djvu::\\([0-9]+\\)\\'" . "zathura --page %1 %s")
+       (auto-mode . emacs))))
+
   (setq
    org-modules '(ol-info)
    org-imenu-depth 6
-   org-completion-use-ido t
-   org-confirm-elisp-link-function nil
+   org-link-elisp-confirm-function nil
    org-src-fontify-natively t
    org-fontify-quote-and-verse-blocks t
    org-return-follows-link t
@@ -62,18 +75,8 @@
    org-tags-column -54
    org-directory al/notes-dir
    org-default-notes-file (al/notes-dir-file "notes.org")
-   org-url-hexify-p nil
-   org-link-escape-chars '(?\[ ?\] ?\; ?\= ?\+)
    org-ellipsis " […]"
-   org-file-apps
-   `(("\\.mm\\'" . default)
-     ("\\.x?html?\\'" . al/choose-browser)
-     (,(al/file-regexp "jpg" "png" "gif") . "sxiv %s")
-     (,(al/file-regexp "pdf") . "zathura %s")
-     (,(al/file-regexp "djvu") . "zathura %s")
-     ("\\.pdf::\\([0-9]+\\)\\'" . "zathura --page %1 %s")
-     ("\\.djvu::\\([0-9]+\\)\\'" . "zathura --page %1 %s")
-     (auto-mode . emacs)))
+   )
 
   (setq
    org-use-speed-commands t
@@ -97,8 +100,7 @@
       [remap forward-paragraph]
       [remap backward-paragraph]
       ("TAB" . al/org-tab)
-      "<C-tab>"
-      ("<M-return>" . org-meta-return)
+      ("M-<return>" . org-meta-return)
       ("M->" . outline-previous-visible-heading)
       ("M-E" . outline-next-visible-heading)
       ("M-O" . org-backward-sentence)
@@ -132,31 +134,37 @@
   ;; `imenu-default-create-index-function' instead of a specialized index
   ;; made by `org-imenu-get-tree'.  So imenu is required here to be sure
   ;; it is loaded before enabling `org-mode'.
-  (require 'imenu nil t))
+  (require 'imenu nil t)
 
-(with-eval-after-load 'org-src
+  (require 'al-org nil t))
+
+(al/with-eval-after-load al-org
+  (advice-add 'org-link-make-string
+    :around #'al/org-link-set-description))
+
+(al/with-eval-after-load org-src
   (al/bind-keys
    :map org-src-mode-map
    ("C-c C-c" . org-edit-src-exit))
   (push '("shell" . shell-script) org-src-lang-modes))
 
-(with-eval-after-load 'org-capture
+(al/with-eval-after-load org-capture
   (setq org-capture-templates
         '(("n" "notes" entry (file org-default-notes-file)
            "* %T\n   %?\n"))))
 
-(with-eval-after-load 'org-agenda
+(al/with-eval-after-load org-agenda
   (al/bind-keys
    :map org-agenda-mode-map
    ("." . org-agenda-previous-line)
    ("e" . org-agenda-next-line)))
 
-(with-eval-after-load 'org-ref
+(al/with-eval-after-load org-ref
   (defvar al/org-ref-cite-keys
     '("H-o" "H-u" "H-e"))
   (al/bind-keys-from-vars 'org-ref-cite-keymap 'al/org-ref-cite-keys))
 
-(with-eval-after-load 'al-org-emms
+(al/with-eval-after-load al-org-emms
   (when (require 'emms-mpv nil t)
     (add-hook 'emms-mpv-file-loaded-hook #'al/org-emms-seek)))
 
@@ -167,7 +175,7 @@
 
 (al/autoload "pdf-view" pdf-view-mode)
 
-(with-eval-after-load 'pdf-view
+(al/with-eval-after-load pdf-view
   (when (require 'al-pdf nil t)
     (advice-add 'pdf-view-deactivate-region
       :override 'al/pdf-view-deactivate-region))
@@ -191,7 +199,7 @@
     ([down-mouse-1] . al/pdf-view-select-region)
     ([double-mouse-1] . al/pdf-view-select-word)))
 
-(with-eval-after-load 'pdf-outline
+(al/with-eval-after-load pdf-outline
   (al/clean-map 'pdf-outline-minor-mode-map)
   (al/bind-keys
    :map pdf-outline-minor-mode-map
@@ -211,7 +219,7 @@
 
   (add-hook 'pdf-outline-buffer-mode-hook 'hl-line-mode))
 
-(with-eval-after-load 'pdf-links
+(al/with-eval-after-load pdf-links
   (setq pdf-links-convert-pointsize-scale 0.02)
 
   (al/clean-map 'pdf-links-minor-mode-map)
@@ -220,14 +228,14 @@
    ("u" . pdf-links-action-perform)
    ("U" . pdf-links-isearch-link)))
 
-(with-eval-after-load 'pdf-history
+(al/with-eval-after-load pdf-history
   (al/clean-map 'pdf-history-minor-mode-map)
   (al/bind-keys
    :map pdf-history-minor-mode-map
    ("," . pdf-history-backward)
    ("p" . pdf-history-forward)))
 
-(with-eval-after-load 'pdf-misc
+(al/with-eval-after-load pdf-misc
   (al/clean-map 'pdf-misc-minor-mode-map)
   (al/bind-keys
    :map pdf-misc-minor-mode-map
@@ -244,6 +252,7 @@
   (list t))
 (advice-add 'normal-mode :filter-args #'al/fix-normal-mode)
 
+(declare-function al/add-to-auto-mode-alist "al-file")
 (al/eval-after-init
   (when (require 'al-file nil t)
     (al/add-to-auto-mode-alist
@@ -270,10 +279,10 @@
        (gnuplot-mode ,(al/file-regexp "plot"))
        (maxima-mode ,(al/file-regexp "max"))))))
 
-(with-eval-after-load 'conf-mode
+(al/with-eval-after-load conf-mode
   (al/add-hook-maybe 'conf-mode-hook 'hl-line-mode))
 
-(with-eval-after-load 'image-mode
+(al/with-eval-after-load image-mode
   (defconst al/image-keys
     '(("C-a" . image-bol)
       ("<ctrl-i>" . image-eol)
@@ -283,23 +292,20 @@
     "Alist of auxiliary keys for `image-mode-map'.")
   (al/bind-keys-from-vars 'image-mode-map 'al/image-keys))
 
-(with-eval-after-load 'doc-view
+(al/with-eval-after-load doc-view
   (setq doc-view-cache-directory "~/.cache/docview")
   (push "-r200" doc-view-ghostscript-options) ; picture resolution
   )
 
-(with-eval-after-load 'markdown-mode
+(al/with-eval-after-load markdown-mode
   (defconst al/markdown-keys
     '(("M->" . markdown-previous-link)
       ("M-E" . markdown-next-link))
     "Alist of auxiliary keys for `markdown-mode-map'.")
   (al/bind-keys-from-vars 'markdown-mode-map 'al/markdown-keys))
 
-(with-eval-after-load 'tar-mode
+(al/with-eval-after-load tar-mode
   (setq tar-mode-show-date t)
-  (defun al/tar-time-string (time)
-    (format-time-string "  %d-%b-%Y" time))
-  (advice-add 'tar-clip-time-string :override #'al/tar-time-string)
 
   (al/bind-keys
    :map tar-mode-map
@@ -309,7 +315,7 @@
 
   (add-hook 'tar-mode-hook 'hl-line-mode))
 
-(with-eval-after-load 'nxml-mode
+(al/with-eval-after-load nxml-mode
   (defconst al/nxml-keys
     '(("C-M-." . nxml-backward-up-element)
       ("C-M-e" . nxml-down-element)
