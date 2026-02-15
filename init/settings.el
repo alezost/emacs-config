@@ -320,11 +320,11 @@ This variable is used to set `al/dired-ignored-extensions'.")
 
 (al/with-eval-after-load shell
   (defconst al/shell-keys
-    '("M-?"
+    '("TAB" "M-?"
       ("M-O" . shell-backward-command)
       ("M-U" . shell-forward-command))
     "Alist of auxiliary keys for `shell-mode-map'.")
-  (al/bind-keys-from-vars 'shell-mode-map 'al/shell-keys t)
+  (al/bind-keys-from-vars 'shell-mode-map 'al/shell-keys)
   (al/add-hook-maybe 'shell-mode-hook
     '(abbrev-mode
       al/no-truncate-lines)))
