@@ -91,10 +91,6 @@
   (dolist (assoc org-structure-template-alist)
     (setcar assoc (propertize (car assoc) 'face 'alect-key)))
 
-  (al/define-multi-command al/org-tab
-    al/tempo-complete-maybe
-    org-cycle)
-
   (defconst al/org-keys
     '([remap delete-char]
       [remap delete-backward-char]

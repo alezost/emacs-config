@@ -1,6 +1,6 @@
 ;;; al-org.el --- Additional functionality for org-mode  -*- lexical-binding: t -*-
 
-;; Copyright © 2012–2025 Alex Kost
+;; Copyright © 2012–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 ;;; Code:
 
 (eval-when-compile (require 'cl-lib))
+(require 'al-general)
 (require 'al-text-cmd)
 (require 'org)
 (require 'org-table)
@@ -73,6 +74,10 @@ return nil; with FORCE return its time value. "
   (if (org-at-table-p)
       (org-table-insert-row t)
     (org-return t)))
+
+(al/define-multi-command al/org-tab
+  al/tempo-complete-maybe
+  org-cycle)
 
 
 ;;; Tables
