@@ -144,6 +144,8 @@ This variable is used to set `al/dired-ignored-extensions'.")
    company-show-quick-access t)
   (al/bind-keys
     :map company-active-map
+    ("C-." . company-select-previous)
+    ("C-e" . company-select-next)
     ("M-." . company-select-previous)
     ("M-e" . company-select-next))
   (global-company-mode))
