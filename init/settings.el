@@ -138,7 +138,6 @@ This variable is used to set `al/dired-ignored-extensions'.")
    pcmpl-args-cache-default-duration 999999
    pcmpl-args-cache-max-duration pcmpl-args-cache-default-duration))
 
-(al/bind-key "<C-H-tab>" company-complete)
 (al/with-eval-after-load company
   (setq
    company-idle-delay nil
