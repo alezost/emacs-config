@@ -82,6 +82,7 @@
   (require 'al-elisp nil t))
 
 (al/with-eval-after-load al-elisp
+  (al/elisp-add-font-lock-keywords)
   (advice-add 'elisp--form-quoted-p :override #'al/elisp-form-quoted-p))
 
 (al/with-eval-after-load ielm

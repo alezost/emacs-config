@@ -1,6 +1,6 @@
 ;;; al-elisp.el --- Additional functionality for elisp  -*- lexical-binding: t -*-
 
-;; Copyright © 2025 Alex Kost
+;; Copyright © 2025–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -23,6 +23,22 @@ That function is used only by `elisp-completion-at-point' to define if
 all types of symbols should be completed or only variables.
 I always want to complete all symbols!"
   t)
+
+(defvar al/elisp-with-eval-after-load-regexp
+  (rx "(" (group "al/with-eval-after-load")
+      symbol-end
+      (one-or-more blank)
+      (group (one-or-more (or (syntax word) (syntax symbol)))))
+  "Regexp to match `al/with-eval-after-load' macro.")
+
+(defun al/elisp-add-font-lock-keywords ()
+  "Add `font-lock-keywords' to highlight additional macros.
+Call this function once!"
+  (font-lock-add-keywords
+   'emacs-lisp-mode
+   `((,al/elisp-with-eval-after-load-regexp
+      (1 font-lock-keyword-face)
+      (2 font-lock-constant-face)))))
 
 (provide 'al-elisp)
 
