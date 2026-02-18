@@ -18,9 +18,11 @@
 
 ;;; EMMS
 
-(setq
+(setopt
  emms-directory (al/emacs-data-dir-file "emms")
  emms-playlist-sort-prefix "s")
+
+(declare-function emms-playlist-simple-uniq "emms")
 
 (al/bind-keys
  :prefix-map al/emms-map
@@ -63,7 +65,7 @@
  ("l" . emms-add-playlist)
  ("u" . emms-add-url))
 
-(with-eval-after-load 'emms
+(al/with-eval-after-load emms
   (require 'emms-source-file)
   (require 'emms-source-playlist)
   (require 'emms-info)
@@ -77,56 +79,19 @@
   (require 'emms-metaplaylist-mode)
   (require 'emms-i18n)
   (require 'emms-mpv nil t)
+  (require 'emms-state nil t)
+  (require 'al-emms nil t)
 
   (setq
    emms-playlist-buffer-name "*EMMS Playlist*"
-   emms-mode-line-format " %s"
-   emms-playing-time-display-format " %s"
    emms-playlist-default-major-mode 'emms-playlist-mode
-   emms-info-functions '(emms-info-native emms-info-cueinfo)
-   emms-show-format "%s"
-   emms-source-file-default-directory al/music-dir)
+   emms-show-format "%s")
 
   (push 'emms-info-initialize-track emms-track-initialize-functions)
   (al/add-hook-maybe 'emms-player-started-hook
-    'emms-last-played-update-current)
+    'emms-last-played-update-current))
 
-  (when (require 'emms-state nil t)
-    (emms-state-mode))
-
-  (when (require 'al-emms nil t)
-    (setq
-     emms-mode-line-mode-line-function #'al/emms-mode-line-song-string
-     emms-track-description-function #'al/emms-full-track-description
-     al/emms-file-name-shorten-alist
-     (mapcar (lambda (assoc)
-               (cons (directory-file-name (expand-file-name (car assoc)))
-                     (cdr assoc)))
-             `((,(al/download-dir-file "torrents") . "~t")
-               (,al/download-dir . "~d")
-               (,(al/math-dir-file "video") . "~math")
-               ("~/storage/music" . "~M")
-               (,al/music-dir . "~m"))))
-
-    (al/bind-keys
-      :map al/emms-switch-playlist-map
-      ([ctrl-m] . al/emms-switch-to-playlist-buffer))
-
-    (al/add-hook-maybe 'emms-playlist-source-inserted-hook
-      'al/emms-add-info-size)
-
-    (advice-add 'emms-source-play
-      :override #'al/emms-source-add-and-play)
-    (advice-add 'emms-playlist-mode-insert-track
-      :override #'al/emms-playlist-mode-insert-track)))
-
-(with-eval-after-load 'emms-mpv
-  (when (require 'al-emms-mpv nil t)
-    (push '("client-message" . al/emms-mpv-handle-client-message)
-          emms-mpv-event-handlers))
-  (push 'emms-mpv emms-player-list))
-
-(with-eval-after-load 'emms-playlist-mode
+(al/with-eval-after-load emms-playlist-mode
   (defconst al/emms-playlist-keys
     '("r"
       ("M-r M-l" . al/org-emms-store-link)
@@ -193,13 +158,62 @@
 
   (al/add-hook-maybe 'kill-emacs-hook 'al/emms-save-playlists))
 
-(with-eval-after-load 'emms-later-do
-  (setq emms-later-do-interval 0.1))
+(al/with-eval-after-load emms-mode-line
+  (setq emms-mode-line-format " %s"))
+
+(al/with-eval-after-load emms-playing-time
+  (setq emms-playing-time-display-format " %s"))
 
 (al/autoload "emms-cue" emms-info-cueinfo)
 (al/autoload "emms-info-native" emms-info-native)
 
-(with-eval-after-load 'al-emms-notification
+(al/with-eval-after-load emms-info
+  (setq emms-info-functions '(emms-info-native emms-info-cueinfo)))
+
+(al/with-eval-after-load emms-source-file
+  (setq emms-source-file-default-directory al/music-dir))
+
+(al/with-eval-after-load emms-later-do
+  (setq emms-later-do-interval 0.1))
+
+(al/with-eval-after-load emms-mpv
+  (push 'emms-mpv emms-player-list)
+  (require 'al-emms-mpv nil t))
+
+(al/with-eval-after-load emms-state
+  (emms-state-mode))
+
+(al/with-eval-after-load al-emms
+  (setq
+   emms-mode-line-mode-line-function #'al/emms-mode-line-song-string
+   emms-track-description-function #'al/emms-full-track-description
+   al/emms-file-name-shorten-alist
+   (mapcar (lambda (assoc)
+             (cons (directory-file-name (expand-file-name (car assoc)))
+                   (cdr assoc)))
+           `((,(al/download-dir-file "torrents") . "~t")
+             (,al/download-dir . "~d")
+             (,(al/math-dir-file "video") . "~math")
+             ("~/storage/music" . "~M")
+             (,al/music-dir . "~m"))))
+
+  (al/bind-keys
+    :map al/emms-switch-playlist-map
+    ([ctrl-m] . al/emms-switch-to-playlist-buffer))
+
+  (al/add-hook-maybe 'emms-playlist-source-inserted-hook
+    'al/emms-add-info-size)
+
+  (advice-add 'emms-source-play
+    :override #'al/emms-source-add-and-play)
+  (advice-add 'emms-playlist-mode-insert-track
+    :override #'al/emms-playlist-mode-insert-track))
+
+(al/with-eval-after-load al-emms-mpv
+  (push '("client-message" . al/emms-mpv-handle-client-message)
+        emms-mpv-event-handlers))
+
+(al/with-eval-after-load al-emms-notification
   (setq
    al/emms-notification-artist-format "<big>%s</big>"
    al/emms-notification-title-format "<span foreground=\"yellow\">%s</span>"
