@@ -1,6 +1,6 @@
 ;;; al-erc.el --- Additional functionality for ERC  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2025 Alex Kost
+;; Copyright © 2013–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -23,6 +23,20 @@
 (require 'erc-networks)
 (require 'erc-stamp)
 (require 'erc-track)
+(require 'al-file)
+
+(defvar al/erc-notification-sound
+  (al/file-if-exists "/usr/share/sounds/freedesktop/stereo/message.oga")
+  "Default notification sound used by `al/play-erc-sound'.")
+
+(declare-function al/play-sound "al-sound")
+
+(defun al/play-erc-sound (&rest _)
+  "Play `al/erc-notification-sound'.
+This function is intended to be used as `before' or `after' advice for
+`erc-notifications-notify'."
+  (require 'al-sound)
+  (al/play-sound al/erc-notification-sound))
 
 ;;;###autoload
 (defun al/erc-number-of-users ()

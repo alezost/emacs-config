@@ -578,9 +578,6 @@
         (assq-delete-all 'erc after-load-alist)))
 
 (with-eval-after-load 'erc-desktop-notifications
-  (defun al/play-erc-sound (&rest _)
-    (require 'al-sound)
-    (al/play-sound (al/sound-dir-file "chimes.wav")))
   (advice-add 'erc-notifications-notify :before #'al/play-erc-sound))
 
 (with-eval-after-load 'erc-button
