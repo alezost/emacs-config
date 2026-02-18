@@ -58,7 +58,7 @@
 
 ;;; Browsing
 
-(with-eval-after-load 'w3m
+(al/with-eval-after-load w3m
   (setq
    w3m-add-user-agent nil
    w3m-use-cookies nil
@@ -105,28 +105,29 @@
     "Alist of auxiliary keys for `w3m-mode-map'.")
   (al/bind-keys-from-vars 'w3m-mode-map 'al/w3m-keys)
 
-  (when (require 'al-w3m nil t)
-    (al/w3m-bind-number-keys 'al/w3m-switch-to-buffer)
-    (al/w3m-bind-number-keys 'al/w3m-kill-buffer "k")))
+  (require 'al-w3m nil t))
 
-(with-eval-after-load 'w3m-save
+(al/with-eval-after-load w3m-save
   (setq
    w3m-save-buffer-html-only t
-   w3m-save-buffer-directory (al/download-dir-file "html")))
+   w3m-default-save-directory (al/download-dir-file "html")))
 
-(with-eval-after-load 'w3m-form
+(al/with-eval-after-load w3m-form
   (defconst al/w3m-form-keys
     '(("u" . w3m-form-input-select-set))
     "Alist of auxiliary keys for `w3m-form-input-select-keymap'.")
   (al/bind-keys-from-vars 'w3m-form-input-select-keymap
     '(al/lazy-moving-keys al/w3m-form-keys)))
 
-(with-eval-after-load 'al-w3m
+(al/with-eval-after-load al-w3m
   (setq
    al/w3m-search-link-depth 20
-   al/w3m-search-re "[^[:alnum:]]*\\<%s\\>"))
+   al/w3m-search-re "[^[:alnum:]]*\\<%s\\>")
 
-(with-eval-after-load 'browse-url
+  (al/w3m-bind-number-keys 'al/w3m-switch-to-buffer)
+  (al/w3m-bind-number-keys 'al/w3m-kill-buffer "k"))
+
+(al/with-eval-after-load browse-url
   (when (require 'al-browse-url nil t)
     (setq browse-url-browser-function 'al/choose-browser)
     (advice-add 'browse-url-default-browser
@@ -138,6 +139,9 @@
 (setq
  mail-user-agent 'gnus-user-agent
  user-full-name "Alex Kost")
+
+(defvar al/mail-user-name)
+(declare-function al/gnus-dir-file "net.el")
 
 (al/eval-after-init
   ;; Append to make sure `al/mail-user-name' is available (defined in
@@ -161,10 +165,10 @@
  ("m"   . gnus-msg-mail)
  ("n"   . gnus-msg-mail))
 
-(with-eval-after-load 'nntp
+(al/with-eval-after-load nntp
   (setq nntp-connection-timeout 10))
 
-(with-eval-after-load 'gnus
+(al/with-eval-after-load gnus
   (setq
    gnus-directory (al/gnus-dir-file "news")
    gnus-article-save-directory (al/gnus-dir-file "saved")
@@ -176,46 +180,35 @@
              (nnimap-address "imap.gmail.com")
              (nnimap-stream tls))
      ;; (nntp "gmane" (nntp-address "news.gmane.io"))
-     ))
+     )
 
-  (setq
    gnus-group-buffer "*Gnus Groups*"
    gnus-group-mode-line-format "Gnus:"
-   gnus-article-mode-line-format "Gnus: %m"
-   gnus-summary-mode-line-format "Gnus: %p %Z"
    gnus-summary-line-format "%U%R%z %(%&user-date; %B%-3L %[%f%]%) %s\n"
    gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]"
-   gnus-visible-headers "^From:\\|^Newsgroups:\\|^Subject:\\|^Date:\\|^Followup-To:\\|^Reply-To:\\|^Organization:\\|^Summary:\\|^Keywords:\\|^To:\\|^[BGF]?Cc:\\|^Posted-To:\\|^Mail-Copies-To:\\|^Mail-Followup-To:\\|^Apparently-To:\\|^Gnus-Warning:\\|^Resent-From:\\|^User-Agent:"
-   gnus-user-date-format-alist
-   '(((gnus-seconds-today)           . "Today  %H:%M")
-     ((+ 86400 (gnus-seconds-today)) . "Yest.  %H:%M")
-     ((* 86400 365)                  . "%d %b %H:%M")
-     (t                              . "%Y-%m-%d  "))
-   gnus-subthread-sort-functions '(gnus-thread-sort-by-number
-                                   gnus-thread-sort-by-date))
 
-  (setq
    gnus-activate-level 3
-   gnus-activate-foreign-newsgroups gnus-activate-level)
+   gnus-activate-foreign-newsgroups gnus-activate-level
 
-  (setq
-   gnus-large-newsgroup 400
-   gnus-treat-display-smileys nil
-   mm-text-html-renderer 'gnus-w3m
-   mm-inline-text-html-with-images t
-   mm-discouraged-alternatives '("text/html" "text/richtext")
-   gnus-gcc-mark-as-read t)
+   gnus-large-newsgroup 400)
 
   ;; Wrap text in gnus-article buffers by words.
   (add-hook 'gnus-article-mode-hook 'visual-line-mode)
-  (setq gnus-article-truncate-lines nil)
 
   (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
   (al/add-hook-maybe 'dired-mode-hook 'turn-on-gnus-dired-mode)
 
   (require 'al-gnus))
 
-(with-eval-after-load 'gnus-srvr
+(al/with-eval-after-load gnus-msg
+  (setq gnus-gcc-mark-as-read t))
+
+(al/with-eval-after-load mm-decode
+  (setq
+   mm-text-html-renderer 'gnus-w3m
+   mm-discouraged-alternatives '("text/html" "text/richtext")))
+
+(al/with-eval-after-load gnus-srvr
   (defconst al/gnus-server-keys
     '(("u"   . gnus-server-read-server)
       ("M-d" . gnus-server-edit-server))
@@ -235,7 +228,7 @@
 ;; are defined in "gnus.el" but are filled in
 ;; "gnus-group.el"/"gnus-sum.el"/"gnus-art.el".
 
-(with-eval-after-load 'gnus-group
+(al/with-eval-after-load gnus-group
   (setq gnus-group-goto-unread nil)
   (defconst al/gnus-group-keys
     '(("." . gnus-group-prev-group)
@@ -260,8 +253,16 @@
 
   (add-hook 'gnus-group-mode-hook 'hl-line-mode))
 
-(with-eval-after-load 'gnus-sum
+(al/with-eval-after-load gnus-sum
   (setq
+   gnus-summary-mode-line-format "Gnus: %p %Z"
+   gnus-user-date-format-alist
+   '(((gnus-seconds-today)           . "Today  %H:%M")
+     ((+ 86400 (gnus-seconds-today)) . "Yest.  %H:%M")
+     ((* 86400 365)                  . "%d %b %H:%M")
+     (t                              . "%Y-%m-%d  "))
+   gnus-subthread-sort-functions '(gnus-thread-sort-by-number
+                                   gnus-thread-sort-by-date)
    gnus-sum-thread-tree-root            "●─► "
    gnus-sum-thread-tree-false-root      "○─► "
    gnus-sum-thread-tree-vertical        "│"
@@ -309,25 +310,29 @@
   (al/bind-keys-from-vars 'gnus-summary-mode-map 'al/gnus-summary-keys)
 
   (al/bind-keys
-   :map gnus-summary-mode-map
-   :prefix-map al/gnus-summary-search-map
-   :prefix-docstring "Search map for `gnus-summary-mode'."
-   :prefix "M-s"
-   ("M-s" . gnus-summary-search-article-forward)
-   ("M-r" . gnus-summary-search-article-backward))
+    :map gnus-summary-mode-map
+    :prefix-map al/gnus-summary-search-map
+    :prefix-docstring "Search map for `gnus-summary-mode'."
+    :prefix "M-s"
+    ("M-s" . gnus-summary-search-article-forward)
+    ("M-r" . gnus-summary-search-article-backward))
 
   (al/add-hook-maybe 'gnus-summary-mode-hook
     '(hl-line-mode al/hbar-cursor-type)))
 
-(with-eval-after-load 'gnus-draft
+(al/with-eval-after-load gnus-draft
   (defconst al/gnus-draft-keys
     '(("M-d" . gnus-draft-edit-message)
       "e")
     "Alist of auxiliary keys for `gnus-draft-mode-map'.")
   (al/bind-keys-from-vars 'gnus-draft-mode-map 'al/gnus-draft-keys))
 
-(with-eval-after-load 'gnus-art
+(al/with-eval-after-load gnus-art
   (setq
+   gnus-treat-display-smileys nil
+   gnus-article-truncate-lines nil
+   gnus-article-mode-line-format "Gnus: %m"
+   gnus-visible-headers "^From:\\|^Newsgroups:\\|^Subject:\\|^Date:\\|^Followup-To:\\|^Reply-To:\\|^Organization:\\|^Summary:\\|^Keywords:\\|^To:\\|^[BGF]?Cc:\\|^Posted-To:\\|^Mail-Copies-To:\\|^Mail-Followup-To:\\|^Apparently-To:\\|^Gnus-Warning:\\|^Resent-From:\\|^User-Agent:"
    gnus-unbuttonized-mime-types '("text/plain")
    gnus-blocked-images "githubusercontent"
    gnus-prompt-before-saving t
@@ -353,23 +358,23 @@
     '(al/button-keys al/gnus-mime-button-keys))
   )
 
-(with-eval-after-load 'gnus-topic
+(al/with-eval-after-load gnus-topic
   (setq
    gnus-topic-display-empty-topics nil
    gnus-topic-line-format "%i%(%{%n%}%) – %A %v\n")
   (al/bind-keys-from-vars 'gnus-topic-mode-map
     'al/free-important-keys t))
 
-(with-eval-after-load 'gnus-dired
+(al/with-eval-after-load gnus-dired
   (al/bind-keys
    :map gnus-dired-mode-map
    ("C-c a" . gnus-dired-attach)))
 
-(with-eval-after-load 'sendmail
+(al/with-eval-after-load sendmail
   (setq
    send-mail-function 'smtpmail-send-it))
 
-(with-eval-after-load 'message
+(al/with-eval-after-load message
   (setq
    message-directory (al/gnus-dir-file "mail")
    message-signature "Alex"
@@ -381,7 +386,7 @@
     (?' "'   ")
     (?\" "\"   ")))
 
-(with-eval-after-load 'mml
+(al/with-eval-after-load mml
   (defconst al/mml-keys
     '(("C-c a" . mml-attach-file)
       ("C-c f" . mml-attach-file)
@@ -390,34 +395,28 @@
     "Alist of auxiliary keys for `mml-mode-map'.")
   (al/bind-keys-from-vars 'mml-mode-map 'al/mml-keys))
 
-(with-eval-after-load 'smtpmail
+(al/with-eval-after-load smtpmail
   (setq
    smtpmail-smtp-server "smtp.gmail.com"
    smtpmail-smtp-service 587))
 
-(with-eval-after-load 'shr
+(al/with-eval-after-load shr
   (al/bind-keys
    :map shr-map
    ("u" . shr-browse-url)
    ("c" . shr-copy-url)))
 
-(with-eval-after-load 'al-gnus
+(al/with-eval-after-load al-gnus
   (setq al/atom2rss-file (al/emacs-data-dir-file "atom2rss.xsl"))
   (advice-add 'mm-url-insert
     :after #'al/convert-atom-to-rss)
   (advice-add 'gnus-agent-make-mode-line-string
     :around #'al/gnus-agent-mode-line-string))
 
-(al/autoload "mu4e" mu4e)
-(with-eval-after-load 'mu4e
-  (setq
-   mu4e-maildir (expand-file-name "~/mail")
-   mu4e~main-buffer-name "*mu4e-main*"))
-
 
 ;;; ERC
 
-(setq
+(setopt
  erc-modules
  '(autojoin
    button
@@ -457,6 +456,8 @@
     "#org-mode"))
  erc-log-channels-directory (al/emacs-data-dir-file "erc-log"))
 
+(declare-function erc-part-from-channel "erc")
+
 (al/bind-keys*
  :prefix-map al/erc-map
  :prefix-docstring "Map for ERC."
@@ -480,7 +481,7 @@
  ("s"     (al/display-buffer "#stumpwm"))
  ("M-z"   (al/display-buffer "*status")))
 
-(with-eval-after-load 'erc
+(al/with-eval-after-load erc
   (setq
    erc-server "chat.freenode.net"
    erc-port 7000
@@ -489,25 +490,13 @@
    erc-server-reconnect-timeout 60
    erc-server-connect-function 'erc-open-tls-stream
    ;; erc-join-buffer 'bury
-   erc-track-showcount t
    erc-prompt-for-password nil
    erc-hide-list '("JOIN" "QUIT")
-   erc-track-exclude-types
-   '("JOIN" "NICK" "PART" "QUIT" "MODE"
-     "305" "306"                        ; away messages
-     "324"                              ; channel modes
-     "328"
-     "329"                              ; channel was created on
-     "332"                              ; welcome/topic messages
-     "333"                              ; set topic
-     "353" "477")
    erc-mode-line-format "%t"
    erc-mode-line-away-status-format " (AWAY %a %H:%M)"
    erc-header-line-format "%n%a on %S [%m,%l] %o"
    erc-timestamp-format-left "\n[%d %B %Y, %A]\n"
    erc-timestamp-intangible nil
-   erc-keywords '("theme" "color" "dvorak" "sql" "guix" "game")
-   erc-log-file-coding-system 'utf-8
    erc-paranoid t)
 
   (defun al/erc-quit-part-reason (&rest _)
@@ -545,7 +534,7 @@
         ;; buffer.
         (setq-local geiser-impl--implementation 'guile)
         (setq-local geiser-eval--get-module-function
-                    (lambda (module) :f))
+                    (lambda (_module) :f))
         (setq-local geiser-eval--geiser-procedure-function
                     'geiser-guile--geiser-procedure)
         (al/bind-local-keys-from-vars 'al/geiser-keys))
@@ -556,31 +545,51 @@
         (al/bind-local-keys-from-vars 'al/slime-keys)))))
   (al/add-hook-maybe 'erc-join-hook 'al/erc-channel-config)
 
-  (when (require 'al-erc nil t)
-    (when (al/znc-running-p)
-      (setq erc-server "localhost"
-            erc-port 32456))
-    (setq-default erc-enable-logging 'al/erc-log-all-but-some-buffers)
-    (setq
-     erc-insert-timestamp-function 'al/erc-insert-timestamp
-     erc-generate-log-file-name-function
-     'al/erc-log-file-name-network-channel)
-    (setq
-     erc-ctcp-query-FINGER-hook  '(al/erc-ctcp-query-FINGER)
-     erc-ctcp-query-ECHO-hook    '(al/erc-ctcp-query-ECHO)
-     erc-ctcp-query-TIME-hook    '(al/erc-ctcp-query-TIME)
-     erc-ctcp-query-VERSION-hook '(al/erc-ctcp-query-VERSION))
-    (al/add-hook-maybe 'erc-after-connect 'al/erc-ghost-maybe))
+  (require 'al-erc nil t)
 
   ;; ERC is loaded twice somehow (why??); so clear erc assoc of
   ;; `after-load-alist' to prevent the second loading of these settings.
   (setq after-load-alist
         (assq-delete-all 'erc after-load-alist)))
 
-(with-eval-after-load 'erc-desktop-notifications
+(al/with-eval-after-load al-erc
+  (when (al/znc-running-p)
+    (setq erc-server "localhost"
+          erc-port 32456))
+  (setq-default erc-enable-logging 'al/erc-log-all-but-some-buffers)
+  (setq
+   erc-insert-timestamp-function 'al/erc-insert-timestamp
+   erc-generate-log-file-name-function
+   'al/erc-log-file-name-network-channel)
+  (setq
+   erc-ctcp-query-FINGER-hook  '(al/erc-ctcp-query-FINGER)
+   erc-ctcp-query-ECHO-hook    '(al/erc-ctcp-query-ECHO)
+   erc-ctcp-query-TIME-hook    '(al/erc-ctcp-query-TIME)
+   erc-ctcp-query-VERSION-hook '(al/erc-ctcp-query-VERSION))
+
+  (al/add-hook-maybe 'erc-after-connect 'al/erc-ghost-maybe)
   (advice-add 'erc-notifications-notify :before #'al/play-erc-sound))
 
-(with-eval-after-load 'erc-button
+(al/with-eval-after-load erc-track
+  (setq
+   erc-track-showcount t
+   erc-track-exclude-types
+   '("JOIN" "NICK" "PART" "QUIT" "MODE"
+     "305" "306"                ; away messages
+     "324"                      ; channel modes
+     "328"
+     "329"                      ; channel was created on
+     "332"                      ; welcome/topic messages
+     "333"                      ; set topic
+     "353" "477")))
+
+(al/with-eval-after-load erc-match
+  (setq erc-keywords '("theme" "color" "dvorak" "sql" "guix" "game")))
+
+(al/with-eval-after-load erc-log
+  (setq erc-log-file-coding-system 'utf-8))
+
+(al/with-eval-after-load erc-button
   (al/bind-keys
    :map erc-button-keymap
    ("u" . erc-button-press-button)
@@ -589,7 +598,7 @@
    ("c"   (kill-new (car (get-text-property (point) 'erc-data))))
    ("w"   (wget (car (get-text-property (point) 'erc-data))))))
 
-(with-eval-after-load 'erc-list
+(al/with-eval-after-load erc-list
   (al/bind-keys
    :map erc-list-menu-mode-map
    ("u"   . erc-list-join)
@@ -597,7 +606,7 @@
   (define-key erc-list-menu-sort-button-map
     [header-line mouse-2] 'erc-list-menu-sort-by-column))
 
-(with-eval-after-load 'al-erc
+(al/with-eval-after-load al-erc
   (setq
    al/erc-log-excluded-regexps
    '("\\`#archlinux\\'" "\\`#emacs\\'" "\\`#freenode\\'" "\\`#znc\\'")
@@ -618,7 +627,7 @@
               'erc-view-log-mode)
         auto-mode-alist))
 
-(with-eval-after-load 'erc-view-log
+(al/with-eval-after-load erc-view-log
   (setq
    erc-view-log-timestamp-regexp
    (rx "[" (one-or-more (or digit ":")) "]")
@@ -637,7 +646,7 @@
  ("b"     (al/display-buffer "*Guix-Patches Bugs*"))
  ("s"   . debbugs-gnu-search))
 
-(with-eval-after-load 'debbugs-gnu
+(al/with-eval-after-load debbugs-gnu
   (setq debbugs-gnu-default-packages '("guix-patches"))
 
   (defconst al/debbugs-gnu-keys
@@ -649,22 +658,19 @@
 ;;; Misc settings and packages
 
 (setq url-debug t)
-(with-eval-after-load 'url
+(al/with-eval-after-load url
   (setq url-configuration-directory (al/emacs-data-dir-file "url")))
 
-(with-eval-after-load 'wget
+(al/with-eval-after-load wget
   (setq
    wget-debug-buffer "*wget-log*"
    wget-download-directory-filter 'wget-download-dir-filter-regexp
    wget-download-log-file (al/emacs-data-dir-file "emacs-wget.log")))
 
-(with-eval-after-load 'mentor
-  (setq mentor-rtorrent-url "scgi://127.0.0.1:5000"))
-
-(with-eval-after-load 'net-utils
+(al/with-eval-after-load net-utils
   (setq ping-program-options '("-c" "3")))
 
-(with-eval-after-load 'al-net
+(al/with-eval-after-load al-net
   (setq
    al/net-hosts '("zeus" "leviafan" "hyperion" "192.168.1.1"
                   "google.com" "ya.ru")
@@ -682,7 +688,7 @@
  ("q" . debpaste-quit-buffers)
  ("K" . debpaste-kill-all-buffers))
 
-(with-eval-after-load 'debpaste
+(al/with-eval-after-load debpaste
   (setq
    debpaste-user-name "alezost"
    debpaste-expire-time (* 3 24 60 60))
@@ -703,7 +709,7 @@
   web-search-verbix-de
   web-search-naver)
 
-(with-eval-after-load 'web-search
+(al/with-eval-after-load web-search
   :config
   (web-search-add-engine
    'ipduh "IPduh"
