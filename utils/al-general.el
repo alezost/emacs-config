@@ -199,6 +199,17 @@ FILE may omit an extension.  See `load' for details."
                  `(autoload ',symbol ,file nil t))
                symbols)))
 
+(defmacro al/require (feature)
+  "Load FEATURE if not loaded yet.
+FEATURE should be an unquoted symbol.
+Return non-nil if FEATURE is loaded successfully.
+Return nil and show warning message otherwise."
+  (declare (indent 0) (debug (form def-body)))
+  `(or (require ',feature nil t)
+       (progn
+         (al/warning-message "`%s' feature is not available" ',feature)
+         nil)))
+
 
 ;;; Hook utils
 

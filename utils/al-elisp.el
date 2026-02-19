@@ -24,8 +24,9 @@ all types of symbols should be completed or only variables.
 I always want to complete all symbols!"
   t)
 
-(defvar al/elisp-with-eval-after-load-regexp
-  (rx "(" (group "al/with-eval-after-load")
+(defvar al/elisp-feature-macros-regexp
+  (rx "(" (group (or "al/with-eval-after-load"
+                     "al/require"))
       symbol-end
       (one-or-more blank)
       (group (one-or-more (or (syntax word) (syntax symbol)))))
@@ -36,7 +37,7 @@ I always want to complete all symbols!"
 Call this function once!"
   (font-lock-add-keywords
    'emacs-lisp-mode
-   `((,al/elisp-with-eval-after-load-regexp
+   `((,al/elisp-feature-macros-regexp
       (1 font-lock-keyword-face)
       (2 font-lock-constant-face)))))
 
