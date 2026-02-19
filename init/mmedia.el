@@ -74,21 +74,22 @@
   (al/add-hook-maybe 'emms-player-started-hook
     'emms-last-played-update-current)
 
-  (al/require emms-source-file)
-  (al/require emms-source-playlist)
-  (al/require emms-info)
-  (al/require emms-playlist-mode)
-  (al/require emms-mark)
-  (al/require emms-streams)
-  (al/require emms-playlist-sort)
-  (al/require emms-browser)
-  (al/require emms-bookmarks)
-  (al/require emms-last-played)
-  (al/require emms-metaplaylist-mode)
-  (al/require emms-i18n)
-  (al/require emms-mpv)
-  (al/require emms-state)
-  (al/require al-emms))
+  (al/require
+    emms-source-file
+    emms-source-playlist
+    emms-info
+    emms-playlist-mode
+    emms-mark
+    emms-streams
+    emms-playlist-sort
+    emms-browser
+    emms-bookmarks
+    emms-last-played
+    emms-metaplaylist-mode
+    emms-i18n
+    emms-mpv
+    emms-state
+    al-emms))
 
 (al/with-eval-after-load emms-playlist-mode
   (defconst al/emms-playlist-keys
