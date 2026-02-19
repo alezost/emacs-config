@@ -86,7 +86,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
   (al/bind-keys-from-vars '(icomplete-vertical-mode-minibuffer-map)
     'al/icomplete-vertical-keys))
 
-(al/eval-after-init (require 'al-minibuffer nil t))
+(al/eval-after-init (al/require al-minibuffer))
 (al/with-eval-after-load al-minibuffer
   (setq completion-styles '(al/split))
   (al/bind-keys
@@ -128,9 +128,11 @@ This variable is used to set `al/dired-ignored-extensions'.")
     ;; inserting space after ":" (while completing ERC nicks).
     (setq pcomplete-suffix-list nil))
 
-  (when (require 'al-pcomplete nil t)
-    (al/add-hook-maybe '(shell-mode-hook eshell-mode-hook)
-      'al/pcomplete-no-space)))
+  (al/require al-pcomplete))
+
+(al/with-eval-after-load al-pcomplete
+  (al/add-hook-maybe '(shell-mode-hook eshell-mode-hook)
+    'al/pcomplete-no-space))
 
 (al/with-eval-after-load pcmpl-args
   (setq
@@ -391,7 +393,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
   ;; brilliant idea?
   (advice-add 'eshell-write-aliases-list :override #'ignore)
 
-  (require 'al-eshell nil t))
+  (al/require al-eshell))
 
 (al/with-eval-after-load em-prompt
    (setq eshell-highlight-prompt nil))
@@ -495,14 +497,14 @@ This variable is used to set `al/dired-ignored-extensions'.")
 
 (al/with-eval-after-load man
   (setq Man-notify-method 'pushy)
-  (when (require 'al-file nil t)
+  (when (al/require al-file)
     (setq Man-header-file-path
           (append (seq-keep (lambda (p)
                               (al/file-if-exists
                                (expand-file-name "include" p)))
                             (al/guix-profiles))
                   Man-header-file-path)))
-  (when (require 'al-mode-line nil t)
+  (when (al/require al-mode-line)
     (al/mode-line-default-buffer-identification 'Man-mode))
 
   (defconst al/man-keys
@@ -534,7 +536,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
   ;; `Info-insert-dir'), so the default manuals are searched first,
   ;; while I want my dirs to be searched first.
   (info-initialize)
-  (when (require 'al-file nil t)
+  (when (al/require al-file)
     (setq Info-directory-list
           (append (al/existing-files
                    (al/devel-dir-file "guix/doc"))
@@ -557,7 +559,6 @@ This variable is used to set `al/dired-ignored-extensions'.")
    ("H" . Info-help)))
 
 (al/with-eval-after-load texinfo
-  (require 'al-texinfo nil t)
   (defconst al/texinfo-keys
     '(("C-c c" . texinfo-insert-@code)
       ("C-c f" . texinfo-insert-@file)
@@ -569,7 +570,9 @@ This variable is used to set `al/dired-ignored-extensions'.")
       ("C-c T" . al/texinfo-insert-@table)
       ("C-c D" . al/texinfo-insert-@deffn))
     "Alist of auxiliary keys for `texinfo-mode'.")
-  (al/bind-keys-from-vars 'texinfo-mode-map 'al/texinfo-keys))
+  (al/bind-keys-from-vars 'texinfo-mode-map 'al/texinfo-keys)
+
+  (al/require al-texinfo))
 
 (al/bind-key "w" which-key-mode ctl-x-map)
 (al/with-eval-after-load which-key
@@ -616,7 +619,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
   (al/clean-map 'sql-interactive-mode-map)
   (set-keymap-parent sql-interactive-mode-map comint-mode-map)
 
-  (when (require 'al-sql nil t)
+  (when (al/require al-sql)
     (advice-add 'sql-highlight-product
       :override 'al/sql-highlight-product)
     (al/add-hook-maybe 'sql-mode-hook
@@ -633,16 +636,15 @@ This variable is used to set `al/dired-ignored-extensions'.")
 
 (al/with-eval-after-load mysql
   (setq mysql-user sql-user)
-  (when (require 'al-mysql nil t)
-    (advice-add 'mysql-shell-query
-      :override 'al/mysql-shell-query)))
+  (when (al/require al-mysql)
+    (advice-add 'mysql-shell-query :override 'al/mysql-shell-query)))
 
 (al/with-eval-after-load sql-completion
   (setq
    sql-mysql-database sql-database
    sql-mysql-exclude-databases
    '("mysql" "information_schema" "performance_schema"))
-  (require 'cl nil t))
+  (al/require cl))
 
 (al/with-eval-after-load al-sql
   (setq al/sql-history-dir (al/emacs-data-dir-file "sql")))
@@ -834,12 +836,6 @@ This variable is used to set `al/dired-ignored-extensions'.")
   (al/bind-keys-from-vars 'diff-mode-map 'al/diff-keys))
 
 (al/with-eval-after-load ediff
-  (when (require 'al-ediff nil t)
-    (al/add-hook-maybe 'ediff-before-setup-hook
-      'al/ediff-save-window-configuration)
-    (al/add-hook-maybe 'ediff-quit-hook
-      'al/ediff-restore-window-configuration
-      t))
   (setq
    ediff-window-setup-function #'ediff-setup-windows-plain ; no new frame
    ediff-split-window-function #'split-window-horizontally
@@ -853,7 +849,16 @@ This variable is used to set `al/dired-ignored-extensions'.")
     "Alist of auxiliary keys for `ediff-mode-map'.")
   (defun al/ediff-bind-keys ()
     (al/bind-keys-from-vars 'ediff-mode-map 'al/ediff-keys))
-  (al/add-hook-maybe 'ediff-startup-hook 'al/ediff-bind-keys))
+  (al/add-hook-maybe 'ediff-startup-hook 'al/ediff-bind-keys)
+
+  (al/require al-ediff))
+
+(al/with-eval-after-load al-ediff
+  (al/add-hook-maybe 'ediff-before-setup-hook
+    'al/ediff-save-window-configuration)
+  (al/add-hook-maybe 'ediff-quit-hook
+    'al/ediff-restore-window-configuration
+    t))
 
 (al/with-eval-after-load view
   (defconst al/view-keys
@@ -864,7 +869,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
     t))
 
 (al/with-eval-after-load epa
-  (require 'wid-edit) ; for `al/widget-button-keys' (it is required anyway)
+  (al/require wid-edit) ; for `al/widget-button-keys' (it is required anyway)
   (al/bind-keys-from-vars 'epa-key-list-mode-map
     'al/widget-button-keys t)
   (al/bind-keys
