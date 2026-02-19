@@ -66,30 +66,29 @@
  ("u" . emms-add-url))
 
 (al/with-eval-after-load emms
-  (require 'emms-source-file)
-  (require 'emms-source-playlist)
-  (require 'emms-info)
-  (require 'emms-playlist-mode)
-  (require 'emms-mark)
-  (require 'emms-streams)
-  (require 'emms-playlist-sort)
-  (require 'emms-browser)
-  (require 'emms-bookmarks)
-  (require 'emms-last-played)
-  (require 'emms-metaplaylist-mode)
-  (require 'emms-i18n)
-  (require 'emms-mpv nil t)
-  (require 'emms-state nil t)
-  (require 'al-emms nil t)
-
   (setq
    emms-playlist-buffer-name "*EMMS Playlist*"
-   emms-playlist-default-major-mode 'emms-playlist-mode
    emms-show-format "%s")
 
   (push 'emms-info-initialize-track emms-track-initialize-functions)
   (al/add-hook-maybe 'emms-player-started-hook
-    'emms-last-played-update-current))
+    'emms-last-played-update-current)
+
+  (al/require emms-source-file)
+  (al/require emms-source-playlist)
+  (al/require emms-info)
+  (al/require emms-playlist-mode)
+  (al/require emms-mark)
+  (al/require emms-streams)
+  (al/require emms-playlist-sort)
+  (al/require emms-browser)
+  (al/require emms-bookmarks)
+  (al/require emms-last-played)
+  (al/require emms-metaplaylist-mode)
+  (al/require emms-i18n)
+  (al/require emms-mpv)
+  (al/require emms-state)
+  (al/require al-emms))
 
 (al/with-eval-after-load emms-playlist-mode
   (defconst al/emms-playlist-keys
@@ -178,7 +177,7 @@
 
 (al/with-eval-after-load emms-mpv
   (push 'emms-mpv emms-player-list)
-  (require 'al-emms-mpv nil t))
+  (al/require al-emms-mpv))
 
 (al/with-eval-after-load emms-state
   (emms-state-mode))
