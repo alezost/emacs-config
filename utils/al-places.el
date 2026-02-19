@@ -23,7 +23,7 @@
   (let ((dir-var  (intern (concat "al/" name "-dir")))
         (file-fun (intern (concat "al/" name "-dir-file"))))
     `(progn
-       (defvar ,dir-var ,val)
+       (defvar ,dir-var (file-name-as-directory ,val))
        (defun ,file-fun (file)
          ,(format "Return full file name of a FILE placed in `%s'."
                   dir-var)
