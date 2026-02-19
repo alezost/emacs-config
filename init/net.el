@@ -105,7 +105,7 @@
     "Alist of auxiliary keys for `w3m-mode-map'.")
   (al/bind-keys-from-vars 'w3m-mode-map 'al/w3m-keys)
 
-  (require 'al-w3m nil t))
+  (al/require al-w3m))
 
 (al/with-eval-after-load w3m-save
   (setq
@@ -128,10 +128,12 @@
   (al/w3m-bind-number-keys 'al/w3m-kill-buffer "k"))
 
 (al/with-eval-after-load browse-url
-  (when (require 'al-browse-url nil t)
-    (setq browse-url-browser-function 'al/choose-browser)
-    (advice-add 'browse-url-default-browser
-      :override #'al/browse-url-default)))
+  (al/require al-browse-url))
+
+(al/with-eval-after-load al-browse-url
+  (setq browse-url-browser-function 'al/choose-browser)
+  (advice-add 'browse-url-default-browser
+    :override #'al/browse-url-default))
 
 
 ;;; Mail, news, gnus
@@ -198,7 +200,7 @@
   (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
   (al/add-hook-maybe 'dired-mode-hook 'turn-on-gnus-dired-mode)
 
-  (require 'al-gnus))
+  (al/require al-gnus))
 
 (al/with-eval-after-load gnus-msg
   (setq gnus-gcc-mark-as-read t))
@@ -545,7 +547,7 @@
         (al/bind-local-keys-from-vars 'al/slime-keys)))))
   (al/add-hook-maybe 'erc-join-hook 'al/erc-channel-config)
 
-  (require 'al-erc nil t)
+  (al/require al-erc)
 
   ;; ERC is loaded twice somehow (why??); so clear erc assoc of
   ;; `after-load-alist' to prevent the second loading of these settings.
