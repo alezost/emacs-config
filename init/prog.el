@@ -51,10 +51,10 @@
 
   (al/modify-page-break-syntax lisp-mode-syntax-table)
 
-  (when (require 'al-imenu nil t)
+  (when (al/require al-imenu)
     (al/add-hook-maybe 'lisp-mode-hook 'al/imenu-add-sections))
 
-  (require 'al-lisp nil t))
+  (al/require al-lisp))
 
 (al/with-eval-after-load al-lisp
   (al/lisp-add-font-lock-keywords)
@@ -70,7 +70,7 @@
         lisp-interaction-mode-map)
     'al/elisp-keys)
 
-  (when (require 'al-imenu nil t)
+  (when (al/require al-imenu)
     (al/add-hook-maybe
         '(emacs-lisp-mode-hook
           lisp-interaction-mode-hook)
@@ -79,7 +79,7 @@
         al/imenu-add-transient
         al/imenu-add-eval-after-load)))
 
-  (require 'al-elisp nil t))
+  (al/require al-elisp))
 
 (al/with-eval-after-load al-elisp
   (al/elisp-add-font-lock-keywords)
@@ -123,7 +123,7 @@
     '(al/button-keys al/ert-results-keys)))
 
 (al/with-eval-after-load pp
-  (require 'al-pp nil t))
+  (al/require al-pp))
 
 (al/with-eval-after-load al-pp
   (advice-add 'pp-display-expression :after #'al/pp-enable-undo))
@@ -245,12 +245,12 @@
   (put 'plist-new 'scheme-indent-function 1)
   (al/modify-page-break-syntax scheme-mode-syntax-table)
 
-  (when (require 'al-imenu nil t)
+  (when (al/require al-imenu)
     (al/add-hook-maybe 'scheme-mode-hook 'al/imenu-add-sections))
 
   (al/add-hook-maybe 'scheme-mode-hook 'guix-devel-mode)
 
-  (require 'al-scheme nil t))
+  (al/require al-scheme))
 
 (al/with-eval-after-load al-scheme
   (al/scheme-add-font-lock-keywords)
@@ -306,7 +306,7 @@
     '(al/inhibit-field-motion
       al/no-syntactic-font-lock))
 
-  (require 'al-geiser nil t))
+  (al/require al-geiser))
 
 (al/with-eval-after-load geiser-impl
   (setq-default geiser-scheme-implementation 'guile)
@@ -422,12 +422,12 @@
       (hl-line-mode)))
   (add-hook 'compilation-mode-hook 'al/hl-line-mode)
 
-  (when (require 'al-compilation nil t)
+  (when (al/require al-compilation)
     (al/add-hook-maybe 'compilation-finish-functions
       'al/compilation-notify)))
 
 (al/with-eval-after-load al-compilation
-  (when (require 'al-file nil t)
+  (when (al/require al-file)
     (al/setq-file
       al/compilation-sound-success (al/sound-dir-file "bell.oga")
       al/compilation-sound-error   (al/sound-dir-file "splat.wav"))))
@@ -549,7 +549,7 @@
       al/magit-moving-keys
       al/magit-keys))
 
-  (require 'al-magit nil t))
+  (al/require al-magit))
 
 (al/with-eval-after-load al-magit
   (al/bind-keys
@@ -688,7 +688,7 @@
   (al/bind-keys-from-vars 'git-rebase-mode-map 'al/git-rebase-keys))
 
 (al/with-eval-after-load browse-at-remote
-  (require 'al-browse-at-remote nil t))
+  (al/require al-browse-at-remote))
 
 (al/with-eval-after-load al-browse-at-remote
   (advice-add 'browse-at-remote-get-url
@@ -740,7 +740,7 @@
                 (concat (make-string 64 ?/) "\n///")))
   (al/add-hook-maybe 'js-mode-hook 'al/js-delimiter)
 
-  (when (require 'al-imenu nil t)
+  (when (al/require al-imenu)
     (al/add-hook-maybe 'js-mode-hook 'al/imenu-add-js-sections)))
 
 (al/autoload "python" python-shell-switch-to-shell)
