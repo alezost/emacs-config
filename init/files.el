@@ -105,19 +105,26 @@
  delete-old-versions t
  vc-make-backup-files t)
 
-(when (require 'al-backup nil t)
+(al/eval-after-init (al/require al-backup))
+(al/with-eval-after-load al-backup
   (setq
    al/backup-ignored-regexps
    '("gnus/mail/archive/sent"
      "COMMIT_EDITMSG")
-   backup-enable-predicate 'al/backup-enable-predicate)
+   backup-enable-predicate #'al/backup-enable-predicate)
   (advice-add 'make-backup-file-name-1
     :override #'al/make-backup-file-name-1))
 
 
 ;;; Dired
 
-(with-eval-after-load 'dired
+(setopt dired-guess-shell-gnutar "tar")
+
+(al/bind-key "H-j" dired-jump)
+
+(declare-function al/mode-line-default-buffer-identification "al-mode-line")
+
+(al/with-eval-after-load dired
   (setq
    dired-auto-revert-buffer 'dired-directory-changed-p
    dired-dwim-target t
@@ -187,33 +194,30 @@
 
   (al/add-hook-maybe 'dired-mode-hook 'hl-line-mode)
 
-  (when (require 'al-mode-line nil t)
+  (when (al/require al-mode-line)
     (al/mode-line-default-buffer-identification 'dired-mode))
 
-  (require 'dired-x nil t)
-  (when (require 'al-dired nil t)
-    (setq al/dired-ignored-extensions
-          (cons ".go" al/completion-ignored-extensions))
-    (al/add-hook-maybe 'dired-mode-hook
-      'al/dired-set-completion-ignored-extensions)
-    (advice-add 'dired-sort-set-mode-line
-      :override 'al/dired-sort-set-mode-line)))
+  (al/require dired-x)
+  (al/require al-dired))
 
-(setq
- dired-guess-shell-gnutar "tar"
- dired-bind-jump nil
- dired-bind-man nil)
-(al/bind-key "H-j" dired-jump)
-(al/autoload "dired-x" dired-jump)
+(al/with-eval-after-load al-dired
+  (setq al/dired-ignored-extensions
+        (cons ".go" al/completion-ignored-extensions))
+  (al/add-hook-maybe 'dired-mode-hook
+    'al/dired-set-completion-ignored-extensions)
+  (advice-add 'dired-sort-set-mode-line
+    :override 'al/dired-sort-set-mode-line))
 
-(with-eval-after-load 'dired-x
+(declare-function al/file-regexp "al-file")
+
+(al/with-eval-after-load dired-x
   (setq
    ;; Do not show "hidden" files only.
    dired-omit-files "^\\..*"
    dired-omit-extensions nil)
   ;; Do not rebind my keys!!
   (al/bind-keys-from-vars 'dired-mode-map 'al/dired-keys t)
-  (when (require 'al-file nil t)
+  (when (al/require al-file)
     (setq dired-guess-shell-alist-user
           `((,(al/file-regexp "jpg" "png" "gif") "sxiv" "eog")
             (,(al/file-regexp "tif" "tiff") "sxiv" "evince" "eog")
@@ -223,15 +227,17 @@
              "play -q" "aplay" "mplayer -really-quiet" "mpv --really-quiet")
             (,(al/file-regexp "odt" "doc") "lowriter")))))
 
-(with-eval-after-load 'wdired
+(declare-function dim-set-major-name "dim")
+
+(al/with-eval-after-load wdired
   (al/bind-keys-from-vars 'wdired-mode-map)
-  (when (require 'dim nil t)
+  (when (al/require dim)
     ;; "Dired" `mode-name' is hard-coded in
     ;; `wdired-change-to-dired-mode'.
     (advice-add 'wdired-change-to-dired-mode
       :after #'dim-set-major-name)))
 
-(with-eval-after-load 'image-dired
+(al/with-eval-after-load image-dired
   (al/bind-keys
    :map image-dired-thumbnail-mode-map
    ("."     . image-dired-backward-image)
@@ -247,7 +253,6 @@
 ;;; Misc settings and packages
 
 (setq
- directory-free-space-args "-Ph"
  grep-command "grep -nHi -e "
  enable-local-variables :safe
  enable-dir-local-variables nil
@@ -255,7 +260,7 @@
  ;; enable-local-eval nil
  )
 
-(with-eval-after-load 'mailcap
+(al/with-eval-after-load mailcap
   ;; Use "sxiv" instead of "display" to open image files.  Actually,
   ;; (mailcap-add "image/.*" "sxiv %s") can be used, but it adds the
   ;; entry to the beginning of "image" alist, while I want to fallback
@@ -271,7 +276,7 @@
     "Alist of auxiliary keys for `mule-keymap'.")
   (al/bind-keys-from-vars 'mule-keymap 'al/mule-keys))
 
-(with-eval-after-load 'bookmark
+(al/with-eval-after-load bookmark
   (setq
    bookmark-save-flag 1
    bookmark-default-file (al/emacs-data-dir-file "bookmarks"))
@@ -296,7 +301,7 @@
  ("l" . recentf-edit-list)
  ("c" . recentf-cleanup))
 
-(with-eval-after-load 'recentf
+(al/with-eval-after-load recentf
   (setq
    recentf-exclude (list (al/file-regexp "el" "gz")
                          #'file-remote-p)
@@ -308,12 +313,14 @@
    recentf-save-file (al/emacs-data-dir-file "recentf")))
 (al/add-after-init-hook 'recentf-mode)
 
-(with-eval-after-load 'ffap
-  (when (require 'al-ffap nil t)
-    (advice-add 'ffap-read-file-or-url
-      :override #'al/ffap-read-file-or-url)))
+(al/with-eval-after-load ffap
+  (al/require al-ffap))
 
-(with-eval-after-load 'saveplace
+(al/with-eval-after-load al-ffap
+  (advice-add 'ffap-read-file-or-url
+    :override #'al/ffap-read-file-or-url))
+
+(al/with-eval-after-load saveplace
   (setq
    ;; For some reason, `save-place-loaded' is t after `saveplace' load.
    ;; This bug(?) appeared somewhere between Emacs 29.4 and Emacs 30.1.
@@ -329,12 +336,16 @@
    save-place-limit 999)
 
   (remove-hook 'dired-initial-position-hook #'save-place-dired-hook)
-  (when (require 'al-saveplace nil t)
-    (advice-add 'save-places-to-alist
-      :override #'al/save-places-to-alist)))
+
+  (al/require al-saveplace))
+
 (al/add-after-init-hook 'save-place-mode)
 
-(with-eval-after-load 'al-file-cmd
+(al/with-eval-after-load al-saveplace
+  (advice-add 'save-places-to-alist
+    :override #'al/save-places-to-alist))
+
+(al/with-eval-after-load al-file-cmd
   (setq
    al/ssh-default-user (list user-login-name "root" "lena")
    al/ssh-default-host "hyperion"))
