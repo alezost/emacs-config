@@ -143,9 +143,10 @@
     :around #'al/org-link-set-description))
 
 (al/with-eval-after-load org-src
+  (setq org-edit-src-content-indentation 0)
   (al/bind-keys
-   :map org-src-mode-map
-   ("C-c C-c" . org-edit-src-exit))
+    :map org-src-mode-map
+    ("C-c C-c" . org-edit-src-exit))
   (push '("shell" . shell-script) org-src-lang-modes))
 
 (al/with-eval-after-load org-capture
