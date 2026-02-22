@@ -50,10 +50,6 @@
  quelpa-build-dir (expand-file-name "build" quelpa-dir))
 
 (with-eval-after-load 'al-quelpa
-  (defun al/emacs-repo (name)
-    "Return git url of a repository with my package NAME."
-    (concat "https://gitlab.com/alezost-emacs/" name ".git"))
-
   (setq
    al/main-packages
    `((quelpa             :fetcher github :repo "quelpa/quelpa")

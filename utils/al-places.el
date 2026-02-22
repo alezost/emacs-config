@@ -71,6 +71,13 @@
 
 (al/file-accessors "guix-user-profile" (al/guix-profile "main"))
 
+
+;;; URLs
+
+(defun al/emacs-repo (name)
+  "Return git url of a repository with my package NAME."
+  (concat "https://gitlab.com/alezost-emacs/" name ".git"))
+
 (provide 'al-places)
 
 ;;; al-places.el ends here
