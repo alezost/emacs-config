@@ -215,7 +215,7 @@
  select-enable-clipboard nil)
 
 (al/bind-key "C-H-y" browse-kill-ring)
-(with-eval-after-load 'browse-kill-ring
+(al/with-eval-after-load browse-kill-ring
   (setq
    browse-kill-ring-separator (make-string 64 ?—)
    browse-kill-ring-separator-face nil)
@@ -232,14 +232,15 @@
   (al/add-hook-maybe 'browse-kill-ring-mode-hook
     'al/browse-kill-ring-bind-keys))
 
-(with-eval-after-load 'register
+(al/with-eval-after-load register
   (setq register-preview-delay 0.3)
 
   (defun al/insert-register-reverse-arg (fun register &optional arg)
     "Reverse the meaning of ARG for `insert-register'."
     (funcall fun register (not arg)))
-  (advice-add 'insert-register
-    :around #'al/insert-register-reverse-arg))
+  (with-no-warnings
+    (advice-add 'insert-register
+      :around #'al/insert-register-reverse-arg)))
 
 
 ;;; Misc settings and packages
@@ -251,9 +252,7 @@
  tab-always-indent t
  fill-column 72)
 
-(setq
- save-abbrevs nil
- dabbrev-abbrev-char-regexp "\\sw\\|[-_+*]")
+(setq save-abbrevs nil)
 
 ;; Smooth scrolling.
 (setq
@@ -267,7 +266,7 @@
 (prefer-coding-system 'utf-8)
 (al/modify-syntax text-mode-syntax-table (?\" "\"   "))
 
-(with-eval-after-load 'mwim
+(al/with-eval-after-load mwim
   (defun al/mwim-set-default (var fun)
     (set var
          (mapcar (lambda (assoc)
@@ -275,10 +274,11 @@
                        (cons t fun)
                      assoc))
                  (symbol-value var))))
-  (al/mwim-set-default 'mwim-beginning-of-line-function
-                       'beginning-of-visual-line)
-  (al/mwim-set-default 'mwim-end-of-line-function
-                       'end-of-visual-line))
+  (with-no-warnings
+    (al/mwim-set-default 'mwim-beginning-of-line-function
+                         'beginning-of-visual-line)
+    (al/mwim-set-default 'mwim-end-of-line-function
+                         'end-of-visual-line)))
 
 
 ;;; Input methods, abbreviations, etc.
@@ -322,12 +322,14 @@
   "Alist of auxiliary keys for input methods.")
 (al/bind-keys-from-vars nil 'al/input-method-keys)
 
-(with-eval-after-load 'hangul
-  (when (require 'al-quail-hangul nil t)
-    (advice-add 'hangul2-input-method-internal
-      :override #'al/quail-hangul2-input-method-internal)))
+(al/with-eval-after-load hangul
+  (al/require al-quail-hangul))
 
-(with-eval-after-load 'abbrev
+(al/with-eval-after-load al-quail-hangul
+  (advice-add 'hangul2-input-method-internal
+    :override #'al/quail-hangul2-input-method-internal))
+
+(al/with-eval-after-load abbrev
   (define-abbrev-table 'global-abbrev-table
     '(("gos"  "GuixOS")
       ("hhg"  "GNU/Linux")
@@ -343,8 +345,11 @@
       ("hh6"  "Saturday")
       ("hh7"  "Sunday"))))
 
+(al/with-eval-after-load dabbrev
+  (setq dabbrev-abbrev-char-regexp "\\sw\\|[-_+*]"))
+
 (define-key key-translation-map [?\M-i] 'iso-transl-ctl-x-8-map)
-(with-eval-after-load 'iso-transl
+(al/with-eval-after-load iso-transl
   ;; Expand "C-x 8" (now "M-i") map:
   (iso-transl-define-keys
    '(("a"        . [?α])
@@ -408,9 +413,10 @@
              (vector char)))
      numbers))
   (iso-transl-define-keys
-   (append
-    (al/make-number-alist "⁰¹²³⁴⁵⁶⁷⁸⁹")
-    (al/make-number-alist "₀₁₂₃₄₅₆₇₈₉" "M-"))))
+   (with-no-warnings
+     (append
+      (al/make-number-alist "⁰¹²³⁴⁵⁶⁷⁸⁹")
+      (al/make-number-alist "₀₁₂₃₄₅₆₇₈₉" "M-")))))
 
 
 ;;; Searching, finding and replacing
@@ -424,7 +430,7 @@
  ("r"   . query-replace-regexp)
  ("R"   . replace-regexp))
 
-(with-eval-after-load 'isearch
+(al/with-eval-after-load isearch
   (setq
    isearch-allow-scroll t
    isearch-lax-whitespace nil
@@ -439,7 +445,7 @@
   (al/bind-keys-from-vars 'isearch-mode-map
     '(al/isearch-keys al/input-method-keys)))
 
-(with-eval-after-load 'replace
+(al/with-eval-after-load replace
   (defconst al/occur-keys
     '(("." . occur-prev)
       ("e" . occur-next)
@@ -452,10 +458,10 @@
     (setq-local paragraph-start "[^ ]"))
   (al/add-hook-maybe 'occur-mode-hook 'al/occur-set-paragraph))
 
-(with-eval-after-load 'grep
+(al/with-eval-after-load grep
   (setq grep-save-buffers nil))
 
-(with-eval-after-load 'misearch
+(al/with-eval-after-load misearch
   (setq multi-isearch-pause nil))
 
 (al/bind-keys
@@ -478,14 +484,14 @@
  ("C-M-S-n" . point-pos-next))
 
 (al/bind-key* "C-M-s-m" imenu)
-(with-eval-after-load 'imenu
+(al/with-eval-after-load imenu
   (setq
    ;; imenu-flatten t
    imenu-space-replacement nil
    imenu-level-separator " ⇨ "))
 
 (al/bind-key* "C-M-m" imenus)
-(with-eval-after-load 'imenus
+(al/with-eval-after-load imenus
   (setq imenus-delimiter imenu-level-separator)
 
   (defconst al/imenus-keys
@@ -495,7 +501,7 @@
   (al/bind-keys-from-vars 'imenus-minibuffer-map 'al/imenus-keys))
 
 (al/bind-key "M-s-s" al/imenus-search-elisp-directories)
-(with-eval-after-load 'al-imenus
+(al/with-eval-after-load al-imenus
   (setq al/imenus-elisp-directories
         (list al/emacs-init-dir
               al/emacs-utils-dir
@@ -504,7 +510,7 @@
 
 ;;; TeX
 
-(with-eval-after-load 'tex-mode
+(al/with-eval-after-load tex-mode
   (defconst al/tex-keys
     '("C-j")
     "Alist of auxiliary keys for `tex-mode-map'.")
@@ -532,8 +538,8 @@
   sp-join-sexp
   sp-split-sexp)
 
-(with-eval-after-load 'smartparens
-  (require 'smartparens-config nil t)
+(al/with-eval-after-load smartparens
+  (al/require smartparens-config)
   (setq
    sp-navigate-reindent-after-up nil
    sp-ignore-modes-list nil
