@@ -26,8 +26,6 @@
 (eval-when-compile
   (load "leim/quail/hangul"))
 
-(require 'hangul)
-
 ;; Original keymap taken from `hangul2-keymap' by `hangul2-input-method-internal'.
 ;;  a  b  c  d  e f g  h  i  j  k  l  m  n  o  p  q  r s t  u  v  w  x  y  z  E O  P  Q  R T  W
 ;; [17 48 26 23 7 9 30 39 33 35 31 51 49 44 32 36 18 1 4 21 37 29 24 28 43 27 8 34 38 19 2 22 25]
