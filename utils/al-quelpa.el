@@ -1,6 +1,6 @@
 ;;; al-quelpa.el --- Additional functionality for Quelpa  -*- lexical-binding: t -*-
 
-;; Copyright © 2014–2025 Alex Kost
+;; Copyright © 2014–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 
 (require 'seq)
 (require 'quelpa nil t)  ; `quelpa' does not exist in bootstrap case
+(require 'al-places)
 (require 'al-file)
 
 (defvar al/main-packages nil
@@ -52,8 +53,6 @@
                          (symbol-name (al/package-name recipe)))
                        (al/all-packages))))
     (intern (completing-read "Update/install: " names nil t))))
-
-(defvar al/emacs-my-packages-dir)   ; defined in "init.el"
 
 ;;;###autoload
 (defun al/quelpa (&rest recipes)
