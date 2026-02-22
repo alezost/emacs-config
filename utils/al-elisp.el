@@ -17,12 +17,19 @@
 
 ;;; Code:
 
+(require 'al-misc)
+
 (defun al/elisp-form-quoted-p (&rest _)
   "Replacement for `elisp--form-quoted-p'.
 That function is used only by `elisp-completion-at-point' to define if
 all types of symbols should be completed or only variables.
 I always want to complete all symbols!"
   t)
+
+(defvar al/elisp-keywords
+  '("with-no-warnings")
+  "List of additional keywords to highlight in `elisp-mode'.
+Usually, these are functions that behave like macros.")
 
 (defvar al/elisp-feature-macros-regexp
   (rx "(" (group (or "al/with-eval-after-load"
@@ -35,6 +42,8 @@ I always want to complete all symbols!"
 (defun al/elisp-add-font-lock-keywords ()
   "Add `font-lock-keywords' to highlight additional macros.
 Call this function once!"
+  (al/add-simple-font-lock-keywords
+   'emacs-lisp-mode al/elisp-keywords)
   (font-lock-add-keywords
    'emacs-lisp-mode
    `((,al/elisp-feature-macros-regexp
