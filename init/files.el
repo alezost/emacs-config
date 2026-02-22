@@ -102,8 +102,7 @@
  version-control t
  kept-old-versions 2
  kept-new-versions 4
- delete-old-versions t
- vc-make-backup-files t)
+ delete-old-versions t)
 
 (al/eval-after-init (al/require al-backup))
 (al/with-eval-after-load al-backup

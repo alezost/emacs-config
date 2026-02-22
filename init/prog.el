@@ -436,9 +436,13 @@
 ;;; Version control
 
 (setopt
- vc-handled-backends nil
  magit-auto-revert-mode nil
  magit-define-global-key-bindings nil)
+
+(al/with-eval-after-load vc-hooks
+  (setq
+   vc-make-backup-files t
+   vc-handled-backends nil))
 
 ;; I don't load "magit-autoloads.el", so autoload some commands.
 (al/autoload "magit"
