@@ -15,7 +15,6 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 (load (expand-file-name "../utils/al-places"
                         (file-name-directory
                          (file-truename load-file-name))))
@@ -63,6 +62,8 @@
         "custom"))
 
 (defvar al/load-paths nil)
+
+(declare-function al/generate-autoloads "al-autoload")
 
 (defun al/load-autoloads (name directory autoloads-file &rest args)
   "Load AUTOLOADS-FILE, generate it for DIRECTORY if needed.
@@ -159,16 +160,20 @@ Do not alter `load-path'.  Instead, push added `load-path' to
   (list 'hl-todo-mode
         (lambda () (setq buffer-read-only nil))))
 (al/add-after-init-hook 'which-key-mode)
+
+(defvar server-name)
 (al/eval-after-init
   (when (string= server-name "server-emms")
     (appt-activate)))
 
-(when (require 'al-process nil t)
+(declare-function al/call-with-locale "al-process")
+(when (al/require al-process)
   (advice-add 'insert-directory :around #'al/call-with-locale)
   (al/enable-process-hooks))
 
+(declare-function al/server-named-start "al-server")
 (with-demoted-errors "ERROR during server start: %S"
-  (require 'al-server)
+  (al/require al-server)
   (al/server-named-start "server-emms" "server"))
 
 (message "Garbage collected %d times." gcs-done)
