@@ -44,15 +44,15 @@
         '(ascii html icalendar latex odt texinfo man))
 
 (al/with-eval-after-load org
-  (when (require 'al-text nil t)
+  (when (al/require al-text)
     (al/add-hook-maybe 'org-mode-hook 'al/set-default-paragraph))
 
-  (when (require 'al-misc nil t)
+  (when (al/require al-misc)
     ;; "/" and "_" are common for file names, so don't fontify them:
     (setq org-emphasis-alist
           (al/assoc-delete-all '("/" "_") org-emphasis-alist)))
 
-  (when (require 'al-file nil t)
+  (when (al/require al-file)
     (setq
      org-file-apps
      `(("\\.mm\\'" . default)
@@ -134,9 +134,9 @@
   ;; `imenu-default-create-index-function' instead of a specialized index
   ;; made by `org-imenu-get-tree'.  So imenu is required here to be sure
   ;; it is loaded before enabling `org-mode'.
-  (require 'imenu nil t)
+  (al/require imenu)
 
-  (require 'al-org nil t))
+  (al/require al-org))
 
 (al/with-eval-after-load al-org
   (advice-add 'org-link-make-string
@@ -166,7 +166,7 @@
   (al/bind-keys-from-vars 'org-ref-cite-keymap 'al/org-ref-cite-keys))
 
 (al/with-eval-after-load al-org-emms
-  (when (require 'emms-mpv nil t)
+  (when (al/require emms-mpv)
     (add-hook 'emms-mpv-file-loaded-hook #'al/org-emms-seek)))
 
 
@@ -177,7 +177,7 @@
 (al/autoload "pdf-view" pdf-view-mode)
 
 (al/with-eval-after-load pdf-view
-  (when (require 'al-pdf nil t)
+  (when (al/require al-pdf)
     (advice-add 'pdf-view-deactivate-region
       :override 'al/pdf-view-deactivate-region))
 
@@ -255,7 +255,7 @@
 
 (declare-function al/add-to-auto-mode-alist "al-file")
 (al/eval-after-init
-  (when (require 'al-file nil t)
+  (when (al/require al-file)
     (al/add-to-auto-mode-alist
      `((sh-mode "/etc/profile\\'"
                 "bashrc\\'")

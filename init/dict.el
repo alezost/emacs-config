@@ -112,7 +112,7 @@
   (add-hook 'dictem-postprocess-show-info-hook
             #'dictem-postprocess-definition-hyperlinks)
 
-  (require 'al-dictem))
+  (al/require al-dictem))
 
 (al/with-eval-after-load al-dictem
   (setq al/dictem-dicts
@@ -132,7 +132,7 @@
    google-translate-listen-program "mpv"
    google-translate-listen-button-label "Listen")
 
-  (require 'al-google-translate))
+  (al/require al-google-translate))
 
 (al/with-eval-after-load google-translate-smooth-ui
   (google-translate--setup-minibuffer-keymap)
