@@ -229,9 +229,9 @@ with (TAG ELEMENTS NAME) entries.")
 
 (defvar al/tempo-org-templates
   `((,(al/tempo-tag "e") "org-example"
-     ("#+begin_example" n p n "#+end_example" n))
+     ("#+begin_example" n p r "#+end_example" n))
     (,(al/tempo-tag "s") "org-source"
-     ("#+begin_src " p n n "#+end_src" n)))
+     ("#+begin_src " p n r "#+end_src" n)))
   "Templates for `org-mode' buffers.")
 
 (defvar al/tempo-commit-message-templates
