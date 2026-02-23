@@ -379,11 +379,6 @@ This variable is used to set `al/dired-ignored-extensions'.")
   (al/bind-keys-from-vars 'eshell-mode-map 'al/eshell-keys)
   (al/bind-keys-from-vars 'eshell-hist-mode-map 'al/eshell-hist-keys)
 
-  ;; Default value of `paragraph-separate' breaks
-  ;; `eshell-next-prompt'/`eshell-previous-prompt'.
-  (defun al/eshell-set-paragraph ()
-    (setq-local paragraph-separate "useLESS var"))
-
   (al/add-hook-maybe 'eshell-mode-hook
     '(al/eshell-set-paragraph
       al/eshell-set-parse-function))

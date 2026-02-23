@@ -240,6 +240,11 @@ input is not forced to begin with the current input."
 
 ;;; Miscellaneous
 
+(defun al/eshell-set-paragraph ()
+  ;; Default value of `paragraph-separate' breaks
+  ;; `eshell-next-prompt'/`eshell-previous-prompt'.
+  (setq-local paragraph-separate "useLESS var"))
+
 (declare-function shell--parse-pcomplete-arguments "shell")
 
 (defun al/eshell-set-parse-function ()
