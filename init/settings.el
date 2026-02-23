@@ -384,7 +384,9 @@ This variable is used to set `al/dired-ignored-extensions'.")
   (defun al/eshell-set-paragraph ()
     (setq-local paragraph-separate "useLESS var"))
 
-  (al/add-hook-maybe 'eshell-mode-hook 'al/eshell-set-paragraph)
+  (al/add-hook-maybe 'eshell-mode-hook
+    '(al/eshell-set-paragraph
+      al/eshell-set-parse-function))
 
   ;; eshell does horrible thing with aliases: "alias foo" not only
   ;; removes "foo" alias from the current eshell buffer (which is

@@ -237,6 +237,22 @@ input is not forced to begin with the current input."
   (interactive)
   (eshell-save-some-history))
 
+
+;;; Miscellaneous
+
+(declare-function shell--parse-pcomplete-arguments "shell")
+
+(defun al/eshell-set-parse-function ()
+  (when (and (require 'shell nil t)
+             (fboundp 'shell--parse-pcomplete-arguments))
+    ;; Default file completions in `eshell' are horrible.  The default
+    ;; parsing function, `eshell-complete-parse-arguments', ignores
+    ;; everything that is placed after point.  This, for example, leads to
+    ;; the following completion: "cd uti|ls" → "cd utils/|ls", while with
+    ;; shell parsing, it will be "cd utils/|" as expected.
+    (setq-local pcomplete-parse-arguments-function
+                #'shell--parse-pcomplete-arguments)))
+
 (provide 'al-eshell)
 
 ;;; al-eshell.el ends here
