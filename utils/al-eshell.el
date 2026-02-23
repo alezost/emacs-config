@@ -258,6 +258,11 @@ input is not forced to begin with the current input."
     (setq-local pcomplete-parse-arguments-function
                 #'shell--parse-pcomplete-arguments)))
 
+(defun al/eshell-set-local-variables ()
+  "Set missing local variables for `eshell-mode'."
+  (al/eshell-set-paragraph)
+  (al/eshell-set-parse-function))
+
 (provide 'al-eshell)
 
 ;;; al-eshell.el ends here

@@ -379,10 +379,6 @@ This variable is used to set `al/dired-ignored-extensions'.")
   (al/bind-keys-from-vars 'eshell-mode-map 'al/eshell-keys)
   (al/bind-keys-from-vars 'eshell-hist-mode-map 'al/eshell-hist-keys)
 
-  (al/add-hook-maybe 'eshell-mode-hook
-    '(al/eshell-set-paragraph
-      al/eshell-set-parse-function))
-
   ;; eshell does horrible thing with aliases: "alias foo" not only
   ;; removes "foo" alias from the current eshell buffer (which is
   ;; already bad enough), it also immediately overwrites (!)
@@ -406,6 +402,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
 
 (al/with-eval-after-load al-eshell
   (setq eshell-prompt-function #'al/eshell-prompt)
+  (al/add-hook-maybe 'eshell-mode-hook 'al/eshell-set-local-variables)
   (advice-add 'eshell/info :override #'al/eshell/info))
 
 
