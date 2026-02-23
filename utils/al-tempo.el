@@ -36,7 +36,7 @@
   "Regexp for `tempo-match-finder'.")
 
 (defvar-local al/tempo-configured nil
-  "If `nil', then the current buffes has not been configured yet.
+  "If `nil', then the current buffer has not been configured yet.
 
 Otherwise, the current buffer has been configured and:
 
@@ -325,8 +325,9 @@ Return non-nil if completion succeeds, nil otherwise."
          (tempo-complete-tag 'silent))))
 
 (defun al/tempo-refresh-templates ()
-  "Remove all created templates."
+  "Remove all created templates for the current buffer."
   (interactive)
+  (setq al/tempo-configured nil)
   (dolist (var al/tempo-tags)
     (makunbound var)))
 
