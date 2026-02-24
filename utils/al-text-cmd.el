@@ -374,7 +374,8 @@ If a prefix ARG is non-nil, use that many lines."
   (interactive "p")
   (or (> arg 0)
       (error "I don't want to comment previous lines"))
-  (comment-or-uncomment-region (pos-bol) (pos-eol arg)))
+  (comment-or-uncomment-region (line-beginning-position)
+                               (line-end-position arg)))
 
 (defvar dabbrev-abbrev-char-regexp)
 
