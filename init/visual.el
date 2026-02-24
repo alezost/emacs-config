@@ -18,12 +18,14 @@
 
 ;;; Frame specific settings
 
-(defun al/frame-visual-actions (&optional frame)
+(declare-function al/first-existing-font "al-font")
+
+(defun al/frame-visual-actions (&optional _frame)
   "Perform some visual actions specific to a FRAME type."
   (when (and (display-graphic-p)
-             (require 'al-font nil t))
+             (al/require al-font))
     ;; Should be "solved":
-    ;; 안녕 (droid)
+    ;; 안녕 (droid);
     ;; 武; 🐼, 😻, ⚽, 💩, ∵, ⸪, 🃜, 🜒, 🝖, ←↑→↓ (symbola);
     ;; ࿌ (unifont).
     (setq use-default-font-for-symbols nil)
@@ -76,7 +78,7 @@
 
 ;;; Themes
 
-(with-eval-after-load 'custom
+(al/with-eval-after-load custom
   (setq custom-safe-themes t)
 
   ;; Fix bug <http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16266>.
@@ -84,10 +86,11 @@
     "Allow setting undefined variables in themes."
     (let (custom--inhibit-theme-enable)
       (apply fun args)))
-  (advice-add 'custom-theme-set-variables
-    :around #'al/fix-custom-variables-bug))
+  (with-no-warnings
+    (advice-add 'custom-theme-set-variables
+      :around #'al/fix-custom-variables-bug)))
 
-(with-eval-after-load 'alect-themes
+(al/with-eval-after-load alect-themes
   (setq
    alect-display-class '((class color) (min-colors 256))
    alect-overriding-faces
@@ -95,8 +98,7 @@
                (t :background unspecified))))))
 
 (al/eval-after-init
-  (and (require 'alect-themes nil t)
-       (require 'al-color nil t)
+  (and (al/require alect-themes al-color)
        (al/load-theme 'alect-light)))
 
 
@@ -123,8 +125,8 @@
   "Mode line construct for displaying `server-name' if server is running.")
 (put 'al/mode-server 'risky-local-variable t)
 
-(al/eval-after-init (require 'dim nil t))
-(with-eval-after-load 'dim
+(al/eval-after-init (al/require dim))
+(al/with-eval-after-load dim
   (dim-major-names
    '((emacs-lisp-mode            "EL")
      (elisp-byte-code-mode       "EL-byte")
@@ -340,14 +342,14 @@
 ;; (menu-bar-mode -1)
 ;; (scroll-bar-mode -1)
 
-(with-eval-after-load 'scroll-bar
+(al/with-eval-after-load scroll-bar
   (setq previous-scroll-bar-mode 'right))
 
 (setq
  use-system-tooltips nil
  tooltip-delay 0.2)
 
-(with-eval-after-load 'whitespace
+(al/with-eval-after-load whitespace
   (setq
    whitespace-line-column 78
    whitespace-display-mappings
@@ -360,16 +362,16 @@
    '(face spaces tabs trailing lines space-before-tab newline
           indentation space-after-tab tab-mark newline-mark)))
 
-(with-eval-after-load 'ruler-mode
+(al/with-eval-after-load ruler-mode
   (setq ruler-mode-show-tab-stops t))
 
 (setq show-paren-delay 0.1)
-(with-eval-after-load 'paren
+(al/with-eval-after-load paren
   (setq show-paren-when-point-inside-paren t
         show-paren-when-point-in-periphery t))
 (al/add-after-init-hook 'show-paren-mode)
 
-(with-eval-after-load 'indent-guide
+(al/with-eval-after-load indent-guide
   (setq
    indent-guide-delay 0.3
    indent-guide-char "¦")
@@ -382,10 +384,10 @@
   (advice-add 'indent-guide-post-command-hook
     :override 'al/indent-guide-post-command-hook))
 
-(with-eval-after-load 'make-color
+(al/with-eval-after-load make-color
   (al/add-hook-maybe 'make-color-mode-hook 'al/bar-cursor-type))
 
-(with-eval-after-load 'rainbow-mode
+(al/with-eval-after-load rainbow-mode
   (setq rainbow-x-colors t))
 
 ;;; visual.el ends here
