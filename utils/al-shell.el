@@ -75,6 +75,20 @@ This variable is used by `al/shells' command.")
         (let ((default-directory (cdr assoc)))
           (shell (get-buffer-create buf-name)))))))
 
+
+;;; Miscellaneous
+
+(defun al/shell-set-comment-variables ()
+  "Set comment local variables for `shell-mode'."
+  ;; Taken from `sh-base-mode'.
+  (setq-local
+   comment-start "# "
+   comment-start-skip "#+[\t ]*"))
+
+(defun al/shell-set-local-variables ()
+  "Set missing local variables for `shell-mode'."
+  (al/shell-set-comment-variables))
+
 (provide 'al-shell)
 
 ;;; al-shell.el ends here

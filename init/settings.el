@@ -331,13 +331,26 @@ This variable is used to set `al/dired-ignored-extensions'.")
   (al/bind-keys-from-vars 'shell-mode-map 'al/shell-keys)
   (al/add-hook-maybe 'shell-mode-hook
     '(abbrev-mode
-      al/no-truncate-lines)))
+      al/no-truncate-lines))
+
+  (al/require sh-script al-shell))
+
+(defvar shell-mode-syntax-table nil)
+(defvar eshell-mode-syntax-table nil)
+(al/with-eval-after-load sh-script
+  (setq
+   ;; `sh-mode-syntax-table' has proper syntax for comments unlike
+   ;; `shell' and `eshell'.
+   shell-mode-syntax-table sh-mode-syntax-table
+   eshell-mode-syntax-table sh-mode-syntax-table))
 
 (al/with-eval-after-load al-shell
   (setq al/shell-buffer-alist
         `(("*shell*"    . ,al/download-dir)
           ("*shell*<2>" . ,al/download-dir)
-          ("*shell*<3>" . ,al/download-dir))))
+          ("*shell*<3>" . ,al/download-dir)))
+
+  (al/add-hook-maybe 'shell-mode-hook 'al/shell-set-local-variables))
 
 (al/bind-keys
  ("C-z"   . al/eshell)
@@ -386,7 +399,7 @@ This variable is used to set `al/dired-ignored-extensions'.")
   ;; brilliant idea?
   (advice-add 'eshell-write-aliases-list :override #'ignore)
 
-  (al/require al-eshell))
+  (al/require sh-script al-eshell))
 
 (al/with-eval-after-load em-prompt
    (setq eshell-highlight-prompt nil))

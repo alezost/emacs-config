@@ -25,6 +25,7 @@
 (require 'al-general)
 (require 'al-places)
 (require 'al-buffer)
+(require 'al-shell)     ; for `al/shell-set-comment-variables'
 (require 'al-url)
 (require 'al-color)
 
@@ -261,6 +262,7 @@ input is not forced to begin with the current input."
 (defun al/eshell-set-local-variables ()
   "Set missing local variables for `eshell-mode'."
   (al/eshell-set-paragraph)
+  (al/shell-set-comment-variables)
   (al/eshell-set-parse-function))
 
 (provide 'al-eshell)
