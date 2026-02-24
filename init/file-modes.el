@@ -88,6 +88,10 @@
              ("n" . org-narrow-to-subtree))
            org-speed-commands))
 
+  (al/modify-syntax org-mode-syntax-table
+    (?\" "\"\"")
+    (?\' "\"'"))
+
   ;; A hack to fontify keys in "*Org Select*" buffer.  Ideally,
   ;; `org-mks' should be improved to prettify output in "*Org Select*"
   ;; buffer.
