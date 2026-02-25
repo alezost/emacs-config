@@ -28,7 +28,8 @@ EMACS = emacs
 MY_INIT_DIR = $(CURDIR)/init
 MY_UTILS_DIR = $(CURDIR)/utils
 MY_ELPA_DIR = $(CURDIR)/packages
-EMACS_ELPA_DIR = $(CURDIR)/data/elpa
+MY_DATA_DIR = $(CURDIR)/data
+EMACS_ELPA_DIR = $(MY_DATA_DIR)/elpa
 GUIX_DIR = $(HOME)/.guix-profiles/emacs/emacs/share/emacs/site-lisp
 GUIX_ELPA_DIR = $(GUIX_DIR)/guix.d
 SLIME_DIR = $(shell find "$(HOME)/.quicklisp/dists/quicklisp/software" -mindepth 1 -maxdepth 1 -type d -name "slime*" | head -n1)
@@ -55,12 +56,7 @@ UTILS_ELCS = $(UTILS_ELS:.el=.elc)
 PACKAGES_ELS = $(shell find -L $(MY_ELPA_DIR) -maxdepth 1 -name '*.el')
 PACKAGES_ELCS = $(PACKAGES_ELS:.el=.elc)
 
-# "init.el" and "keys.el" should be compiled first.
-INIT_ELS =							\
-  $(MY_INIT_DIR)/init.el					\
-  $(MY_INIT_DIR)/keys.el					\
-  $(shell find -L $(MY_INIT_DIR) -maxdepth 1 -name '*.el'	\
-          ! -name 'init.el' ! -name 'keys.el')
+INIT_ELS = $(shell find -L $(MY_INIT_DIR) -maxdepth 1 -name '*.el')
 INIT_ELCS = $(INIT_ELS:.el=.elc)
 
 all: packages utils
@@ -74,13 +70,19 @@ utils: $(UTILS_ELCS)
 	-@$(EMACS_BATCH) --eval "(setq load-prefer-newer t)" \
 	-f batch-byte-compile $< ;
 
-# This target is not very useful actually: compiling init files brings
-# tons of garbage warnings because 'with-eval-after-load' wraps lambda
-# in 'eval-after-load', so almost everything inside it is unknown (as it
-# is used to set up a foreign package) and produces a warning.
+# Init files consist mostly of key bindings, setting variables and
+# hooks, so compiling them is not very useful as it is.  The main
+# purpose of this target is to check for useful compilation warnings
+# (like obsolete variables).
 init: $(INIT_ELS)
 	@printf "Compiling init files\n"
-	@$(EMACS_BATCH) -f batch-byte-compile $^ ;
+	@$(EMACS_BATCH) -l $(MY_UTILS_DIR)/utils-autoloads.el \
+			-l $(MY_DATA_DIR)/my-autoloads.el \
+			-l $(MY_DATA_DIR)/elpa-autoloads.el \
+			--eval "(require 'al-general)" \
+			--eval "(require 'al-places)" \
+			--eval "(require 'al-key)" \
+	-f batch-byte-compile $^ ;
 
 clean-packages:
 	@printf "Removing packages/*.elc...\n"
