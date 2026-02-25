@@ -149,6 +149,13 @@ See `parens-skip' for the returning value."
 (defvar parens-open-regexp (rx (or ?\[ ?\( ?{ ?< ?\" ?` ?‘ ?“))
   "Regexp matching a single open parenthesis-like symbol.")
 
+(defvar parens-sexp-modes
+  '(lisp-data-mode
+    scheme-mode)
+  "List of major modes where moving commands try to move by sexps.
+In other modes, fallback to searching for `parens-open-regexp' while
+moving up or down.")
+
 ;;;###autoload
 (defun parens-forward-sexp ()
   "Move forward across one sexp."
@@ -242,6 +249,19 @@ buffer."
         (forward-char)
         (ppss-comment-or-string-start (syntax-ppss)))))
 
+(defun parens-move-fallback-p ()
+  "Return non-nil, if we should fallback to `parens-open-regexp' search."
+  (or (not (derived-mode-p parens-sexp-modes))
+      ;; `down-list' does not support strings and comments at all.
+      ;; `paredit-forward-down' does not move down inside a
+      ;; string/comment and doesn't support symbol quotes (`').
+      ;; `sp-down-sexp' works inside strings/comments but it is highly
+      ;; unreliable (it can suddenly stuck or show "Search failed"
+      ;; message which can't be handled because it is not an error).  So
+      ;; instead, we simply search for parentheses inside a
+      ;; string/comment.
+      (parens-inside-comment-or-string)))
+
 ;;;###autoload
 (defun parens-forward-down ()
   "Move forward down one level of parentheses.
@@ -252,14 +272,7 @@ move down, then move forward up and down again.
 Also this function tries to do something useful inside comments and
 strings."
   (interactive)
-  ;; `down-list' does not support strings and comments at all.
-  ;; `paredit-forward-down' does not move down inside a string/comment
-  ;; and doesn't support symbol quotes (`').  `sp-down-sexp' works
-  ;; inside strings/comments but it is highly unreliable (it can
-  ;; suddenly stuck or show "Search failed" message which can't be
-  ;; handled because it is not an error).  So instead, we simply search
-  ;; for parentheses inside a string/comment.
-  (if (parens-inside-comment-or-string)
+  (if (parens-move-fallback-p)
       (re-search-forward parens-open-regexp nil t)
     (parens-handle-scan-error
         (parens-forward-down-sexp)
@@ -274,7 +287,7 @@ strings."
 This is similar to `parens-backward-up-sexp' except it also tries to do
 something useful inside comments and strings."
   (interactive)
-  (if (parens-inside-comment-or-string)
+  (if (parens-move-fallback-p)
       (re-search-backward parens-open-regexp nil t)
     (call-interactively #'parens-backward-up-sexp)))
 
