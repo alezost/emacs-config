@@ -148,7 +148,7 @@ See `parens-skip' for the returning value."
 
 ;;; Moving
 
-(defvar parens-open-regexp (rx (or ?\[ ?\( ?{ ?< ?\" ?`))
+(defvar parens-open-regexp (rx (or ?\[ ?\( ?{ ?< ?\" ?` ?‘ ?“))
   "Regexp matching a single open parenthesis-like symbol.")
 
 ;;;###autoload
