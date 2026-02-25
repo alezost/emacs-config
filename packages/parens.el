@@ -114,9 +114,6 @@ If not, throw an error."
 (defun parens-skip (direction)
   "Skip parentheses at point and whitespaces after that.
 
-If there are no parentheses at point, then skip whitespaces at first and
-parentheses after that.
-
 DIRECTION should be either `forward' or `backward' symbol.
 
 Return non-nil, if something was skipped.  Return nil otherwise."
@@ -126,9 +123,10 @@ Return non-nil, if something was skipped.  Return nil otherwise."
                               (backward #'skip-chars-backward))
                             str))))
     (let* ((skipped1 (skip parens-string))
-           (skipped2 (skip " \t\n"))
-           (skipped3 (if (= 0 skipped1) (skip parens-string) 0))
-           (skipped  (+ skipped1 skipped2 skipped3)))
+           (skipped2 (if (> skipped1 0)
+                         (skip " \t\n")
+                       0))
+           (skipped  (+ skipped1 skipped2)))
       (> skipped 0))))
 
 ;;;###autoload
