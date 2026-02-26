@@ -199,9 +199,11 @@
   (al/require dired-x)
   (al/require al-dired))
 
+(defvar al/completion-ignored-extensions)
 (al/with-eval-after-load al-dired
-  (setq al/dired-ignored-extensions
-        (cons ".go" al/completion-ignored-extensions))
+  (when (al/require al-complete)
+    (setq al/dired-ignored-extensions
+          (cons ".go" al/completion-ignored-extensions)))
   (al/add-hook-maybe 'dired-mode-hook
     'al/dired-set-completion-ignored-extensions)
   (advice-add 'dired-sort-set-mode-line

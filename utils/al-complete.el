@@ -19,6 +19,10 @@
 
 (require 'let-macros)
 
+(defvar al/completion-ignored-extensions completion-ignored-extensions
+  "Original value of `completion-ignored-extensions'.
+This variable is used to set `al/dired-ignored-extensions'.")
+
 (defun al/completion-all-completions (fun string table pred point
                                       &optional metadata)
   "Call FUN on the rest args except use 0 instead of POINT.
