@@ -86,9 +86,13 @@ This variable is used to set `al/dired-ignored-extensions'.")
   (al/bind-keys-from-vars '(icomplete-vertical-mode-minibuffer-map)
     'al/icomplete-vertical-keys))
 
-(al/eval-after-init (al/require al-minibuffer))
-(al/with-eval-after-load al-minibuffer
+(al/with-eval-after-load al-complete
   (setq completion-styles '(al/split))
+
+  (advice-add 'completion--styles :override #'al/completion-styles)
+  (advice-add 'completion-all-completions :around #'al/completion-all-completions))
+
+(al/with-eval-after-load al-minibuffer
   (al/bind-keys
     :map al/minibuffer-buffer-map
     ("M-m" . al/minibuffer-magit-buffers)
@@ -104,8 +108,6 @@ This variable is used to set `al/dired-ignored-extensions'.")
     ("C-d" . al/minibuffer-describe-symbol)
     ("M-d" . al/minibuffer-find-symbol))
 
-  (advice-add 'completion--styles :override #'al/completion-styles)
-  (advice-add 'completion-all-completions :around #'al/completion-all-completions)
   (advice-add 'read-file-name             :around #'al/read-file-add-keymap)
   (advice-add 'read-buffer                :around #'al/read-buffer-add-keymap)
   (advice-add 'read-extended-command      :around #'al/read-symbol-add-keymap)
@@ -161,6 +163,9 @@ This variable is used to set `al/dired-ignored-extensions'.")
   ("TAB" . al/tab)
   ("<backtab>" . completion-at-point)
   ("<M-tab>" . al/complete-elisp-symbol))
+
+(al/eval-after-init
+  (al/require al-complete al-minibuffer))
 
 
 ;;; Working with buffers: ibuffer, uniquify, …
