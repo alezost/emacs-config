@@ -416,11 +416,7 @@
       '(compilation-mode-map compilation-minor-mode-map)
     '(al/compilation-common-keys al/compilation-keys))
 
-  ;; TODO Move it somewhere.
-  (defun al/hl-line-mode ()
-    (unless (memq major-mode '(grep-mode))
-      (hl-line-mode)))
-  (add-hook 'compilation-mode-hook 'al/hl-line-mode)
+  (al/add-hook-maybe 'compilation-mode-hook 'al/hl-line-mode)
 
   (when (al/require al-compilation)
     (al/add-hook-maybe 'compilation-finish-functions

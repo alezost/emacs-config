@@ -103,6 +103,17 @@ With prefix, prompt for directory as well."
                   (prin1 symbol)
                   (princ "\n"))))))
 
+(defvar al/hl-line-mode-exclude '(grep-mode)
+  "List of modes where `al/hl-line-mode' does nothing.")
+
+;;;###autoload
+(defun al/hl-line-mode ()
+  "Toggle `hl-line-mode' maybe.
+Do nothing if current mode is derived from `al/hl-line-mode-exclude'."
+  (interactive)
+  (unless (derived-mode-p al/hl-line-mode-exclude)
+    (hl-line-mode 'toggle)))
+
 (provide 'al-misc-cmd)
 
 ;;; al-misc-cmd.el ends here
