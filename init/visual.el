@@ -97,9 +97,10 @@
    '((hl-line ((((type graphic)) :background bg)
                (t :background unspecified))))))
 
-(al/eval-after-init
-  (and (al/require alect-themes al-color)
-       (al/load-theme 'alect-light)))
+(al/with-eval-after-load al-color
+  :load after-init
+  (when (al/require alect-themes)
+    (al/load-theme 'alect-light)))
 
 
 ;;; Mode line and frame title
@@ -125,8 +126,8 @@
   "Mode line construct for displaying `server-name' if server is running.")
 (put 'al/mode-server 'risky-local-variable t)
 
-(al/eval-after-init (al/require dim))
 (al/with-eval-after-load dim
+  :load 'after-init
   (dim-major-names
    '((emacs-lisp-mode            "EL")
      (elisp-byte-code-mode       "EL-byte")

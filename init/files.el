@@ -104,8 +104,8 @@
  kept-new-versions 4
  delete-old-versions t)
 
-(al/eval-after-init (al/require al-backup))
 (al/with-eval-after-load al-backup
+  :load after-init
   (setq
    al/backup-ignored-regexps
    '("gnus/mail/archive/sent"

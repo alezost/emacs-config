@@ -712,7 +712,6 @@
   web-search-naver)
 
 (al/with-eval-after-load web-search
-  :config
   (web-search-add-engine
    'ipduh "IPduh"
    "http://ipduh.com/apropos/?%s"

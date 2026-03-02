@@ -79,6 +79,7 @@
     'al/icomplete-vertical-keys))
 
 (al/with-eval-after-load al-complete
+  :load after-init
   (setq
    completion-styles '(al/split)
    completion-ignored-extensions
@@ -90,6 +91,7 @@
   (advice-add 'completion-all-completions :around #'al/completion-all-completions))
 
 (al/with-eval-after-load al-minibuffer
+  :load after-init
   (al/bind-keys
     :map al/minibuffer-buffer-map
     ("M-m" . al/minibuffer-magit-buffers)
@@ -160,9 +162,6 @@
   ("TAB" . al/tab)
   ("<backtab>" . completion-at-point)
   ("<M-tab>" . al/complete-elisp-symbol))
-
-(al/eval-after-init
-  (al/require al-complete al-minibuffer))
 
 
 ;;; Working with buffers: ibuffer, uniquify, …
@@ -710,7 +709,6 @@
   darts-day-select)
 
 (al/with-eval-after-load darts-daydata
-  :config
   (setq
    darts-database "darts"
    darts-data-dir "~/darts/daytables"

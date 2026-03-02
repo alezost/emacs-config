@@ -166,15 +166,15 @@ Do not alter `load-path'.  Instead, push added `load-path' to
   (when (string= server-name "server-emms")
     (appt-activate)))
 
-(declare-function al/call-with-locale "al-process")
-(when (al/require al-process)
+(al/with-eval-after-load al-process
+  :load t
   (advice-add 'insert-directory :around #'al/call-with-locale)
   (al/enable-process-hooks))
 
-(declare-function al/server-named-start "al-server")
-(with-demoted-errors "ERROR during server start: %S"
-  (al/require al-server)
-  (al/server-named-start "server-emms" "server"))
+(al/with-eval-after-load al-server
+  :load t
+  (with-demoted-errors "ERROR during server start: %S"
+    (al/server-named-start "server-emms" "server")))
 
 (message "Garbage collected %d times." gcs-done)
 (al/title-message "Emacs config has been loaded")

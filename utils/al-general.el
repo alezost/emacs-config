@@ -260,12 +260,38 @@ respectively."
 This is similar to `with-eval-after-load' except it does not produce
 unneeded compilation warnings at compile time.
 
-FEATURE should be an unquoted symbol."
+FEATURE should be an unquoted symbol.
+
+BODY can start with the following optional keywords:
+
+  `:load'       can be `nil' (default) to do nothing additionally, `t'
+                to load FEATURE immediately, or anything else to load
+                FEATURE at `after-init-hook'.
+"
   (declare (indent 1) (debug (form def-body)))
   (when (bound-and-true-p byte-compile-current-file)
     (unless (require feature nil t)
       (al/warning-message "`%s' feature is not available" feature)))
-  `(eval-after-load ',feature (lambda () ,@body)))
+  (let ((load nil))
+    (while (keywordp (car body))
+      (let ((keyword (pop body))
+            (value   (pop body)))
+        (cond
+         ((eq keyword :load)
+          (setq load value))
+         (t
+          (al/warning-message "Unknown keyword for `al/with-eval-after-load': %s"
+                              keyword)))))
+    (cond
+     ((null load)
+      `(eval-after-load ',feature (lambda () ,@body)))
+     ((eq t load)
+      `(when (al/require ,feature)
+         ,@body))
+     (t
+      `(progn
+         (eval-after-load ',feature (lambda () ,@body))
+         (al/eval-after-init (al/require ,feature)))))))
 
 
 ;;; Command utils

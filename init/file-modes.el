@@ -257,32 +257,31 @@
   (list t))
 (advice-add 'normal-mode :filter-args #'al/fix-normal-mode)
 
-(declare-function al/add-to-auto-mode-alist "al-file")
-(al/eval-after-init
-  (when (al/require al-file)
-    (al/add-to-auto-mode-alist
-     `((sh-mode "/etc/profile\\'"
-                "bashrc\\'")
-       (conf-xdefaults-mode ,(al/file-regexp "Xmodmap"))
-       (conf-space-mode ,(al/file-regexp "mailmap" "gitignore"))
-       (conf-unix-mode ,(al/file-regexp
-                         "rules" "hwdb" "cnf" "map" "inc" "service"
-                         "target" "socket" "timer" "mount"))
-       (conf-unix-mode (".*rc\\'"
-                        "/etc/.*\\'")
-                       t)
-       (syslog-mode ("/var/log.*\\'"
-                     ;;"\\.log\\'" not this because of ~/config/emacs/data/emacs-wget.log
-                     )
-                    t)
-       (emacs-lisp-mode "/emms/.+\\.pl\\'") ; my playlists in `emms-directory'
-       (pdf-view-mode "\\.[pP][dD][fF]\\'")
-       (markdown-mode ,(al/file-regexp "mdown"))
-       (pkgbuild-mode "PKGBUILD\\'")
-       (java-mode ".*tmwa-server-data/world/map/npc/.*txt\\'")
-       (gtypist-mode ,(al/file-regexp "typ"))
-       (gnuplot-mode ,(al/file-regexp "plot"))
-       (maxima-mode ,(al/file-regexp "max"))))))
+(al/with-eval-after-load al-file
+  :load t
+  (al/add-to-auto-mode-alist
+   `((sh-mode "/etc/profile\\'"
+              "bashrc\\'")
+     (conf-xdefaults-mode ,(al/file-regexp "Xmodmap"))
+     (conf-space-mode ,(al/file-regexp "mailmap" "gitignore"))
+     (conf-unix-mode ,(al/file-regexp
+                       "rules" "hwdb" "cnf" "map" "inc" "service"
+                       "target" "socket" "timer" "mount"))
+     (conf-unix-mode (".*rc\\'"
+                      "/etc/.*\\'")
+                     t)
+     (syslog-mode ("/var/log.*\\'"
+                   ;;"\\.log\\'" not this because of ~/config/emacs/data/emacs-wget.log
+                   )
+                  t)
+     (emacs-lisp-mode "/emms/.+\\.pl\\'") ; my playlists in `emms-directory'
+     (pdf-view-mode "\\.[pP][dD][fF]\\'")
+     (markdown-mode ,(al/file-regexp "mdown"))
+     (pkgbuild-mode "PKGBUILD\\'")
+     (java-mode ".*tmwa-server-data/world/map/npc/.*txt\\'")
+     (gtypist-mode ,(al/file-regexp "typ"))
+     (gnuplot-mode ,(al/file-regexp "plot"))
+     (maxima-mode ,(al/file-regexp "max")))))
 
 (al/with-eval-after-load conf-mode
   (al/add-hook-maybe 'conf-mode-hook 'hl-line-mode))
