@@ -70,10 +70,6 @@
    emms-playlist-buffer-name "*EMMS Playlist*"
    emms-show-format "%s")
 
-  (push 'emms-info-initialize-track emms-track-initialize-functions)
-  (al/add-hook-maybe 'emms-player-started-hook
-    'emms-last-played-update-current)
-
   (al/require
     emms-source-file
     emms-source-playlist
@@ -168,10 +164,15 @@
 (al/autoload "emms-info-native" emms-info-native)
 
 (al/with-eval-after-load emms-info
+  (push 'emms-info-initialize-track emms-track-initialize-functions)
   (setq emms-info-functions '(emms-info-native emms-info-cueinfo)))
 
 (al/with-eval-after-load emms-source-file
   (setq emms-source-file-default-directory al/music-dir))
+
+(al/with-eval-after-load emms-last-played
+  (al/add-hook-maybe 'emms-player-started-hook
+    'emms-last-played-update-current))
 
 (al/with-eval-after-load emms-later-do
   (setq emms-later-do-interval 0.1))
