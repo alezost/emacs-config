@@ -141,9 +141,7 @@
 
 (defvar al/geiser-sockets)
 (al/with-eval-after-load guix-repl
-  (let ((dir (al/devel-dir-file "guix")))
-    (when (file-exists-p dir)
-      (setq guix-load-path dir)))
+  (al/setq-file guix-load-path (al/devel-dir-file "guix"))
 
   (when (al/require al-geiser)
     (defun al/geiser-add-guix-socket ()
