@@ -273,9 +273,8 @@
    gnus-sum-thread-tree-indent          " "
    gnus-sum-thread-tree-single-indent   "■ "
    gnus-summary-newsgroup-prefix        "⇒ "
-   gnus-summary-to-prefix               "→ ")
+   gnus-summary-to-prefix               "→ "
 
-  (setq
    gnus-score-over-mark ?↑
    gnus-score-below-mark ?↓
    gnus-unseen-mark ?n
@@ -502,7 +501,7 @@
    erc-paranoid t)
 
   (defun al/erc-quit-part-reason (&rest _)
-    "I live in Emacs <http://www.gnu.org/s/emacs>")
+    "I live in Emacs <https://www.gnu.org/software/emacs/>")
   (setq
    erc-quit-reason 'al/erc-quit-part-reason
    erc-part-reason 'al/erc-quit-part-reason)

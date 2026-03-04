@@ -76,9 +76,7 @@
    org-directory al/notes-dir
    org-default-notes-file (al/notes-dir-file "notes.org")
    org-ellipsis " […]"
-   )
 
-  (setq
    org-use-speed-commands t
    org-speed-commands
    (append '(("." . (org-speed-move-safe 'org-previous-visible-heading))
@@ -129,18 +127,18 @@
    "emms-pl"
    :follow #'al/org-emms-playlist-play)
 
-  ;; "org-compat.el" adds a hook to set `imenu-create-index-function' to
-  ;; `org-imenu-get-tree', but it does this only after `imenu' is loaded.
-  ;; This raises the following problem: if an org file is loaded and
-  ;; imenu is not loaded yet, then `imenu-create-index-function' is still
-  ;; set to `imenu-default-create-index-function', so after running
-  ;; `imenu', we have a general index made by
-  ;; `imenu-default-create-index-function' instead of a specialized index
-  ;; made by `org-imenu-get-tree'.  So imenu is required here to be sure
-  ;; it is loaded before enabling `org-mode'.
-  (al/require imenu)
-
-  (al/require al-org))
+  (al/require
+    ;; "org-compat.el" adds a hook to set `imenu-create-index-function' to
+    ;; `org-imenu-get-tree', but it does this only after `imenu' is loaded.
+    ;; This raises the following problem: if an org file is loaded and
+    ;; imenu is not loaded yet, then `imenu-create-index-function' is still
+    ;; set to `imenu-default-create-index-function', so after running
+    ;; `imenu', we have a general index made by
+    ;; `imenu-default-create-index-function' instead of a specialized index
+    ;; made by `org-imenu-get-tree'.  So imenu is required here to be sure
+    ;; it is loaded before enabling `org-mode'.
+    imenu
+    al-org))
 
 (al/with-eval-after-load al-org
   (advice-add 'org-link-make-string

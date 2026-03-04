@@ -196,8 +196,7 @@
   (when (al/require al-mode-line)
     (al/mode-line-default-buffer-identification 'dired-mode))
 
-  (al/require dired-x)
-  (al/require al-dired))
+  (al/require dired-x al-dired))
 
 (defvar al/completion-ignored-extensions)
 (al/with-eval-after-load al-dired
@@ -312,6 +311,7 @@
    recentf-auto-cleanup 'never
    recentf-max-saved-items 300
    recentf-save-file (al/emacs-data-dir-file "recentf")))
+
 (al/add-after-init-hook 'recentf-mode)
 
 (al/with-eval-after-load ffap
