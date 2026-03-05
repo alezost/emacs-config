@@ -19,6 +19,31 @@
 
 (require 'seq)
 
+(defmacro al/with-keywords (body variables &rest rest)
+  "Auxiliary macro used to define macros with keywords.
+
+The following local variables are available inside REST:
+
+  All symbols from VARIABLES list; these variables have values from
+  keywords (with the same names) taken from BODY.
+
+  BODY with keyword pairs removed."
+  (declare (indent 2))
+  `(let ((body ,body)
+         ,@variables)
+     (while (keywordp (car body))
+       (let ((keyword (pop body))
+             (value   (pop body)))
+         (cond
+          ,@(mapcar (lambda (var)
+                      `((eq keyword ,(intern
+                                      (concat ":" (symbol-name var))))
+                        (setq ,var value)))
+                    variables)
+          (t
+           (al/warning-message "Unknown keyword: %s" keyword)))))
+     ,@rest))
+
 
 ;;; Simple wrappers for hooks
 
@@ -158,14 +183,8 @@ an existing file / an existing directory.
 
 Return nil if checks are not passed."
   (declare (indent 0) (debug (name body)))
-  (let (fun var file dir)
-    (while (keywordp (car body))
-      (pcase (pop body)
-        (`:fun  (setq fun  (pop body)))
-        (`:var  (setq var  (pop body)))
-	(`:file (setq file (pop body)))
-	(`:dir  (setq dir  (pop body)))
-	(_ (pop body))))
+  (al/with-keywords body
+      (fun var file dir)
     `(when (and ,(or (null fun)  `(al/function?  ,fun))
                 ,(or (null var)  `(al/bound?     ,var))
                 ,(or (null file) `(al/file?      ,file))
@@ -241,18 +260,11 @@ If `:append' keyword argument is specified, then the expression will be
 added to the end/start of `after-init-hook' if `:append' value is t/nil
 respectively."
   (declare (indent 0))
-  (let ((depth nil))
-    (while (keywordp (car body))
-      (let ((keyword (pop body))
-            (value   (pop body)))
-        (cond
-         ((eq keyword :append)
-          ;; See documentation of `add-hook'.
-          (setq depth (if value 100 -100)))
-         (t
-          (al/warning-message "Unknown keyword for `al/eval-after-init': %s"
-                              keyword)))))
-    `(add-hook 'after-init-hook (lambda () ,@body) ,depth)))
+  (al/with-keywords body
+      (append)
+    `(add-hook 'after-init-hook (lambda () ,@body)
+               ;; See documentation of `add-hook'.
+               ,(if append 100 -100))))
 
 (defmacro al/with-eval-after-load (feature &rest body)
   "Execute BODY after FEATURE is loaded.
@@ -272,16 +284,8 @@ BODY can start with the following optional keywords:
   (when (bound-and-true-p byte-compile-current-file)
     (unless (require feature nil t)
       (al/warning-message "`%s' feature is not available" feature)))
-  (let ((load nil))
-    (while (keywordp (car body))
-      (let ((keyword (pop body))
-            (value   (pop body)))
-        (cond
-         ((eq keyword :load)
-          (setq load value))
-         (t
-          (al/warning-message "Unknown keyword for `al/with-eval-after-load': %s"
-                              keyword)))))
+  (al/with-keywords body
+      (load)
     (cond
      ((null load)
       `(eval-after-load ',feature (lambda () ,@body)))
