@@ -80,18 +80,8 @@ As you can see, this repository consists of the following directories:
 - [[file:utils][utils]]: various utilities and additional code (for Emacs itself and for
   external packages) that is not needed for start-up.  All of the code
   here has =al/= prefix and is placed in files that provide =al-…=
-  features.  My init files are full of things like this:
-
-  #+BEGIN_SRC emacs-lisp
-  (with-eval-after-load 'eshell
-    ;; ...
-    (when (require 'al-eshell nil t)
-      ;; ...
-      ))
-  #+END_SRC
-
-  So these utils are loaded only if and when they are needed.  Also
-  there are many interactive commands there which are autoloaded.
+  features.  These utils are loaded only if and when they are needed.
+  Also there are many interactive commands there which are autoloaded.
 
   In the past these utils were placed in a [[https://github.com/alezost/emacs-utils][separate repository]] and had
   "utl-" prefix.
