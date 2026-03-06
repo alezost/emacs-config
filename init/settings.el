@@ -444,7 +444,14 @@
       ("C-k"   (beginning-of-line) (widget-kill-line)))
     "Alist of auxiliary keys for modes with widget fields.")
   (al/bind-keys-from-vars 'widget-keymap 'al/widget-button-keys t)
-  (al/bind-keys-from-vars 'widget-field-keymap 'al/widget-field-keys))
+  (al/bind-keys-from-vars 'widget-field-keymap 'al/widget-field-keys)
+  ;; XXX Emacs bug: changing `widget-field-keymap' does nothing because
+  ;; an `editable-field' widget type is already defined by `wid-edit'
+  ;; with the default keymap.  So we need to update the keymap in the
+  ;; widget:
+  (setf (plist-get (cdr (get 'editable-field 'widget-type))
+                   :keymap)
+        widget-field-keymap))
 
 (al/with-eval-after-load cus-edit
   (al/bind-keys-from-vars 'custom-mode-map 'al/widget-button-keys t)
