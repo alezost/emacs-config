@@ -1,6 +1,6 @@
 ;;; al-comint.el --- Additional functionality for comint  -*- lexical-binding: t -*-
 
-;; Copyright © 2015-2025 Alex Kost
+;; Copyright © 2015-2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 ;;; Code:
 
 (require 'comint)
+(require 'let-macros)
 
 ;;;###autoload
 (defun al/comint-previous-matching-input-from-input (arg)
@@ -56,16 +57,16 @@ Return nil, if the current line is not the input line."
 (defun al/comint-send-input-maybe ()
   "Call `comint-send-input' if the point is on the command line."
   (interactive)
-  (when-let* ((proc (get-buffer-process (current-buffer))))
-    (let ((prompt (marker-position (process-mark proc))))
-      (when (< (point) prompt)
-        (if-let* ((input (al/comint-input-at-point)))
-            (progn
-              (goto-char prompt)
-              (delete-region prompt (point-max))
-              (insert input))
-          (user-error (substitute-command-keys "\
-You don't want to do \"\\[al/comint-send-input-maybe]\" here")))))
+  (when-let ((proc (get-buffer-process (current-buffer)))
+             (prompt (marker-position (process-mark proc))))
+    (when (< (point) prompt)
+      (if-let ((input (al/comint-input-at-point)))
+          (progn
+            (goto-char prompt)
+            (delete-region prompt (point-max))
+            (insert input))
+        (user-error (substitute-command-keys "\
+You don't want to do \"\\[al/comint-send-input-maybe]\" here"))))
     (comint-send-input)))
 
 ;;;###autoload
