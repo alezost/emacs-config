@@ -1,6 +1,6 @@
 ;;; al-sound.el --- Playing audio and controlling sound parameters  -*- lexical-binding: t -*-
 
-;; Copyright © 2016 Alex Kost
+;; Copyright © 2016–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -66,9 +66,9 @@ If nil, use `play-sound-file'.")
   "Set sound value for `Master' simple control.
 ARGS are the rest amixer arguments after \"sset Master\"."
   (interactive
-   (split-string (read-string (concat al/sound-program " sset Master "))
+   (split-string (read-string (concat al/sound-program " set "))
                  " "))
-  (apply #'al/sound-call "sset" "Master" args))
+  (apply #'al/sound-call "set" args))
 
 (provide 'al-sound)
 
