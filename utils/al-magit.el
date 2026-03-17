@@ -21,15 +21,19 @@
 (require 'git-commit)
 (require 'al-buffer)
 
-(defun al/magit-buffers (&optional type)
+(defun al/magit-buffers (&optional type no-sort)
   "Return a list of TYPE magit buffers.
+
 TYPE can be one of the following symbols:
   `all' (default) - all magit buffers,
-  `status' - only status buffers."
+  `status' - only status buffers.
+
+If NO-SORT is non-nil, do not sort the list by buffer names."
   (let ((mode (if (eq type 'status)
                   'magit-status-mode
                 'magit-mode)))
-    (al/buffers-by-mode mode)))
+    (al/buffers-by-mode mode
+                        (unless no-sort #'al/buffer-name<))))
 
 (defvar al/magit-switch-map (make-sparse-keymap))
 
