@@ -20,6 +20,7 @@
 (require 'browse-url)
 (require 'transient)
 (require 'al-url)
+(require 'al-misc)
 
 ;;;###autoload
 (defun al/browse-youtube-video (id &optional time)
@@ -156,12 +157,20 @@ Interactively with arg, prompt for TIME."
   (interactive (al/choose-browser-args))
   (browse-url-emacs url))
 
+(transient-define-suffix al/choose-browser-kill-url (url)
+  "Copy URL to `kill-ring' and clipboard."
+  (interactive (al/choose-browser-args))
+  (let ((select-enable-clipboard t)
+        (select-enable-primary t))
+    (al/with-eval-to-kill-ring url)))
+
 ;;;###autoload (autoload 'al/choose-browser "al-browse-url" nil t)
 (transient-define-prefix al/choose-browser (url &rest _args)
   "Choose a browser to open URL.
 Suitable for `browse-url-browser-function'."
   [(al/choose-browser:url)
    (al/choose-browser:new-window)]
+  [("k" "kill URL" al/choose-browser-kill-url)]
   ["Browser"
    [:pad-keys t
     ("RET" "default"  al/choose-browser-default)
