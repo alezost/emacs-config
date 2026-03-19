@@ -95,6 +95,17 @@ Interactively with arg, prompt for TIME."
                    args
                    (list url)))))
 
+;;;###autoload
+(defun al/browse-url-tor (url &rest args)
+  "Ask the TOR browser to load URL."
+  (interactive (browse-url-interactive-arg "URL: "))
+  (let ((url (browse-url-encode-url url))
+        (process-environment (browse-url-process-environment)))
+    (apply #'start-process
+	   (concat "tor " url) nil
+	   "torbrowser"
+	   (append args (list url)))))
+
 
 ;;; Transient interface to choose a browser
 
@@ -132,6 +143,11 @@ Interactively with arg, prompt for TIME."
 (transient-define-suffix al/choose-browser-default (url new-window)
   (interactive (al/choose-browser-args t))
   (apply #'al/browse-url-default url
+         (and new-window '("--new-window"))))
+
+(transient-define-suffix al/choose-browser-tor (url new-window)
+  (interactive (al/choose-browser-args t))
+  (apply #'al/browse-url-tor url
          (and new-window '("--new-window"))))
 
 (transient-define-suffix al/choose-browser-firefox (url new-window)
@@ -175,14 +191,15 @@ Suitable for `browse-url-browser-function'."
     ("RET" "default"  al/choose-browser-default)
     ("u"   "default"  al/choose-browser-default)
     ("b"   "default"  al/choose-browser-default)]
-   [("f"   "firefox"  al/choose-browser-firefox)]
-   [("c"   "chromium" al/choose-browser-chromium)]
-   [("w"   "w3m"      al/choose-browser-w3m)]
-   [("e"   "eww"      al/choose-browser-eww)]
-   [("E"   "emacs"    al/choose-browser-emacs)]]
+   [("f"   "Firefox"  al/choose-browser-firefox)
+    ("t"   "TOR Browser" al/choose-browser-tor)]
+   [("c"   "Chromium" al/choose-browser-chromium)]
+   [("w"   "w3m"      al/choose-browser-w3m)
+    ("e"   "eww"      al/choose-browser-eww)
+    ("E"   "Emacs"    al/choose-browser-emacs)]]
   (interactive "sURL: ")
   (transient-setup 'al/choose-browser nil nil
-                   :value (list (concat "url="url))))
+                   :value (list (concat "url=" url))))
 
 (provide 'al-browse-url)
 
