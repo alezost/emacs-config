@@ -386,7 +386,8 @@
       ("M-E" . eshell-next-prompt))
     "Alist of auxiliary keys for `eshell-mode-map'.")
   (defconst al/eshell-hist-keys
-    '(("M-r" . al/eshell-previous-matching-input-from-input)
+    '("<up>" "<down>"
+      ("M-r" . al/eshell-previous-matching-input-from-input)
       ("M-s" . al/eshell-next-matching-input-from-input))
     "Alist of auxiliary keys for `eshell-hist-mode-map'.")
 
