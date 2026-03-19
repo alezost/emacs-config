@@ -113,7 +113,7 @@ Interactively with arg, prompt for TIME."
   (let ((args (transient-args 'al/choose-browser)))
     (cons (transient-arg-value "url=" args)
           (and new-window-arg
-               (list (transient-arg-value "-new-window" args))))))
+               (list (transient-arg-value "--new-window" args))))))
 
 (transient-define-argument al/choose-browser:url ()
   :description "URL"
@@ -127,21 +127,20 @@ Interactively with arg, prompt for TIME."
   :description "new window"
   :class 'transient-switch
   :key "n"
-  :argument "-new-window")
+  :argument "--new-window")
 
 (transient-define-suffix al/choose-browser-default (url new-window)
   (interactive (al/choose-browser-args t))
   (apply #'al/browse-url-default url
-         (and new-window '("-new-window"))))
+         (and new-window '("--new-window"))))
 
 (transient-define-suffix al/choose-browser-firefox (url new-window)
   (interactive (al/choose-browser-args t))
-  (apply #'browse-url-firefox url
-         (and new-window '("-new-window"))))
+  (browse-url-firefox url new-window))
 
-(transient-define-suffix al/choose-browser-chromium (url)
-  (interactive (al/choose-browser-args))
-  (browse-url-chromium url))
+(transient-define-suffix al/choose-browser-chromium (url new-window)
+  (interactive (al/choose-browser-args t))
+  (browse-url-chromium url new-window))
 
 (declare-function w3m-browse-url "w3m" (url))
 
