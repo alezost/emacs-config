@@ -26,16 +26,16 @@
 
 ;;; Transient interface for notifications
 
-(defvar al/notification-time 45
+(defvar al/notification-tui-time 45
   "Default time (in minutes) for a new timer.")
 
-(defvar al/notification-quick-time 4
+(defvar al/notification-tui-quick-time 4
   "Default time (in minutes) for a new quick timer.")
 
-(defvar al/notification-timeout 0
+(defvar al/notification-tui-timeout 0
   "Default timeout (in seconds) for notification message.")
 
-(defun al/notification-kill-keys ()
+(defun al/notification-tui-kill-keys ()
   "Return a list of transient keys to kill active timers."
   (seq-map-indexed
    (lambda (notif index)
@@ -57,30 +57,30 @@
              (lambda ()
                (interactive)
                (al/notification-kill-timer timer)
-               (al/notification)))))
+               (al/notification-tui)))))
    al/notifications))
 
-(transient-define-suffix al/notification:kill-all ()
+(transient-define-suffix al/notification-tui:kill-all ()
   "Cancel all active timers and clear `al/notifications'."
   (interactive)
   (dolist (notif al/notifications)
     (cancel-timer (plist-get notif :timer)))
   (setq al/notifications nil)
   (al/timer-mode -1)
-  (al/notification))
+  (al/notification-tui))
 
-(transient-define-suffix al/notification:list-timers ()
+(transient-define-suffix al/notification-tui:list-timers ()
   "Call `list-timers'."
   :description "list all timers (including system ones)"
   :key "l"
   (interactive)
   (list-timers))
 
-(defun al/notification-args ()
-  "Return list of arguments for the current `al/notification' transient.
+(defun al/notification-tui-args ()
+  "Return list of arguments for the current `al/notification-tui' transient.
 The first argument in this list is the number of seconds and the rest
 arguments is a plist suitable for `notifications-notify'."
-  (let* ((args    (transient-args 'al/notification))
+  (let* ((args    (transient-args 'al/notification-tui))
          (time    (transient-arg-value "time=" args))
          (msg     (transient-arg-value "message=" args))
          (title   (transient-arg-value "title=" args))
@@ -90,10 +90,10 @@ arguments is a plist suitable for `notifications-notify'."
          (timeout (and timeout (* 1000 (string-to-number timeout)))))
     (list seconds :body msg :title title :timeout timeout)))
 
-(transient-define-suffix al/notification:new (seconds &rest args)
+(transient-define-suffix al/notification-tui:new (seconds &rest args)
   "Send notification in SECONDS.
 Pass ARGS to `notifications-notify'."
-  (interactive (al/notification-args))
+  (interactive (al/notification-tui-args))
   (let ((timer (run-at-time seconds nil
                             #'apply #'al/notification-notify args)))
     (push (append (list :timer timer) args)
@@ -104,19 +104,19 @@ Pass ARGS to `notifications-notify'."
              (format-time-string "%T" (timer--time timer)))))
 
 (defun al/notification-quick-string ()
-  (format "set %d min timer" al/notification-quick-time))
+  (format "set %d min timer" al/notification-tui-quick-time))
 
-(transient-define-suffix al/notification:new-quick (_ &rest args)
-  "Send notification in `al/notification-quick-time' minutes.
+(transient-define-suffix al/notification-tui:new-quick (_ &rest args)
+  "Send notification in `al/notification-tui-quick-time' minutes.
 Pass ARGS to `notifications-notify'."
   :description #'al/notification-quick-string
   :key "M-T"
-  (interactive (al/notification-args))
-  (apply #'al/notification:new
-         (* 60 al/notification-quick-time)
+  (interactive (al/notification-tui-args))
+  (apply #'al/notification-tui:new
+         (* 60 al/notification-tui-quick-time)
          args))
 
-(transient-define-argument al/notification:title ()
+(transient-define-argument al/notification-tui:title ()
   :description "title"
   :class 'transient-option
   :key "-T"
@@ -124,7 +124,7 @@ Pass ARGS to `notifications-notify'."
   :prompt "Notification title: "
   :argument "title=")
 
-(transient-define-argument al/notification:message ()
+(transient-define-argument al/notification-tui:message ()
   :description "message"
   :class 'transient-option
   :key "m"
@@ -132,7 +132,7 @@ Pass ARGS to `notifications-notify'."
   :prompt "Notification message: "
   :argument "message=")
 
-(transient-define-argument al/notification:timeout ()
+(transient-define-argument al/notification-tui:timeout ()
   :description "timeout (seconds)"
   :class 'transient-option
   :key "-t"
@@ -140,53 +140,53 @@ Pass ARGS to `notifications-notify'."
   :reader 'al/notification-read-seconds
   :argument "timeout=")
 
-(defun al/notification-read-number (prompt initial-input history)
+(defun al/notification-tui-read-number (prompt initial-input history)
   (number-to-string (read-number prompt initial-input history)))
 
-(transient-define-argument al/notification:time ()
+(transient-define-argument al/notification-tui:time ()
   :description "time (minutes)"
   :class 'transient-option
   :key "t"
   :always-read t
   :prompt "Time (minutes): "
-  :reader 'al/notification-read-number
+  :reader 'al/notification-tui-read-number
   :argument "time=")
 
-(defun al/notification:default-value ()
+(defun al/notification-tui-default-value ()
   (list "title=Timer"
         "message=Break!"
-        (format "time=%d" al/notification-time)
-        (format "timeout=%d" al/notification-timeout)))
+        (format "time=%d" al/notification-tui-time)
+        (format "timeout=%d" al/notification-tui-timeout)))
 
-;;;###autoload (autoload 'al/notification "al-notification" nil t)
-(transient-define-prefix al/notification ()
+;;;###autoload (autoload 'al/notification-tui "al-notification-tui" nil t)
+(transient-define-prefix al/notification-tui ()
   "Interface to set and kill timers."
-  :value 'al/notification:default-value
-  'al/notification:kill-group
+  :value 'al/notification-tui-default-value
+  'al/notification-tui:kill-group
   ["Notification parameters"
-   [(al/notification:title)
-    (al/notification:timeout)
+   [(al/notification-tui:title)
+    (al/notification-tui:timeout)
     ""
-    (al/notification:time)]
-   [(al/notification:message)]]
+    (al/notification-tui:time)]
+   [(al/notification-tui:message)]]
   ["New notification"
-   [("n" "set new timer" al/notification:new)]
-   [(al/notification:new-quick)]]
+   [("n" "set new timer" al/notification-tui:new)]
+   [(al/notification-tui:new-quick)]]
   (interactive)
   (al/notification-cleanup)
   (if al/notifications
       (eval
-       `(transient-define-group al/notification:kill-group
+       `(transient-define-group al/notification-tui:kill-group
           [ ;; :if-non-nil al/notifications
            :pad-keys t
            "Active timers"
-           ,@(al/notification-kill-keys)
-           ("K" "kill all timers" al/notification:kill-all)
-           (al/notification:list-timers)]))
-    (transient-define-group al/notification:kill-group
+           ,@(al/notification-tui-kill-keys)
+           ("K" "kill all timers" al/notification-tui:kill-all)
+           (al/notification-tui:list-timers)]))
+    (transient-define-group al/notification-tui:kill-group
       ["Active timers"
-       (al/notification:list-timers)]))
-  (transient-setup 'al/notification))
+       (al/notification-tui:list-timers)]))
+  (transient-setup 'al/notification-tui))
 
 (provide 'al-notification-tui)
 
