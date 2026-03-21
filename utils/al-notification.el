@@ -49,6 +49,21 @@ currently active timer is stored) or any keyword supported by
 (defvar al/notification-time-format "%M:%S"
   "Format string for notification time.")
 
+(defvar al/timer-mode)  ; defined below (needed to scilence compiler)
+
+(defun al/notification-new (seconds &rest args)
+  "Create a new notification timer and add it to `al/notifications'
+SECONDS is the number of seconds for the created timer.
+ARGS are any arguments supported by `notifications-notify'."
+  (let ((timer (run-at-time seconds nil
+                            #'apply #'al/notification-notify args)))
+    (push (append (list :timer timer) args)
+          al/notifications)
+    (unless al/timer-mode
+      (al/timer-mode 1))
+    (message "A new notification has been set on %s."
+             (format-time-string "%T" (timer--time timer)))))
+
 (defun al/notification-cleanup ()
   "Remove expired notifications from `al/notifications'."
   (setq al/notifications
@@ -67,6 +82,14 @@ currently active timer is stored) or any keyword supported by
              (cancel-timer timer)
              nil))
          al/notifications)))
+
+(defun al/notification-kill-all-timers ()
+  "Cancel all active timers and clear `al/notifications'."
+  (interactive)
+  (dolist (notif al/notifications)
+    (cancel-timer (plist-get notif :timer)))
+  (setq al/notifications nil)
+  (al/timer-mode -1))
 
 
 ;;; General functionality for timers

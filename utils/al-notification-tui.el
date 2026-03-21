@@ -18,7 +18,6 @@
 ;;; Code:
 
 (require 'seq)
-(require 'timer)
 (require 'transient)
 (require 'al-notification)
 (require 'al-color)
@@ -63,10 +62,7 @@
 (transient-define-suffix al/notification-tui:kill-all ()
   "Cancel all active timers and clear `al/notifications'."
   (interactive)
-  (dolist (notif al/notifications)
-    (cancel-timer (plist-get notif :timer)))
-  (setq al/notifications nil)
-  (al/timer-mode -1)
+  (al/notification-kill-all-timers)
   (al/notification-tui))
 
 (transient-define-suffix al/notification-tui:list-timers ()
@@ -94,14 +90,7 @@ arguments is a plist suitable for `notifications-notify'."
   "Send notification in SECONDS.
 Pass ARGS to `notifications-notify'."
   (interactive (al/notification-tui-args))
-  (let ((timer (run-at-time seconds nil
-                            #'apply #'al/notification-notify args)))
-    (push (append (list :timer timer) args)
-          al/notifications)
-    (unless al/timer-mode
-      (al/timer-mode 1))
-    (message "A new notification has been set on %s."
-             (format-time-string "%T" (timer--time timer)))))
+  (apply #'al/notification-new seconds args))
 
 (defun al/notification-quick-string ()
   (format "set %d min timer" al/notification-tui-quick-time))
