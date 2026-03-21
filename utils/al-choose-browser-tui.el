@@ -29,92 +29,92 @@
 (require 'al-browse-url)
 (require 'misc)
 
-(defun al/choose-browser-read-url (prompt _initial-input history)
+(defun al/choose-browser-tui-read-url (prompt _initial-input history)
   ;; Transient does not put the current value to INITIAL-INPUT ?!!
   ;; OK, than use the first value of history as the initial input.
   (let ((history (symbol-value history)))
     (completing-read prompt (cdr history) nil nil (car history))))
 
-(defun al/choose-browser-args (&optional new-window-arg)
+(defun al/choose-browser-tui-args (&optional new-window-arg)
   "Return arguments for the current `al/choose-browser' transient."
-  (let ((args (transient-args 'al/choose-browser)))
+  (let ((args (transient-args 'al/choose-browser-tui)))
     (cons (transient-arg-value "url=" args)
           (and new-window-arg
                (list (transient-arg-value "--new-window" args))))))
 
-(transient-define-argument al/choose-browser:url ()
+(transient-define-argument al/choose-browser-tui:url ()
   :description "URL"
   :class 'transient-option
   :key "U"
   :argument "url="
-  :reader #'al/choose-browser-read-url
+  :reader #'al/choose-browser-tui-read-url
   :always-read t)
 
-(transient-define-argument al/choose-browser:new-window ()
+(transient-define-argument al/choose-browser-tui:new-window ()
   :description "new window"
   :class 'transient-switch
   :key "n"
   :argument "--new-window")
 
-(transient-define-suffix al/choose-browser-default (url new-window)
-  (interactive (al/choose-browser-args t))
+(transient-define-suffix al/choose-browser-tui:default (url new-window)
+  (interactive (al/choose-browser-tui-args t))
   (apply #'al/browse-url-default url
          (and new-window '("--new-window"))))
 
-(transient-define-suffix al/choose-browser-tor (url new-window)
-  (interactive (al/choose-browser-args t))
+(transient-define-suffix al/choose-browser-tui:tor (url new-window)
+  (interactive (al/choose-browser-tui-args t))
   (apply #'al/browse-url-tor url
          (and new-window '("--new-window"))))
 
-(transient-define-suffix al/choose-browser-firefox (url new-window)
-  (interactive (al/choose-browser-args t))
+(transient-define-suffix al/choose-browser-tui:firefox (url new-window)
+  (interactive (al/choose-browser-tui-args t))
   (browse-url-firefox url new-window))
 
-(transient-define-suffix al/choose-browser-chromium (url new-window)
-  (interactive (al/choose-browser-args t))
+(transient-define-suffix al/choose-browser-tui:chromium (url new-window)
+  (interactive (al/choose-browser-tui-args t))
   (browse-url-chromium url new-window))
 
 (declare-function w3m-browse-url "w3m" (url))
 
-(transient-define-suffix al/choose-browser-w3m (url)
-  (interactive (al/choose-browser-args))
+(transient-define-suffix al/choose-browser-tui:w3m (url)
+  (interactive (al/choose-browser-tui-args))
   (w3m-browse-url url))
 
-(transient-define-suffix al/choose-browser-eww (url)
-  (interactive (al/choose-browser-args))
+(transient-define-suffix al/choose-browser-tui:eww (url)
+  (interactive (al/choose-browser-tui-args))
   (eww url))
 
-(transient-define-suffix al/choose-browser-emacs (url)
-  (interactive (al/choose-browser-args))
+(transient-define-suffix al/choose-browser-tui:emacs (url)
+  (interactive (al/choose-browser-tui-args))
   (browse-url-emacs url))
 
-(transient-define-suffix al/choose-browser-kill-url (url)
+(transient-define-suffix al/choose-browser-tui:kill-url (url)
   "Copy URL to `kill-ring' and clipboard."
-  (interactive (al/choose-browser-args))
+  (interactive (al/choose-browser-tui-args))
   (let ((select-enable-clipboard t)
         (select-enable-primary t))
     (al/with-eval-to-kill-ring url)))
 
-;;;###autoload (autoload 'al/choose-browser "al-choose-browser-tui" nil t)
-(transient-define-prefix al/choose-browser (url &rest _args)
+;;;###autoload (autoload 'al/choose-browser-tui "al-choose-browser-tui" nil t)
+(transient-define-prefix al/choose-browser-tui (url &rest _args)
   "Choose a browser to open URL.
 Suitable for `browse-url-browser-function'."
-  [(al/choose-browser:url)
-   (al/choose-browser:new-window)]
-  [("k" "kill URL" al/choose-browser-kill-url)]
+  [(al/choose-browser-tui:url)
+   (al/choose-browser-tui:new-window)]
+  [("k"    "kill URL"     al/choose-browser-tui:kill-url)]
   ["Browser"
    [:pad-keys t
-    ("RET" "default"  al/choose-browser-default)
-    ("u"   "default"  al/choose-browser-default)
-    ("b"   "default"  al/choose-browser-default)]
-   [("f"   "Firefox"  al/choose-browser-firefox)
-    ("t"   "TOR Browser" al/choose-browser-tor)]
-   [("c"   "Chromium" al/choose-browser-chromium)]
-   [("w"   "w3m"      al/choose-browser-w3m)
-    ("e"   "eww"      al/choose-browser-eww)
-    ("E"   "Emacs"    al/choose-browser-emacs)]]
+    ("RET" "default"      al/choose-browser-tui:default)
+    ("u"   "default"      al/choose-browser-tui:default)
+    ("b"   "default"      al/choose-browser-tui:default)]
+   [("f"   "Firefox"      al/choose-browser-tui:firefox)
+    ("t"   "TOR Browser"  al/choose-browser-tui:tor)]
+   [("c"   "Chromium"     al/choose-browser-tui:chromium)]
+   [("w"   "w3m"          al/choose-browser-tui:w3m)
+    ("e"   "eww"          al/choose-browser-tui:eww)
+    ("E"   "Emacs"        al/choose-browser-tui:emacs)]]
   (interactive "sURL: ")
-  (transient-setup 'al/choose-browser nil nil
+  (transient-setup 'al/choose-browser-tui nil nil
                    :value (list (concat "url=" url))))
 
 (provide 'al-choose-browser-tui)

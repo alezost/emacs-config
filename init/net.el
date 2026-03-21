@@ -128,10 +128,10 @@
   (al/w3m-bind-number-keys 'al/w3m-kill-buffer "k"))
 
 (al/with-eval-after-load browse-url
+  (setq browse-url-browser-function 'al/choose-browser-tui)
   (al/require al-browse-url))
 
 (al/with-eval-after-load al-browse-url
-  (setq browse-url-browser-function 'al/choose-browser)
   (advice-add 'browse-url-default-browser
     :override #'al/browse-url-default))
 
