@@ -18,7 +18,7 @@
 
 ;;; Emacs packages
 
-(al/bind-key "H-q" al/package-ui)
+(al/bind-key "H-q" al/package-tui)
 
 (al/with-eval-after-load package
   (setq package-archives nil)
