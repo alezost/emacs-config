@@ -19,10 +19,7 @@
 
 (require 'seq)
 (require 'package)
-(require 'transient)
 (require 'al-general)
-(require 'al-quelpa)
-(require 'al-color)
 
 (defvar al/package-archives
   '(("elpa gnu"     . "https://elpa.gnu.org/packages/")
@@ -57,109 +54,6 @@ remove all archives (i.e., set it to nil)."
              (seq-remove (lambda (archive)
                            (equal name (car archive)))
                          package-archives))))
-
-
-;;; Transient interface for archives and packages
-
-(transient-define-argument al/package-ui:main-packages ()
-  :description (concat "recipes from "
-                       (al/with-face 'font-lock-constant-face
-                         (symbol-name 'al/main-packages)))
-  :class 'transient-switch
-  :key "-m"
-  :argument "main")
-
-(transient-define-argument al/package-ui:extra-packages ()
-  :description (concat "recipes from "
-                       (al/with-face 'font-lock-constant-face
-                         (symbol-name 'al/extra-packages)))
-  :class 'transient-switch
-  :key "-e"
-  :argument "extra")
-
-(defun al/package-ui-archives-info ()
-  "Return a fontified string with `package-archives' value."
-  (concat
-   (al/with-face 'font-lock-constant-face "package-archives")
-   " value:"
-   (if (null package-archives)
-       " nil"
-     (with-temp-buffer
-       (emacs-lisp-mode)
-       (insert "\n")
-       (pp package-archives (current-buffer))
-       (font-lock-ensure)
-       (buffer-substring (point-min) (point-max))))))
-
-(transient-define-suffix al/package-ui:add-archive ()
-  (interactive)
-  (call-interactively #'al/add-package-archive)
-  (al/package-ui))
-
-(transient-define-suffix al/package-ui:add-all-archives ()
-  (interactive)
-  (setq package-archives al/package-archives)
-  (al/package-ui))
-
-(transient-define-suffix al/package-ui:remove-archive ()
-  (interactive)
-  (call-interactively #'al/remove-package-archive)
-  (al/package-ui))
-
-(transient-define-suffix al/package-ui:remove-all-archives ()
-  (interactive)
-  (setq package-archives nil)
-  (al/package-ui))
-
-(transient-define-suffix al/package-ui:install-from-recipes (&rest recipes)
-  "Call `al/quelpa' with RECIPES."
-  (interactive
-   (let ((args (transient-args 'al/package-ui)))
-     (append (and (transient-arg-value "main" args)
-                  al/main-packages)
-             (and (transient-arg-value "extra" args)
-                  al/extra-packages))))
-  (if recipes
-      (apply #'al/quelpa recipes)
-    (message "Choose \"main\" and/or \"extra\" recipes.")
-    (al/package-ui)))
-
-(declare-function al/switch-to-packages "al-buffer.el" nil)
-
-;;;###autoload (autoload 'al/package-ui "al-package-cmd" nil t)
-(transient-define-prefix al/package-ui ()
-  "Interface for Emacs packages, recipes, archives, etc."
-  :value '("main")
-  ["Package archives"
-   (:info #'al/package-ui-archives-info :format "%d")
-   (:info "")
-   ("au" "update archive contents (to refresh package list)"
-    package-refresh-contents :transient t)]
-  [[("aa" "add archive"         al/package-ui:add-archive)
-    ("ar" "remove archive"      al/package-ui:remove-archive)]
-   [("aA" "add all archives"    al/package-ui:add-all-archives)
-    ("aR" "remove all archives" al/package-ui:remove-all-archives)]
-   [("l" "package list" al/switch-to-packages)]]
-  ["Install/upgrade package(s)"
-   [(:info
-     (concat (al/with-face 'transient-heading " using ")
-             (al/with-face 'font-lock-constant-face "quelpa")
-             ":")
-     :format "%d")
-    ("iq" "package from melpa recipe" quelpa)
-    ("im" "package from my recipe" al/quelpa)
-    ""
-    (al/package-ui:main-packages)
-    (al/package-ui:extra-packages)
-    ("iA" "packages from my recipes" al/package-ui:install-from-recipes)]
-   [(:info
-     (concat (al/with-face 'transient-heading " using ")
-             (al/with-face 'font-lock-constant-face "package-install")
-             ":")
-     :format "%d")
-    ("ia" "package from archives" package-install)
-    "" ""
-    ("R" "remove package" package-delete)]])
 
 (provide 'al-package-cmd)
 
