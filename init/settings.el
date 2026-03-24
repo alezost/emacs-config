@@ -289,6 +289,7 @@
  ("t"   . visit-ansi-term)
  ("e"   . eshell)
  ("i"   . ielm)
+ ("a"   . al/agent-shell)
  ("s"   . al/sql-switch-or-connect)
  ("l"   . slime-repl)
  ("g"   . al/geiser-guile-switch-current-window)
@@ -419,6 +420,25 @@
   (setq eshell-prompt-function #'al/eshell-prompt)
   (al/add-hook-maybe 'eshell-mode-hook 'al/eshell-set-local-variables)
   (advice-add 'eshell/info :override #'al/eshell/info))
+
+(al/with-eval-after-load agent-shell
+  (setq
+   agent-shell-preferred-agent-config 'qwen-code)
+
+  (defconst al/agent-shell-keys
+    '(("RET" . shell-maker-submit)
+      ("TAB" . al/agent-next-item-or-complete))
+    "Alist of auxiliary keys for `agent-shell-mode-map'.")
+  (al/bind-keys-from-vars 'agent-shell-mode-map 'al/agent-shell-keys t)
+
+  (al/require al-agent-shell))
+
+(al/with-eval-after-load agent-shell-completion
+  ;; `agent-shell--trigger-completion-at-point' is added to
+  ;; `post-self-insert-hook' by `agent-shell-completion-mode'.  It calls
+  ;; `completion-at-point' immediately after "/" is written.  I don't
+  ;; need this shit.
+  (advice-add 'agent-shell--trigger-completion-at-point :override #'ignore))
 
 
 ;;; Button, custom, widget

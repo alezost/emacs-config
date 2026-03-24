@@ -94,6 +94,7 @@
      geiser-racket
      w3m
      (wget               :fetcher github :repo "ataka/emacs-wget")
+     agent-shell
      pdf-tools)
 
    al/extra-packages
