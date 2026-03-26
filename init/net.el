@@ -708,7 +708,8 @@
   web-search-multitran-ru/de
   web-search-verbix-ko
   web-search-verbix-de
-  web-search-naver)
+  web-search-naver-en
+  web-search-naver-ru)
 
 (al/with-eval-after-load web-search
   (web-search-add-engine
@@ -753,7 +754,10 @@
    'verbix-ko "Verbix (ko)"
    "https://verbix.com/webverbix/korean/%s")
   (web-search-add-engine
-   'naver "Naver (ko/en)"
+   'naver-ru "Naver Dictionary (ko/ru)"
+   "https://dict.naver.com/rukodict/#/search?query=%s")
+  (web-search-add-engine
+   'naver-en "Naver Dictionary (ko/en)"
    "https://en.dict.naver.com/#/search?query=%s"))
 
 ;;; net.el ends here
