@@ -713,24 +713,24 @@
 (al/with-eval-after-load web-search
   (web-search-add-engine
    'ipduh "IPduh"
-   "http://ipduh.com/apropos/?%s"
+   "https://ipduh.com/apropos/?%s"
    'web-search-clean-ip)
   (web-search-add-engine
    'ip-address "IP address"
-   "http://www.ip-address.org/lookup/ip-locator.php?track=%s"
+   "https://www.ip-address.org/lookup/ip-locator.php?track=%s"
    'web-search-clean-ip)
   (web-search-add-engine
    'yandex "Yandex"
-   "http://yandex.ru/yandsearch?text=%s")
+   "https://yandex.ru/yandsearch?text=%s")
   (web-search-add-engine
    'wikipedia-en "Wikipedia (english)"
-   "http://en.wikipedia.org/w/index.php?search=%s")
+   "https://en.wikipedia.org/w/index.php?search=%s")
   (web-search-add-engine
    'wikipedia-ru "Wikipedia (russian)"
-   "http://ru.wikipedia.org/w/index.php?search=%s")
+   "https://ru.wikipedia.org/w/index.php?search=%s")
   (web-search-add-engine
    'youtube "Youtube"
-   "http://www.youtube.com/results?search_query=%s&search=Search")
+   "https://www.youtube.com/results?search_query=%s&search=Search")
   (web-search-add-engine
    'arch-package "Arch Packages"
    "https://www.archlinux.org/packages/?sort=&q=%s&maintainer=&flagged=")
