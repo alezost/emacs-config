@@ -45,7 +45,14 @@
 (defun al/init-load (file)
   "Load FILE from `al/emacs-init-dir'."
   (al/load (al/emacs-init-dir-file file)))
-(mapc #'al/init-load
+
+(mapc (lambda (file)
+        (condition-case error
+            (al/init-load file)
+          (error (message (concat "ERROR during loading \""
+                                  file "\" init file: %S")
+                          error)
+                 nil)))
       '("keys"
         "text"
         "packages"
