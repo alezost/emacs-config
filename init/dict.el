@@ -94,6 +94,8 @@
    google-translate-show-phonetic t
    google-translate-listen-program "mpv"
    google-translate-listen-button-label "Listen")
+  (push '("Auto-detect" . "auto")
+        google-translate-supported-languages-alist)
 
   (al/require al-google-translate))
 
