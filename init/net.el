@@ -706,8 +706,11 @@
   web-search-multitran-ru/en
   web-search-multitran-de/ru
   web-search-multitran-ru/de
+  web-search-verbix-en
   web-search-verbix-ko
   web-search-verbix-de
+  web-search-verbix-ja
+  web-search-verbix-fr
   web-search-naver-en
   web-search-naver-ru)
 
@@ -748,11 +751,20 @@
    'multitran-ru/de "Multitran ru/de"
    "https://www.multitran.com/m.exe?l1=2&l2=3&s=%s")
   (web-search-add-engine
+   'verbix-en "Verbix (en)"
+   "https://verbix.com/webverbix/english/%s")
+  (web-search-add-engine
+   'verbix-fr "Verbix (fr)"
+   "https://verbix.com/webverbix/french/%s")
+  (web-search-add-engine
    'verbix-de "Verbix (de)"
    "https://verbix.com/webverbix/german/%s")
   (web-search-add-engine
    'verbix-ko "Verbix (ko)"
    "https://verbix.com/webverbix/korean/%s")
+  (web-search-add-engine
+   'verbix-ja "Verbix (ja)"
+   "https://verbix.com/webverbix/japanese/%s")
   (web-search-add-engine
    'naver-ru "Naver Dictionary (ko/ru)"
    "https://dict.naver.com/rukodict/#/search?query=%s")
