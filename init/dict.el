@@ -18,44 +18,7 @@
 
 ;;; Global keys
 
-(al/bind-keys
- :prefix-map al/translation-map
- :prefix-docstring "Map for dictionaries, translating and friends."
- :prefix "<XF86Spell>"
- ("<XF86Spell>" . al/dictem-run-word)
- ;; ("s" . dictem-run-search)
- ;; ("m" . dictem-run-match)
- ("i" . al/dictem-run-show-all-info)
- ("d" . al/dictem-run-dict-search)
- ("q" . dictem-kill-all-buffers)
- ("K" . web-search-naver)
- ("k"   (al/google-translate-using-languages "ko" "ru" "en"))
- ("e"   (al/google-translate-using-languages "en" "ru"))
- ("r"   (al/google-translate-using-languages* :source "ru"
-                                              :target '("en" "ko" "de" "fr" "la")
-                                              :one-way t))
- ("f"   (al/google-translate-using-languages "fr" "ru" "en"))
- ("g"   (al/google-translate-using-languages "de" "ru" "en"))
- ("l"   (al/google-translate-using-languages "la" "ru" "en"))
- ("G" . al/google-translate-smooth-translate))
-
-(al/bind-keys
- :map al/translation-map
- :prefix-map al/translation-multitran-map
- :prefix-docstring "Map for translating with multitran."
- :prefix "m"
- ("e" . web-search-multitran-en/ru)
- ("E" . web-search-multitran-ru/en)
- ("g" . web-search-multitran-de/ru)
- ("G" . web-search-multitran-ru/de))
-
-(al/bind-keys
- :map al/translation-map
- :prefix-map al/translation-verbix-map
- :prefix-docstring "Map for verb conjugations with Verbix."
- :prefix "v"
- ("k" . web-search-verbix-ko)
- ("g" . web-search-verbix-de))
+(al/bind-key "<XF86Spell>" al/translate-tui)
 
 (al/bind-keys
  :prefix-map al/spell-map
