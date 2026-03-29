@@ -37,7 +37,8 @@
               (buffer-substring-no-properties
                (region-beginning)
                (region-end)))
-            al/translate-tui-text)))
+            al/translate-tui-text
+            (read-string "Text to translate: "))))
 
 (transient-define-suffix al/translate-tui:text ()
   (interactive)
