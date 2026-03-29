@@ -23,6 +23,37 @@
 (require 'let-macros)
 (require 'al-color)
 
+(defvar al/translate-tui-top-languages
+  '("en" "ru" "ko" "ja" "de" "fr" "auto")
+  "List of languages that should be on top of `al/translate-tui-languages'.")
+
+(defvar al/translate-tui-languages nil
+  "List of available languages for minibuffer completion.")
+
+(defun al/translate-tui-languages1 ()
+  (let* ((name-fun  (lambda (assoc)
+                      (concat (cdr assoc) " (" (car assoc) ")")))
+         (top-langs nil)
+         (langs     (seq-keep
+                     (lambda (assoc)
+                       (if (member (cdr assoc)
+                                   al/translate-tui-top-languages)
+                           (progn
+                             (push assoc top-langs)
+                             nil)
+                         (funcall name-fun assoc)))
+                     google-translate-supported-languages-alist))
+         (top-langs (mapcar (lambda (lang)
+                              (funcall name-fun
+                                       (rassoc lang top-langs)))
+                            al/translate-tui-top-languages)))
+    (append top-langs langs)))
+
+(defun al/translate-tui-languages ()
+  "Return list of available languages for minibuffer completion."
+  (or al/translate-tui-languages
+      (setq al/translate-tui-languages (al/translate-tui-languages1))))
+
 (defvar al/translate-tui-text nil
   "Current text to translate.")
 
@@ -45,12 +76,13 @@
   (al/translate-tui (read-string "Text: " al/translate-tui-text)))
 
 (defun al/translate-tui-read-language (prompt initial-input history)
-  (alist-get
-   (completing-read prompt
-                    (mapcar #'car google-translate-supported-languages-alist)
-                    nil nil initial-input history)
-   google-translate-supported-languages-alist
-   nil nil #'string=))
+  ;; `icomplete-mode' uses some rubbish sort.  Avoid it by setting
+  ;; `:cycle-sort-function' completion property.
+  (let* ((completion-extra-properties '(:cycle-sort-function identity))
+         (choice (completing-read prompt (al/translate-tui-languages)
+                                  nil nil initial-input history)))
+    (and (string-match " (" choice)
+         (substring choice 0 (match-beginning 0)))))
 
 (transient-define-argument al/translate-tui:source-language ()
   :description "source language"
