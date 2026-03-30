@@ -991,6 +991,13 @@
   (transient-suffix-put 'transient-common-commands
                         "C-g" :command 'transient-quit-all)
   (transient-suffix-put 'transient-common-commands
-                        "C-q" :command 'transient-quit-one))
+                        "C-q" :command 'transient-quit-one)
+
+  (al/require al-transient))
+
+(al/with-eval-after-load al-transient
+  (advice-add 'transient-setup :before #'al/transient-fix-input-method)
+  (al/add-hook-maybe 'transient-post-exit-hook
+    'al/transient-restore-input-method))
 
 ;;; settings.el ends here
