@@ -26,6 +26,12 @@ all types of symbols should be completed or only variables.
 I always want to complete all symbols!"
   t)
 
+
+;;; Highlighting and indenting additional macros
+
+(al/put doc-string-elt
+  (2 al/defun-lazy))
+
 (defvar al/elisp-keywords
   '("with-no-warnings")
   "List of additional keywords to highlight in `elisp-mode'.
@@ -39,6 +45,13 @@ Usually, these are functions that behave like macros.")
       (group (one-or-more (or (syntax word) (syntax symbol)))))
   "Regexp to match `al/with-eval-after-load' macro.")
 
+(defvar al/elisp-defun-lazy-regexp
+  (rx "(" (group "al/defun-lazy")
+      symbol-end
+      (one-or-more blank)
+      (group (one-or-more (or (syntax word) (syntax symbol)))))
+  "Regexp to match `al/defun-lazy' macro.")
+
 (defun al/elisp-add-font-lock-keywords ()
   "Add `font-lock-keywords' to highlight additional macros.
 Call this function once!"
@@ -46,7 +59,10 @@ Call this function once!"
    'emacs-lisp-mode al/elisp-keywords)
   (font-lock-add-keywords
    'emacs-lisp-mode
-   `((,al/elisp-feature-macros-regexp
+   `((,al/elisp-defun-lazy-regexp
+      (1 font-lock-keyword-face)
+      (2 font-lock-function-name-face))
+     (,al/elisp-feature-macros-regexp
       (1 font-lock-keyword-face)
       (2 font-lock-constant-face)))))
 

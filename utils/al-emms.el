@@ -297,21 +297,16 @@ Intended to be used for `emms-mode-line-mode-line-function'."
 
 ;;; Playlists
 
-(defvar al/emms-all-playlists nil
-  "List of names of all available EMMS playlists.")
-
 (defvar al/emms-playlist-alias-alist
   '(("m"  . "EMMS-main")
     ("b"  . "EMMS-background")
     ("b2" . "EMMS-background2"))
   "Alist of aliases and full playlist names.")
 
-(defun al/emms-all-playlists ()
+(al/defun-lazy al/emms-all-playlists
   "Return names of all EMMS playlists."
-  (or al/emms-all-playlists
-      (setq al/emms-all-playlists
-            (mapcar #'file-name-base
-                    (directory-files emms-directory nil "EMMS-.+.\pl")))))
+  (mapcar #'file-name-base
+          (directory-files emms-directory nil "EMMS-.+.\pl")))
 
 (defun al/emms-get-playlist (string)
   "Return EMMS playlist buffer matching STRING.

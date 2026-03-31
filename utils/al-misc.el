@@ -102,6 +102,24 @@ single key or a list of keys.  KEYS are checked using
 PREDICATE (`member' by default)."
   (al/assq-delete-all keys alist #'member))
 
+(defmacro al/defun-lazy (name &rest body)
+  "Define NAME variable and function accepting zero arguments.
+On the first call, NAME function evaluates BODY, writes its value to
+NAME variable, and returns it.  On subsequent calls, just the value of
+NAME variable is returned without BODY evaluation."
+  (declare (indent 1) (debug t))
+  (let* ((docstring (and (stringp (car body))
+                         (pop body)))
+         (interactive (and (equal (car body) '(interactive))
+                           (pop body))))
+    `(progn
+       (defvar ,name nil)
+       (defun ,name ()
+         ,docstring
+         ,interactive
+         (or ,name
+             (setq ,name (progn ,@body)))))))
+
 (defmacro al/with-check-point (&rest body)
   "Evaluate BODY.
 Return non-nil, if point position is changed after evaluating.

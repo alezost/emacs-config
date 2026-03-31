@@ -21,16 +21,15 @@
 (require 'transient)
 (require 'google-translate-core-ui)
 (require 'let-macros)
+(require 'al-misc)
 (require 'al-color)
 
 (defvar al/translate-tui-top-languages
   '("en" "ru" "ko" "ja" "de" "fr" "auto")
   "List of languages that should be on top of `al/translate-tui-languages'.")
 
-(defvar al/translate-tui-languages nil
-  "List of available languages for minibuffer completion.")
-
-(defun al/translate-tui-languages1 ()
+(al/defun-lazy al/translate-tui-languages
+  "Return list of available languages for minibuffer completion."
   (let* ((name-fun  (lambda (assoc)
                       (concat (cdr assoc) " (" (car assoc) ")")))
          (top-langs nil)
@@ -48,11 +47,6 @@
                                        (rassoc lang top-langs)))
                             al/translate-tui-top-languages)))
     (append top-langs langs)))
-
-(defun al/translate-tui-languages ()
-  "Return list of available languages for minibuffer completion."
-  (or al/translate-tui-languages
-      (setq al/translate-tui-languages (al/translate-tui-languages1))))
 
 (defvar al/translate-tui-text nil
   "Current text to translate.")

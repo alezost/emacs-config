@@ -18,6 +18,7 @@
 ;;; Code:
 
 (require 'al-general)
+(require 'al-misc)
 (require 'al-read)
 
 ;;;###autoload
@@ -84,20 +85,14 @@ with \\[universal-argument] \\[universal-argument], prompt for a default host as
 
 ;;; Files in PATH
 
-(defvar al/path-completions nil
-  "List of names of executable files from PATH.")
-
-(defun al/path-completions ()
+(al/defun-lazy al/path-completions
   "Return names of executable files from PATH."
-  (interactive)
-  (or al/path-completions
-      (let ((regexp (rx "." (zero-or-one ".") "/")))
-        (setq al/path-completions
-              (locate-file-completion-table
-               exec-path exec-suffixes ""
-               (lambda (name)
-                 (not (string-match-p regexp name)))
-               t)))))
+  (let ((regexp (rx "." (zero-or-one ".") "/")))
+    (locate-file-completion-table
+     exec-path exec-suffixes ""
+     (lambda (name)
+       (not (string-match-p regexp name)))
+     t)))
 
 ;;;###autoload
 (defun al/find-file-in-path (file)
