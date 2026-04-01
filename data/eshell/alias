@@ -61,7 +61,7 @@ alias yf yt-dlp -F $@*
 
 alias f find-file $1
 alias i info $1
-alias m man $*
+alias m mpv --quiet --msg-module --msg-level="ffmpeg/video=error,ffmpeg/demuxer=error" $*
 alias p pgrep -l $*
 
 alias ll ls -lah $*
