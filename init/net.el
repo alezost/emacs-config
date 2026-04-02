@@ -695,81 +695,45 @@
    debpaste-expire-time (* 3 24 60 60))
   (add-to-list 'debpaste-domains "debpaste" t))
 
-(al/autoload "web-search"
-  web-search-yandex
-  web-search-youtube
-  web-search-ipduh
-  web-search-ip-address
-  web-search-wikipedia-ru
-  web-search-arch-package
-  web-search-multitran-en/ru
-  web-search-multitran-ru/en
-  web-search-multitran-de/ru
-  web-search-multitran-ru/de
-  web-search-verbix-en
-  web-search-verbix-ko
-  web-search-verbix-de
-  web-search-verbix-ja
-  web-search-verbix-fr
-  web-search-naver-en
-  web-search-naver-ru)
-
-(al/with-eval-after-load web-search
-  (web-search-add-engine
-   'ipduh "IPduh"
-   "https://ipduh.com/apropos/?%s"
-   'web-search-clean-ip)
-  (web-search-add-engine
-   'ip-address "IP address"
-   "https://www.ip-address.org/lookup/ip-locator.php?track=%s"
-   'web-search-clean-ip)
-  (web-search-add-engine
-   'yandex "Yandex"
-   "https://yandex.ru/yandsearch?text=%s")
-  (web-search-add-engine
-   'wikipedia-en "Wikipedia (english)"
-   "https://en.wikipedia.org/w/index.php?search=%s")
-  (web-search-add-engine
-   'wikipedia-ru "Wikipedia (russian)"
-   "https://ru.wikipedia.org/w/index.php?search=%s")
-  (web-search-add-engine
-   'youtube "Youtube"
-   "https://www.youtube.com/results?search_query=%s&search=Search")
-  (web-search-add-engine
-   'arch-package "Arch Packages"
-   "https://www.archlinux.org/packages/?sort=&q=%s&maintainer=&flagged=")
-  (web-search-add-engine
-   'multitran-en/ru "Multitran en/ru"
-   "https://www.multitran.com/m.exe?l1=1&l2=2&s=%s")
-  (web-search-add-engine
-   'multitran-ru/en "Multitran ru/en"
-   "https://www.multitran.com/m.exe?l1=2&l2=1&s=%s")
-  (web-search-add-engine
-   'multitran-de/ru "Multitran de/ru"
-   "https://www.multitran.com/m.exe?l1=3&l2=2&s=%s")
-  (web-search-add-engine
-   'multitran-ru/de "Multitran ru/de"
-   "https://www.multitran.com/m.exe?l1=2&l2=3&s=%s")
-  (web-search-add-engine
-   'verbix-en "Verbix (en)"
-   "https://verbix.com/webverbix/english/%s")
-  (web-search-add-engine
-   'verbix-fr "Verbix (fr)"
-   "https://verbix.com/webverbix/french/%s")
-  (web-search-add-engine
-   'verbix-de "Verbix (de)"
-   "https://verbix.com/webverbix/german/%s")
-  (web-search-add-engine
-   'verbix-ko "Verbix (ko)"
-   "https://verbix.com/webverbix/korean/%s")
-  (web-search-add-engine
-   'verbix-ja "Verbix (ja)"
-   "https://verbix.com/webverbix/japanese/%s")
-  (web-search-add-engine
-   'naver-ru "Naver Dictionary (ko/ru)"
-   "https://dict.naver.com/rukodict/#/search?query=%s")
-  (web-search-add-engine
-   'naver-en "Naver Dictionary (ko/en)"
-   "https://en.dict.naver.com/#/search?query=%s"))
+(setopt
+ web-search-user-engines
+ '((ipduh "IPduh"
+          "https://ipduh.com/apropos/?%s"
+          web-search-clean-ip)
+   (ip-address "IP address"
+               "https://www.ip-address.org/lookup/ip-locator.php?track=%s"
+               web-search-clean-ip)
+   (yandex "Yandex"
+           "https://yandex.ru/yandsearch?text=%s")
+   (wikipedia-en "Wikipedia (english)"
+                 "https://en.wikipedia.org/w/index.php?search=%s")
+   (wikipedia-ru "Wikipedia (russian)"
+                 "https://ru.wikipedia.org/w/index.php?search=%s")
+   (youtube "Youtube"
+            "https://www.youtube.com/results?search_query=%s&search=Search")
+   (arch-package "Arch Packages"
+                 "https://www.archlinux.org/packages/?sort=&q=%s&maintainer=&flagged=")
+   (multitran-en/ru "Multitran en/ru"
+                    "https://www.multitran.com/m.exe?l1=1&l2=2&s=%s")
+   (multitran-ru/en "Multitran ru/en"
+                    "https://www.multitran.com/m.exe?l1=2&l2=1&s=%s")
+   (multitran-de/ru "Multitran de/ru"
+                    "https://www.multitran.com/m.exe?l1=3&l2=2&s=%s")
+   (multitran-ru/de "Multitran ru/de"
+                    "https://www.multitran.com/m.exe?l1=2&l2=3&s=%s")
+   (verbix-en "Verbix (en)"
+              "https://verbix.com/webverbix/english/%s")
+   (verbix-fr "Verbix (fr)"
+              "https://verbix.com/webverbix/french/%s")
+   (verbix-de "Verbix (de)"
+              "https://verbix.com/webverbix/german/%s")
+   (verbix-ko "Verbix (ko)"
+              "https://verbix.com/webverbix/korean/%s")
+   (verbix-ja "Verbix (ja)"
+              "https://verbix.com/webverbix/japanese/%s")
+   (naver-ru "Naver Dictionary (ko/ru)"
+             "https://dict.naver.com/rukodict/#/search?query=%s")
+   (naver-en "Naver Dictionary (ko/en)"
+             "https://en.dict.naver.com/#/search?query=%s")))
 
 ;;; net.el ends here
