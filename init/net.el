@@ -18,6 +18,8 @@
 
 ;;; Global keys
 
+(al/bind-key* "M-S" al/web-search-tui)
+
 (al/bind-keys
  :prefix-map al/net-map
  :prefix-docstring "Map for net utils."
@@ -26,34 +28,6 @@
  ("t" . al/traceroute)
  ("w" . wget)
  ("m" . al/url-wget-mp3))
-
-(al/bind-keys*
- :prefix-map al/web-search-map
- :prefix-docstring "Map for web-search commands and browsing URLs."
- :prefix "M-S"
- ("M-S" . web-search)
- ("d"   . web-search-duckduckgo)
- ("Y"   . web-search-yandex)
- ("y"   . web-search-youtube)
- ("g"   . web-search-github)
- ("G"   . web-search-google)
- ("w e" . web-search-wikipedia-en)
- ("w r" . web-search-wikipedia-ru)
- ("W"   . web-search-wiktionary-en)
- ("a"   . web-search-archwiki)
- ("A"   . web-search-arch-package)
- ("e"   . web-search-emacswiki)
- ("i"   . web-search-ipduh)
- ("I"   . web-search-ip-address)
- ("b"   . web-search-debbugs)
- ("t"     (w3m-browse-url "http://m.tv.yandex.ru/4"))
- ("l"   . al/browse-irc-log)
- ("L"     (al/browse-irc-log
-           "guix"
-           (format-time-string
-            "%Y-%m-%d"
-            (time-subtract (current-time)
-                           (seconds-to-time (* 24 60 60)))))))
 
 
 ;;; Browsing

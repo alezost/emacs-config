@@ -48,6 +48,7 @@ Interactively with arg, prompt for TIME."
 
 ;;; Browse IRC logs from gnunet
 
+;; TODO this bot doesn't exist anymore
 (defvar al/irc-log-base-url "https://gnunet.org/bot/log/"
   "Base URL with IRC logs.")
 
