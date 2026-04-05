@@ -51,9 +51,9 @@ alias Restart Herd restart $*
 ### yt-dlp
 
 alias y al/eshell-ytdlp $@*
-alias yg y --format bv[height=720]+ba --format-sort lang $@*
-alias yb y -f18 $@*
-alias ya y -fba $@*
+alias yg y --format bv[height=720]+ba/best[height=720] --format-sort lang $@*
+alias yb y -f18/bv[height=360]+ba/best[height=360] $@*
+alias ya y -fba/251/140 $@*
 alias yf yt-dlp -F $@*
 
 
