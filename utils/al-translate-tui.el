@@ -22,6 +22,7 @@
 (require 'google-translate-core-ui)
 (require 'let-macros)
 (require 'al-misc)
+(require 'al-url)
 (require 'al-color)
 
 (defvar al/translate-tui-top-languages
@@ -110,6 +111,12 @@ using Google Translate."
   (interactive (al/translate-tui-args))
   (google-translate-translate source target al/translate-tui-text))
 
+(transient-define-suffix al/translate-tui:papago (source target)
+  "Translate `al/translate-tui-text' from SOURCE to TARGET language
+using Naver Dictionary."
+  (interactive (al/translate-tui-args))
+  (browse-url (al/url-papago source target al/translate-tui-text)))
+
 (transient-define-suffix al/translate-tui:naver (source target)
   "Translate `al/translate-tui-text' from SOURCE to TARGET language
 using Naver Dictionary."
@@ -189,7 +196,8 @@ using Multitran."
    [("t" "target" al/translate-tui:target-language)]]
   ["Translate"
    [("g" "Google" al/translate-tui:google-translate)]
-   [("n" "Naver Dictionary" al/translate-tui:naver)]
+   [("p" "Papago" al/translate-tui:papago)
+    ("n" "Naver Dictionary" al/translate-tui:naver)]
    [("m" "Multitran" al/translate-tui:multitran)]
    [("v" "Verbix" al/translate-tui:verbix)]]
   (interactive)

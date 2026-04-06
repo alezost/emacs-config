@@ -85,6 +85,21 @@ Return nil if URL does not contain video ID."
          (al/url-youtube-video-id (car kill-ring)))))
 
 
+;;; Other URLs
+
+(defvar al/url-papago-base-url
+  "https://papago.naver.com/"
+  "Papago base URL.")
+
+(defun al/url-papago (source target text)
+  "Return URL to translate TEXT from source language to target using Papago."
+  (concat al/url-papago-base-url "?"
+          (url-build-query-string
+           `((sk ,source)
+             (tk ,target)
+             (st ,text)))))
+
+
 ;;; wget
 
 (declare-function wget "wget")
