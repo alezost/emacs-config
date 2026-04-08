@@ -328,4 +328,8 @@
   (add-hook 'nxml-mode-hook
             (lambda () (rng-validate-mode 0))))
 
+(al/with-eval-after-load sgml-mode
+  ;; Bind default keys to get rid of "M-o" key binding there.
+  (al/bind-keys-from-vars 'html-mode-map))
+
 ;;; file-modes.el ends here
