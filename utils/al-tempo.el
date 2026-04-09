@@ -256,7 +256,8 @@ with (TAG ELEMENTS NAME) entries.")
 (defun al/tempo-clipboard-element (element)
   "Return the clipboard contents if ELEMENT is `c'."
   (and (eq element 'c)
-       (gui--selection-value-internal 'CLIPBOARD)))
+       (or (gui--selection-value-internal 'PRIMARY)
+           (gui--selection-value-internal 'CLIPBOARD))))
 
 (al/pushnew tempo-user-element-functions #'al/tempo-kill-ring-element)
 (al/pushnew tempo-user-element-functions #'al/tempo-clipboard-element)
