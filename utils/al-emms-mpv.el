@@ -104,6 +104,11 @@ should be a list of values, e.g.:
 
 (declare-function al/emms-notify "al-emms-notification" ())
 
+(defun al/emms-mpv-show-video-progress (&rest _)
+  "Show progress in the mpv OSD of the current EMMS track."
+  (interactive)
+  (al/emms-mpv-run-command "show-progress"))
+
 (defun al/emms-mpv-show-progress ()
   "Notify about the current mpv track.
 Show progress in the OSD if video is playing, or display
@@ -111,8 +116,7 @@ notification for an audio track."
   (interactive)
   (al/emms-mpv-call-with-property
    "video-codec"
-   (lambda (_)
-     (al/emms-mpv-run-command '("show-progress")))
+   #'al/emms-mpv-show-video-progress
    (lambda ()
      (require 'al-emms-notification)
      (al/emms-notify))))

@@ -211,6 +211,10 @@
     :override #'al/emms-playlist-mode-insert-track))
 
 (al/with-eval-after-load al-emms-mpv
+  (al/add-hook-maybe
+      '(emms-player-seeked-functions
+        emms-player-time-set-functions)
+    'al/emms-mpv-show-video-progress)
   (push '("client-message" . al/emms-mpv-handle-client-message)
         emms-mpv-event-handlers))
 
