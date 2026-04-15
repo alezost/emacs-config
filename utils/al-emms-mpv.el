@@ -20,6 +20,7 @@
 (eval-when-compile (require 'cl-lib))
 (require 'seq)
 (require 'emms-mpv)
+(require 'al-general)
 
 (defun al/emms-mpv-playing-radio? ()
   "Return non-nil, if current player is `mpv' and current track
@@ -63,7 +64,7 @@ should be a list of values, e.g.:
   (emms-mpv-cmd
    ;; OSD prefixes are disabled for JSON API by default:
    ;; <https://github.com/mpv-player/mpv/issues/4517>.
-   (cons "osd-auto" command)
+   (cons "osd-auto" (al/list-maybe command))
    (or handler #'ignore)))
 
 (defun al/emms-mpv-show-property (property)
