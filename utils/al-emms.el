@@ -425,6 +425,8 @@ If NO-CONFIRM is non-nil, delete without confirmation."
        (expand-file-name (concat (buffer-name) ".pl")
                          emms-directory)))))
 
+(declare-function emms-mpv-save-current-progress-maybe "emms-mpv")
+
 ;;;###autoload
 (defun al/emms-save-playlists ()
   "Save all EMMS playlists."
@@ -432,7 +434,8 @@ If NO-CONFIRM is non-nil, delete without confirmation."
   (dolist (buf emms-playlist-buffers)
     (when (buffer-live-p buf)
       (with-current-buffer buf
-        (al/emms-save-playlist)))))
+        (al/emms-save-playlist))))
+  (emms-mpv-save-current-progress-maybe))
 
 ;;;###autoload
 (defun al/emms-update-all-tracks ()
