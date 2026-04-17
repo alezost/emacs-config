@@ -44,13 +44,17 @@
 This input method is saved by `al/transient-fix-input-method' and
 restored by `al/transient-restore-input-method'.")
 
+(defvar al/transient-old-buffer nil
+  "Buffer where `al/transient-old-input-method' was saved.")
+
 (defun al/transient-fix-input-method (&rest _)
   "Save the current input method and deactivate it.
 This function is intended to be used like so:
 
   (advice-add \\='transient-setup :before #\\='al/transient-fix-input-method)"
   (when current-input-method
-    (setq al/transient-old-input-method current-input-method)
+    (setq al/transient-old-input-method current-input-method
+          al/transient-old-buffer (current-buffer))
     (set-input-method nil)))
 
 (defun al/transient-restore-input-method (&rest _)
@@ -59,8 +63,11 @@ This function is intended to be used like so:
 
   (add-hook \\='transient-post-exit-hook #\\='al/transient-restore-input-method)"
   (when al/transient-old-input-method
-    (set-input-method al/transient-old-input-method)
-    (setq al/transient-old-input-method nil)))
+    (when (buffer-live-p al/transient-old-buffer)
+      (with-current-buffer al/transient-old-buffer
+        (set-input-method al/transient-old-input-method)))
+    (setq al/transient-old-input-method nil
+          al/transient-old-buffer nil)))
 
 (provide 'al-transient)
 
