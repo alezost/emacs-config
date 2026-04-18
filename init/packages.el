@@ -107,6 +107,7 @@
      (sql-completion     :fetcher github :repo "emacsmirror/sql-completion")
      (dictem             :fetcher github :repo "cheusov/dictem")
      (journal            :fetcher git :url ,(al/emacs-repo "journal"))
+     (learn-alphabet     :fetcher git :url ,(al/emacs-repo "learn-alphabet"))
      (mana               :fetcher git :url ,(al/emacs-repo "mana"))
      (ducpel             :fetcher git :url ,(al/emacs-repo "ducpel")
                          :files ("*.el"))
