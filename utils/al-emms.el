@@ -317,8 +317,10 @@ STRING can be a full playlist name, its alias from
   (if-let ((name (or (alist-get string al/emms-playlist-alias-alist
                                 nil nil #'string=)
                      (seq-find (lambda (name)
-                                 ;; Skip starting "EMMS-" part.
-                                 (string-match-p string name 5))
+                                 (let ((case-fold-search t))
+                                   (if (string-match-p "emms-" string)
+                                       (string-match-p string name)
+                                     (string-match-p string name 5))))
                                (al/emms-all-playlists)))))
       (or (get-buffer name)
           (let ((buf  (emms-playlist-new name))
@@ -328,7 +330,7 @@ STRING can be a full playlist name, its alias from
                 (with-current-buffer buf
                   (al/emms-add-source 'emms-source-playlist file)
                   buf)
-              ;; Actually this error should never happen: if NAME is
+              ;; Actually, this error should never happen: if NAME is
               ;; found then FILE should exist.
               (error "File <%s> does not exist" file))))
     (error "Cannot define playlist by %S" string)))
