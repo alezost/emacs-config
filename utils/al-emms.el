@@ -368,6 +368,17 @@ This is similar to `emms-playlist-buffer-list' except it does not check
 		    emms-playlist-buffers)))
 
 ;;;###autoload
+(defun al/emms-playlist-play (string)
+  "Switch to EMMS playlist buffer matching STRING.
+Interactively, prompt for an existing playlist."
+  (interactive
+   (list (completing-read "Switch to buffer:" (al/emms-all-playlists))))
+  (al/display-buffer (al/emms-get-playlist string))
+  (emms-start)
+  (when-let ((resume (emms-player-get emms-player-playing-p 'resume)))
+    (funcall resume)))
+
+;;;###autoload
 (defun al/emms-switch-to-playlist-buffer (&optional arg)
   "Switch to the next EMMS playlist.
 If ARG is non-nil, prompt for the playlist."
