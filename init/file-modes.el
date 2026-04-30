@@ -272,6 +272,7 @@
                    ;;"\\.log\\'" not this because of ~/config/emacs/data/emacs-wget.log
                    )
                   t)
+     (zapret-nfqws-mode "zapret.*\\.conf\\'")
      (emacs-lisp-mode "/emms/.+\\.pl\\'") ; my playlists in `emms-directory'
      (pdf-view-mode "\\.[pP][dD][fF]\\'")
      (markdown-mode ,(al/file-regexp "mdown"))
