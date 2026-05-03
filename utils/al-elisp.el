@@ -33,7 +33,8 @@ I always want to complete all symbols!"
   (2 al/defun-lazy))
 
 (defvar al/elisp-keywords
-  '("with-no-warnings")
+  '("with-no-warnings"
+    "define-button-type")
   "List of additional keywords to highlight in `elisp-mode'.
 Usually, these are functions that behave like macros.")
 
