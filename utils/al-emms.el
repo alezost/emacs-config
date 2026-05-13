@@ -138,6 +138,12 @@ fontification."
   (and title
        (al/with-face 'alect-title title)))
 
+(defun al/emms-format-note (note)
+  "Return note formatted to display in EMMS playlist."
+  (and note
+       (concat (al/with-face 'font-lock-comment-face note)
+               " ")))
+
 (defun al/emms-format-album (album)
   "Return ALBUM formatted to display in EMMS playlist."
   (and album
@@ -170,12 +176,13 @@ Intended to be used for `emms-track-description-function'."
            (size   (if size (al/format-bytes size 3) "    "))
            (artist (al/emms-format-artist (etg 'info-artist)))
            (title  (al/emms-format-title (etg 'info-title)))
+           (note   (al/emms-format-note (etg 'al-note)))
            (time   (al/emms-format-playing-time (etg 'info-playing-time))))
       (if (null title)
           (let ((name (emms-track-name track)))
             (if (string-match-p page-delimiter name)
                 name
-              (concat time " " size " "
+              (concat time " " size " " note
                       (and artist (concat artist " - "))
                       (al/emms-simple-track-description track))))
         (let* ((tnum   (al/emms-format-track-number (etg 'info-tracknumber)))
@@ -192,7 +199,7 @@ Intended to be used for `emms-track-description-function'."
             (setq desc (concat desc " [" album "]"))))
           (when tnum
             (setq desc (concat desc " " tnum ".")))
-          (concat time " " size " " desc " " title))))))
+          (concat time " " size note desc " " title))))))
 
 (defun al/emms-short-track-description (track)
   "Return a short description of TRACK suitable for mode-line."
@@ -276,6 +283,18 @@ This variable is used by `al/emms-file-name-description'.")
        ;;          (al/emms-format-title (match-string 2 file))
        ;;          (substring file (match-end 2))))
        (t file)))))
+
+(defun al/emms-edit-track-note ()
+  "Modify \\+`al-note' property of the track at point."
+  (interactive)
+  (let* ((track (emms-playlist-track-at))
+         (prompt (format "Edit note of \"%s\" track: "
+                         (emms-track-name track)))
+         (note (emms-track-get track 'al-note))
+         (note (read-string prompt note))
+         (note (unless (string-empty-p note) note)))
+    (emms-track-set track 'al-note note)
+    (emms-playlist-mode-update-track-function)))
 
 
 ;;; Mode line

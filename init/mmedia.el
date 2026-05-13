@@ -91,6 +91,7 @@
   (defconst al/emms-playlist-keys
     '("r"
       ("M-r M-l" . al/org-emms-store-link)
+      ("M-d" . al/emms-edit-track-note)
       ("SPC" . emms-pause)
       ("S"   . al/emms-save-playlist)
       ("Q"   . emms-stop)
