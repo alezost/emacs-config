@@ -398,6 +398,19 @@ Interactively, prompt for an existing playlist."
     (funcall resume)))
 
 ;;;###autoload
+(defun al/emms-playlist-select (&optional arg)
+  "Prompt for EMMS playlist buffer and switch to it.
+If ARG is nil, prompt for a buffer that is already opened.
+Otherwise (interactively, with prefix), prompt for any existing
+playlist."
+  (interactive "P")
+  (let* ((names (if arg
+                    (al/emms-all-playlists)
+                  (mapcar #'buffer-name (al/emms-playlist-buffers))))
+         (name (completing-read "Switch to buffer:" names)))
+    (al/display-buffer (al/emms-get-playlist name))))
+
+;;;###autoload
 (defun al/emms-switch-to-playlist-buffer (&optional arg)
   "Switch to the next EMMS playlist.
 If ARG is non-nil, prompt for the playlist."
