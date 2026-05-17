@@ -173,7 +173,9 @@ fontification."
 Intended to be used for `emms-track-description-function'."
   (cl-flet ((etg (key) (emms-track-get track key)))
     (let* ((size   (etg 'info-size))
-           (size   (if size (al/format-bytes size 3) "    "))
+           (size   (if size
+                       (concat (al/format-bytes size 3) " ")
+                     ""))
            (artist (al/emms-format-artist (etg 'info-artist)))
            (title  (al/emms-format-title (etg 'info-title)))
            (note   (al/emms-format-note (etg 'al-note)))
@@ -182,7 +184,7 @@ Intended to be used for `emms-track-description-function'."
           (let ((name (emms-track-name track)))
             (if (string-match-p page-delimiter name)
                 name
-              (concat time " " size " " note
+              (concat time " " size note
                       (and artist (concat artist " - "))
                       (al/emms-simple-track-description track))))
         (let* ((tnum   (al/emms-format-track-number (etg 'info-tracknumber)))
