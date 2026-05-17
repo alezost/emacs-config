@@ -1,6 +1,6 @@
 ;;; al-window.el --- Additional functionality for working with windows and frames  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2025 Alex Kost
+;; Copyright © 2013–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -118,6 +118,16 @@ The variable _CURRENT-FRAME affects nothing, it is used for
         "WINDOWS_NUM"
         (string (length (window-list)))
         nil nil nil t)))
+
+;;;###autoload
+(defun al/run-stumpwm-command (string)
+  "Run StumpWM command from STRING."
+  (interactive "sStumpWM command: ")
+  ;; xprop command is taken from
+  ;; "<stumpwm-contrib>/util/stumpish/stumpish" script.
+  (let ((prop "STUMPWM_COMMAND"))
+    (call-process "xprop" nil nil nil
+                  "-root" "-f" prop "8u" "-set" prop string)))
 
 (provide 'al-window)
 
