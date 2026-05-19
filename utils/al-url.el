@@ -19,6 +19,7 @@
 
 (require 'let-macros)
 (require 'al-misc)
+(require 'al-text)
 
 (defvar al/url-regexp
   "https?://"
@@ -76,13 +77,11 @@ Return nil if URL does not contain video ID."
 
 (defun al/url-youtube-video-id-candidates ()
   "Return list of video IDs from various places."
-  (delq nil
-        (list
-         (and (require 'al-thingatpt nil t)
-              (thing-at-point 'youtube 'no-properties))
-         (al/url-youtube-video-id (gui--selection-value-internal 'CLIPBOARD))
-         (al/url-youtube-video-id (gui--selection-value-internal 'PRIMARY))
-         (al/url-youtube-video-id (car kill-ring)))))
+  (if-letn ((candidates (al/string-candidates nil '(al/url-youtube-video-id)))
+            (at-point   (and (require 'al-thingatpt nil t)
+                             (thing-at-point 'youtube 'no-properties))))
+      (cons at-point candidates)
+    candidates))
 
 
 ;;; Other URLs

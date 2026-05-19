@@ -17,12 +17,35 @@
 
 ;;; Code:
 
+(require 'seq)
+(require 'al-misc)
+
 (defun al/shorten-string (string length)
   "Shorten STRING to make it no longer than LENGTH."
   (if (<= (length string) length)
       string
     (concat (substring string 0 (- length 1))
             "…")))
+
+(defun al/string-candidates (&optional thing filters)
+  "Return list of strings from various places (clipboard, kill ring, etc.)
+
+If THING is non-nil, `thing-at-point' with this THING is also one of the
+candidates.
+
+FILTERS is a list of functions, (F1 F2 ... FN), applied to each
+candidate.  FILTERS are called from left to right, passing result to the
+next function i.e., (FN (... (F2 (F1 ELEMENT)))).  If any filter returns
+nil, this candidate is removed from the final list."
+  (let ((filters (cons #'substring-no-properties filters))
+        (candidates (list
+                     (and thing (thing-at-point thing))
+                     (gui--selection-value-internal 'CLIPBOARD)
+                     (gui--selection-value-internal 'PRIMARY)
+                     (car kill-ring))))
+    (seq-keep (lambda (candidate)
+                (al/multi-filter candidate filters))
+              (seq-uniq (delq nil candidates)))))
 
 (defun al/parse-ytdlp-file-name-output (string)
   "Parse and return file name from `yt-dlp' output.
