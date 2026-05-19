@@ -18,6 +18,7 @@
 ;;; Code:
 
 (require 'seq)
+(require 'let-macros)
 (require 'al-misc)
 
 (defun al/shorten-string (string length)
@@ -26,6 +27,12 @@
       string
     (concat (substring string 0 (- length 1))
             "…")))
+
+(defun al/first-line (string)
+  "Return the first line of STRING."
+  (if-let ((end (string-match "\n" string)))
+      (substring string 0 end)
+    string))
 
 (defun al/string-candidates (&optional thing filters)
   "Return list of strings from various places (clipboard, kill ring, etc.)

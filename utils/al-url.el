@@ -42,6 +42,13 @@ Return nil, if URL does not contain query parameters."
   (when-let ((query (cadr (split-string url "?"))))
     (url-parse-query-string query)))
 
+(defun al/url-strip-query-parameters (url)
+  "Return URL without query parameters.
+I.e., without substring starting with \"?\"."
+  (if (string-match "\\?" url)
+      (substring url 0 (match-beginning 0))
+    url))
+
 
 ;;; YouTube URLs
 
@@ -85,6 +92,17 @@ Return nil if URL does not contain video ID."
 
 
 ;;; Other URLs
+
+(defun al/url-candidates (&optional no-query)
+  "Return a list of URL candidates from various places.
+If NO-QUERY is non-nil, remove query parameters from URLs."
+  (let* ((inv-filters '(al/check-url al/first-line))
+         (inv-filters (if no-query
+                          (cons #'al/url-strip-query-parameters
+                                inv-filters)
+                        inv-filters))
+         (filters (reverse inv-filters)))
+    (al/string-candidates 'url filters)))
 
 (defvar al/url-papago-base-url
   "https://papago.naver.com/"
