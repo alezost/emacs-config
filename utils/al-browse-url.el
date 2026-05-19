@@ -18,6 +18,7 @@
 ;;; Code:
 
 (require 'browse-url)
+(require 'let-macros)
 (require 'al-url)
 
 ;;;###autoload
@@ -44,6 +45,32 @@ Interactively with arg, prompt for TIME."
     (browse-url (al/url-youtube-playlist id)))
    (t
     (error "Unknown youtube ID: %s" id))))
+
+(defvar al/urls nil
+  "List of URLs for `al/browse-url'.
+Each element of the list should be a string of \"<something> http...\"
+form.")
+
+;;;###autoload
+(defun al/browse-url (url &optional no-query)
+  "Browse URL.
+Interactively, prompt for URL using completions from clipboard, URL at
+point, and `al/urls' list.
+
+If NO-QUERY is non-nil (interactively, with arg), remove query
+parameters from URL."
+  (interactive
+   (let* ((completion-extra-properties '(:cycle-sort-function identity))
+          (url (completing-read "Browse URL: "
+                                (append (al/url-candidates)
+                                        al/urls))))
+     (list url current-prefix-arg)))
+  (if-let ((url (al/check-url url))
+           (url (if no-query
+                    (al/url-strip-query-parameters url)
+                  url)))
+      (browse-url url)
+    (error "`%s' does not match `al/url-regexp'" url)))
 
 
 ;;; Browse IRC logs from gnunet

@@ -29,7 +29,7 @@
   ("S"     . al/sudo-find-file)
   ("h"     . al/ssh-find-file)
   ("z"     . al/router-get-log)
-  ("u"     . al/choose-browser-tui)
+  ("u"     . al/browse-url)
   ("y"     . al/browse-youtube-video)
   ("l"     . find-library)
   ("r"     . recentf-open)
