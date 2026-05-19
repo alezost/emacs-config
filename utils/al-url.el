@@ -31,10 +31,10 @@
 
 (defun al/check-url (value)
   "Check if VALUE is a string matching `al/url-regexp'.
-Return value if it is, return nil otherwise."
+Return matching URL if it is, return nil otherwise."
   (and (stringp value)
-       (string-match-p al/url-regexp value)
-       value))
+       (string-match al/url-regexp value)
+       (substring-no-properties value (match-beginning 0))))
 
 (defun al/url-query-parameters (url)
   "Return alist of query parameters from URL.
