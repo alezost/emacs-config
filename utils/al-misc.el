@@ -55,6 +55,22 @@ If ELEMENT is an element of LIST, return an element placed after it."
           (car list))
     (car list)))
 
+(defun al/multi-filter (element filters)
+  "Pass ELEMENT through FILTERS.
+
+FILTERS is a list of functions, (F1 F2 ... FN), applied from left to
+right, passing result to the next function i.e.,
+
+  (FN (... (F2 (F1 ELEMENT))))
+
+If any filter returns nil, the rest filters are not applied.
+
+Return result of the final filter application."
+  (if (null filters)
+      element
+    (when-let* ((res (funcall (car filters) element)))
+      (al/multi-filter res (cdr filters)))))
+
 (defun al/push-after (list after elt test)
   "Add ELT to LIST after the first occurrence of AFTER.
 AFTER element is checked with TEST predicate.
