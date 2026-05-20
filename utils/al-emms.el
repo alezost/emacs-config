@@ -27,6 +27,7 @@
 (require 'al-buffer)
 (require 'al-misc)
 (require 'al-color)
+(require 'al-url)
 
 (defun al/emms-seek-forward (seconds)
   "Seek by SECONDS forward.
@@ -365,6 +366,17 @@ STRING can be a full playlist name, its alias from
   (when (or (not emms-playlist-selected-marker)
 	    (not (marker-position emms-playlist-selected-marker)))
     (emms-playlist-select-first)))
+
+(defun al/emms-add-url (url)
+  "Add URL to the current (playlist) buffer."
+  (interactive
+   (let* ((prompt "Add URL: ")
+          (candidates (al/url-candidates))
+          (url (if (cdr candidates)
+                   (completing-read prompt candidates)
+                 (read-string prompt (car candidates)))))
+     (list url)))
+  (al/emms-add-source 'emms-source-url url))
 
 (defun al/emms-add-source-to-playlist (name source &rest args)
   "Add SOURCE tracks to playlist NAME.

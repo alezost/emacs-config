@@ -90,7 +90,8 @@
 
 (al/with-eval-after-load emms-playlist-mode
   (defconst al/emms-playlist-keys
-    '("r"
+    '("r" "a"
+      ("au"  . al/emms-add-url)
       ("M-r M-l" . al/org-emms-store-link)
       ("M-d" . al/emms-edit-track-note)
       ("SPC" . emms-pause)
