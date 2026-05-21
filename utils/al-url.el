@@ -18,7 +18,7 @@
 ;;; Code:
 
 (require 'let-macros)
-(require 'al-misc)
+(require 'al-format)
 (require 'al-text)
 
 (defvar al/url-regexp

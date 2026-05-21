@@ -21,6 +21,7 @@
 (require 'dired-x)
 (require 'al-file)
 (require 'al-process)
+(require 'al-format)
 (require 'al-misc)
 
 

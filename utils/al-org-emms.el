@@ -28,7 +28,7 @@
 (require 'let-macros)
 (require 'al-buffer)
 (require 'al-url)
-(require 'al-misc)
+(require 'al-format)
 (require 'al-emms-mpv)
 
 

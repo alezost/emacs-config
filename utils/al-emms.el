@@ -24,8 +24,8 @@
 (require 'emms-state)
 (require 'let-macros)
 (require 'al-text)
+(require 'al-format)
 (require 'al-buffer)
-(require 'al-misc)
 (require 'al-color)
 (require 'al-url)
 

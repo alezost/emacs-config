@@ -21,25 +21,6 @@
 (require 'seq)
 (require 'al-general)
 
-(defun al/time-string-to-seconds (str)
-  ;; This function originates from `org-emms-time-string-to-seconds'
-  ;; (from `org-emms' package).
-  "Convert timestring STR to a number of seconds.
-STR can have one of the following formats:
-- SS
-- MM:SS
-- HH:MM:SS
-"
-  (save-match-data
-    (if (string-match "\\([0-9]+:\\)?\\([0-9]+\\):\\([0-9]+\\)" str)
-	(let ((h (if (match-beginning 1)
-                     (string-to-number (match-string 1 str))
-                   0))
-	      (m (string-to-number (match-string 2 str)))
-	      (s (string-to-number (match-string 3 str))))
-	  (+ (* h 3600) (* m 60) s))
-      (string-to-number str))))
-
 (defun al/intern (string-or-symbol)
   "Like `intern' except STRING-OR-SYMBOL can also be a symbol."
   (if (symbolp string-or-symbol)
@@ -188,44 +169,6 @@ Call (put SYMBOL PROPERTY VALUE) for each PROPERTY and each SYMBOL."
   (let ((re (concat "(" (regexp-opt names 'group) "\\_>")))
     (font-lock-add-keywords
      mode `((,re 1 font-lock-keyword-face)))))
-
-
-;;; Formatting bytes
-
-(defvar al/format-byte-alist
-  '((1e9 "G" alect-color-level-3)
-    (1e6 "M" alect-color-level-2)
-    (1e3 "k" alect-color-level-1)
-    (nil "b" shadow))
-  "Internal variable for `al/format-bytes'.")
-
-(defun al/format-bytes-1 (bytes)
-  "Return (NUM UNIT) list to format BYTES."
-  (let ((rest al/format-byte-alist)
-        (num nil)
-        (border nil))
-    (while (if (setq border (caar rest))
-               (> 1 (setq num (/ (float bytes) border)))
-             (setq num bytes)
-             nil)
-      (setq rest (cdr rest)))
-    (let ((assoc (car rest)))
-      (list num (propertize (nth 1 assoc) 'face (nth 2 assoc))))))
-
-(defun al/format-bytes (bytes &optional width)
-  "Return human readable string from BYTES.
-Result has WIDTH length plus 1 character for unit."
-  (or (>= bytes 0)
-      (error "BYTES should be a non-negative number"))
-  (cl-multiple-value-bind (num unit)
-      (al/format-bytes-1 bytes)
-    (let* ((width-str (and width (number-to-string width)))
-           (fmt (if (or (string= "b" unit)
-                        (and width
-                             (>= num (expt 10 (- width 2)))))
-                    (concat "%" width-str "d")
-                  (concat "%" width-str ".1f"))))
-      (concat (format fmt num) unit))))
 
 (provide 'al-misc)
 
