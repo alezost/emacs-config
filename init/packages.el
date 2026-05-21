@@ -352,7 +352,7 @@
   (setq
    aurel-download-directory (al/src-dir-file "abs")
    aurel-aur-user-name "alezost"
-   aurel-aur-user-package-info-check t
+   ;; aurel-aur-user-package-info-check t
    aurel-info-aur-user-string "——————————————————————————————————————\n"
    aurel-info-installed-package-string aurel-info-aur-user-string
    aurel-debug-level 9
