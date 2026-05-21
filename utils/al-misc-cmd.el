@@ -103,6 +103,9 @@ With prefix, prompt for directory as well."
                   (prin1 symbol)
                   (princ "\n"))))))
 
+
+;;; Highlighting of the current line
+
 (defvar al/hl-line-mode-exclude '(grep-mode)
   "List of modes where `al/hl-line-mode' does nothing.")
 
@@ -113,6 +116,20 @@ Do nothing if current mode is derived from `al/hl-line-mode-exclude'."
   (interactive)
   (unless (derived-mode-p al/hl-line-mode-exclude)
     (hl-line-mode 'toggle)))
+
+
+;;; Checking parentheses
+
+(defvar al/check-parens-modes
+  '(lisp-data-mode scheme-mode)
+  "List of parent modes where `al/check-parens' is called.")
+
+;;;###autoload
+(defun al/check-parens ()
+  "Run `check-parens' if `major-mode' derived from `al/check-parens-modes'."
+  (interactive)
+  (when (derived-mode-p al/check-parens-modes)
+    (check-parens)))
 
 (provide 'al-misc-cmd)
 
