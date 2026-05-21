@@ -95,17 +95,6 @@ otherwise select the next window."
     (error "Minibuffer is not active")))
 
 
-;;; Frames
-
-;;;###autoload
-(defun al/maximize-frame (&optional _current-frame)
-  "Maximize active frame using `wmctrl'.
-The variable _CURRENT-FRAME affects nothing, it is used for
-`after-make-frame-functions' (for maximizing new frames)."
-  (interactive)
-  (shell-command "wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz"))
-
-
 ;; Update WINDOWS_NUM property for a stumpwm command, see
 ;; <https://github.com/alezost/stumpwm-config/blob/master/utils.lisp>.
 ;; Intended to be used with:
