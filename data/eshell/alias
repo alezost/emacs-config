@@ -48,7 +48,10 @@ alias Start   Herd start $*
 alias Restart Herd restart $*
 
 
-### yt-dlp
+### mpv & yt-dlp
+
+alias m al/eshell-mpv $@*
+alias tm al/eshell-tor-mpv $@*
 
 alias y al/eshell-ytdlp $@*
 alias yg y --format bv[height=720]+ba/best[height=720] --format-sort lang $@*
@@ -61,7 +64,6 @@ alias yf yt-dlp -F $@*
 
 alias f find-file $1
 alias i info $1
-alias m mpv --quiet --msg-module --msg-level="ffmpeg/video=error,ffmpeg/demuxer=error" $*
 alias p pgrep -l $*
 
 alias ll ls -lah $*

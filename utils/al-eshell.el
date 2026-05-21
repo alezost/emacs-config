@@ -157,6 +157,27 @@ find out how a playlist name may look like."
      (apply #'al/eshell-command "yt-dlp" `("--paths" ,al/download-dir ,@args)))))
 
 
+;;; Miscellaneous commands
+
+(defun al/eshell-run-command-from-env (name &optional pre post)
+  "Run shell command from environment variable NAME.
+PRE and POST are lists of additional strings prepended and appended to
+the shell command."
+  (if-let ((cmd (getenv name)))
+      (al/eshell-replace-command
+       (apply #'al/eshell-command
+              (append pre (split-string cmd " ") post)))
+    (error "Environment variable `%s' does not exist" name)))
+
+(defun al/eshell-mpv (&rest args)
+  "Run `MPV_CMD' environment variable with ARGS."
+  (al/eshell-run-command-from-env "MPV_CMD" nil args))
+
+(defun al/eshell-tor-mpv (&rest args)
+  "Run `MPV_CMD' environment variable with ARGS using `torsocks'."
+  (al/eshell-run-command-from-env "MPV_CMD" '("torsocks") args))
+
+
 ;;; Prompt
 
 ;; Idea from <http://www.emacswiki.org/emacs/EshellPrompt>.
