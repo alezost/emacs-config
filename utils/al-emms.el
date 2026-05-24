@@ -287,16 +287,27 @@ This variable is used by `al/emms-file-name-description'.")
        ;;          (substring file (match-end 2))))
        (t file)))))
 
-(defun al/emms-edit-track-note ()
-  "Modify \\+`al-note' property of the track at point."
+(defun al/emms-track-properties (track)
+  "Return list of all TRACK properties (fields)."
+  (mapcar #'car (cdr track)))
+
+(defun al/emms-edit-track-property ()
+  "Modify some property of the track at point.
+Edit \\+`al-note' property by default.  With prefix, select one of the
+available properties."
   (interactive)
   (let* ((track (emms-playlist-track-at))
-         (prompt (format "Edit note of \"%s\" track: "
-                         (emms-track-name track)))
-         (note (emms-track-get track 'al-note))
-         (note (read-string prompt note))
-         (note (unless (string-empty-p note) note)))
-    (emms-track-set track 'al-note note)
+         (prop (if current-prefix-arg
+                   (intern
+                    (completing-read "Edit track property: "
+                                     (al/emms-track-properties track)))
+                 'al-note))
+         (prompt (format "Edit `%s' of \"%s\" track: "
+                         prop (emms-track-name track)))
+         (value (emms-track-get track prop))
+         (value (read-string prompt value))
+         (value (unless (string-empty-p value) value)))
+    (emms-track-set track prop value)
     (emms-playlist-mode-update-track-function)))
 
 

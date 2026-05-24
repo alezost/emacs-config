@@ -93,7 +93,7 @@
     '("r" "a"
       ("au"  . al/emms-add-url)
       ("M-r M-l" . al/org-emms-store-link)
-      ("M-d" . al/emms-edit-track-note)
+      ("M-d" . al/emms-edit-track-property)
       ("SPC" . emms-pause)
       ("S"   . al/emms-save-playlist)
       ("Q"   . emms-stop)
