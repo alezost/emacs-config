@@ -142,8 +142,7 @@ fontification."
 (defun al/emms-format-note (note)
   "Return note formatted to display in EMMS playlist."
   (and note
-       (concat (al/with-face 'font-lock-comment-face note)
-               " ")))
+       (al/with-face 'font-lock-comment-face note)))
 
 (defun al/emms-format-album (album)
   "Return ALBUM formatted to display in EMMS playlist."
@@ -172,37 +171,45 @@ fontification."
 (defun al/emms-full-track-description (track)
   "Return a full description of TRACK.
 Intended to be used for `emms-track-description-function'."
-  (cl-flet ((etg (key) (emms-track-get track key)))
-    (let* ((size   (etg 'info-size))
-           (size   (if size
-                       (concat (al/format-bytes size 3) " ")
-                     ""))
-           (artist (al/emms-format-artist (etg 'info-artist)))
-           (title  (al/emms-format-title (etg 'info-title)))
-           (note   (al/emms-format-note (etg 'al-note)))
-           (time   (al/emms-format-playing-time (etg 'info-playing-time))))
-      (if (null title)
-          (let ((name (emms-track-name track)))
-            (if (string-match-p page-delimiter name)
-                name
-              (concat time " " size note
-                      (and artist (concat artist " - "))
-                      (al/emms-simple-track-description track))))
-        (let* ((tnum   (al/emms-format-track-number (etg 'info-tracknumber)))
-               (album  (al/emms-format-album (etg 'info-album)))
-               (date   (al/emms-format-date (or (etg 'info-date)
-                                                (etg 'info-year))))
-               (desc artist))
-          (cond
-           ((and album date)
-            (setq desc (format "%s [%s – %s]" desc date album)))
-           (date
-            (setq desc (concat desc " [" date "]")))
-           (album
-            (setq desc (concat desc " [" album "]"))))
-          (when tnum
-            (setq desc (concat desc " " tnum ".")))
-          (concat time " " size note desc " " title))))))
+  (let ((name (emms-track-name track)))
+    (if (string-match-p page-delimiter name)
+        name
+      (cl-flet ((etg (key) (emms-track-get track key)))
+        (let* ((size   (etg 'info-size))
+               (size   (if size
+                           (concat (al/format-bytes size 3) " ")
+                         ""))
+               (artist (al/emms-format-artist       (etg 'info-artist)))
+               (title  (al/emms-format-title        (etg 'info-title)))
+               (note   (al/emms-format-note         (etg 'al-note)))
+               (time   (al/emms-format-playing-time (etg 'info-playing-time)))
+               (tnum   (al/emms-format-track-number (etg 'info-tracknumber)))
+               (album  (al/emms-format-album        (etg 'info-album)))
+               (date   (al/emms-format-date     (or (etg 'info-date)
+                                                    (etg 'info-year))))
+               (title (cond
+                       ((memq (emms-track-type track)
+                              '(url streamlist))
+                        (concat (and title (concat title " "))
+                                (al/emms-simple-track-description track)))
+                       (title title)
+                       (t (al/emms-simple-track-description track))))
+               (desc artist)
+               (desc (cond
+                      ((and album date)
+                       (format "%s [%s – %s]" desc date album))
+                      (date  (concat desc " [" date "]"))
+                      (album (concat desc " [" album "]"))
+                      (t desc)))
+               (desc (if tnum
+                         (concat desc " " tnum ".")
+                       desc))
+               (desc (cond
+                      ((and note desc)
+                       (concat note " " desc " "))
+                      (note (concat note " "))
+                      (desc (concat desc " ")))))
+          (concat time " " size desc title))))))
 
 (defun al/emms-short-track-description (track)
   "Return a short description of TRACK suitable for mode-line."
@@ -225,7 +232,8 @@ This is similar to `emms-track-simple-description' except use
 `al/emms-file-track-description' if TRACK type is `file'."
   (cl-case (emms-track-type track)
     (file (al/emms-file-name-description (emms-track-name track)))
-    (url  (emms-format-url-track-name (emms-track-name track)))
+    ((url streamlist)
+     (emms-format-url-track-name (emms-track-name track)))
     (t    (al/emms-fallback-track-description track))))
 
 (defvar al/emms-file-name-shorten-alist nil
