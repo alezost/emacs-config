@@ -511,11 +511,11 @@ If NO-CONFIRM is non-nil, delete the file without confirmation."
 (defun al/emms-save-playlists ()
   "Save all EMMS playlists."
   (interactive)
+  (emms-mpv-save-current-progress-maybe)
   (dolist (buf emms-playlist-buffers)
     (when (buffer-live-p buf)
       (with-current-buffer buf
-        (al/emms-save-playlist))))
-  (emms-mpv-save-current-progress-maybe))
+        (al/emms-save-playlist)))))
 
 ;;;###autoload
 (defun al/emms-update-all-tracks ()
