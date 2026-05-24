@@ -222,9 +222,10 @@ With ARG, save that many lines."
 Leave the point on the last copy.
 With argument N, make N copies.
 With negative N, comment everything except the last copy."
-  (interactive "*p")
+  (interactive "p")
   (or n (setq n 1))
-  (let ((regionp (region-active-p)))
+  (let ((inhibit-read-only t)
+        (regionp (region-active-p)))
     (cl-multiple-value-bind (beg end col)
         (if regionp
             (list (region-beginning)
@@ -233,7 +234,7 @@ With negative N, comment everything except the last copy."
           (list (line-beginning-position)
                 (line-beginning-position 2)
                 (current-column)))
-      (let ((text (buffer-substring-no-properties beg end)))
+      (let ((text (buffer-substring beg end)))
         (goto-char beg)
         (dotimes (_ (abs n))
           (let ((beg (point)))
