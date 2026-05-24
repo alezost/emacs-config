@@ -411,13 +411,17 @@ This is similar to `emms-playlist-buffer-list' except it does not check
         (seq-filter #'buffer-live-p
 		    emms-playlist-buffers)))
 
+(declare-function al/emms-mpv-raise-frame "al-emms-mpv")
+
 ;;;###autoload
 (defun al/emms-playlist-play (string)
-  "Switch to EMMS playlist buffer matching STRING.
+  "Switch to EMMS playlist buffer matching STRING and start/resume playing.
 Interactively, prompt for an existing playlist."
   (interactive
    (list (completing-read "Switch to buffer:" (al/emms-all-playlists))))
   (al/display-buffer (al/emms-get-playlist string))
+  (when emms-player-playing-p
+    (al/emms-mpv-raise-frame))
   (emms-start)
   (when-let ((resume (emms-player-get emms-player-playing-p 'resume)))
     (funcall resume)))
