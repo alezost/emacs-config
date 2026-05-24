@@ -465,7 +465,6 @@ If ARG is non-nil, prompt for the playlist."
 
 (declare-function wget "wget" t)
 
-;;;###autoload
 (defun al/emms-playlist-wget ()
   "Run `wget' on the URL track at point."
   (interactive)
@@ -476,21 +475,20 @@ If ARG is non-nil, prompt for the playlist."
       (user-error "Current track is not of 'url' type."))
     (wget url)))
 
-;;;###autoload
 (defun al/emms-playlist-kill-track-and-file (&optional no-confirm)
   "Kill track at point and delete its file.
-If NO-CONFIRM is non-nil, delete without confirmation."
+If NO-CONFIRM is non-nil, delete the file without confirmation."
   (interactive)
-  (if-let* ((track (emms-playlist-track-at)))
-    (let ((type (emms-track-get track 'type))
-          (file (emms-track-get track 'name)))
-      (unless (eq type 'file)
-        (user-error "Current track is not of `file' type"))
-      (when (or no-confirm
-                (y-or-n-p (format "Delete %S?" file)))
-        (message "Deleting file: %S." file)
-        (delete-file file))
-      (emms-playlist-mode-kill-entire-track))
+  (if-let1 ((track (emms-playlist-track-at))
+            (type (emms-track-get track 'type))
+            (name (emms-track-get track 'name)))
+      (progn
+        (when (and (eq type 'file)
+                   (or no-confirm
+                       (y-or-n-p (format "Delete %S?" name))))
+          (message "Deleting file: %S." name)
+          (delete-file name))
+        (emms-playlist-mode-kill-entire-track))
     (user-error "No track at point")))
 
 (defvar emms-source-playlist-ask-before-overwrite)
