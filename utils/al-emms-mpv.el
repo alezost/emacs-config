@@ -1,6 +1,6 @@
 ;;; al-emms-mpv.el --- Additional functionality for using EMMS with mpv  -*- lexical-binding: t -*-
 
-;; Copyright © 2015–2025 Alex Kost
+;; Copyright © 2015–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 (require 'seq)
 (require 'emms-mpv)
 (require 'al-general)
+(require 'al-window)
 
 (defun al/emms-mpv-playing-radio? ()
   "Return non-nil, if current player is `mpv' and current track
@@ -190,6 +191,15 @@ If prefix argument is numerical, use it for VALUE."
        (message "Old playing time: %d; new time: %d"
                 emms-playing-time sec)
        (setq emms-playing-time sec)))))
+
+(defun al/emms-mpv-raise-frame ()
+  "Raise mpv X window frame of the current playlist."
+  (al/emms-mpv-call-with-property
+   "window-id"
+   (lambda (id)
+     (al/run-stumpwm-command (concat "al/focus-window-by-id "
+                                     (number-to-string id))))
+   #'ignore))
 
 (defun al/emms-mpv-handle-client-message (json-data)
   "Handler for \"client-message\" event."
