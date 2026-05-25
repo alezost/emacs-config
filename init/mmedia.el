@@ -182,6 +182,17 @@
   (setq emms-later-do-interval 0.1))
 
 (al/with-eval-after-load emms-mpv
+  (setq
+   emms-mpv-hidden-buffer-names nil
+   emms-mpv-progress-remove-finished nil)
+  (when-let* ((cmd (getenv "MPV_CMD"))
+              (args (split-string cmd " ")))
+    (setq emms-mpv-command
+          (append args
+                  '("--keep-open=always"
+                    "--msg-color=no"))))
+  (remove-hook 'emms-mpv-progress-filters
+               'emms-mpv-progress-check-file-type)
   (push 'emms-mpv emms-player-list)
   (al/require al-emms-mpv))
 
