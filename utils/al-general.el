@@ -84,6 +84,44 @@ The following local variables are available inside REST:
   (lambda (&rest args)
     (not (apply fun args))))
 
+(defun al/compose (functions &optional direction)
+  "Compose FUNCTIONS into a single function.
+
+DIRECTION should be one of the following symbols: `left' (default) or
+`right'.
+
+If DIRECTION is `left', FUNCTIONS are composed from left to right i.e.,
+the first function is applied to arguments, then the second function is
+applied to the result, and so on.
+
+If DIRECTION is `right', FUNCTIONS are composed from right to left i.e.,
+the last function is applied to arguments, then the function before it
+is applied to the result, and so on."
+  (cond
+   ((null functions)
+    #'identity)
+   ((null (cdr functions))
+    (car functions))
+   (t
+    (let ((functions (if (eq direction 'right)
+                         (reverse functions)
+                       functions)))
+      (lambda (&rest args)
+        (let ((res (apply (car functions) args)))
+          (dolist (fun (cdr functions))
+            (setq res (funcall fun res)))
+          res))))))
+
+(defun al/compose-left (&rest functions)
+  "Compose FUNCTIONS from left to right into a single function.
+See `al/compose' for details."
+  (al/compose functions 'left))
+
+(defun al/compose-right (&rest functions)
+  "Compose FUNCTIONS from right to left into a single function.
+See `al/compose' for details."
+  (al/compose functions 'right))
+
 (defun al/funcall-or-dolist (val function)
   "Call FUNCTION on VAL if VAL is not a list.
 If VAL is a list, call FUNCTION on each element of the list."
