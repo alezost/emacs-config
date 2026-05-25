@@ -15,7 +15,7 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-(load (expand-file-name "../utils/al-places"
+(load (expand-file-name "../utils/general/al-places"
                         (file-name-directory
                          (file-truename load-file-name))))
 
@@ -34,7 +34,9 @@
  package-user-dir (al/emacs-data-dir-file "elpa")
  custom-file (al/emacs-init-dir-file "custom.el"))
 
-(push al/emacs-utils-dir load-path)
+(push al/emacs-general-utils-dir load-path)
+(push (al/emacs-utils-dir-file "packages") load-path)
+(push (al/emacs-utils-dir-file "tui") load-path)
 
 ;; These packages (along with `al-places' loaded above) are required for
 ;; the rest config.
@@ -102,7 +104,8 @@ Do not alter `load-path'.  Instead, push added `load-path' to
 (defvar al/autoloads-presets
   `(("utils"
      ,al/emacs-utils-dir
-     ,al/emacs-utils-autoloads)
+     ,al/emacs-utils-autoloads
+     :subdirs only)
     ("my packages"
      ,al/emacs-my-packages-dir
      ,al/emacs-my-packages-autoloads

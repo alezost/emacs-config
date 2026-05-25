@@ -41,7 +41,7 @@ L_dirs = $(shell test -d $(1) &&				\
 
 LOAD_PATH =							\
   -L $(MY_ELPA_DIR)						\
-  -L $(MY_UTILS_DIR)						\
+  $(call L_dirs,$(MY_UTILS_DIR))				\
   $(call L_dirs,$(MY_ELPA_DIR))					\
   -L $(GUIX_DIR)						\
   $(call L_dirs,$(GUIX_ELPA_DIR))				\
@@ -50,7 +50,7 @@ LOAD_PATH =							\
 
 EMACS_BATCH = $(EMACS) -batch -Q $(LOAD_PATH)
 
-UTILS_ELS = $(shell find -L $(MY_UTILS_DIR) -maxdepth 1 -name 'al-*.el')
+UTILS_ELS = $(shell find -L $(MY_UTILS_DIR) -mindepth 2 -name '*.el')
 UTILS_ELCS = $(UTILS_ELS:.el=.elc)
 
 PACKAGES_ELS = $(shell find -L $(MY_ELPA_DIR) -maxdepth 1 -name '*.el')
