@@ -59,129 +59,6 @@ See `al/buffers' for the meaning of SORT-PRED."
            (buffer-name b2)))
 
 
-;;; Putting buffer info into kill ring
-
-;;;###autoload
-(defun al/buffer-name-to-kill-ring ()
-  "Put a name of the current buffer into `kill-ring'."
-  (interactive)
-  (al/with-eval-to-kill-ring
-    (buffer-name)))
-
-;;;###autoload
-(defun al/file-name-to-kill-ring ()
-  "Put a name of the file visited by the current buffer into `kill-ring'."
-  (interactive)
-  (al/with-eval-to-kill-ring
-    (buffer-file-name)))
-
-;;;###autoload
-(defun al/major-mode-to-kill-ring ()
-  "Put `major-mode' name of the current buffer into `kill-ring'."
-  (interactive)
-  (al/with-eval-to-kill-ring
-    major-mode))
-
-;;;###autoload
-(defun al/default-directory-to-kill-ring ()
-  "Put `default-directory' into `kill-ring'."
-  (interactive)
-  (al/with-eval-to-kill-ring
-    default-directory))
-
-
-;;; Switching to previous buffers
-
-(defvar al/switch-buffer-map (make-sparse-keymap))
-(defvar al/original-buffer nil)
-(defvar al/previous-buffers nil)
-(defvar al/next-buffers nil)
-
-(defvar al/skip-buffer-checkers
-  '("\\` \\*Minibuf"
-    "\\` \\*Echo Area"
-    "\\` \\*which-key"
-    get-buffer-window)
-  "List of checkers for `al/skip-buffer?'.
-Each element should be either a function that takes a buffer as
-its argument, or a string which is a regexp to match a buffer
-name.")
-
-(defun al/skip-buffer? (buffer)
-  "Return non-nil, if BUFFER should be ignored."
-  (seq-find
-   (lambda (checker)
-     (cond
-      ((stringp checker)
-       (string-match-p checker (buffer-name buffer)))
-      ((functionp checker)
-       (funcall checker buffer))
-      (t
-       (message "Wrong checker: %s" checker)
-       nil)))
-   al/skip-buffer-checkers))
-
-(defun al/switch-to-prev-buffer ()
-  "Switch to previous buffer."
-  (interactive)
-  (let ((buf (pop al/previous-buffers)))
-    (and (null al/previous-buffers)
-         buf
-         (message "The last buffer is reached."))
-    (cond
-     ((null buf)
-      (push (current-buffer) al/next-buffers)
-      (setq al/previous-buffers (nreverse al/next-buffers)
-            al/next-buffers nil)
-      (switch-to-buffer al/original-buffer)
-      (set-transient-map al/switch-buffer-map))
-     ((al/skip-buffer? buf)
-      (al/switch-to-prev-buffer))
-     (t
-      (push (current-buffer) al/next-buffers)
-      (switch-to-buffer buf)
-      (set-transient-map al/switch-buffer-map)))))
-
-(defun al/switch-to-next-buffer ()
-  "Switch to next buffer."
-  (interactive)
-  (if-let ((buf (pop al/next-buffers)))
-      (progn
-        (push (current-buffer) al/previous-buffers)
-        (switch-to-buffer buf))
-    (message "The first buffer is reached."))
-  (set-transient-map al/switch-buffer-map))
-
-(defun al/switch-to-other-buffer ()
-  "Switch between `al/original-buffer' and the current buffer."
-  (interactive)
-  (if (eq (current-buffer) al/original-buffer)
-      (al/switch-to-previous-buffer)
-    (switch-to-buffer al/original-buffer)
-    (set-transient-map al/switch-buffer-map)))
-
-;;;###autoload
-(defun al/switch-to-previous-buffer ()
-  "Switch to the previously selected buffer.
-This is similar to `mode-line-other-buffer' but with a transient
-`al/switch-buffer-map' keymap."
-  (interactive)
-  (let ((cur-buf  (current-buffer))
-        (prev-buf (other-buffer)))
-    (setq
-     al/original-buffer cur-buf
-     al/next-buffers nil
-     ;; We need to remove the current and previous buffers which are not
-     ;; necessarily on top of `buffer-list'.
-     al/previous-buffers
-     (cons prev-buf
-           (seq-remove (lambda (buf)
-                         (or (eq buf cur-buf)
-                             (eq buf prev-buf)))
-                       (buffer-list)))))
-  (al/switch-to-prev-buffer))
-
-
 ;;; Switching to some buffers
 
 (defmacro al/with-pop-to-other-window (&rest body)
@@ -215,12 +92,10 @@ popped buffer, reuse it."
   (al/with-pop-to-default-window
     (pop-to-buffer buffer)))
 
-;;;###autoload
 (cl-defun al/switch-buffer (&key prompt buffers initial-input)
   "Switch to a buffer prompting with PROMPT for a buffer from BUFFERS.
 If the list of BUFFERS is not specified, use all buffers.
 See `completing-read' for the meaning of INITIAL-INPUT."
-  (interactive)
   (let ((prompt (or prompt "Switch to buffer: "))
         (buffer-names (mapcar #'buffer-name
                               (or buffers (buffer-list)))))
@@ -272,31 +147,6 @@ FUNCTION if it is specified."
            (buffer (get-buffer buffer)))
       (al/display-buffer buffer)
     (when function (funcall function))))
-
-;;;###autoload
-(defun al/switch-to-characters (&optional charset)
-  "Switch to the buffer with unicode characters from CHARSET.
-If CHARSET is nil, use `unicode-bmp'.  With prefix, use `unicode-smp'."
-  (interactive
-   (list (and current-prefix-arg 'unicode-smp)))
-  (al/switch-to-buffer-or-funcall
-   "*Character List*"
-   (lambda () (list-charset-chars (or charset 'unicode-bmp)))))
-
-;;;###autoload
-(defun al/switch-to-packages ()
-  "Switch to the buffer with packages."
-  (interactive)
-  (al/switch-to-buffer-or-funcall
-   "*Packages*"
-   (lambda () (list-packages 'no-fetch))))
-
-;;;###autoload
-(defun al/switch-to-faces ()
-  "Switch to the buffer with packages."
-  (interactive)
-  (al/switch-to-buffer-or-funcall
-   "*Faces*" #'list-faces-display))
 
 (provide 'al-buffer)
 

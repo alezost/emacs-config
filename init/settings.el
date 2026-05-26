@@ -167,7 +167,7 @@
 
 ;;; Working with buffers: ibuffer, uniquify, …
 
-(al/with-eval-after-load al-buffer
+(al/with-eval-after-load al-buffer-cmd
   (al/bind-keys
     :map al/switch-buffer-map
     ("M-b" . al/switch-to-other-buffer)

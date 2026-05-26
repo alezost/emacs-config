@@ -1,0 +1,178 @@
+;;; al-buffer-cmd.el --- Interactive commands for working with buffers  -*- lexical-binding: t -*-
+
+;; Copyright © 2013–2026 Alex Kost
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+;;; Code:
+
+(require 'seq)
+(require 'let-macros)
+(require 'al-misc)
+(require 'al-buffer)
+
+
+;;; Putting buffer info into kill ring
+
+;;;###autoload
+(defun al/buffer-name-to-kill-ring ()
+  "Put a name of the current buffer into `kill-ring'."
+  (interactive)
+  (al/with-eval-to-kill-ring
+    (buffer-name)))
+
+;;;###autoload
+(defun al/file-name-to-kill-ring ()
+  "Put a name of the file visited by the current buffer into `kill-ring'."
+  (interactive)
+  (al/with-eval-to-kill-ring
+    (buffer-file-name)))
+
+;;;###autoload
+(defun al/major-mode-to-kill-ring ()
+  "Put `major-mode' name of the current buffer into `kill-ring'."
+  (interactive)
+  (al/with-eval-to-kill-ring
+    major-mode))
+
+;;;###autoload
+(defun al/default-directory-to-kill-ring ()
+  "Put `default-directory' into `kill-ring'."
+  (interactive)
+  (al/with-eval-to-kill-ring
+    default-directory))
+
+
+;;; Switching to some buffers
+
+;;;###autoload
+(defun al/switch-to-characters (&optional charset)
+  "Switch to the buffer with unicode characters from CHARSET.
+If CHARSET is nil, use `unicode-bmp'.  With prefix, use `unicode-smp'."
+  (interactive
+   (list (and current-prefix-arg 'unicode-smp)))
+  (al/switch-to-buffer-or-funcall
+   "*Character List*"
+   (lambda () (list-charset-chars (or charset 'unicode-bmp)))))
+
+;;;###autoload
+(defun al/switch-to-packages ()
+  "Switch to the buffer with packages."
+  (interactive)
+  (al/switch-to-buffer-or-funcall
+   "*Packages*"
+   (lambda () (list-packages 'no-fetch))))
+
+;;;###autoload
+(defun al/switch-to-faces ()
+  "Switch to the buffer with packages."
+  (interactive)
+  (al/switch-to-buffer-or-funcall
+   "*Faces*" #'list-faces-display))
+
+
+;;; Switching to previous buffers
+
+(defvar al/switch-buffer-map (make-sparse-keymap))
+(defvar al/original-buffer nil)
+(defvar al/previous-buffers nil)
+(defvar al/next-buffers nil)
+
+(defvar al/skip-buffer-checkers
+  '("\\` \\*Minibuf"
+    "\\` \\*Echo Area"
+    "\\` \\*which-key"
+    get-buffer-window)
+  "List of checkers for `al/skip-buffer?'.
+Each element should be either a function that takes a buffer as
+its argument, or a string which is a regexp to match a buffer
+name.")
+
+(defun al/skip-buffer? (buffer)
+  "Return non-nil, if BUFFER should be ignored."
+  (seq-find
+   (lambda (checker)
+     (cond
+      ((stringp checker)
+       (string-match-p checker (buffer-name buffer)))
+      ((functionp checker)
+       (funcall checker buffer))
+      (t
+       (message "Wrong checker: %s" checker)
+       nil)))
+   al/skip-buffer-checkers))
+
+(defun al/switch-to-prev-buffer ()
+  "Switch to previous buffer."
+  (interactive)
+  (let ((buf (pop al/previous-buffers)))
+    (and (null al/previous-buffers)
+         buf
+         (message "The last buffer is reached."))
+    (cond
+     ((null buf)
+      (push (current-buffer) al/next-buffers)
+      (setq al/previous-buffers (nreverse al/next-buffers)
+            al/next-buffers nil)
+      (switch-to-buffer al/original-buffer)
+      (set-transient-map al/switch-buffer-map))
+     ((al/skip-buffer? buf)
+      (al/switch-to-prev-buffer))
+     (t
+      (push (current-buffer) al/next-buffers)
+      (switch-to-buffer buf)
+      (set-transient-map al/switch-buffer-map)))))
+
+(defun al/switch-to-next-buffer ()
+  "Switch to next buffer."
+  (interactive)
+  (if-let ((buf (pop al/next-buffers)))
+      (progn
+        (push (current-buffer) al/previous-buffers)
+        (switch-to-buffer buf))
+    (message "The first buffer is reached."))
+  (set-transient-map al/switch-buffer-map))
+
+(defun al/switch-to-other-buffer ()
+  "Switch between `al/original-buffer' and the current buffer."
+  (interactive)
+  (if (eq (current-buffer) al/original-buffer)
+      (al/switch-to-previous-buffer)
+    (switch-to-buffer al/original-buffer)
+    (set-transient-map al/switch-buffer-map)))
+
+;;;###autoload
+(defun al/switch-to-previous-buffer ()
+  "Switch to the previously selected buffer.
+This is similar to `mode-line-other-buffer' but with a transient
+`al/switch-buffer-map' keymap."
+  (interactive)
+  (let ((cur-buf  (current-buffer))
+        (prev-buf (other-buffer)))
+    (setq
+     al/original-buffer cur-buf
+     al/next-buffers nil
+     ;; We need to remove the current and previous buffers which are not
+     ;; necessarily on top of `buffer-list'.
+     al/previous-buffers
+     (cons prev-buf
+           (seq-remove (lambda (buf)
+                         (or (eq buf cur-buf)
+                             (eq buf prev-buf)))
+                       (buffer-list)))))
+  (al/switch-to-prev-buffer))
+
+(provide 'al-buffer-cmd)
+
+;;; al-buffer-cmd.el ends here
