@@ -17,16 +17,7 @@
 
 ;;; Code:
 
-(require 'pp)
 (require 'al-buffer)
-
-;;;###autoload
-(defun al/pp-eval-expression (expression)
-  "Same as `pp-eval-expression' but without \"Evaluating...\" message."
-  (interactive
-   (list (read--expression "Eval: ")))
-  (setq values (cons (eval expression) values))
-  (pp-display-expression (car values) "*Pp Eval Output*"))
 
 ;;;###autoload
 (defun al/eval-dwim (arg)

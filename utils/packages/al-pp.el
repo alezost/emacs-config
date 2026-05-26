@@ -1,6 +1,6 @@
-;;; al-pp.el --- Additional functionality for pp  -*- lexical-binding: t -*-
+;;; al-pp.el --- Additional functionality for `pp' package  -*- lexical-binding: t -*-
 
-;; Copyright © 2016 Alex Kost
+;; Copyright © 2014–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
 
 ;;; Code:
 
+(require 'pp)
+
 (defun al/pp-enable-undo (_expression buffer-name &rest _)
   "Enable undo in `buffer-name'.
 This function is intended to be used as an `after' advice for
@@ -25,6 +27,15 @@ This function is intended to be used as an `after' advice for
   ;; disables undo by setting `buffer-undo-list' to t.
   (with-current-buffer buffer-name
     (setq buffer-undo-list nil)))
+
+;;;###autoload
+(defun al/pp-eval-expression (expression)
+  "Same as `pp-eval-expression' but without \"Evaluating...\" message."
+  (interactive
+   (list (read--expression "Eval: ")))
+  (let ((result (eval expression lexical-binding)))
+    (values--store-value result)
+    (pp-display-expression result "*Pp Eval Output*")))
 
 (provide 'al-pp)
 
