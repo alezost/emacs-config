@@ -19,7 +19,7 @@
 
 (require 'transient)
 (require 'web-search)
-(require 'al-color)
+(require 'al-visual)
 
 (defvar al/web-search-tui-text nil
   "Current text to search for.")

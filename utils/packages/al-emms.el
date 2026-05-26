@@ -26,7 +26,7 @@
 (require 'al-text)
 (require 'al-format)
 (require 'al-buffer)
-(require 'al-color)
+(require 'al-visual)
 (require 'al-url)
 
 (defun al/emms-seek-forward (seconds)

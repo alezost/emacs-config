@@ -27,7 +27,7 @@
 (require 'al-buffer)
 (require 'al-shell)     ; for `al/shell-set-comment-variables'
 (require 'al-url)
-(require 'al-color)
+(require 'al-visual)
 
 (defun al/eshell-buffers (&optional no-sort)
   "Return a list of all eshell buffers.

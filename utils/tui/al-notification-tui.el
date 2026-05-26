@@ -20,7 +20,7 @@
 (require 'seq)
 (require 'transient)
 (require 'al-notification)
-(require 'al-color)
+(require 'al-visual)
 
 
 ;;; Transient interface for notifications

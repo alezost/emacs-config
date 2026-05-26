@@ -21,7 +21,7 @@
 (require 'transient)
 (require 'al-package-cmd)
 (require 'al-quelpa)
-(require 'al-color)
+(require 'al-visual)
 
 (transient-define-argument al/package-tui:main-packages ()
   :description (concat "recipes from "

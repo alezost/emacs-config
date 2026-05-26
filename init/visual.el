@@ -1,6 +1,6 @@
 ;;; visual.el --- Visual settings: fonts, themes, mode-line, …  -*- lexical-binding: t -*-
 
-;; Copyright © 2012–2025 Alex Kost
+;; Copyright © 2012–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -18,12 +18,12 @@
 
 ;;; Frame specific settings
 
-(declare-function al/first-existing-font "al-font")
+(declare-function al/first-existing-font "al-visual")
 
 (defun al/frame-visual-actions (&optional _frame)
   "Perform some visual actions specific to a FRAME type."
   (when (and (display-graphic-p)
-             (al/require al-font))
+             (al/require al-visual))
     ;; Should be "solved":
     ;; 안녕 (droid);
     ;; 武; 🐼, 😻, ⚽, 💩, ∵, ⸪, 🃜, 🜒, 🝖, ←↑→↓ (symbola);
@@ -97,7 +97,7 @@
    '((hl-line ((((type graphic)) :background bg)
                (t :background unspecified))))))
 
-(al/with-eval-after-load al-color
+(al/with-eval-after-load al-visual
   :load after-init
   (when (al/require alect-themes)
     (al/load-theme 'alect-light)))

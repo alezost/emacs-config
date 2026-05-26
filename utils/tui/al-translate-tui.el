@@ -23,7 +23,7 @@
 (require 'let-macros)
 (require 'al-misc)
 (require 'al-url)
-(require 'al-color)
+(require 'al-visual)
 
 (defvar al/translate-tui-top-languages
   '("en" "ru" "ko" "ja" "de" "fr" "auto")

@@ -1,4 +1,4 @@
-;;; al-color.el --- Additional functionality for working with color themes, faces, ...  -*- lexical-binding: t -*-
+;;; al-visual.el --- Additional functionality for themes, faces, fonts, etc.  -*- lexical-binding: t -*-
 
 ;; Copyright © 2013–2026 Alex Kost
 
@@ -17,15 +17,11 @@
 
 ;;; Code:
 
+(require 'seq)
 (require 'al-misc)
 
-(defmacro al/with-face (face &rest body)
-  "Propertize string returned by BODY with FACE."
-  (declare (indent 1) (debug t))
-  `(propertize (progn ,@body) 'face ,face))
-
 
-;;; Managing themes
+;;; Themes
 
 ;;;###autoload
 (defun al/load-theme (theme)
@@ -48,7 +44,12 @@
                         themes))))
 
 
-;;; Working with faces
+;;; Faces
+
+(defmacro al/with-face (face &rest body)
+  "Propertize string returned by BODY with FACE."
+  (declare (indent 1) (debug t))
+  `(propertize (progn ,@body) 'face ,face))
 
 (defun al/get-face (&optional pos)
   "Return name of the face at point POS.
@@ -64,6 +65,22 @@ If POS is nil, use current point position."
   (or (al/with-eval-to-kill-ring (al/get-face))
       (message "No face at point.")))
 
-(provide 'al-color)
+
+;;; Fonts
 
-;;; al-color.el ends here
+;; Idea from <http://www.emacswiki.org/emacs/SetFonts>.
+
+(defvar al/font-candidates
+  '("Liberation Mono-12" "DejaVu Sans Mono-11" "Terminus-12")
+  "List of font names used by `al/first-existing-font'.")
+
+(defun al/first-existing-font (&rest font-names)
+  "Return the first existing font from FONT-NAMES.
+If FONT-NAMES is nil, use `al/font-candidates'."
+  (seq-find (lambda (name)
+              (find-font (font-spec :name name)))
+            (or font-names al/font-candidates)))
+
+(provide 'al-visual)
+
+;;; al-visual.el ends here
