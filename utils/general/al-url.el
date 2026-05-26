@@ -116,25 +116,6 @@ If NO-QUERY is non-nil, remove query parameters from URLs."
              (tk ,target)
              (st ,text)))))
 
-
-;;; wget
-
-(declare-function wget "wget")
-
-;;;###autoload
-(defun al/url-wget-mp3 (url)
-  "Download the first mp3 file from URL with `wget'."
-  (interactive
-   (list (read-string "Download mp3 from URL: "
-                      (thing-at-point 'url))))
-  (require 'wget)
-  (let* ((buf (url-retrieve-synchronously url))
-         (mp3 (with-current-buffer buf
-                (re-search-forward al/url-mp3-regexp)
-                (match-string 0))))
-    (when (y-or-n-p (format "Download '%s'? " mp3))
-      (wget mp3))))
-
 (provide 'al-url)
 
 ;;; al-url.el ends here
