@@ -185,8 +185,10 @@ Do not alter `load-path'.  Instead, push added `load-path' to
 
 (al/with-eval-after-load al-server
   :load t
-  (with-demoted-errors "ERROR during server start: %S"
-    (al/server-named-start "server-emms" "server")))
+  (if (or server-process (daemonp))
+      (setq al/server-running? t)
+    (with-demoted-errors "ERROR during server start: %S"
+      (al/server-named-start "server-emms" "server"))))
 
 (message "Garbage collected %d times." gcs-done)
 (al/title-message "Emacs config has been loaded")
