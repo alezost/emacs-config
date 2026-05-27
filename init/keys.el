@@ -15,25 +15,25 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-;;; Frame specific settings
+;;; Code:
 
-(defun al/frame-keys-actions (&optional _frame)
-  "Configure key bindings specific to a FRAME type."
+(al/eval-after-frame-init
+  ;; Key translation can be done only once for a graphical frame but
+  ;; should be performed for any new non-graphical terminal.
+  :once nil
   (key-translate "C-x" "C-t")
-  (key-translate "C-t" "C-x")
-  (when (display-graphic-p)
-    ;; This is not possible because the index of "C-M-m" character is
-    ;; too big for the char-table.
-    ;;
-    ;; (key-translate "M-RET" "C-M-m")
+  (key-translate "C-t" "C-x"))
 
-    (key-translate "C-m" "<ctrl-m>")
-    (key-translate "C-i" "<ctrl-i>")))
+(al/eval-after-frame-init
+  :terminal graphical
+  :once t
+  ;; This is not possible because the index of "C-M-m" character is
+  ;; too big for the char-table.
+  ;;
+  ;; (key-translate "M-RET" "C-M-m")
 
-(al/add-hook-maybe
-    '(after-make-frame-functions window-setup-hook)
-  'al/frame-keys-actions)
+  (key-translate "C-m" "<ctrl-m>")
+  (key-translate "C-i" "<ctrl-i>"))
 
 
 ;;; Keys for multiple maps

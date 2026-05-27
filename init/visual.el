@@ -15,15 +15,12 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-;;; Frame specific settings
+;;; Code:
 
-(declare-function al/first-existing-font "al-visual")
-
-(defun al/frame-visual-actions (&optional _frame)
-  "Perform some visual actions specific to a FRAME type."
-  (when (and (display-graphic-p)
-             (al/require al-visual))
+(al/eval-after-frame-init
+  :terminal graphical
+  :once t
+  (when (al/require al-visual)
     ;; Should be "solved":
     ;; 안녕 (droid);
     ;; 武; 🐼, 😻, ⚽, 💩, ∵, ⸪, 🃜, 🜒, 🝖, ←↑→↓ (symbola);
@@ -38,10 +35,6 @@
     ;; This is needed to display unknown symbols (like ￰) properly
     ;; i.e., without using Droid fallback.
     (set-fontset-font t nil "Symbola")))
-
-(al/add-hook-maybe
-    '(after-make-frame-functions window-setup-hook)
-  'al/frame-visual-actions)
 
 
 ;;; Global keys

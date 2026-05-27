@@ -377,6 +377,44 @@ respectively."
                ;; See documentation of `add-hook'.
                ,(if append 100 -100))))
 
+(defmacro al/eval-after-frame-init (&rest body)
+  "Evaluate BODY after frame start.
+
+BODY can start with the following optional keywords:
+
+  `:terminal'   can be `graphical' to evaluate BODY only for a graphical
+                frame, `text' to evaluate BODY for a text-only terminal,
+                or `any' (default) to evaluate BODY for any terminal.
+
+  `:once'       can be `nil' (default) meaning BODY is evaluated for
+                every new frame, or `t' to evaluate BODY only once after
+                starting the first frame.
+
+This macro exists because standalone Emacs and Emacs started as a daemon
+start frames differently.  Also not all settings are possible/desired on
+a non-graphical terminal."
+  (declare (indent 0))
+  (let ((name (gensym "al/frame-init-")))
+    (al/with-keywords body
+        (terminal once)
+      `(progn
+         ,(and once `(defvar ,name nil))
+         (defun ,name ()
+           (when (and ,(or (null once)
+                           `(null ,name))
+                      ,(cond
+                        ((eq terminal 'graphical)
+                         '(display-graphic-p))
+                        ((eq terminal 'text)
+                         '(null (display-graphic-p)))
+                        (t t)))
+             ,@body
+             ,(and once `(setq ,name t))))
+         (add-hook (if (daemonp)
+                       'server-after-make-frame-hook
+                     'after-init-hook)
+                   ',name)))))
+
 (defmacro al/with-eval-after-load (feature &rest body)
   "Execute BODY after FEATURE is loaded.
 
