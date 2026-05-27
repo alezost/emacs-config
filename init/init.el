@@ -15,6 +15,8 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+;;; Code:
+
 (load (expand-file-name "../utils/general/al-places"
                         (file-name-directory
                          (file-truename load-file-name))))
