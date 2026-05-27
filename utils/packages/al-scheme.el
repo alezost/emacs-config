@@ -17,7 +17,7 @@
 
 ;;; Code:
 
-(require 'al-misc)
+(require 'al-visual)
 
 
 (defvar calculate-lisp-indent-last-sexp)

@@ -17,7 +17,7 @@
 
 ;;; Code:
 
-(require 'al-misc)
+(require 'al-visual)
 
 (defun al/elisp-form-quoted-p (&rest _)
   "Replacement for `elisp--form-quoted-p'.

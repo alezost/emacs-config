@@ -66,6 +66,15 @@ If POS is nil, use current point position."
       (message "No face at point.")))
 
 
+;; Font Lock
+
+(defun al/add-simple-font-lock-keywords (mode names)
+  "Fontify NAMES with `font-lock-keyword-face' in MODE."
+  (let ((re (concat "(" (regexp-opt names 'group) "\\_>")))
+    (font-lock-add-keywords
+     mode `((,re 1 font-lock-keyword-face)))))
+
+
 ;;; Fonts
 
 ;; Idea from <http://www.emacswiki.org/emacs/SetFonts>.
