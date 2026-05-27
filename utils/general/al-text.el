@@ -19,7 +19,7 @@
 
 (require 'seq)
 (require 'let-macros)
-(require 'al-misc)
+(require 'al-general)
 
 (defun al/shorten-string (string length)
   "Shorten STRING to make it no longer than LENGTH."

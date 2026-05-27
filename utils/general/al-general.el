@@ -17,6 +17,7 @@
 
 ;;; Code:
 
+(eval-when-compile (require 'cl-lib))
 (require 'seq)
 
 (defmacro al/with-keywords (body variables &rest rest)
@@ -131,6 +132,22 @@ If VAL is a list, call FUNCTION on each element of the list."
         (funcall function v))
     (funcall function val)))
 
+(defun al/multi-filter (element filters)
+  "Pass ELEMENT through FILTERS.
+
+FILTERS is a list of functions, (F1 F2 ... FN), applied from left to
+right, passing result to the next function i.e.,
+
+  (FN (... (F2 (F1 ELEMENT))))
+
+If any filter returns nil, the rest filters are not applied.
+
+Return result of the final filter application."
+  (if (null filters)
+      element
+    (when-let* ((res (funcall (car filters) element)))
+      (al/multi-filter res (cdr filters)))))
+
 
 ;;; List utils
 
@@ -138,12 +155,68 @@ If VAL is a list, call FUNCTION on each element of the list."
   "Return OBJ if it is a list, or a list with OBJ otherwise."
   (if (listp obj) obj (list obj)))
 
+(defun al/next-element (list &optional element)
+  "Return next element from LIST.
+If ELEMENT is nil or not in LIST, return the first element of LIST.
+If ELEMENT is an element of LIST, return an element placed after it."
+  (if element
+      (or (cadr (memq element list))
+          (car list))
+    (car list)))
+
 (defmacro al/pushnew (place newelt &optional testfn)
   "Push NEWELT to PLACE if not already present.
 This is similar to `cl-pushnew' but uses `seq' library instead of `cl-lib'."
   `(let ((elt ,newelt))
      (unless (seq-contains-p ,place elt ,testfn)
        (push elt ,place))))
+
+(defun al/push-after (list after elt test)
+  "Add ELT to LIST after the first occurrence of AFTER.
+AFTER element is checked with TEST predicate.
+If AFTER does not exist, insert ELT to the end of LIST.
+Return the updated list."
+  (cond
+   ((null list)
+    (list elt))
+   ((funcall test (car list) after)
+    (cons (car list) (cons elt (cdr list))))
+   (t
+    (cons (car list) (al/push-after (cdr list) after elt test)))))
+
+(cl-defun al/add-to-list-after (list-var after-element new-element &key test)
+  "Add NEW-ELEMENT to LIST-VAR after the first occurrence of AFTER-ELEMENT.
+If NEW-ELEMENT already exists in the list, do nothing.
+If AFTER-ELEMENT does not exist, insert NEW-ELEMENT to the end of
+LIST-VAR.
+TEST key is `eq' by default."
+  (let ((list (symbol-value list-var))
+        (test (or test #'eq)))
+    (unless (seq-find (lambda (elt)
+                        (funcall test elt new-element))
+                      list)
+      (set list-var
+           (al/push-after list after-element new-element test)))))
+
+(defun al/assq-delete-all (keys alist &optional predicate)
+  "Delete from ALIST all elements whose car is one of KEYS.
+This is similar to `assq-delete-all', but KEYS can either be a
+single key or a list of keys.  KEYS are checked using
+PREDICATE (`memq' by default)."
+  (let ((keys (al/list-maybe keys)))
+    (seq-remove (lambda (assoc)
+                    (and (consp assoc)
+                         (funcall (or predicate #'memq)
+                                  (car assoc)
+                                  keys)))
+                  alist)))
+
+(defun al/assoc-delete-all (keys alist &optional _predicate)
+  "Delete from ALIST all elements whose car is one of KEYS.
+This is similar to `assoc-delete-all', but KEYS can either be a
+single key or a list of keys.  KEYS are checked using
+PREDICATE (`member' by default)."
+  (al/assq-delete-all keys alist #'member))
 
 
 ;;; Auxiliary messages
@@ -393,6 +466,80 @@ Page break should not belong to whitespace syntax, because
 `back-to-indentation' moves the point after ^L character which is not good.
 Also it (default syntax) breaks `indent-guide-mode'."
   `(al/modify-syntax ,table-name (?\f ">   ")))
+
+
+;;; Miscellaneous utils
+
+(defun al/intern (string-or-symbol)
+  "Like `intern' except STRING-OR-SYMBOL can also be a symbol."
+  (if (symbolp string-or-symbol)
+      string-or-symbol
+    (intern string-or-symbol)))
+
+(defmacro al/defun-lazy (name &rest body)
+  "Define NAME variable and function accepting zero arguments.
+On the first call, NAME function evaluates BODY, writes its value to
+NAME variable, and returns it.  On subsequent calls, just the value of
+NAME variable is returned without BODY evaluation."
+  (declare (indent 1) (debug t))
+  (let* ((docstring (and (stringp (car body))
+                         (pop body)))
+         (interactive (and (equal (car body) '(interactive))
+                           (pop body))))
+    `(progn
+       (defvar ,name nil)
+       (defun ,name ()
+         ,docstring
+         ,interactive
+         (or ,name
+             (setq ,name (progn ,@body)))))))
+
+(defmacro al/with-check-point (&rest body)
+  "Evaluate BODY.
+Return non-nil, if point position is changed after evaluating.
+Return nil otherwise."
+  (declare (indent 0) (debug t))
+  `(let ((pos (point)))
+     ,@body
+     (/= pos (point))))
+
+(defmacro al/with-eval-to-kill-ring (&rest body)
+  "Evaluate BODY and return its result.
+If the result is string or symbol, put it into `kill-ring' and display
+it in minibuffer."
+  (declare (indent 0) (debug (name body)))
+  (let ((res-var     (make-symbol "res"))
+        (res-str-var (make-symbol "res-str")))
+    `(let* ((,res-var (progn ,@body))
+            (,res-str-var (cond
+                           ((stringp ,res-var) ,res-var)
+                           ((symbolp ,res-var) (symbol-name ,res-var)))))
+       (when ,res-str-var
+         (kill-new ,res-str-var)
+         (message ,res-str-var))
+       ,res-var)))
+
+(defmacro al/put (properties &rest args)
+  "Put symbol PROPERTIES to values.
+Each element of ARGS should have (VALUE SYMBOL ...) form.
+PROPERTIES can be a list of symbols or a single symbol.
+Call (put SYMBOL PROPERTY VALUE) for each PROPERTY and each SYMBOL."
+  (declare (indent 1) (debug (name body)))
+  (let ((props (al/list-maybe properties))
+        (val-var (make-symbol "value")))
+    `(progn
+       ,@(mapcar
+          (lambda (arg)
+            (let ((value   (car arg))
+                  (symbols (cdr arg)))
+              `(let ((,val-var ,value))
+                 ,@(mapcan
+                    (lambda (symbol)
+                      (mapcar (lambda (prop)
+                                `(put ',symbol ',prop ,val-var))
+                              props))
+                    symbols))))
+          args))))
 
 (provide 'al-general)
 

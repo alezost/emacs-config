@@ -20,7 +20,7 @@
 (require 'seq)
 (require 'timer)
 (require 'notifications)
-(require 'al-misc)
+(require 'al-general)
 (require 'al-file)
 
 (defvar al/notification-sound

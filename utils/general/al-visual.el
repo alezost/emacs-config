@@ -18,7 +18,7 @@
 ;;; Code:
 
 (require 'seq)
-(require 'al-misc)
+(require 'al-general)
 
 
 ;;; Themes

@@ -26,8 +26,8 @@
 
 (require 'transient)
 (require 'browse-url)
+(require 'al-general)
 (require 'al-browse-url)
-(require 'misc)
 
 (defun al/choose-browser-tui-read-url (prompt _initial-input history)
   ;; Transient does not put the current value to INITIAL-INPUT ?!!

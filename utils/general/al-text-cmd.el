@@ -19,7 +19,7 @@
 
 (eval-when-compile (require 'cl-lib))
 (require 'al-general)
-(require 'al-misc)
+(require 'al-general)
 
 
 ;;; Searching and replacing

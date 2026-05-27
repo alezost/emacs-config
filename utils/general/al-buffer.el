@@ -20,7 +20,7 @@
 (eval-when-compile (require 'cl-lib))
 (require 'seq)
 (require 'let-macros)
-(require 'al-misc)
+(require 'al-general)
 
 
 ;;; Getting buffers

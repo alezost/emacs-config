@@ -37,7 +37,6 @@
   org-read-date
   org-open-file)
 
-(declare-function al/assoc-delete-all "al-misc")
 (declare-function al/file-regexp "al-file")
 
 (setopt org-export-backends
@@ -47,10 +46,9 @@
   (when (al/require al-text)
     (al/add-hook-maybe 'org-mode-hook 'al/set-default-paragraph))
 
-  (when (al/require al-misc)
-    ;; "/" and "_" are common for file names, so don't fontify them:
-    (setq org-emphasis-alist
-          (al/assoc-delete-all '("/" "_") org-emphasis-alist)))
+  ;; "/" and "_" are common for file names, so don't fontify them:
+  (setq org-emphasis-alist
+        (al/assoc-delete-all '("/" "_") org-emphasis-alist))
 
   (when (al/require al-file)
     (setq

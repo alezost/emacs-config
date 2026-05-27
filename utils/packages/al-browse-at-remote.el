@@ -20,7 +20,7 @@
 (require 'browse-at-remote)
 (require 'magit-section)
 (require 'magit-git)
-(require 'al-misc)
+(require 'al-general)
 
 (defun al/browse-at-remote-get-url (fun &rest args)
   "Return URL with full commit hash to browse.

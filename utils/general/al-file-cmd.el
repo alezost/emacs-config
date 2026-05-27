@@ -18,7 +18,7 @@
 ;;; Code:
 
 (require 'al-general)
-(require 'al-misc)
+(require 'al-general)
 (require 'al-read)
 
 ;;;###autoload

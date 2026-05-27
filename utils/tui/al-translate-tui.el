@@ -21,7 +21,7 @@
 (require 'transient)
 (require 'google-translate-core-ui)
 (require 'let-macros)
-(require 'al-misc)
+(require 'al-general)
 (require 'al-url)
 (require 'al-visual)
 

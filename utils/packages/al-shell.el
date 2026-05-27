@@ -18,9 +18,9 @@
 ;;; Code:
 
 (require 'shell)
+(require 'al-general)
 (require 'al-places)
 (require 'al-buffer)
-(require 'al-misc)
 
 (defun al/shell-buffers (&optional all no-sort)
   "Return a list of active shell buffers.

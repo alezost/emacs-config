@@ -19,7 +19,7 @@
 
 (require 'seq)
 (require 'let-macros)
-(require 'al-misc)
+(require 'al-general)
 (require 'al-buffer)
 
 

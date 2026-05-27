@@ -19,7 +19,6 @@
 
 (require 'tempo)
 (require 'al-general)
-(require 'al-misc)
 
 (defvar al/tempo-start ","
   "Starting string for all template tags.")
