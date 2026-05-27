@@ -20,16 +20,16 @@
 
 (defun al/frame-keys-actions (&optional _frame)
   "Configure key bindings specific to a FRAME type."
-  (keyboard-translate ?\C-x ?\C-t)
-  (keyboard-translate ?\C-t ?\C-x)
+  (key-translate "C-x" "C-t")
+  (key-translate "C-t" "C-x")
   (when (display-graphic-p)
     ;; This is not possible because the index of "C-M-m" character is
     ;; too big for the char-table.
     ;;
-    ;; (keyboard-translate ?\M-\r 'ctrl-alt-m)
+    ;; (key-translate "M-RET" "C-M-m")
 
-    (keyboard-translate ?\C-m 'ctrl-m)
-    (keyboard-translate ?\C-i 'ctrl-i)))
+    (key-translate "C-m" "<ctrl-m>")
+    (key-translate "C-i" "<ctrl-i>")))
 
 (al/add-hook-maybe
     '(after-make-frame-functions window-setup-hook)
