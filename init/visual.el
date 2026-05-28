@@ -21,6 +21,8 @@
   :terminal graphical
   :once t
   (when (al/require al-visual)
+    (when (al/require alect-themes)
+      (al/load-theme 'alect-light))
     ;; Should be "solved":
     ;; 안녕 (droid);
     ;; 武; 🐼, 😻, ⚽, 💩, ∵, ⸪, 🃜, 🜒, 🝖, ←↑→↓ (symbola);
@@ -89,11 +91,6 @@
    alect-overriding-faces
    '((hl-line ((((type graphic)) :background bg)
                (t :background unspecified))))))
-
-(al/with-eval-after-load al-visual
-  :load after-init
-  (when (al/require alect-themes)
-    (al/load-theme 'alect-light)))
 
 
 ;;; Mode line and frame title
