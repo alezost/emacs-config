@@ -18,7 +18,6 @@
 ;;; Code:
 
 (require 'al-visual)
-(require 'al-imenu)
 
 
 ;;; Highlighting and indenting additional macros
@@ -75,9 +74,11 @@ Call this function once!"
       (2 font-lock-constant-face)
       (3 font-lock-function-name-face)))))
 
-(defun al/clisp-add-defcommand-to-imenu ()
-  "Add `defcommand' entries to `imenu-generic-expression'.
-This function is intended to be added to `lisp-mode-hook'."
+(declare-function al/add-to-imenu "al-imenu")
+
+;;;###autoload
+(defun al/clisp-imenu-add-defcommand ()
+  "Add `defcommand' entries to `imenu-generic-expression'."
   (al/add-to-imenu al/clisp-defcommand-regexp
                    :index 2))
 

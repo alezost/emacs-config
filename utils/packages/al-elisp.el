@@ -67,6 +67,67 @@ Call this function once!"
       (1 font-lock-keyword-face)
       (2 font-lock-constant-face)))))
 
+
+;;; Imenu entries
+
+;;; `use-package' entries
+
+;; Idea from <https://github.com/jwiegley/use-package/issues/80>.
+
+(defvar al/elisp-imenu-use-package-re
+  (rx bol "(use-package" (+ whitespace)
+      (? ?\")
+      (group (+ (or (syntax word) (syntax symbol))))
+      (? ?\"))
+  "Regexp for `use-package' entries in imenu.")
+
+(defvar al/elisp-imenu-use-package-group "use-package"
+  "Group name in imenu index of use-package entries.
+If nil, put the entries in a top level.  See MENU-TITLE in
+`imenu-generic-expression' variable for details.")
+
+(declare-function al/add-to-imenu "al-imenu")
+
+;;;###autoload
+(defun al/elisp-imenu-add-use-package ()
+  "Add `al/elisp-imenu-use-package-re' to `imenu-generic-expression'."
+  (al/add-to-imenu al/elisp-imenu-use-package-re
+                   :title al/elisp-imenu-use-package-group))
+
+;;; (with-)eval-after-load entries
+
+(defvar al/elisp-imenu-eval-after-load-re
+  (rx bol "(" (zero-or-one (or "al/with-" "with-"))
+      "eval-after-load" (+ whitespace)
+      (zero-or-one (or ?\" ?'))
+      (group (+ (or (syntax word) (syntax symbol))))
+      (zero-or-one ?\"))
+  "Regexp for `eval-after-load' and `with-eval-after-load' entries in imenu.")
+
+(defvar al/elisp-imenu-eval-after-load-group "(with-)eval-after-load")
+
+;;;###autoload
+(defun al/elisp-imenu-add-eval-after-load ()
+  "Add `al/elisp-imenu-eval-after-load-re' to `imenu-generic-expression'."
+  (al/add-to-imenu al/elisp-imenu-eval-after-load-re
+                   :title al/elisp-imenu-eval-after-load-group))
+
+;;; Transient entries
+
+(defvar al/elisp-imenu-transient-re
+  (rx bol "(transient-define-" (+ (or (syntax word) (syntax symbol)))
+      (+ whitespace)
+      (group (+ (or (syntax word) (syntax symbol)))))
+  "Regexp for transient entries in imenu.")
+
+(defvar al/elisp-imenu-transient-group "transient")
+
+;;;###autoload
+(defun al/elisp-imenu-add-transient ()
+  "Add `al/elisp-imenu-transient-re' to `imenu-generic-expression'."
+  (al/add-to-imenu al/elisp-imenu-transient-re
+                   :title al/elisp-imenu-transient-group))
+
 (provide 'al-elisp)
 
 ;;; al-elisp.el ends here

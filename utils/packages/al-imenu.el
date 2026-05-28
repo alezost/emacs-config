@@ -1,4 +1,4 @@
-;;; al-imenu.el --- Additional functionality for imenu  -*- lexical-binding: t -*-
+;;; al-imenu.el --- Additional functionality for `imenu' package  -*- lexical-binding: t -*-
 
 ;; Copyright © 2014–2026 Alex Kost
 
@@ -26,119 +26,24 @@ If APPEND is nil, add the new element at the end."
                (list title regexp index)
                append))
 
-
-;;; Lisp sections
+(defvar al/imenu-mode-alist nil
+  "Alist of major modes and functions adding imenu expressions.
+Each element has (MODE FUNCTIONS ...) form.  When `imenu' is called for
+the first time in a buffer with `major-mode' derived from MODE, it
+evaluates FUNCTIONS which are supposed to add new elements to
+`imenu-generic-expression'.")
 
-;; If you have sections in lisp/elisp files that begin with ";;;", you
-;; may use the following code to add "Sections" entry in `imenu':
-;;
-;; (add-hook 'emacs-lisp-mode-hook 'al/imenu-add-sections)
-;; (add-hook 'lisp-mode-hook 'al/imenu-add-sections)
+(defvar-local al/imenu-augmented nil
+  "If non-nil, `al/imenu-augment' is already called for this buffer.")
 
-(defvar al/imenu-sections-re "^;;; \\(.+\\)$"
-  "Regexp for \"Sections\" imenu entries.")
-
-(defvar al/imenu-sections-group "Sections"
-  "Group name in imenu index of \"Sections\" entries.
-If nil, put the entries in a top level.  See MENU-TITLE in
-`imenu-generic-expression' variable for details.")
-
-(defun al/imenu-add-sections (&optional regexp)
-  "Add REGEXP as a \"Sections\" element to `imenu-generic-expression'.
-If REGEXP is nil, use `al/imenu-sections-re'."
-  (al/add-to-imenu (or regexp al/imenu-sections-re)
-                   :title al/imenu-sections-group
-                   :append t))
-
-
-;;; JS sections
-
-;; To have "Sections" entry in javascript buffers:
-;;
-;; (add-hook 'js-mode-hook 'al/imenu-add-js-sections)
-
-(defvar al/imenu-js-sections-re "^/// \\(.+\\)$"
-  "Regexp for \"Sections\" imenu entries in `js-mode'.")
-
-(defun al/imenu-add-js-sections (&optional _regexp)
-  "Add REGEXP as a \"Sections\" element to `imenu-generic-expression'.
-If REGEXP is nil, use `al/imenu-sections-re'."
-  (al/imenu-add-sections al/imenu-js-sections-re)
-  (setq-local imenu-create-index-function #'al/js-imenu-create-index))
-
-(declare-function js--imenu-create-index "js" nil)
-(declare-function imenu--generic-function "imenu" (patterns))
-
-(defun al/js-imenu-create-index ()
-  "Create an index alist for the current js buffer.
-The function is suitable for `imenu-create-index-function'
-variable and intended to be used instead of
-`js--imenu-create-index' in js buffers.  It adds the same entries
-as the latter function and also create elements for
-`imenu-generic-expression'."
-  (let ((js-index (js--imenu-create-index))
-        (generic-index
-         (save-excursion
-           (save-restriction
-             (widen)
-             (imenu--generic-function imenu-generic-expression)))))
-    (append js-index generic-index)))
-
-
-;;; `use-package' entries
-
-;; Idea from <https://github.com/jwiegley/use-package/issues/80>.
-
-(defvar al/imenu-use-package-re
-  (rx bol "(use-package" (+ whitespace)
-      (? ?\")
-      (group (+ (or (syntax word) (syntax symbol))))
-      (? ?\"))
-  "Regexp for `use-package' entries in imenu.")
-
-(defvar al/imenu-use-package-group "use-package"
-  "Group name in imenu index of use-package entries.
-If nil, put the entries in a top level.  See MENU-TITLE in
-`imenu-generic-expression' variable for details.")
-
-(defun al/imenu-add-use-package ()
-  "Add `al/imenu-use-package-re' to `imenu-generic-expression'."
-  (al/add-to-imenu al/imenu-use-package-re
-                   :title al/imenu-use-package-group))
-
-
-;;; (with-)eval-after-load entries
-
-(defvar al/imenu-eval-after-load-re
-  (rx bol "(" (zero-or-one (or "al/with-" "with-"))
-      "eval-after-load" (+ whitespace)
-      (zero-or-one (or ?\" ?'))
-      (group (+ (or (syntax word) (syntax symbol))))
-      (zero-or-one ?\"))
-  "Regexp for `eval-after-load' and `with-eval-after-load' entries in imenu.")
-
-(defvar al/imenu-eval-after-load-group "(with-)eval-after-load")
-
-(defun al/imenu-add-eval-after-load ()
-  "Add `al/imenu-eval-after-load-re' to `imenu-generic-expression'."
-  (al/add-to-imenu al/imenu-eval-after-load-re
-                   :title al/imenu-eval-after-load-group))
-
-
-;;; Transient entries
-
-(defvar al/imenu-transient-re
-  (rx bol "(transient-define-" (+ (or (syntax word) (syntax symbol)))
-      (+ whitespace)
-      (group (+ (or (syntax word) (syntax symbol)))))
-  "Regexp for transient entries in imenu.")
-
-(defvar al/imenu-transient-group "transient")
-
-(defun al/imenu-add-transient ()
-  "Add `al/imenu-transient-re' to `imenu-generic-expression'."
-  (al/add-to-imenu al/imenu-transient-re
-                   :title al/imenu-transient-group))
+(defun al/imenu-augment (&rest _)
+  "Augment `imenu' using `al/imenu-mode-alist'."
+  (unless al/imenu-augmented
+    (pcase-dolist (`(,mode . ,funs) al/imenu-mode-alist)
+      (when (derived-mode-p mode)
+        (dolist (fun funs)
+          (funcall fun))))
+    (setq al/imenu-augmented t)))
 
 (provide 'al-imenu)
 

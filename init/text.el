@@ -490,7 +490,9 @@
   (setq
    ;; imenu-flatten t
    imenu-space-replacement nil
-   imenu-level-separator " ⇨ "))
+   imenu-level-separator " ⇨ ")
+
+  (al/require al-imenu))
 
 (al/bind-key* "C-M-m" imenus)
 (al/with-eval-after-load imenus
@@ -501,6 +503,19 @@
       ("C-s" . imenus-exit-to-isearch)
       ("M-s" . imenus-exit-to-occur)))
   (al/bind-keys-from-vars 'imenus-minibuffer-map 'al/imenus-keys))
+
+(al/with-eval-after-load al-imenu
+  (setq
+   al/imenu-mode-alist
+   '((lisp-data-mode  al/lisp-imenu-add-sections)
+     (emacs-lisp-mode al/elisp-imenu-add-use-package
+                      al/elisp-imenu-add-transient
+                      al/elisp-imenu-add-eval-after-load)
+     (lisp-mode       al/clisp-imenu-add-defcommand)
+     (scheme-mode     al/lisp-imenu-add-sections)
+     (js-mode         al/js-imenu-add-sections)))
+
+  (advice-add 'imenu--make-index-alist :before #'al/imenu-augment))
 
 (al/bind-key "M-s-s" al/imenus-search-elisp-directories)
 (al/with-eval-after-load al-imenus

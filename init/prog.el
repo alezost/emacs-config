@@ -53,9 +53,6 @@
 
   (al/modify-page-break-syntax lisp-mode-syntax-table)
 
-  (when (al/require al-imenu)
-    (al/add-hook-maybe 'lisp-mode-hook 'al/imenu-add-sections))
-
   ;; `lisp-mode' package is already loaded on Emacs start, and I don't
   ;; want to load additional Common Lisp functionality on start.  So
   ;; instead of requiring `al-clisp' here, it is loaded on the first run
@@ -65,9 +62,7 @@
   (add-hook 'lisp-mode-hook 'al/clisp-init))
 
 (al/with-eval-after-load al-clisp
-  (al/clisp-add-font-lock-keywords)
-  (al/add-hook-maybe 'lisp-mode-hook
-    'al/clisp-add-defcommand-to-imenu))
+  (al/clisp-add-font-lock-keywords))
 
 (al/with-eval-after-load elisp-mode
   (defconst al/elisp-keys
@@ -77,15 +72,6 @@
       '(emacs-lisp-mode-map
         lisp-interaction-mode-map)
     'al/elisp-keys)
-
-  (when (al/require al-imenu)
-    (al/add-hook-maybe
-        '(emacs-lisp-mode-hook
-          lisp-interaction-mode-hook)
-      '(al/imenu-add-sections
-        al/imenu-add-use-package
-        al/imenu-add-transient
-        al/imenu-add-eval-after-load)))
 
   (al/require al-elisp))
 
@@ -252,9 +238,6 @@
 (al/with-eval-after-load scheme
   (put 'plist-new 'scheme-indent-function 1)
   (al/modify-page-break-syntax scheme-mode-syntax-table)
-
-  (when (al/require al-imenu)
-    (al/add-hook-maybe 'scheme-mode-hook 'al/imenu-add-sections))
 
   (al/add-hook-maybe 'scheme-mode-hook 'guix-devel-mode)
 
@@ -746,10 +729,7 @@
   (defun al/js-delimiter ()
     (setq-local al/delimiter
                 (concat (make-string 64 ?/) "\n///")))
-  (al/add-hook-maybe 'js-mode-hook 'al/js-delimiter)
-
-  (when (al/require al-imenu)
-    (al/add-hook-maybe 'js-mode-hook 'al/imenu-add-js-sections)))
+  (al/add-hook-maybe 'js-mode-hook 'al/js-delimiter))
 
 (al/autoload "python" python-shell-switch-to-shell)
 (al/with-eval-after-load python
