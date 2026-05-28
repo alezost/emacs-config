@@ -56,7 +56,13 @@
   (when (al/require al-imenu)
     (al/add-hook-maybe 'lisp-mode-hook 'al/imenu-add-sections))
 
-  (al/require al-clisp))
+  ;; `lisp-mode' package is already loaded on Emacs start, and I don't
+  ;; want to load additional Common Lisp functionality on start.  So
+  ;; instead of requiring `al-clisp' here, it is loaded on the first run
+  ;; of `lisp-mode' major mode (by `lisp-mode-hook').
+  (al/defun-lazy al/clisp-init
+    (al/require al-clisp))
+  (add-hook 'lisp-mode-hook 'al/clisp-init))
 
 (al/with-eval-after-load al-clisp
   (al/clisp-add-font-lock-keywords)
