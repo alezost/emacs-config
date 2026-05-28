@@ -1,4 +1,4 @@
-;;; al-lisp.el --- Additional functionality for `lisp-mode'  -*- lexical-binding: t -*-
+;;; al-clisp.el --- Additional functionality for `lisp-mode'  -*- lexical-binding: t -*-
 
 ;; Copyright © 2017–2026 Alex Kost
 
@@ -81,6 +81,6 @@ This function is intended to be added to `lisp-mode-hook'."
   (al/add-to-imenu al/lisp-defcommand-regexp
                    :index 2))
 
-(provide 'al-lisp)
+(provide 'al-clisp)
 
-;;; al-lisp.el ends here
+;;; al-clisp.el ends here
