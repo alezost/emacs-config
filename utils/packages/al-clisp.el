@@ -33,7 +33,7 @@
   (4 defcommand
      al/defun-with-delay))
 
-(defvar al/lisp-keywords
+(defvar al/clisp-keywords
   '("if-let"
     "when-let"
     "when-let*"
@@ -41,7 +41,7 @@
     "al/run-after-sleep")
   "List of additional keywords to highlight in `lisp-mode'.")
 
-(defvar al/lisp-defcommand-regexp
+(defvar al/clisp-defcommand-regexp
   (rx line-start
       "(" (group "defcommand")
       symbol-end
@@ -51,7 +51,7 @@
        (group (one-or-more (or (syntax word) (syntax symbol))))))
   "Regexp to match `defcommand' keyword.")
 
-(defvar al/lisp-defun-with-delay-regexp
+(defvar al/clisp-defun-with-delay-regexp
   (rx "(" (group "al/defun-with-delay")
       symbol-end
       (one-or-more blank)
@@ -60,25 +60,25 @@
       (group (one-or-more (or (syntax word) (syntax symbol)))))
   "Regexp to match `al/defun-with-delay' macro.")
 
-(defun al/lisp-add-font-lock-keywords ()
+(defun al/clisp-add-font-lock-keywords ()
   "Add `font-lock-keywords' to highlight additional macros.
 Call this function once!"
   (al/add-simple-font-lock-keywords
-   'lisp-mode al/lisp-keywords)
+   'lisp-mode al/clisp-keywords)
   (font-lock-add-keywords
    'lisp-mode
-   `((,al/lisp-defcommand-regexp
+   `((,al/clisp-defcommand-regexp
       (1 font-lock-keyword-face)
       (2 font-lock-function-name-face nil t))
-     (,al/lisp-defun-with-delay-regexp
+     (,al/clisp-defun-with-delay-regexp
       (1 font-lock-keyword-face)
       (2 font-lock-constant-face)
       (3 font-lock-function-name-face)))))
 
-(defun al/lisp-add-defcommand-to-imenu ()
+(defun al/clisp-add-defcommand-to-imenu ()
   "Add `defcommand' entries to `imenu-generic-expression'.
 This function is intended to be added to `lisp-mode-hook'."
-  (al/add-to-imenu al/lisp-defcommand-regexp
+  (al/add-to-imenu al/clisp-defcommand-regexp
                    :index 2))
 
 (provide 'al-clisp)

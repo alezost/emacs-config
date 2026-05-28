@@ -59,9 +59,9 @@
   (al/require al-clisp))
 
 (al/with-eval-after-load al-clisp
-  (al/lisp-add-font-lock-keywords)
+  (al/clisp-add-font-lock-keywords)
   (al/add-hook-maybe 'lisp-mode-hook
-    'al/lisp-add-defcommand-to-imenu))
+    'al/clisp-add-defcommand-to-imenu))
 
 (al/with-eval-after-load elisp-mode
   (defconst al/elisp-keys
