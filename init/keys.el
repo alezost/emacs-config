@@ -18,6 +18,7 @@
 ;;; Code:
 
 (al/eval-after-frame-init
+  :name al/any-frame-key-translations
   ;; Key translation can be done only once for a graphical frame but
   ;; should be performed for any new non-graphical terminal.
   :once nil
@@ -25,13 +26,9 @@
   (key-translate "C-t" "C-x"))
 
 (al/eval-after-frame-init
+  :name al/graphical-frame-key-translations
   :terminal graphical
   :once t
-  ;; This is not possible because the index of "C-M-m" character is
-  ;; too big for the char-table.
-  ;;
-  ;; (key-translate "M-RET" "C-M-m")
-
   (key-translate "C-m" "<ctrl-m>")
   (key-translate "C-i" "<ctrl-i>"))
 

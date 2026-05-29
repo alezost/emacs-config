@@ -419,9 +419,9 @@ This macro exists because standalone Emacs and Emacs started as a daemon
 start frames differently.  Also not all settings are possible/desired on
 a non-graphical terminal."
   (declare (indent 0))
-  (let ((name (al/generate-interned-symbol "al/frame-init-")))
-    (al/with-keywords body
-        (terminal once)
+  (al/with-keywords body
+      (name terminal once)
+    (let ((name (or name (al/generate-interned-symbol "al/frame-init-"))))
       `(progn
          ,(and once `(defvar ,name nil))
          (defun ,name ()

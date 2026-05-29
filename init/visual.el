@@ -18,6 +18,7 @@
 ;;; Code:
 
 (al/eval-after-frame-init
+  :name al/graphical-frame-visual-settings
   :terminal graphical
   :once t
   (when (al/require al-visual)
