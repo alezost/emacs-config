@@ -554,7 +554,7 @@ it in minibuffer."
                            ((symbolp ,res-var) (symbol-name ,res-var)))))
        (when ,res-str-var
          (kill-new ,res-str-var)
-         (message ,res-str-var))
+         (message "%s" ,res-str-var))
        ,res-var)))
 
 (defmacro al/put (properties &rest args)
