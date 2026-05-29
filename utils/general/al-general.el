@@ -20,6 +20,17 @@
 (eval-when-compile (require 'cl-lib))
 (require 'seq)
 
+(defvar al/generate-symbol-counter 0
+  "Number used by `al/generate-interned-symbol'.
+This variable must be modified only by `al/generate-interned-symbol'.")
+
+(defun al/generate-interned-symbol (&optional prefix)
+  "Return a new interned symbol.
+This is similar to `gensym' except the returned symbol is interned."
+  (intern (format "%s%d" (or prefix "al/generated-")
+                  (setq al/generate-symbol-counter
+                        (1+ al/generate-symbol-counter)))))
+
 (defmacro al/with-keywords (body variables &rest rest)
   "Auxiliary macro used to define macros with keywords.
 
@@ -408,7 +419,7 @@ This macro exists because standalone Emacs and Emacs started as a daemon
 start frames differently.  Also not all settings are possible/desired on
 a non-graphical terminal."
   (declare (indent 0))
-  (let ((name (gensym "al/frame-init-")))
+  (let ((name (al/generate-interned-symbol "al/frame-init-")))
     (al/with-keywords body
         (terminal once)
       `(progn
