@@ -41,8 +41,9 @@
 
 (declare-function al/file-regexp "al-file")
 
-(setopt org-export-backends
-        '(ascii html icalendar latex odt texinfo man))
+(al/setq-no-warnings
+ org-export-backends
+ '(ascii html icalendar latex odt texinfo man))
 
 (al/with-eval-after-load org
   (when (al/require al-text)

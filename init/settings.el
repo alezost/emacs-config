@@ -361,7 +361,7 @@
  ("C-z"   . al/eshell)
  ("C-M-z" . al/eshell-cd))
 
-(setopt eshell-directory-name (al/emacs-data-dir-file "eshell"))
+(al/setq-no-warnings eshell-directory-name (al/emacs-data-dir-file "eshell"))
 
 (al/with-eval-after-load eshell
   (setq
@@ -806,7 +806,7 @@
 ;; Default value of `tramp-ssh-controlmaster-options' variable slows
 ;; down loading tramp significantly.  This should be set before tramp
 ;; is loaded.
-(setopt tramp-ssh-controlmaster-options "")
+(al/setq-no-warnings tramp-ssh-controlmaster-options "")
 (al/with-eval-after-load tramp-sh
   (push 'tramp-own-remote-path tramp-remote-path)
   (push "LC_ALL=en_US.UTF-8" tramp-remote-process-environment)

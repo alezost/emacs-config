@@ -41,7 +41,7 @@
    display-time-interval 5
    display-time-format " %H:%M:%S"))
 
-(setopt calendar-date-style 'iso)
+(al/setq-no-warnings calendar-date-style 'iso)
 (al/with-eval-after-load calendar
   (setq
    diary-file (al/notes-dir-file "diary")

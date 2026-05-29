@@ -130,7 +130,7 @@
     (setq al/mail-user-name "alezost"))
   (al/file-accessors "gnus"
     (al/emacs-data-dir-file (concat "gnus-" al/mail-user-name)))
-  (setopt
+  (al/setq-no-warnings
    ;; Set `gnus-home-directory' before loading Gnus.  Otherwise,
    ;; `gnus-startup-file' will be set to "~/.newsrc" for some reason.
    gnus-home-directory al/gnus-dir
@@ -396,7 +396,7 @@
 
 ;;; ERC
 
-(setopt
+(al/setq-no-warnings
  erc-modules
  '(autojoin
    button
@@ -674,7 +674,7 @@
    debpaste-expire-time (* 3 24 60 60))
   (add-to-list 'debpaste-domains "debpaste" t))
 
-(setopt
+(al/setq-no-warnings
  web-search-user-engines
  '((ipduh "IPduh"
           "https://ipduh.com/apropos/?%s"

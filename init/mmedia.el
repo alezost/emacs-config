@@ -20,7 +20,7 @@
 
 ;;; EMMS
 
-(setopt
+(al/setq-no-warnings
  emms-directory (al/emacs-data-dir-file "emms")
  emms-playlist-sort-prefix "s")
 

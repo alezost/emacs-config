@@ -119,7 +119,7 @@
 
 ;;; Dired
 
-(setopt dired-guess-shell-gnutar "tar")
+(al/setq-no-warnings dired-guess-shell-gnutar "tar")
 
 (al/bind-key "H-j" dired-jump)
 

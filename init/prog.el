@@ -126,7 +126,7 @@
 ;;; SLIME
 
 ;; This should be set before loading slime.
-(setopt
+(al/setq-no-warnings
  slime-contribs
  '(slime-repl
    slime-autodoc
@@ -422,7 +422,7 @@
 
 ;;; Version control
 
-(setopt
+(al/setq-no-warnings
  magit-auto-revert-mode nil
  magit-define-global-key-bindings nil)
 
@@ -446,7 +446,7 @@
 ;; possible name of <emacsclient> executable in all dirs from PATH).
 ;; This happens during initializing `with-editor-emacsclient-executable'
 ;; variable (when `with-editor-locate-emacsclient' is called).
-(setopt with-editor-emacsclient-executable nil)
+(al/setq-no-warnings with-editor-emacsclient-executable nil)
 (al/with-eval-after-load with-editor
   (setq with-editor-emacsclient-executable
         (expand-file-name "emacsclient" invocation-directory)))

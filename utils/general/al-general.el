@@ -522,6 +522,13 @@ Also it (default syntax) breaks `indent-guide-mode'."
 
 ;;; Miscellaneous utils
 
+(defmacro al/setq-no-warnings (&rest args)
+  "Same as `setq' but suppressing free variable compilation warnings."
+  (declare (debug setq))
+  (let ((vars (al/every-nth-element 2 args)))
+    `(with-suppressed-warnings ((free-vars ,@vars))
+       (setq ,@args))))
+
 (defun al/intern (string-or-symbol)
   "Like `intern' except STRING-OR-SYMBOL can also be a symbol."
   (if (symbolp string-or-symbol)

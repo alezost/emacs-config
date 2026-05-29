@@ -37,7 +37,7 @@
 (al/with-eval-after-load ispell
   (ispell-change-dictionary "en" 'global))
 
-(setopt flyspell-use-meta-tab nil)
+(al/setq-no-warnings flyspell-use-meta-tab nil)
 (al/with-eval-after-load flyspell
   (defconst al/flyspell-keys
     '(("C-M-g n" . flyspell-goto-next-error))
