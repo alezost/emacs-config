@@ -218,6 +218,20 @@ single key or a list of keys.  KEYS are checked using
 PREDICATE (`member' by default)."
   (al/assq-delete-all keys alist #'member))
 
+(defun al/every-nth-element1 (n list)
+  "Sub-procedure of `al/every-nth-element'."
+  (and list
+       (cons (car list)
+             (al/every-nth-element1 n (nthcdr n list)))))
+
+(defun al/every-nth-element (n list &optional start)
+  "Return a list containing every Nth element from LIST.
+
+START is the starting element (0 by default).
+
+N must be a positive integer.  START must be a non-negative integer."
+  (al/every-nth-element1 n (if start (nthcdr start list) list)))
+
 
 ;;; Auxiliary messages
 
