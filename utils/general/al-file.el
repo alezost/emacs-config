@@ -38,7 +38,7 @@ Example:
                 v2 \"/tmp\")
 
 v2 will be set, while v1 will not."
-  (declare (indent 0) (debug t))
+  (declare (debug setq))
   `(progn
      ,@(mapcar (lambda (lst)
                  (let ((var  (car lst))

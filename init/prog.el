@@ -416,8 +416,8 @@
 (al/with-eval-after-load al-compilation
   (when (al/require al-file)
     (al/setq-file
-      al/compilation-sound-success (al/sound-dir-file "bell.oga")
-      al/compilation-sound-error   (al/sound-dir-file "splat.wav"))))
+     al/compilation-sound-success (al/sound-dir-file "bell.oga")
+     al/compilation-sound-error   (al/sound-dir-file "splat.wav"))))
 
 
 ;;; Version control

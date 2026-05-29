@@ -117,12 +117,12 @@
 
   (when (al/require al-file)
     (al/setq-file
-      al/appt-notify-normal-sound (al/sound-dir-file "drums.wav")
-      al/appt-notify-urgent-sound (al/sound-dir-file "bell.oga"))))
+     al/appt-notify-normal-sound (al/sound-dir-file "drums.wav")
+     al/appt-notify-urgent-sound (al/sound-dir-file "bell.oga"))))
 
 (al/with-eval-after-load al-notification
   (when (al/require al-file)
     (al/setq-file
-      al/notification-sound (al/sound-dir-file "alarm.wav"))))
+     al/notification-sound (al/sound-dir-file "alarm.wav"))))
 
 ;;; time.el ends here
