@@ -625,6 +625,59 @@
    which-key-max-display-columns 5))
 
 
+;;; Spelling, translating
+
+(al/bind-key "<XF86Spell>" al/translate-tui)
+
+(al/bind-keys
+ :prefix-map al/spell-map
+ :prefix-docstring "Map for flyspell and friends."
+ :prefix "H-s"
+ ("r" . flyspell-region)
+ ("b" . flyspell-buffer)
+ ("n" . flyspell-goto-next-error)
+ ("H-n" . flyspell-goto-next-error))
+
+(al/with-eval-after-load ispell
+  (ispell-change-dictionary "en" 'global))
+
+(al/setq-no-warnings flyspell-use-meta-tab nil)
+(al/with-eval-after-load flyspell
+  (defconst al/flyspell-keys
+    '(("C-M-g n" . flyspell-goto-next-error))
+    "Alist of auxiliary keys for `flyspell-mode-map'.")
+  (al/bind-keys-from-vars 'flyspell-mode-map 'al/flyspell-keys))
+
+(al/with-eval-after-load google-translate-core-ui
+  (setq
+   google-translate-input-method-auto-toggling t
+   google-translate-preferable-input-methods-alist
+   '((dvorak-russian-computer "ru")
+     (korean-hangul "ko"))
+   google-translate-show-phonetic t
+   google-translate-listen-program "mpv"
+   google-translate-listen-button-label "Listen")
+  (push '("Auto-detect" . "auto")
+        google-translate-supported-languages-alist)
+
+  (al/require al-google-translate))
+
+(al/with-eval-after-load google-translate-smooth-ui
+  (google-translate--setup-minibuffer-keymap)
+  (defconst al/google-translate-keys
+    '(("C-." . google-translate-previous-translation-direction)
+      ("C-e" . google-translate-next-translation-direction))
+    "Alist of auxiliary keys for `google-translate-minibuffer-keymap'.")
+  (al/bind-keys-from-vars 'google-translate-minibuffer-keymap
+    '(al/minibuffer-keys al/google-translate-keys))
+
+  (al/add-hook-maybe 'google-translate-mode-hook 'al/text-scale+1))
+
+(al/with-eval-after-load al-google-translate
+  (advice-add 'google-translate-listen-translation
+    :override #'al/google-translate-listen-translation))
+
+
 ;;; SQL
 
 (al/with-eval-after-load sql

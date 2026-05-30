@@ -67,7 +67,6 @@
         "file-modes"
         "mmedia"
         "net"
-        "dict"
         "visual"
         "games"
         "custom"))
