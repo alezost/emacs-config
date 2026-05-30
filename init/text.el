@@ -325,6 +325,7 @@
 (al/bind-keys-from-vars nil 'al/input-method-keys)
 
 (al/with-eval-after-load hangul
+  :no-warning t
   (al/require al-quail-hangul))
 
 (al/with-eval-after-load al-quail-hangul

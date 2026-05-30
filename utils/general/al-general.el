@@ -460,11 +460,11 @@ BODY can start with the following optional keywords:
                 to load FEATURE immediately, or anything else to load
                 FEATURE at `after-init-hook'."
   (declare (indent 1) (debug (form def-body)))
-  (al/eval-when-compile
-    (unless (require feature nil t)
-      (al/warning-message "`%s' feature is not available" feature)))
   (al/with-keywords body
-      (load)
+      (load no-warning)
+    (al/eval-when-compile
+      (unless (or no-warning (require feature nil t))
+        (al/warning-message "`%s' feature is not available" feature)))
     (cond
      ((null load)
       `(eval-after-load ',feature (lambda () ,@body)))
