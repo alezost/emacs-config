@@ -433,7 +433,7 @@ This is similar to `emms-playlist-buffer-list' except it does not check
   "Switch to EMMS playlist buffer matching STRING and start/resume playing.
 Interactively, prompt for an existing playlist."
   (interactive
-   (list (completing-read "Switch to buffer:" (al/emms-all-playlists))))
+   (list (completing-read "Switch to buffer: " (al/emms-all-playlists))))
   (al/display-buffer (al/emms-get-playlist string))
   (when emms-player-playing-p
     (al/emms-mpv-raise-frame))
@@ -451,7 +451,7 @@ playlist."
   (let* ((names (if arg
                     (al/emms-all-playlists)
                   (mapcar #'buffer-name (al/emms-playlist-buffers))))
-         (name (completing-read "Switch to buffer:" names)))
+         (name (completing-read "Switch to buffer: " names)))
     (al/display-buffer (al/emms-get-playlist name))))
 
 ;;;###autoload
