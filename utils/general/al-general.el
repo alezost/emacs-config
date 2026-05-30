@@ -56,6 +56,12 @@ The following local variables are available inside REST:
            (al/warning-message "Unknown keyword: %s" keyword)))))
      ,@rest))
 
+(defmacro al/eval-when-compile (&rest body)
+  "Evaluate BODY at compile time and do nothing for interpreted code."
+  (declare (indent 0) (debug t))
+  `(when (bound-and-true-p byte-compile-current-file)
+     ,@body))
+
 
 ;;; Simple wrappers for hooks
 
@@ -452,10 +458,9 @@ BODY can start with the following optional keywords:
 
   `:load'       can be `nil' (default) to do nothing additionally, `t'
                 to load FEATURE immediately, or anything else to load
-                FEATURE at `after-init-hook'.
-"
+                FEATURE at `after-init-hook'."
   (declare (indent 1) (debug (form def-body)))
-  (when (bound-and-true-p byte-compile-current-file)
+  (al/eval-when-compile
     (unless (require feature nil t)
       (al/warning-message "`%s' feature is not available" feature)))
   (al/with-keywords body
