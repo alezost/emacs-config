@@ -50,26 +50,28 @@
   "Load FILE from `al/emacs-init-dir'."
   (al/load (al/emacs-init-dir-file file)))
 
-(mapc (lambda (file)
-        (condition-case error
-            (al/init-load file)
-          (error (message (concat "ERROR during loading \""
-                                  file "\" init file: %S")
-                          error)
-                 nil)))
-      '("keys"
-        "text"
-        "packages"
-        "settings"
-        "files"
-        "prog"
-        "time"
-        "file-modes"
-        "mmedia"
-        "net"
-        "visual"
-        "games"
-        "custom"))
+(defvar al/init-files
+  '("keys"
+    "text"
+    "packages"
+    "settings"
+    "files"
+    "prog"
+    "time"
+    "file-modes"
+    "mmedia"
+    "net"
+    "visual"
+    "games"
+    "custom"))
+
+(dolist (file al/init-files)
+  (condition-case error
+      (al/init-load file)
+    (error (message (concat "ERROR during loading \""
+                            file "\" init file: %S")
+                    error)
+           nil)))
 
 (defvar al/load-paths nil)
 
