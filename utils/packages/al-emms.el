@@ -313,14 +313,14 @@ available properties."
          (prompt (format "Edit `%s' of \"%s\" track: "
                          prop (emms-track-name track)))
          (value (emms-track-get track prop))
-         (string? (stringp value))
+         (string-or-nil? (or (null value) (stringp value)))
          (value (read-string prompt
-                             (if string?
+                             (if string-or-nil?
                                  value
                                (format "%s" value))))
          (value (cond
                  ((string-empty-p value) nil)
-                 (string? value)
+                 (string-or-nil? value)
                  (t (read value)))))
     (emms-track-set track prop value)
     (emms-playlist-mode-update-track-function)))
