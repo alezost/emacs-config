@@ -17,6 +17,10 @@
 
 ;;; Code:
 
+(require 'al-places)
+(require 'al-general)
+(require 'al-key)
+
 (al/eval-after-frame-init
   :name al/any-frame-key-translations
   ;; Key translation can be done only once for a graphical frame but

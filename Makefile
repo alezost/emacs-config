@@ -28,6 +28,7 @@ EMACS = emacs
 MY_INIT_DIR = $(CURDIR)/init
 MY_UTILS_DIR = $(CURDIR)/utils
 MY_ELPA_DIR = $(CURDIR)/packages
+MY_GUIXEL_DIR = $(CURDIR)/packages/guix/elisp
 MY_DATA_DIR = $(CURDIR)/data
 EMACS_ELPA_DIR = $(MY_DATA_DIR)/elpa
 GUIX_DIR = $(HOME)/.guix-profiles/emacs/emacs/share/emacs/site-lisp
@@ -43,6 +44,7 @@ LOAD_PATH =							\
   -L $(MY_ELPA_DIR)						\
   $(call L_dirs,$(MY_UTILS_DIR))				\
   $(call L_dirs,$(MY_ELPA_DIR))					\
+  -L $(MY_GUIXEL_DIR)						\
   -L $(GUIX_DIR)						\
   $(call L_dirs,$(GUIX_ELPA_DIR))				\
   $(if $(SLIME_DIR), -L $(SLIME_CONTRIB_DIR) -L $(SLIME_DIR))	\
@@ -74,15 +76,7 @@ utils: $(UTILS_ELCS)
 # hooks, so compiling them is not very useful as it is.  The main
 # purpose of this target is to check for useful compilation warnings
 # (like obsolete variables).
-init: $(INIT_ELS)
-	@printf "Compiling init files\n"
-	@$(EMACS_BATCH) -l $(MY_UTILS_DIR)/utils-autoloads.el \
-			-l $(MY_DATA_DIR)/my-autoloads.el \
-			-l $(MY_DATA_DIR)/elpa-autoloads.el \
-			--eval "(require 'al-general)" \
-			--eval "(require 'al-places)" \
-			--eval "(require 'al-key)" \
-	-f batch-byte-compile $^ ;
+init: $(INIT_ELCS)
 
 clean-packages:
 	@printf "Removing packages/*.elc...\n"

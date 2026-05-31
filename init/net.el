@@ -17,6 +17,12 @@
 
 ;;; Code:
 
+(require 'al-places)
+(require 'al-general)
+(require 'al-key)
+
+(declare-function al/gnus-dir-file "net.el")
+
 
 ;;; Global keys
 
@@ -117,8 +123,6 @@
 (setq
  mail-user-agent 'gnus-user-agent
  user-full-name "Alex Kost")
-
-(declare-function al/gnus-dir-file "net.el")
 
 (defvar al/mail-user-name nil)
 
@@ -475,8 +479,6 @@
    erc-mode-line-format "%t"
    erc-mode-line-away-status-format " (AWAY %a %H:%M)"
    erc-header-line-format "%n%a on %S [%m,%l] %o"
-   erc-timestamp-format-left "\n[%d %B %Y, %A]\n"
-   erc-timestamp-intangible nil
    erc-paranoid t)
 
   (defun al/erc-quit-part-reason (&rest _)
@@ -565,6 +567,10 @@
 
 (al/with-eval-after-load erc-match
   (setq erc-keywords '("theme" "color" "dvorak" "sql" "guix" "game")))
+
+(al/with-eval-after-load erc-stamp
+  (setq
+   erc-timestamp-format-left "\n[%d %B %Y, %A]\n"))
 
 (al/with-eval-after-load erc-log
   (setq erc-log-file-coding-system 'utf-8))

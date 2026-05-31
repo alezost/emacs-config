@@ -21,6 +21,8 @@
                         (file-name-directory
                          (file-truename load-file-name))))
 
+(require 'al-places nil t)      ; to silence byte-compiler
+
 
 ;;; (Auto)loading various files
 
@@ -40,8 +42,6 @@
 (push (al/emacs-utils-dir-file "packages") load-path)
 (push (al/emacs-utils-dir-file "tui") load-path)
 
-;; These packages (along with `al-places' loaded above) are required for
-;; the rest config.
 (require 'al-general)
 (require 'al-key)
 

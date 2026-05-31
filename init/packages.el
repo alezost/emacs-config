@@ -17,6 +17,12 @@
 
 ;;; Code:
 
+(require 'al-places)
+(require 'al-general)
+(require 'al-key)
+
+(declare-function al/display-buffer "al-buffer")
+
 
 ;;; Emacs packages
 

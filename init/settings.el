@@ -17,6 +17,16 @@
 
 ;;; Code:
 
+(require 'al-places)
+(require 'al-general)
+(require 'al-key)
+
+(declare-function al/mode-line-default-buffer-identification "al-mode-line")
+(declare-function al/file-if-exists "al-file")
+(declare-function al/existing-files "al-file")
+(declare-function al/find-file "al-file-cmd")
+(declare-function al/minibuffer-set-directory "al-minibuffer-cmd")
+
 
 ;;; Minibuffer and completions
 
@@ -531,9 +541,6 @@
    ("p" . help-go-forward))
   (al/add-hook-maybe 'help-mode-hook 'al/no-truncate-lines))
 
-(declare-function al/file-if-exists "al-file")
-(declare-function al/mode-line-default-buffer-identification "al/mode-line")
-
 (al/with-eval-after-load man
   (setq Man-notify-method 'pushy)
   (when (al/require al-file)
@@ -566,8 +573,6 @@
     '(("M-h" . WoMan-previous-manpage))
     "Alist of auxiliary keys for `woman-mode'.")
   (al/bind-keys-from-vars 'woman-mode-map 'al/woman-keys))
-
-(declare-function al/existing-files "al-file")
 
 (al/with-eval-after-load info
   ;; `Info-additional-directory-list' is USELESS as it is appended to

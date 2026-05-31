@@ -17,6 +17,10 @@
 
 ;;; Code:
 
+(require 'al-general)
+(require 'al-places)
+(require 'al-key)
+
 
 ;;; Global keys
 

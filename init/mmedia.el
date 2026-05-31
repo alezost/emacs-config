@@ -17,6 +17,12 @@
 
 ;;; Code:
 
+(require 'al-places)
+(require 'al-general)
+(require 'al-key)
+
+(declare-function emms-playlist-simple-uniq "emms")
+
 
 ;;; EMMS
 
@@ -24,7 +30,31 @@
  emms-directory (al/emacs-data-dir-file "emms")
  emms-playlist-sort-prefix "s")
 
-(declare-function emms-playlist-simple-uniq "emms")
+(al/with-eval-after-load al-emms
+  (setq
+   emms-mode-line-mode-line-function #'al/emms-mode-line-song-string
+   emms-track-description-function #'al/emms-full-track-description
+   al/emms-file-name-shorten-alist
+   (mapcar (lambda (assoc)
+             (cons (directory-file-name (expand-file-name (car assoc)))
+                   (cdr assoc)))
+           `((,(al/download-dir-file "torrents") . "~t")
+             (,al/download-dir . "~d")
+             (,(al/math-dir-file "video") . "~math")
+             ("~/storage/music" . "~M")
+             (,al/music-dir . "~m"))))
+
+  (al/bind-keys
+    :map al/emms-switch-playlist-map
+    ([ctrl-m] . al/emms-switch-to-playlist-buffer))
+
+  (al/add-hook-maybe 'emms-playlist-source-inserted-hook
+    'al/emms-add-info-size)
+
+  (advice-add 'emms-source-play
+    :override #'al/emms-source-add-and-play)
+  (advice-add 'emms-playlist-mode-insert-track
+    :override #'al/emms-playlist-mode-insert-track))
 
 (al/bind-keys
  :prefix-map al/emms-map
@@ -200,32 +230,6 @@
 
 (al/with-eval-after-load emms-state
   (emms-state-mode))
-
-(al/with-eval-after-load al-emms
-  (setq
-   emms-mode-line-mode-line-function #'al/emms-mode-line-song-string
-   emms-track-description-function #'al/emms-full-track-description
-   al/emms-file-name-shorten-alist
-   (mapcar (lambda (assoc)
-             (cons (directory-file-name (expand-file-name (car assoc)))
-                   (cdr assoc)))
-           `((,(al/download-dir-file "torrents") . "~t")
-             (,al/download-dir . "~d")
-             (,(al/math-dir-file "video") . "~math")
-             ("~/storage/music" . "~M")
-             (,al/music-dir . "~m"))))
-
-  (al/bind-keys
-    :map al/emms-switch-playlist-map
-    ([ctrl-m] . al/emms-switch-to-playlist-buffer))
-
-  (al/add-hook-maybe 'emms-playlist-source-inserted-hook
-    'al/emms-add-info-size)
-
-  (advice-add 'emms-source-play
-    :override #'al/emms-source-add-and-play)
-  (advice-add 'emms-playlist-mode-insert-track
-    :override #'al/emms-playlist-mode-insert-track))
 
 (al/with-eval-after-load al-emms-mpv
   (al/add-hook-maybe

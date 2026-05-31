@@ -17,6 +17,14 @@
 
 ;;; Code:
 
+(require 'al-places)
+(require 'al-general)
+(require 'al-key)
+
+(declare-function al/mode-line-default-buffer-identification "al-mode-line")
+(declare-function al/file-regexp "al-file")
+(declare-function al/find-file "al-file-cmd")
+
 
 ;;; Global keys
 
@@ -123,7 +131,15 @@
 
 (al/bind-key "H-j" dired-jump)
 
-(declare-function al/mode-line-default-buffer-identification "al-mode-line")
+(defvar al/completion-ignored-extensions)
+(al/with-eval-after-load al-dired
+  (when (al/require al-complete)
+    (setq al/dired-ignored-extensions
+          (cons ".go" al/completion-ignored-extensions)))
+  (al/add-hook-maybe 'dired-mode-hook
+    'al/dired-set-completion-ignored-extensions)
+  (advice-add 'dired-sort-set-mode-line
+    :override 'al/dired-sort-set-mode-line))
 
 (al/with-eval-after-load dired
   (setq
@@ -200,18 +216,6 @@
 
   (al/require dired-x al-dired))
 
-(defvar al/completion-ignored-extensions)
-(al/with-eval-after-load al-dired
-  (when (al/require al-complete)
-    (setq al/dired-ignored-extensions
-          (cons ".go" al/completion-ignored-extensions)))
-  (al/add-hook-maybe 'dired-mode-hook
-    'al/dired-set-completion-ignored-extensions)
-  (advice-add 'dired-sort-set-mode-line
-    :override 'al/dired-sort-set-mode-line))
-
-(declare-function al/file-regexp "al-file")
-
 (al/with-eval-after-load dired-x
   (setq
    ;; Do not show "hidden" files only.
@@ -229,15 +233,13 @@
              "play -q" "aplay" "mplayer -really-quiet" "mpv --really-quiet")
             (,(al/file-regexp "odt" "doc") "lowriter")))))
 
-(declare-function dim-set-major-name "dim")
-
 (al/with-eval-after-load wdired
   (al/bind-keys-from-vars 'wdired-mode-map)
   (when (al/require dim)
     ;; "Dired" `mode-name' is hard-coded in
     ;; `wdired-change-to-dired-mode'.
     (advice-add 'wdired-change-to-dired-mode
-      :after #'dim-set-major-name)))
+      :after 'dim-set-major-name)))
 
 (al/with-eval-after-load image-dired
   (al/bind-keys

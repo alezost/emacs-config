@@ -17,6 +17,10 @@
 
 ;;; Code:
 
+(require 'al-places)
+(require 'al-general)
+(require 'al-key)
+
 
 ;;; Working with elisp: eldoc, edebug, debugger, …
 
@@ -451,6 +455,11 @@
   (setq with-editor-emacsclient-executable
         (expand-file-name "emacsclient" invocation-directory)))
 
+(al/with-eval-after-load al-magit
+  (al/bind-keys
+    :map al/magit-switch-map
+    ("M-m" . al/magit-switch-buffer)))
+
 (al/bind-keys
  :prefix-map al/magit-map
  :prefix-docstring "Map for magit and git stuff."
@@ -542,11 +551,6 @@
 
   (al/require al-magit))
 
-(al/with-eval-after-load al-magit
-  (al/bind-keys
-    :map al/magit-switch-map
-    ("M-m" . al/magit-switch-buffer)))
-
 (al/with-eval-after-load magit-popup
   (setq
    magit-popup-display-buffer-action '((display-buffer-at-bottom))
@@ -569,7 +573,7 @@
   ;; `magit-popup-mode-hook' wouldn't work because
   ;; `magit-refresh-popup-buffer' is called after the mode is set.
   (advice-add 'magit-refresh-popup-buffer
-    :after #'al/beginning-of-buffer))
+    :after 'al/beginning-of-buffer))
 
 ;; `magit-log-margin' should be set before magit is loaded, as
 ;; the other margins are defined from this one.

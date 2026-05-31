@@ -17,11 +17,16 @@
 
 ;;; Code:
 
+(require 'al-places)
+(require 'al-general)
+(require 'al-key)
+
 (al/eval-after-frame-init
   :name al/graphical-frame-visual-settings
   :terminal graphical
   :once t
-  (when (al/require al-visual)
+  (al/with-eval-after-load al-visual
+    :load t
     (when (al/require alect-themes)
       (al/load-theme 'alect-light))
     ;; Should be "solved":

@@ -17,6 +17,14 @@
 
 ;;; Code:
 
+(require 'al-places)
+(require 'al-general)
+(require 'al-key)
+
+(declare-function al/subdirs "al-file")
+(declare-function al/replace "al-text-cmd")
+(declare-function al/set-input-method "al-input-method")
+
 
 ;;; Global keys for moving
 

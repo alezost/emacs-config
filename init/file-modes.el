@@ -17,6 +17,12 @@
 
 ;;; Code:
 
+(require 'al-places)
+(require 'al-general)
+(require 'al-key)
+
+(declare-function al/file-regexp "al-file")
+
 
 ;;; Org
 
@@ -35,11 +41,17 @@
  ("e"   . org-export)
  ("TAB" . org-indent-mode))
 
+(al/with-eval-after-load al-org
+  (advice-add 'org-link-make-string
+    :around #'al/org-link-set-description))
+
+(al/with-eval-after-load al-org-emms
+  (when (al/require emms-mpv)
+    (add-hook 'emms-mpv-file-loaded-hook #'al/org-emms-seek)))
+
 (al/autoload "org"
   org-read-date
   org-open-file)
-
-(declare-function al/file-regexp "al-file")
 
 (al/setq-no-warnings
  org-export-backends
@@ -141,10 +153,6 @@
     imenu
     al-org))
 
-(al/with-eval-after-load al-org
-  (advice-add 'org-link-make-string
-    :around #'al/org-link-set-description))
-
 (al/with-eval-after-load org-src
   (setq org-edit-src-content-indentation 0)
   (al/bind-keys
@@ -168,14 +176,10 @@
     '("H-o" "H-u" "H-e"))
   (al/bind-keys-from-vars 'org-ref-cite-keymap 'al/org-ref-cite-keys))
 
-(al/with-eval-after-load al-org-emms
-  (when (al/require emms-mpv)
-    (add-hook 'emms-mpv-file-loaded-hook #'al/org-emms-seek)))
-
 
 ;;; Pdf tools
 
-(setq pdf-tools-handle-upgrades nil)
+(al/setq-no-warnings pdf-tools-handle-upgrades nil)
 
 (al/autoload "pdf-view" pdf-view-mode)
 
