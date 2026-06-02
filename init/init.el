@@ -43,7 +43,6 @@
 (push (al/emacs-utils-dir-file "tui") load-path)
 
 (require 'al-general)
-(require 'al-key)
 
 (al/title-message "Loading init files")
 (defun al/init-load (file)
@@ -139,15 +138,6 @@ Do not alter `load-path'.  Instead, push added `load-path' to
 ;; loaded before external packages are autoloaded.
 
 (al/title-message "Final settings")
-
-(when (fboundp 'mwim-beginning)
-  (if (display-graphic-p)
-      (al/bind-keys
-        ("C-a" . mwim-beginning)
-        ("<ctrl-i>" . mwim-end))
-    (al/bind-keys
-      ("M-a" . mwim-beginning)
-      ("M-i" . mwim-end))))
 
 ;; These hooks cannot be set in my init files because my utils, my
 ;; packages, and external packages are autoloaded after loading the init

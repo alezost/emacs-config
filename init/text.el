@@ -37,66 +37,88 @@
   backward-word)
 
 (al/bind-keys
- ("C-o"   . backward-char)
- ("M-o"   . al/skip-parens-or-backward-word)
- ("C-M-o" . parens-backward)
- ("M-O"   . backward-sentence)
- ("C-H-M-o" (scroll-right 1))
+  ("C-o"   . backward-char)
+  ("M-o"   . al/skip-parens-or-backward-word)
+  ("C-M-o" . parens-backward)
+  ("M-O"   . backward-sentence)
+  ("C-H-M-o" (scroll-right 1))
 
- ("C-u"   . forward-char)
- ("M-u"   . al/skip-parens-or-forward-word)
- ("C-M-u" . parens-forward)
- ("M-U"   . forward-sentence)
- ("C-H-M-u" (scroll-left 1))
+  ("C-u"   . forward-char)
+  ("M-u"   . al/skip-parens-or-forward-word)
+  ("C-M-u" . parens-forward)
+  ("M-U"   . forward-sentence)
+  ("C-H-M-u" (scroll-left 1))
 
- ("C-."   . previous-line)
- ("M-."   . backward-paragraph)
- ("C-M-." . parens-backward-up)
- ("M->"   . backward-page)
- ("C-H-M-." (scroll-down 1))
- ("H-."   . scroll-down-command)
- ("H-M-." . scroll-other-window-down)
- ("s-."   . al/previous-link)
+  ("C-."   . previous-line)
+  ("C-M-." . parens-backward-up)
+  ("C-H-M-." (scroll-down 1))
+  ("H-."   . scroll-down-command)
+  ("H-M-." . scroll-other-window-down)
+  ("s-."   . al/previous-link)
 
- ("C-e"   . next-line)
- ("M-e"   . forward-paragraph)
- ("C-M-e" . parens-forward-down)
- ("M-E"   . forward-page)
- ("C-H-M-e" (scroll-up 1))
- ("H-e"   . scroll-up-command)
- ("H-M-e" . scroll-other-window)
- ("s-e"   . al/next-link)
+  ("C-e"   . next-line)
+  ("C-M-e" . parens-forward-down)
+  ("C-H-M-e" (scroll-up 1))
+  ("H-e"   . scroll-up-command)
+  ("H-M-e" . scroll-other-window)
+  ("s-e"   . al/next-link)
 
- ("C-M-a" . beginning-of-defun)
- ("M-A"   . al/beginning-of-line)
- ("H-a"   . al/beginning-of-buffer)
+  ("C-M-a" . beginning-of-defun)
+  ("M-A"   . al/beginning-of-line)
+  ("H-a"   . al/beginning-of-buffer)
+  ("C-x a" . beginning-of-buffer)
 
- ("C-M-i" . end-of-defun)
- ("M-I"   . al/end-of-line)
- ("H-i"   . al/end-of-buffer)
+  ("C-M-i" . end-of-defun)
+  ("M-I"   . al/end-of-line)
+  ("H-i"   . al/end-of-buffer)
+  ("C-x i" . end-of-buffer)
 
- ("C-3"   . recenter-top-bottom)
- ("C-H-3" . al/recenter-top)
- ("C-2"   . move-to-window-line-top-bottom))
-
-(al/bind-keys
-  ("C-a" . beginning-of-line)
-  ("<ctrl-i>" . end-of-line))
-
-(unless (display-graphic-p)
-  (al/bind-keys
-    ("M-."   . previous-line)
-    ("M-e"   . next-line)
-    ("M-a"   . beginning-of-line)
-    ("M-i"   . end-of-line)
-    ("M->"   . scroll-down-command)
-    ("M-E"   . scroll-up-command)
-    ("C-x a" . beginning-of-buffer)
-    ("C-x i" . end-of-buffer)))
+  ("C-3"   . recenter-top-bottom)
+  ("C-H-3" . al/recenter-top)
+  ("C-2"   . move-to-window-line-top-bottom))
 
 (al/bind-keys
   :map narrow-map
   ("r" . narrow-to-region))
+
+(defvar al/last-frame-keys nil
+  "Last frame type where some special keys were set.
+Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
+
+(al/eval-after-frame-init
+  :name al/text-frame-keys
+  :terminal text
+  (unless (eq al/last-frame-keys 'text)
+    (al/bind-keys
+      ("M-." . previous-line)
+      ("M-e" . next-line)
+      ("M-a" . beginning-of-line)
+      ("M-i" . end-of-line)
+      ("M->" . scroll-down-command)
+      ("M-E" . scroll-up-command))
+    (setq al/last-frame-keys 'text)))
+
+(al/eval-after-frame-init
+  :name al/graphical-frame-keys
+  :terminal graphical
+  (unless (eq al/last-frame-keys 'graphical)
+    (al/bind-keys
+      ("M-." . backward-paragraph)
+      ("M-e" . forward-paragraph)
+      ("M-a" . backward-sentence)
+      ("M-i" . al/insert-map)
+      ("M->" . backward-page)
+      ("M-E" . forward-page))
+    (setq al/last-frame-keys 'graphical)))
+
+(al/eval-after-init
+  (if (fboundp 'mwim-beginning)
+      (al/bind-keys
+        ("C-a" . mwim-beginning)
+        ("<ctrl-i>" . mwim-end))
+    (al/bind-keys
+      ("C-a" . beginning-of-line)
+      ("<ctrl-i>" . end-of-line))))
 
 
 ;;; Global keys for editing
