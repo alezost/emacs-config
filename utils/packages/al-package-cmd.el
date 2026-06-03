@@ -37,7 +37,7 @@ NAME is an archive name from `al/package-archives'."
    (list (completing-read "Add package archive: "
                           (mapcar #'car al/package-archives))))
   (when-let* ((archive (assoc name al/package-archives)))
-    (al/pushnew package-archives archive)))
+    (al/push-new package-archives archive)))
 
 ;;;###autoload
 (defun al/remove-package-archive (&optional name)

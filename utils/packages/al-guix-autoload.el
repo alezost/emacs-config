@@ -51,7 +51,7 @@ Return nil, if Emacs packages are not installed in PROFILE."
                                               al/guix-emacs-autoloads
                                               #'string=)))
           (dolist (dir dirs)
-            (al/pushnew load-path
+            (al/push-new load-path
                         (directory-file-name dir)
                         #'string=))
           (dolist (autoload new-autoloads)

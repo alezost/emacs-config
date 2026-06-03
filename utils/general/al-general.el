@@ -181,7 +181,7 @@ If ELEMENT is an element of LIST, return an element placed after it."
           (car list))
     (car list)))
 
-(defmacro al/pushnew (place newelt &optional testfn)
+(defmacro al/push-new (place newelt &optional testfn)
   "Push NEWELT to PLACE if not already present.
 This is similar to `cl-pushnew' but uses `seq' library instead of `cl-lib'."
   `(let ((elt ,newelt))

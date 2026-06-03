@@ -258,8 +258,8 @@ with (TAG ELEMENTS NAME) entries.")
        (or (gui--selection-value-internal 'PRIMARY)
            (gui--selection-value-internal 'CLIPBOARD))))
 
-(al/pushnew tempo-user-element-functions #'al/tempo-kill-ring-element)
-(al/pushnew tempo-user-element-functions #'al/tempo-clipboard-element)
+(al/push-new tempo-user-element-functions #'al/tempo-kill-ring-element)
+(al/push-new tempo-user-element-functions #'al/tempo-clipboard-element)
 
 
 ;;; Generating templates for the current buffer
@@ -302,7 +302,7 @@ See `al/tempo-alist' for details."
        (`(,var . ,args)
         (unless (boundp var)
           (set var nil)
-          (al/pushnew al/tempo-tags var)
+          (al/push-new al/tempo-tags var)
           (pcase-dolist (`(,tag ,name ,template)
                          (if (fboundp templates)
                              (apply templates args)
