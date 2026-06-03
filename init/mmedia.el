@@ -50,6 +50,8 @@
 
   (al/add-hook-maybe 'emms-playlist-source-inserted-hook
     'al/emms-add-info-size)
+  (al/add-hook-maybe 'emms-mpv-before-process-hook
+    'al/emms-playlist-set-mpv-command)
 
   (advice-add 'emms-source-play
     :override #'al/emms-source-add-and-play)
@@ -217,12 +219,6 @@
   (setq
    emms-mpv-hidden-buffer-names nil
    emms-mpv-progress-remove-finished nil)
-  (when-let* ((cmd (getenv "MPV_CMD"))
-              (args (split-string cmd " ")))
-    (setq emms-mpv-command
-          (append args
-                  '("--keep-open=always"
-                    "--msg-color=no"))))
   (remove-hook 'emms-mpv-progress-filters
                'emms-mpv-progress-check-file-type)
   (push 'emms-mpv emms-player-list)

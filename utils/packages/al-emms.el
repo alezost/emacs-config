@@ -317,7 +317,7 @@ available properties."
          (value (read-string prompt
                              (if string-or-nil?
                                  value
-                               (format "%s" value))))
+                               (format "%S" value))))
          (value (cond
                  ((string-empty-p value) nil)
                  (string-or-nil? value)
@@ -351,37 +351,73 @@ Intended to be used for `emms-mode-line-mode-line-function'."
     ("b2" . "EMMS-background2"))
   "Alist of aliases and full playlist names.")
 
+(defvar al/emms-playlist-mpv-command-alist
+  '(("music" "mpv" "--profile=audio")
+    ("url"   "mpv" "--profile=url")
+    (t       "mpv" "--profile=video"))
+  "Alist of playlists and respecting mpv commands.
+Each element should have (NAME . CMD) form where:
+
+  NAME is a string matching playlist name (see `al/emms-get-playlist-name'),
+  NAME of the last alist element can also be `t' to use CMD for the rest
+  playlists;
+
+  CMD is a value for `emms-mpv-command' variable.")
+
 (al/defun-lazy al/emms-all-playlists
   "Return names of all EMMS playlists."
   (mapcar #'file-name-base
           (directory-files emms-directory nil "EMMS-.+.\pl")))
 
+(defun al/emms-get-playlist-name (string)
+  "Return EMMS playlist name matching STRING.
+STRING can be a full playlist name, its alias from
+`al/emms-playlist-alias-alist', or regexp matching playlist name."
+  (or (alist-get string al/emms-playlist-alias-alist
+                 nil nil #'string=)
+      (seq-find (lambda (name)
+                  (let ((case-fold-search t))
+                    (if (string-match-p "emms-" string)
+                        (string-match-p string name)
+                      (string-match-p string name 5))))
+                (al/emms-all-playlists))
+      (error "Cannot define playlist by %S" string)))
+
 (defun al/emms-get-playlist (string)
   "Return EMMS playlist buffer matching STRING.
 Open this playlist if is not opened yet.
+See `al/emms-get-playlist-name' for details."
+  (let ((name (al/emms-get-playlist-name string)))
+    (or (get-buffer name)
+        (let ((buf  (emms-playlist-new name))
+              (file (expand-file-name (concat name ".pl")
+                                      emms-directory)))
+          (if (file-exists-p file)
+              (with-current-buffer buf
+                (al/emms-add-source 'emms-source-playlist file)
+                buf)
+            ;; Actually, this error should never happen: if NAME is
+            ;; found then FILE should exist.
+            (error "File <%s> does not exist" file))))))
 
-STRING can be a full playlist name, its alias from
-`al/emms-playlist-alias-alist', or regexp matching playlist name."
-  (if-let ((name (or (alist-get string al/emms-playlist-alias-alist
-                                nil nil #'string=)
-                     (seq-find (lambda (name)
-                                 (let ((case-fold-search t))
-                                   (if (string-match-p "emms-" string)
-                                       (string-match-p string name)
-                                     (string-match-p string name 5))))
-                               (al/emms-all-playlists)))))
-      (or (get-buffer name)
-          (let ((buf  (emms-playlist-new name))
-                (file (expand-file-name (concat name ".pl")
-                                        emms-directory)))
-            (if (file-exists-p file)
-                (with-current-buffer buf
-                  (al/emms-add-source 'emms-source-playlist file)
-                  buf)
-              ;; Actually, this error should never happen: if NAME is
-              ;; found then FILE should exist.
-              (error "File <%s> does not exist" file))))
-    (error "Cannot define playlist by %S" string)))
+(defvar emms-mpv-command)
+
+(defun al/emms-playlist-set-mpv-command ()
+  "Set `emms-mpv-command' for the current playlist.
+See `al/emms-playlist-mpv-command-alist' for details."
+  (when-letn ((buf-name (buffer-name emms-playlist-buffer))
+              (assoc (seq-find
+                      (lambda (elt)
+                        (or (eq t (car elt))
+                            (let ((name (al/emms-get-playlist-name
+                                         (car elt))))
+                              (string-equal name buf-name))))
+                      al/emms-playlist-mpv-command-alist)))
+    (with-current-buffer emms-playlist-buffer
+      (setq-local emms-mpv-command
+                  (append (cdr assoc)
+                          '("--keep-open=always"
+                            "--msg-color=no"))))))
 
 (defun al/emms-add-source (source &rest args)
   "Add SOURCE tracks to the current (playlist) buffer."
