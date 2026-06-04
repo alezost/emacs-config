@@ -24,6 +24,16 @@
   "The state of the current server.
 This variable is set by `al/server-start'.")
 
+(defun al/server-name ()
+  "Return daemon or server name.
+Return nil if server is not started."
+  (if-let* ((name (daemonp)))
+      (if (stringp name)
+          name
+        server-name)
+    (and server-process
+         server-name)))
+
 ;;;###autoload
 (defun al/server-start (&optional leave-dead inhibit-prompt)
   "Same as `server-start' but also set `al/server-running?'."

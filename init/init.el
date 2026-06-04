@@ -164,11 +164,6 @@ Do not alter `load-path'.  Instead, push added `load-path' to
         (lambda () (setq buffer-read-only nil))))
 (al/add-after-init-hook 'which-key-mode)
 
-(defvar server-name)
-(al/eval-after-init
-  (when (string= server-name "server-emms")
-    (appt-activate)))
-
 (al/with-eval-after-load al-process
   :load t
   (advice-add 'insert-directory :around #'al/call-with-locale)
@@ -176,8 +171,11 @@ Do not alter `load-path'.  Instead, push added `load-path' to
 
 (al/with-eval-after-load al-server
   :load t
-  (if (or server-process (daemonp))
-      (setq al/server-running? t)
+  (if-let* ((name (al/server-name)))
+      (progn
+        (setq al/server-running? t)
+        (when (equal name "server-emms")
+          (al/add-after-init-hook 'appt-activate)))
     (with-demoted-errors "ERROR during server start: %S"
       (al/server-named-start "server-emms" "server"))))
 
