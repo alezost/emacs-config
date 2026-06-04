@@ -128,6 +128,7 @@
       ("au"  . al/emms-add-url)
       ("M-r M-l" . al/org-emms-store-link)
       ("M-d" . al/emms-edit-track-property)
+      ("C-M-d" . al/emms-edit-mpv-command)
       ("SPC" . emms-pause)
       ("S"   . al/emms-save-playlist)
       ("Q"   . emms-stop)

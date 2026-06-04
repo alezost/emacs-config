@@ -220,6 +220,18 @@ If prefix argument is numerical, use it for VALUE."
          ((equal arg0 "al/playlist-next")
           (play-track #'emms-playlist-select-next "next")))))))
 
+(defun al/emms-edit-mpv-command ()
+  "Modify `emms-mpv-command' for the current buffer."
+  (interactive)
+  (let* ((string? (stringp emms-mpv-command))
+         (value (read-string "emms-mpv-command: "
+                             (if string?
+                                 emms-mpv-command
+                               (format "%S" emms-mpv-command))))
+         (value (if string? value (read value))))
+    (setq-local emms-mpv-command value)
+    (message "New value of `emms-mpv-command': %S" emms-mpv-command)))
+
 (provide 'al-emms-mpv)
 
 ;;; al-emms-mpv.el ends here
