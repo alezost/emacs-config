@@ -93,7 +93,7 @@
   (interactive (al/choose-browser-tui-args))
   (let ((select-enable-clipboard t)
         (select-enable-primary t))
-    (al/with-eval-to-kill-ring url)))
+    (al/eval-to-kill-ring url)))
 
 ;;;###autoload (autoload 'al/choose-browser-tui "al-choose-browser-tui" nil t)
 (transient-define-prefix al/choose-browser-tui (url &rest _args)

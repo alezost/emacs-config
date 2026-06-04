@@ -29,28 +29,28 @@
 (defun al/buffer-name-to-kill-ring ()
   "Put a name of the current buffer into `kill-ring'."
   (interactive)
-  (al/with-eval-to-kill-ring
+  (al/eval-to-kill-ring
     (buffer-name)))
 
 ;;;###autoload
 (defun al/file-name-to-kill-ring ()
   "Put a name of the file visited by the current buffer into `kill-ring'."
   (interactive)
-  (al/with-eval-to-kill-ring
+  (al/eval-to-kill-ring
     (buffer-file-name)))
 
 ;;;###autoload
 (defun al/major-mode-to-kill-ring ()
   "Put `major-mode' name of the current buffer into `kill-ring'."
   (interactive)
-  (al/with-eval-to-kill-ring
+  (al/eval-to-kill-ring
     major-mode))
 
 ;;;###autoload
 (defun al/default-directory-to-kill-ring ()
   "Put `default-directory' into `kill-ring'."
   (interactive)
-  (al/with-eval-to-kill-ring
+  (al/eval-to-kill-ring
     default-directory))
 
 

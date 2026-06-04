@@ -39,7 +39,7 @@ This function is intended to be used as an `around' advice for
 This is the same as `browse-at-remote-kill' except it also shows the
 killed URL in echo area."
   (interactive)
-  (al/with-eval-to-kill-ring
+  (al/eval-to-kill-ring
     (browse-at-remote-get-url)))
 
 (provide 'al-browse-at-remote)

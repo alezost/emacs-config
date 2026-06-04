@@ -113,7 +113,7 @@ With prefix (if ARG is non-nil), use the next ARG files instead."
 This function is similar to `dired-copy-filename-as-kill',
 except it quotes file names for a shell, unless ARG is non-nil."
   (interactive "P")
-  (al/with-eval-to-kill-ring
+  (al/eval-to-kill-ring
     (mapconcat (if arg #'identity #'shell-quote-argument)
                (dired-get-marked-files)
                " ")))

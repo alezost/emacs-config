@@ -62,7 +62,7 @@ If POS is nil, use current point position."
 (defun al/face-to-kill-ring ()
   "Put a name of the current face into kill ring."
   (interactive)
-  (or (al/with-eval-to-kill-ring (al/get-face))
+  (or (al/eval-to-kill-ring (al/get-face))
       (message "No face at point.")))
 
 

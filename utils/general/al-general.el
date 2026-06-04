@@ -585,7 +585,7 @@ Return nil otherwise."
      ,@body
      (/= pos (point))))
 
-(defmacro al/with-eval-to-kill-ring (&rest body)
+(defmacro al/eval-to-kill-ring (&rest body)
   "Evaluate BODY and return its result.
 If the result is string or symbol, put it into `kill-ring' and display
 it in minibuffer."
