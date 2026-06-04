@@ -68,7 +68,7 @@ packages: $(PACKAGES_ELCS)
 utils: $(UTILS_ELCS)
 
 %.elc: %.el
-	@printf "  ----------------\nCompiling $<\n"
+	@printf "⏺ Compiling $< ...\n"
 	-@$(EMACS_BATCH) --eval "(setq load-prefer-newer t)" \
 	-f batch-byte-compile $< ;
 
