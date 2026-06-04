@@ -247,7 +247,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
  select-enable-clipboard nil)
 
 (al/bind-key "C-H-y" browse-kill-ring)
-(al/with-eval-after-load browse-kill-ring
+(al/eval-after-load browse-kill-ring
   (setq
    browse-kill-ring-separator (make-string 64 ?—)
    browse-kill-ring-separator-face nil)
@@ -264,7 +264,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   (al/add-hook-maybe 'browse-kill-ring-mode-hook
     'al/browse-kill-ring-bind-keys))
 
-(al/with-eval-after-load register
+(al/eval-after-load register
   (setq register-preview-delay 0.3)
 
   (defun al/insert-register-reverse-arg (fun register &optional arg)
@@ -298,7 +298,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 (prefer-coding-system 'utf-8)
 (al/modify-syntax text-mode-syntax-table (?\" "\"   "))
 
-(al/with-eval-after-load mwim
+(al/eval-after-load mwim
   (defun al/mwim-set-default (var fun)
     (set var
          (mapcar (lambda (assoc)
@@ -354,15 +354,15 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   "Alist of auxiliary keys for input methods.")
 (al/bind-keys-from-vars nil 'al/input-method-keys)
 
-(al/with-eval-after-load hangul
+(al/eval-after-load hangul
   :no-warning t
   (al/require al-quail-hangul))
 
-(al/with-eval-after-load al-quail-hangul
+(al/eval-after-load al-quail-hangul
   (advice-add 'hangul2-input-method-internal
     :override #'al/quail-hangul2-input-method-internal))
 
-(al/with-eval-after-load abbrev
+(al/eval-after-load abbrev
   (define-abbrev-table 'global-abbrev-table
     '(("gos"  "GuixOS")
       ("hhg"  "GNU/Linux")
@@ -378,11 +378,11 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
       ("hh6"  "Saturday")
       ("hh7"  "Sunday"))))
 
-(al/with-eval-after-load dabbrev
+(al/eval-after-load dabbrev
   (setq dabbrev-abbrev-char-regexp "\\sw\\|[-_+*]"))
 
 (define-key key-translation-map [?\M-i] 'iso-transl-ctl-x-8-map)
-(al/with-eval-after-load iso-transl
+(al/eval-after-load iso-transl
   ;; Expand "C-x 8" (now "M-i") map:
   (iso-transl-define-keys
    '(("a"        . [?α])
@@ -463,7 +463,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
  ("r"   . query-replace-regexp)
  ("R"   . replace-regexp))
 
-(al/with-eval-after-load isearch
+(al/eval-after-load isearch
   (setq
    isearch-allow-scroll t
    isearch-lax-whitespace nil
@@ -478,7 +478,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   (al/bind-keys-from-vars 'isearch-mode-map
     '(al/isearch-keys al/input-method-keys)))
 
-(al/with-eval-after-load replace
+(al/eval-after-load replace
   (defconst al/occur-keys
     '(("." . occur-prev)
       ("e" . occur-next)
@@ -491,10 +491,10 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
     (setq-local paragraph-start "[^ ]"))
   (al/add-hook-maybe 'occur-mode-hook 'al/occur-set-paragraph))
 
-(al/with-eval-after-load grep
+(al/eval-after-load grep
   (setq grep-save-buffers nil))
 
-(al/with-eval-after-load misearch
+(al/eval-after-load misearch
   (setq multi-isearch-pause nil))
 
 (al/bind-keys
@@ -517,7 +517,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
  ("C-M-S-n" . point-pos-next))
 
 (al/bind-key* "C-M-s-m" imenu)
-(al/with-eval-after-load imenu
+(al/eval-after-load imenu
   (setq
    ;; imenu-flatten t
    imenu-space-replacement nil
@@ -526,7 +526,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   (al/require al-imenu))
 
 (al/bind-key* "C-M-m" imenus)
-(al/with-eval-after-load imenus
+(al/eval-after-load imenus
   (setq imenus-delimiter imenu-level-separator)
 
   (defconst al/imenus-keys
@@ -535,7 +535,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
       ("M-s" . imenus-exit-to-occur)))
   (al/bind-keys-from-vars 'imenus-minibuffer-map 'al/imenus-keys))
 
-(al/with-eval-after-load al-imenu
+(al/eval-after-load al-imenu
   (setq
    al/imenu-mode-alist
    '((lisp-data-mode  al/lisp-imenu-add-sections)
@@ -549,7 +549,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   (advice-add 'imenu--make-index-alist :before #'al/imenu-augment))
 
 (al/bind-key "M-s-s" al/imenus-search-elisp-directories)
-(al/with-eval-after-load al-imenus
+(al/eval-after-load al-imenus
   (setq al/imenus-elisp-directories
         (append (list al/emacs-init-dir
                       al/emacs-my-packages-dir)
@@ -558,7 +558,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 
 ;;; TeX
 
-(al/with-eval-after-load tex-mode
+(al/eval-after-load tex-mode
   (defconst al/tex-keys
     '("C-j")
     "Alist of auxiliary keys for `tex-mode-map'.")
@@ -586,7 +586,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   sp-join-sexp
   sp-split-sexp)
 
-(al/with-eval-after-load smartparens
+(al/eval-after-load smartparens
   (al/require smartparens-config)
   (setq
    sp-navigate-reindent-after-up nil

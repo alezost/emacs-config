@@ -47,7 +47,7 @@
 
 (al/add-hook-maybe 'minibuffer-setup-hook 'al/hbar-cursor-type)
 (al/bind-keys-from-vars 'minibuffer-local-map 'al/minibuffer-keys)
-(al/add-after-init-hook 'icomplete-vertical-mode)
+(al/call-after-init 'icomplete-vertical-mode)
 
 (al/bind-keys
   :map minibuffer-local-completion-map
@@ -62,7 +62,7 @@
   ("." . previous-completion)
   ("e" . next-completion))
 
-(al/with-eval-after-load icomplete
+(al/eval-after-load icomplete
   (setq
    icomplete-scroll t
    icomplete-tidy-shadowed-file-names t
@@ -90,7 +90,7 @@
   (al/bind-keys-from-vars '(icomplete-vertical-mode-minibuffer-map)
     'al/icomplete-vertical-keys))
 
-(al/with-eval-after-load al-complete
+(al/eval-after-load al-complete
   :load after-init
   (setq
    completion-styles '(al/split)
@@ -102,7 +102,7 @@
   (advice-add 'completion--styles :override #'al/completion-styles)
   (advice-add 'completion-all-completions :around #'al/completion-all-completions))
 
-(al/with-eval-after-load al-minibuffer
+(al/eval-after-load al-minibuffer
   :load after-init
   (al/bind-keys
     :map al/minibuffer-buffer-map
@@ -134,7 +134,7 @@
   (advice-add 'describe-face            :around #'al/minibuffer-fallback-or-funcall)
   (advice-add 'describe-symbol          :around #'al/minibuffer-fallback-or-funcall))
 
-(al/with-eval-after-load pcomplete
+(al/eval-after-load pcomplete
   (with-suppressed-warnings ((obsolete pcomplete-suffix-list))
     ;; Although `pcomplete-suffix-list' is marked as obsolete, it is used
     ;; by `pcomplete-insert-entry', and its default value prevents
@@ -143,17 +143,17 @@
 
   (al/require al-pcomplete))
 
-(al/with-eval-after-load al-pcomplete
+(al/eval-after-load al-pcomplete
   (al/add-hook-maybe '(shell-mode-hook eshell-mode-hook)
     'al/pcomplete-no-space))
 
-(al/with-eval-after-load pcmpl-args
+(al/eval-after-load pcmpl-args
   (setq
    pcmpl-args-debug-parse-help t
    pcmpl-args-cache-default-duration 999999
    pcmpl-args-cache-max-duration pcmpl-args-cache-default-duration))
 
-(al/with-eval-after-load company
+(al/eval-after-load company
   (setq
    company-idle-delay nil
    company-show-quick-access t)
@@ -179,7 +179,7 @@
 
 ;;; Working with buffers: ibuffer, uniquify, …
 
-(al/with-eval-after-load al-buffer-cmd
+(al/eval-after-load al-buffer-cmd
   (al/bind-keys
     :map al/switch-buffer-map
     ("M-b" . al/switch-to-other-buffer)
@@ -215,10 +215,10 @@
  ("k"   (kill-buffer nil))
  ("8" . al/switch-to-characters))
 
-(al/with-eval-after-load uniquify
+(al/eval-after-load uniquify
   (setq uniquify-buffer-name-style 'post-forward))
 
-(al/with-eval-after-load ibuffer
+(al/eval-after-load ibuffer
   (setq ibuffer-default-sorting-mode 'recency)
   (defconst al/ibuffer-keys
     '(("u"   . ibuffer-visit-buffer)
@@ -314,7 +314,7 @@
  ("m"   . maxima)
  ("x"   . guix-switch-to-repl))
 
-(al/with-eval-after-load comint
+(al/eval-after-load comint
   (setq comint-move-point-for-output nil
         comint-buffer-maximum-size 5000
         comint-password-prompt-regexp
@@ -337,7 +337,7 @@
     "Alist of auxiliary keys for comint modes.")
   (al/bind-keys-from-vars 'comint-mode-map 'al/comint-keys))
 
-(al/with-eval-after-load shell
+(al/eval-after-load shell
   (defconst al/shell-keys
     '("TAB" "M-?"
       ("M-O" . shell-backward-command)
@@ -352,14 +352,14 @@
 
 (defvar shell-mode-syntax-table nil)
 (defvar eshell-mode-syntax-table nil)
-(al/with-eval-after-load sh-script
+(al/eval-after-load sh-script
   (setq
    ;; `sh-mode-syntax-table' has proper syntax for comments unlike
    ;; `shell' and `eshell'.
    shell-mode-syntax-table sh-mode-syntax-table
    eshell-mode-syntax-table sh-mode-syntax-table))
 
-(al/with-eval-after-load al-shell
+(al/eval-after-load al-shell
   (setq al/shell-buffer-alist
         `(("*shell*"    . ,al/download-dir)
           ("*shell*<2>" . ,al/download-dir)
@@ -373,7 +373,7 @@
 
 (al/setq-no-warnings eshell-directory-name (al/emacs-data-dir-file "eshell"))
 
-(al/with-eval-after-load eshell
+(al/eval-after-load eshell
   (setq
    eshell-modules-list
    '(eshell-alias
@@ -417,24 +417,24 @@
 
   (al/require sh-script al-eshell))
 
-(al/with-eval-after-load em-prompt
+(al/eval-after-load em-prompt
    (setq eshell-highlight-prompt nil))
 
-(al/with-eval-after-load em-hist
+(al/eval-after-load em-hist
   (setq
    eshell-hist-ignoredups t
    eshell-history-size 9999))
 
-(al/with-eval-after-load em-cmpl
+(al/eval-after-load em-cmpl
   ;; This mode does nothing except for binding keys that I don't need.
   (advice-add 'eshell-cmpl-mode :override #'ignore))
 
-(al/with-eval-after-load al-eshell
+(al/eval-after-load al-eshell
   (setq eshell-prompt-function #'al/eshell-prompt)
   (al/add-hook-maybe 'eshell-mode-hook 'al/eshell-set-local-variables)
   (advice-add 'eshell/info :override #'al/eshell/info))
 
-(al/with-eval-after-load agent-shell
+(al/eval-after-load agent-shell
   (setq
    agent-shell-preferred-agent-config 'qwen-code)
 
@@ -446,7 +446,7 @@
 
   (al/require al-agent-shell))
 
-(al/with-eval-after-load agent-shell-completion
+(al/eval-after-load agent-shell-completion
   ;; `agent-shell--trigger-completion-at-point' is added to
   ;; `post-self-insert-hook' by `agent-shell-completion-mode'.  It calls
   ;; `completion-at-point' immediately after "/" is written.  I don't
@@ -456,14 +456,14 @@
 
 ;;; Button, custom, widget
 
-(al/with-eval-after-load button
+(al/eval-after-load button
   (defconst al/button-map-keys
     '(("u" . push-button))
     "Alist of auxiliary keys for `button-map'.")
   (al/bind-keys-from-vars 'button-map 'al/button-map-keys t)
   (al/bind-keys-from-vars 'button-buffer-map 'al/button-keys t))
 
-(al/with-eval-after-load wid-edit
+(al/eval-after-load wid-edit
   (defconst al/widget-button-keys
     '(("." . widget-backward)
       ("e" . widget-forward)
@@ -487,7 +487,7 @@
                    :keymap)
         widget-field-keymap))
 
-(al/with-eval-after-load cus-edit
+(al/eval-after-load cus-edit
   (al/bind-keys-from-vars 'custom-mode-map 'al/widget-button-keys t)
   (al/bind-keys
    :map custom-mode-map
@@ -497,10 +497,10 @@
 
 ;;; Help, apropos, man, info
 
-(al/with-eval-after-load apropos
+(al/eval-after-load apropos
   (setq apropos-do-all t))
 
-(al/with-eval-after-load help
+(al/eval-after-load help
   (setq help-window-keep-selected t)
 
   (al/bind-keys
@@ -534,14 +534,14 @@
   ;; `help-command' helps.
   (fset 'help-command help-map))
 
-(al/with-eval-after-load help-mode
+(al/eval-after-load help-mode
   (al/bind-keys
    :map help-mode-map
    ("," . help-go-back)
    ("p" . help-go-forward))
   (al/add-hook-maybe 'help-mode-hook 'al/no-truncate-lines))
 
-(al/with-eval-after-load man
+(al/eval-after-load man
   (setq Man-notify-method 'pushy)
   (when (al/require al-file)
     (setq Man-header-file-path
@@ -564,7 +564,7 @@
   (al/bind-keys-from-vars 'Man-mode-map
     '(al/button-keys al/man-keys)))
 
-(al/with-eval-after-load woman
+(al/eval-after-load woman
   (setq
    woman-fill-column (default-value 'fill-column)
    woman-default-indent 4)
@@ -574,7 +574,7 @@
     "Alist of auxiliary keys for `woman-mode'.")
   (al/bind-keys-from-vars 'woman-mode-map 'al/woman-keys))
 
-(al/with-eval-after-load info
+(al/eval-after-load info
   ;; `Info-additional-directory-list' is USELESS as it is appended to
   ;; `Info-directory-list' (by `Info-find-file' or by
   ;; `Info-insert-dir'), so the default manuals are searched first,
@@ -602,7 +602,7 @@
    ("n" . Info-next)
    ("H" . Info-help)))
 
-(al/with-eval-after-load texinfo
+(al/eval-after-load texinfo
   (defconst al/texinfo-keys
     '(("C-c c" . texinfo-insert-@code)
       ("C-c f" . texinfo-insert-@file)
@@ -619,7 +619,7 @@
   (al/require al-texinfo))
 
 (al/bind-key "w" which-key-mode ctl-x-map)
-(al/with-eval-after-load which-key
+(al/eval-after-load which-key
   (setq
    which-key-use-C-h-commands nil
    which-key-separator " "
@@ -643,17 +643,17 @@
  ("n" . flyspell-goto-next-error)
  ("H-n" . flyspell-goto-next-error))
 
-(al/with-eval-after-load ispell
+(al/eval-after-load ispell
   (ispell-change-dictionary "en" 'global))
 
 (al/setq-no-warnings flyspell-use-meta-tab nil)
-(al/with-eval-after-load flyspell
+(al/eval-after-load flyspell
   (defconst al/flyspell-keys
     '(("C-M-g n" . flyspell-goto-next-error))
     "Alist of auxiliary keys for `flyspell-mode-map'.")
   (al/bind-keys-from-vars 'flyspell-mode-map 'al/flyspell-keys))
 
-(al/with-eval-after-load google-translate-core-ui
+(al/eval-after-load google-translate-core-ui
   (setq
    google-translate-input-method-auto-toggling t
    google-translate-preferable-input-methods-alist
@@ -667,7 +667,7 @@
 
   (al/require al-google-translate))
 
-(al/with-eval-after-load google-translate-smooth-ui
+(al/eval-after-load google-translate-smooth-ui
   (google-translate--setup-minibuffer-keymap)
   (defconst al/google-translate-keys
     '(("C-." . google-translate-previous-translation-direction)
@@ -678,14 +678,14 @@
 
   (al/add-hook-maybe 'google-translate-mode-hook 'al/text-scale+1))
 
-(al/with-eval-after-load al-google-translate
+(al/eval-after-load al-google-translate
   (advice-add 'google-translate-listen-translation
     :override #'al/google-translate-listen-translation))
 
 
 ;;; SQL
 
-(al/with-eval-after-load sql
+(al/eval-after-load sql
   (setq
    sql-product 'postgres
    sql-database "darts"
@@ -731,19 +731,19 @@
   (sql-set-product-feature 'mysql :prompt-regexp
                            "^\\(?:mysql\\|mariadb\\).*> "))
 
-(al/with-eval-after-load mysql
+(al/eval-after-load mysql
   (setq mysql-user sql-user)
   (when (al/require al-mysql)
     (advice-add 'mysql-shell-query :override 'al/mysql-shell-query)))
 
-(al/with-eval-after-load sql-completion
+(al/eval-after-load sql-completion
   (setq
    sql-mysql-database sql-database
    sql-mysql-exclude-databases
    '("mysql" "information_schema" "performance_schema"))
   (al/require cl))
 
-(al/with-eval-after-load al-sql
+(al/eval-after-load al-sql
   (setq al/sql-history-dir (al/emacs-data-dir-file "sql")))
 
 
@@ -768,7 +768,7 @@
  ("i" . journal-insert-block)
  ("t"   (al/find-file (al/journal-dir-file "tags"))))
 
-(al/with-eval-after-load journal
+(al/eval-after-load journal
   (setq
    org-id-files (al/with-check
                   :dir al/journal-dir
@@ -797,7 +797,7 @@
   darts-day-template
   darts-day-select)
 
-(al/with-eval-after-load darts-daydata
+(al/eval-after-load darts-daydata
   (setq
    darts-database "darts"
    darts-data-dir "~/darts/daytables"
@@ -824,7 +824,7 @@
   (with-current-buffer (messages-buffer)
     (messages-buffer-mode)))
 
-(al/add-after-init-hook
+(al/call-after-init
  '(al/set-scratch-message
    al/reinit-messages-buffer))
 
@@ -851,33 +851,33 @@
 
 (al/bind-keys-from-vars 'special-mode-map 'al/lazy-moving-keys t)
 
-(al/with-eval-after-load server
+(al/eval-after-load server
   (setq
    server-kill-new-buffers nil
    server-temp-file-regexp
    (concat server-temp-file-regexp
            "\\|COMMIT_EDITMSG\\|git-rebase-todo")))
 
-(al/with-eval-after-load al-server
+(al/eval-after-load al-server
   (advice-add 'server-visit-files :around #'al/autoload-org-protocol))
 
 ;; Default value of `tramp-ssh-controlmaster-options' variable slows
 ;; down loading tramp significantly.  This should be set before tramp
 ;; is loaded.
 (al/setq-no-warnings tramp-ssh-controlmaster-options "")
-(al/with-eval-after-load tramp-sh
+(al/eval-after-load tramp-sh
   (push 'tramp-own-remote-path tramp-remote-path)
   (push "LC_ALL=en_US.UTF-8" tramp-remote-process-environment)
   (push "DISPLAY=:0" tramp-remote-process-environment))
 
-(al/with-eval-after-load gnutls
+(al/eval-after-load gnutls
   ;; http://comments.gmane.org/gmane.emacs.gnus.general/83413
   (setq gnutls-min-prime-bits nil))
 
-(al/with-eval-after-load calc
+(al/eval-after-load calc
   (setq calc-angle-mode 'rad))
 
-(al/with-eval-after-load picture
+(al/eval-after-load picture
   (defconst al/picture-keys
     '(("M-O" . picture-movement-left)
       ("M-U" . picture-movement-right)
@@ -890,7 +890,7 @@
     "Alist of auxiliary keys for `picture-mode-map'.")
   (al/bind-keys-from-vars 'picture-mode-map 'al/picture-keys))
 
-(al/with-eval-after-load artist
+(al/eval-after-load artist
   (defconst al/artist-keys
     '(("C-o" . artist-backward-char)
       ("C-u" . artist-forward-char)
@@ -899,7 +899,7 @@
     "Alist of auxiliary keys for `artist-mode-map'.")
   (al/bind-keys-from-vars 'artist-mode-map 'al/artist-keys))
 
-(al/with-eval-after-load hexl
+(al/eval-after-load hexl
   (al/bind-keys
    :map hexl-mode-map
    ("C-." . hexl-previous-line)
@@ -914,7 +914,7 @@
    ("H-a" . hexl-beginning-of-buffer)
    ("H-i" . hexl-end-of-buffer)))
 
-(al/with-eval-after-load diff-mode
+(al/eval-after-load diff-mode
   (defconst al/diff-shared-keys
     '(("." . diff-hunk-prev)
       (">" . diff-file-prev)
@@ -931,7 +931,7 @@
   (al/bind-keys-from-vars 'diff-mode-shared-map 'al/diff-shared-keys t)
   (al/bind-keys-from-vars 'diff-mode-map 'al/diff-keys))
 
-(al/with-eval-after-load ediff
+(al/eval-after-load ediff
   (setq
    ediff-window-setup-function #'ediff-setup-windows-plain ; no new frame
    ediff-split-window-function #'split-window-horizontally
@@ -949,14 +949,14 @@
 
   (al/require al-ediff))
 
-(al/with-eval-after-load al-ediff
+(al/eval-after-load al-ediff
   (al/add-hook-maybe 'ediff-before-setup-hook
     'al/ediff-save-window-configuration)
   (al/add-hook-maybe 'ediff-quit-hook
     'al/ediff-restore-window-configuration
     t))
 
-(al/with-eval-after-load view
+(al/eval-after-load view
   (defconst al/view-keys
     '(("v" . View-exit))
     "Alist of auxiliary keys for `view-mode-map'.")
@@ -964,7 +964,7 @@
     '(al/lazy-moving-keys al/view-keys)
     t))
 
-(al/with-eval-after-load epa
+(al/eval-after-load epa
   (al/require wid-edit) ; for `al/widget-button-keys' (it is required anyway)
   (al/bind-keys-from-vars 'epa-key-list-mode-map
     'al/widget-button-keys t)
@@ -972,7 +972,7 @@
    :map epa-key-list-mode-map
    ("z" . epa-unmark-key)))
 
-(al/with-eval-after-load tabulated-list
+(al/eval-after-load tabulated-list
   (defconst al/tabulated-list-keys
     '(("s" . tabulated-list-sort))
     "Alist of auxiliary keys for `tabulated-list-mode-map'.")
@@ -981,21 +981,21 @@
     t)
   (add-hook 'tabulated-list-mode-hook 'hl-line-mode))
 
-(al/with-eval-after-load simple
+(al/eval-after-load simple
   (defconst al/process-menu-mode-keys
     '(("C-k" . process-menu-delete-process))
     "Alist of auxiliary keys for `process-menu-mode-map'.")
   (al/bind-keys-from-vars 'process-menu-mode-map
     'al/process-menu-mode-keys))
 
-(al/with-eval-after-load bui
+(al/eval-after-load bui
   (defconst al/bui-keys
     '(("," . bui-history-back)
       ("p" . bui-history-forward))
     "Alist of auxiliary keys for `bui-map'.")
   (al/bind-keys-from-vars 'bui-map 'al/bui-keys))
 
-(al/with-eval-after-load bui-list
+(al/eval-after-load bui-list
   (defconst al/bui-list-keys
     '(("u" . bui-list-describe)
       ("z" . bui-list-unmark)
@@ -1003,7 +1003,7 @@
     "Alist of auxiliary keys for `bui-list-mode-map'.")
   (al/bind-keys-from-vars 'bui-list-mode-map 'al/bui-list-keys))
 
-(al/with-eval-after-load transient
+(al/eval-after-load transient
   (setq
    transient-levels-file  (al/emacs-data-dir-file "transient/levels.el")
    transient-history-file (al/emacs-data-dir-file "transient/history.el")
@@ -1056,7 +1056,7 @@
 
   (al/require al-transient))
 
-(al/with-eval-after-load al-transient
+(al/eval-after-load al-transient
   (advice-add 'transient-setup :before #'al/transient-fix-input-method)
   (al/add-hook-maybe 'transient-post-exit-hook
     'al/transient-restore-input-method))

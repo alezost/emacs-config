@@ -30,7 +30,7 @@
  emms-directory (al/emacs-data-dir-file "emms")
  emms-playlist-sort-prefix "s")
 
-(al/with-eval-after-load al-emms
+(al/eval-after-load al-emms
   (setq
    emms-mode-line-mode-line-function #'al/emms-mode-line-song-string
    emms-track-description-function #'al/emms-full-track-description
@@ -100,7 +100,7 @@
  ("l" . emms-add-playlist)
  ("u" . emms-add-url))
 
-(al/with-eval-after-load emms
+(al/eval-after-load emms
   (setq
    emms-playlist-buffer-name "*EMMS Playlist*"
    emms-show-format "%s")
@@ -122,7 +122,7 @@
     emms-state
     al-emms))
 
-(al/with-eval-after-load emms-playlist-mode
+(al/eval-after-load emms-playlist-mode
   (defconst al/emms-playlist-keys
     '("r" "a"
       ("au"  . al/emms-add-url)
@@ -193,30 +193,30 @@
 
   (al/add-hook-maybe 'kill-emacs-hook 'al/emms-save-playlists))
 
-(al/with-eval-after-load emms-mode-line
+(al/eval-after-load emms-mode-line
   (setq emms-mode-line-format " %s"))
 
-(al/with-eval-after-load emms-playing-time
+(al/eval-after-load emms-playing-time
   (setq emms-playing-time-display-format " %s"))
 
 (al/autoload "emms-cue" emms-info-cueinfo)
 (al/autoload "emms-info-native" emms-info-native)
 
-(al/with-eval-after-load emms-info
+(al/eval-after-load emms-info
   (push 'emms-info-initialize-track emms-track-initialize-functions)
   (setq emms-info-functions '(emms-info-native emms-info-cueinfo)))
 
-(al/with-eval-after-load emms-source-file
+(al/eval-after-load emms-source-file
   (setq emms-source-file-default-directory al/music-dir))
 
-(al/with-eval-after-load emms-last-played
+(al/eval-after-load emms-last-played
   (al/add-hook-maybe 'emms-player-started-hook
     'emms-last-played-update-current))
 
-(al/with-eval-after-load emms-later-do
+(al/eval-after-load emms-later-do
   (setq emms-later-do-interval 0.1))
 
-(al/with-eval-after-load emms-mpv
+(al/eval-after-load emms-mpv
   (setq
    emms-mpv-hidden-buffer-names nil
    emms-mpv-progress-remove-finished nil)
@@ -225,10 +225,10 @@
   (push 'emms-mpv emms-player-list)
   (al/require al-emms-mpv))
 
-(al/with-eval-after-load emms-state
+(al/eval-after-load emms-state
   (emms-state-mode))
 
-(al/with-eval-after-load al-emms-mpv
+(al/eval-after-load al-emms-mpv
   (al/add-hook-maybe
       '(emms-player-seeked-functions
         emms-player-time-set-functions)
@@ -236,7 +236,7 @@
   (push '("client-message" . al/emms-mpv-handle-client-message)
         emms-mpv-event-handlers))
 
-(al/with-eval-after-load al-emms-notification
+(al/eval-after-load al-emms-notification
   (setq
    al/emms-notification-artist-format "<big>%s</big>"
    al/emms-notification-title-format "<span foreground=\"yellow\">%s</span>"

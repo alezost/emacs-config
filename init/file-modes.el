@@ -41,11 +41,11 @@
  ("e"   . org-export)
  ("TAB" . org-indent-mode))
 
-(al/with-eval-after-load al-org
+(al/eval-after-load al-org
   (advice-add 'org-link-make-string
     :around #'al/org-link-set-description))
 
-(al/with-eval-after-load al-org-emms
+(al/eval-after-load al-org-emms
   (when (al/require emms-mpv)
     (add-hook 'emms-mpv-file-loaded-hook #'al/org-emms-seek)))
 
@@ -57,7 +57,7 @@
  org-export-backends
  '(ascii html icalendar latex odt texinfo man))
 
-(al/with-eval-after-load org
+(al/eval-after-load org
   (when (al/require al-text)
     (al/add-hook-maybe 'org-mode-hook 'al/set-default-paragraph))
 
@@ -153,25 +153,25 @@
     imenu
     al-org))
 
-(al/with-eval-after-load org-src
+(al/eval-after-load org-src
   (setq org-edit-src-content-indentation 0)
   (al/bind-keys
     :map org-src-mode-map
     ("C-c C-c" . org-edit-src-exit))
   (push '("shell" . shell-script) org-src-lang-modes))
 
-(al/with-eval-after-load org-capture
+(al/eval-after-load org-capture
   (setq org-capture-templates
         '(("n" "notes" entry (file org-default-notes-file)
            "* %T\n   %?\n"))))
 
-(al/with-eval-after-load org-agenda
+(al/eval-after-load org-agenda
   (al/bind-keys
    :map org-agenda-mode-map
    ("." . org-agenda-previous-line)
    ("e" . org-agenda-next-line)))
 
-(al/with-eval-after-load org-ref
+(al/eval-after-load org-ref
   (defvar al/org-ref-cite-keys
     '("H-o" "H-u" "H-e"))
   (al/bind-keys-from-vars 'org-ref-cite-keymap 'al/org-ref-cite-keys))
@@ -183,7 +183,7 @@
 
 (al/autoload "pdf-view" pdf-view-mode)
 
-(al/with-eval-after-load pdf-view
+(al/eval-after-load pdf-view
   (when (al/require al-pdf)
     (advice-add 'pdf-view-deactivate-region
       :override 'al/pdf-view-deactivate-region))
@@ -207,7 +207,7 @@
     ([down-mouse-1] . al/pdf-view-select-region)
     ([double-mouse-1] . al/pdf-view-select-word)))
 
-(al/with-eval-after-load pdf-outline
+(al/eval-after-load pdf-outline
   (al/clean-map 'pdf-outline-minor-mode-map)
   (al/bind-keys
    :map pdf-outline-minor-mode-map
@@ -227,7 +227,7 @@
 
   (add-hook 'pdf-outline-buffer-mode-hook 'hl-line-mode))
 
-(al/with-eval-after-load pdf-links
+(al/eval-after-load pdf-links
   (setq pdf-links-convert-pointsize-scale 0.02)
 
   (al/clean-map 'pdf-links-minor-mode-map)
@@ -236,14 +236,14 @@
    ("u" . pdf-links-action-perform)
    ("U" . pdf-links-isearch-link)))
 
-(al/with-eval-after-load pdf-history
+(al/eval-after-load pdf-history
   (al/clean-map 'pdf-history-minor-mode-map)
   (al/bind-keys
    :map pdf-history-minor-mode-map
    ("," . pdf-history-backward)
    ("p" . pdf-history-forward)))
 
-(al/with-eval-after-load pdf-misc
+(al/eval-after-load pdf-misc
   (al/clean-map 'pdf-misc-minor-mode-map)
   (al/bind-keys
    :map pdf-misc-minor-mode-map
@@ -260,7 +260,7 @@
   (list t))
 (advice-add 'normal-mode :filter-args #'al/fix-normal-mode)
 
-(al/with-eval-after-load al-file
+(al/eval-after-load al-file
   :load t
   (al/add-to-auto-mode-alist
    `((sh-mode "/etc/profile\\'"
@@ -287,10 +287,10 @@
      (gnuplot-mode ,(al/file-regexp "plot"))
      (maxima-mode ,(al/file-regexp "max")))))
 
-(al/with-eval-after-load conf-mode
+(al/eval-after-load conf-mode
   (al/add-hook-maybe 'conf-mode-hook 'hl-line-mode))
 
-(al/with-eval-after-load image-mode
+(al/eval-after-load image-mode
   (defconst al/image-keys
     '(("C-a" . image-bol)
       ("<ctrl-i>" . image-eol)
@@ -300,19 +300,19 @@
     "Alist of auxiliary keys for `image-mode-map'.")
   (al/bind-keys-from-vars 'image-mode-map 'al/image-keys))
 
-(al/with-eval-after-load doc-view
+(al/eval-after-load doc-view
   (setq doc-view-cache-directory "~/.cache/docview")
   (push "-r200" doc-view-ghostscript-options) ; picture resolution
   )
 
-(al/with-eval-after-load markdown-mode
+(al/eval-after-load markdown-mode
   (defconst al/markdown-keys
     '(("M->" . markdown-previous-link)
       ("M-E" . markdown-next-link))
     "Alist of auxiliary keys for `markdown-mode-map'.")
   (al/bind-keys-from-vars 'markdown-mode-map 'al/markdown-keys))
 
-(al/with-eval-after-load tar-mode
+(al/eval-after-load tar-mode
   (setq tar-mode-show-date t)
 
   (al/bind-keys
@@ -323,7 +323,7 @@
 
   (add-hook 'tar-mode-hook 'hl-line-mode))
 
-(al/with-eval-after-load nxml-mode
+(al/eval-after-load nxml-mode
   (defconst al/nxml-keys
     '(("C-M-." . nxml-backward-up-element)
       ("C-M-e" . nxml-down-element)
@@ -334,7 +334,7 @@
   (add-hook 'nxml-mode-hook
             (lambda () (rng-validate-mode 0))))
 
-(al/with-eval-after-load sgml-mode
+(al/eval-after-load sgml-mode
   ;; Bind default keys to get rid of "M-o" key binding there.
   (al/bind-keys-from-vars 'html-mode-map))
 

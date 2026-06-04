@@ -377,7 +377,14 @@ Return nil and show warning messages otherwise."
         features)))
 
 
-;;; Hook utils
+;;; Hook and "after load" functionality
+
+;; My naming rule:
+;;
+;; - `al/call-after-*' is a function accepting a function (or a list of
+;;   functions) to call after some event;
+;;
+;; - `al/eval-after-*' is a macro evaluating body after some event.
 
 (defun al/add-hook-maybe (hooks functions &optional append local)
   "Add all bound FUNCTIONS to all HOOKS.
@@ -391,13 +398,13 @@ Both HOOKS and FUNCTIONS may be single variables or lists of those."
           (lambda (hook)
             (add-hook hook fun append local)))))))
 
-(defun al/add-after-init-hook (functions)
-  "Add functions to `after-init-hook'.
-See `al/add-hook-maybe'."
+(defun al/call-after-init (functions)
+  "Call FUNCTIONS after Emacs init.
+See `al/add-hook-maybe' for the meaning of FUNCTIONS."
   (al/add-hook-maybe 'after-init-hook functions))
 
 (defmacro al/eval-after-init (&rest body)
-  "Add to `after-init-hook' a `lambda' expression with BODY.
+  "Evaluate BODY after Emacs init.
 If `:append' keyword argument is specified, then the expression will be
 added to the end/start of `after-init-hook' if `:append' value is t/nil
 respectively."
@@ -446,8 +453,8 @@ a non-graphical terminal."
                      'after-init-hook)
                    ',name)))))
 
-(defmacro al/with-eval-after-load (feature &rest body)
-  "Execute BODY after FEATURE is loaded.
+(defmacro al/eval-after-load (feature &rest body)
+  "Execute BODY after FEATURE load.
 
 This is similar to `with-eval-after-load' except it does not produce
 unneeded compilation warnings at compile time.

@@ -39,12 +39,12 @@ I always want to complete all symbols!"
 Usually, these are functions that behave like macros.")
 
 (defvar al/elisp-feature-macros-regexp
-  (rx "(" (group (or "al/with-eval-after-load"
+  (rx "(" (group (or "al/eval-after-load"
                      "al/require"))
       symbol-end
       (one-or-more blank)
       (group (one-or-more (or (syntax word) (syntax symbol)))))
-  "Regexp to match `al/with-eval-after-load' macro.")
+  "Regexp to match `al/eval-after-load' macro.")
 
 (defvar al/elisp-defun-lazy-regexp
   (rx "(" (group "al/defun-lazy")
@@ -97,7 +97,7 @@ If nil, put the entries in a top level.  See MENU-TITLE in
 ;;; (with-)eval-after-load entries
 
 (defvar al/elisp-imenu-eval-after-load-re
-  (rx bol "(" (zero-or-one (or "al/with-" "with-"))
+  (rx bol "(" (zero-or-one (or "al/" "with-"))
       "eval-after-load" (+ whitespace)
       (zero-or-one (or ?\" ?'))
       (group (+ (or (syntax word) (syntax symbol))))

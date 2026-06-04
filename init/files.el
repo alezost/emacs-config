@@ -114,7 +114,7 @@
  kept-new-versions 4
  delete-old-versions t)
 
-(al/with-eval-after-load al-backup
+(al/eval-after-load al-backup
   :load after-init
   (setq
    al/backup-ignored-regexps
@@ -132,7 +132,7 @@
 (al/bind-key "H-j" dired-jump)
 
 (defvar al/completion-ignored-extensions)
-(al/with-eval-after-load al-dired
+(al/eval-after-load al-dired
   (when (al/require al-complete)
     (setq al/dired-ignored-extensions
           (cons ".go" al/completion-ignored-extensions)))
@@ -141,7 +141,7 @@
   (advice-add 'dired-sort-set-mode-line
     :override 'al/dired-sort-set-mode-line))
 
-(al/with-eval-after-load dired
+(al/eval-after-load dired
   (setq
    dired-auto-revert-buffer 'dired-directory-changed-p
    dired-dwim-target t
@@ -216,7 +216,7 @@
 
   (al/require dired-x al-dired))
 
-(al/with-eval-after-load dired-x
+(al/eval-after-load dired-x
   (setq
    ;; Do not show "hidden" files only.
    dired-omit-files "^\\..*"
@@ -233,7 +233,7 @@
              "play -q" "aplay" "mplayer -really-quiet" "mpv --really-quiet")
             (,(al/file-regexp "odt" "doc") "lowriter")))))
 
-(al/with-eval-after-load wdired
+(al/eval-after-load wdired
   (al/bind-keys-from-vars 'wdired-mode-map)
   (when (al/require dim)
     ;; "Dired" `mode-name' is hard-coded in
@@ -241,7 +241,7 @@
     (advice-add 'wdired-change-to-dired-mode
       :after 'dim-set-major-name)))
 
-(al/with-eval-after-load image-dired
+(al/eval-after-load image-dired
   (al/bind-keys
    :map image-dired-thumbnail-mode-map
    ("."     . image-dired-backward-image)
@@ -264,7 +264,7 @@
  ;; enable-local-eval nil
  )
 
-(al/with-eval-after-load mailcap
+(al/eval-after-load mailcap
   ;; Use "sxiv" instead of "display" to open image files.  Actually,
   ;; (mailcap-add "image/.*" "sxiv %s") can be used, but it adds the
   ;; entry to the beginning of "image" alist, while I want to fallback
@@ -280,7 +280,7 @@
     "Alist of auxiliary keys for `mule-keymap'.")
   (al/bind-keys-from-vars 'mule-keymap 'al/mule-keys))
 
-(al/with-eval-after-load bookmark
+(al/eval-after-load bookmark
   (setq
    bookmark-save-flag 1
    bookmark-default-file (al/emacs-data-dir-file "bookmarks"))
@@ -305,7 +305,7 @@
  ("l" . recentf-edit-list)
  ("c" . recentf-cleanup))
 
-(al/with-eval-after-load recentf
+(al/eval-after-load recentf
   (setq
    recentf-exclude (list (al/file-regexp "el" "gz")
                          #'file-remote-p)
@@ -316,16 +316,16 @@
    recentf-max-saved-items 300
    recentf-save-file (al/emacs-data-dir-file "recentf")))
 
-(al/add-after-init-hook 'recentf-mode)
+(al/call-after-init 'recentf-mode)
 
-(al/with-eval-after-load ffap
+(al/eval-after-load ffap
   (al/require al-ffap))
 
-(al/with-eval-after-load al-ffap
+(al/eval-after-load al-ffap
   (advice-add 'ffap-read-file-or-url
     :override #'al/ffap-read-file-or-url))
 
-(al/with-eval-after-load saveplace
+(al/eval-after-load saveplace
   (setq
    ;; For some reason, `save-place-loaded' is t after `saveplace' load.
    ;; This bug(?) appeared somewhere between Emacs 29.4 and Emacs 30.1.
@@ -344,13 +344,13 @@
 
   (al/require al-saveplace))
 
-(al/add-after-init-hook 'save-place-mode)
+(al/call-after-init 'save-place-mode)
 
-(al/with-eval-after-load al-saveplace
+(al/eval-after-load al-saveplace
   (advice-add 'save-places-to-alist
     :override #'al/save-places-to-alist))
 
-(al/with-eval-after-load al-file-cmd
+(al/eval-after-load al-file-cmd
   (setq
    al/ssh-default-user (list user-login-name "root" "lena")
    al/ssh-default-host "hyperion"))

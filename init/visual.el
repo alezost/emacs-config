@@ -25,7 +25,7 @@
   :name al/graphical-frame-visual-settings
   :terminal graphical
   :once t
-  (al/with-eval-after-load al-visual
+  (al/eval-after-load al-visual
     :load t
     (when (al/require alect-themes)
       (al/load-theme 'alect-light))
@@ -79,7 +79,7 @@
 
 ;;; Themes
 
-(al/with-eval-after-load custom
+(al/eval-after-load custom
   (setq custom-safe-themes t)
 
   ;; Fix bug <http://debbugs.gnu.org/cgi/bugreport.cgi?bug=16266>.
@@ -91,7 +91,7 @@
     (advice-add 'custom-theme-set-variables
       :around #'al/fix-custom-variables-bug)))
 
-(al/with-eval-after-load alect-themes
+(al/eval-after-load alect-themes
   (setq
    alect-display-class '((class color) (min-colors 256))
    alect-overriding-faces
@@ -122,7 +122,7 @@
   "Mode line construct for displaying `server-name' if server is running.")
 (put 'al/mode-server 'risky-local-variable t)
 
-(al/with-eval-after-load dim
+(al/eval-after-load dim
   :load 'after-init
   (dim-major-names
    '((emacs-lisp-mode            "EL")
@@ -339,14 +339,14 @@
 ;; (menu-bar-mode -1)
 ;; (scroll-bar-mode -1)
 
-(al/with-eval-after-load scroll-bar
+(al/eval-after-load scroll-bar
   (setq previous-scroll-bar-mode 'right))
 
 (setq
  use-system-tooltips nil
  tooltip-delay 0.2)
 
-(al/with-eval-after-load whitespace
+(al/eval-after-load whitespace
   (setq
    whitespace-line-column 78
    whitespace-display-mappings
@@ -359,16 +359,16 @@
    '(face spaces tabs trailing lines space-before-tab newline
           indentation space-after-tab tab-mark newline-mark)))
 
-(al/with-eval-after-load ruler-mode
+(al/eval-after-load ruler-mode
   (setq ruler-mode-show-tab-stops t))
 
 (setq show-paren-delay 0.1)
-(al/with-eval-after-load paren
+(al/eval-after-load paren
   (setq show-paren-when-point-inside-paren t
         show-paren-when-point-in-periphery t))
-(al/add-after-init-hook 'show-paren-mode)
+(al/call-after-init 'show-paren-mode)
 
-(al/with-eval-after-load indent-guide
+(al/eval-after-load indent-guide
   (setq
    indent-guide-delay 0.3
    indent-guide-char "¦")
@@ -381,10 +381,10 @@
   (advice-add 'indent-guide-post-command-hook
     :override 'al/indent-guide-post-command-hook))
 
-(al/with-eval-after-load make-color
+(al/eval-after-load make-color
   (al/add-hook-maybe 'make-color-mode-hook 'al/bar-cursor-type))
 
-(al/with-eval-after-load rainbow-mode
+(al/eval-after-load rainbow-mode
   (setq rainbow-x-colors t))
 
 ;;; visual.el ends here

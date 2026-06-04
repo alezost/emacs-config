@@ -48,7 +48,7 @@
  ("F" . find-face-definition)
  ("b" . describe-personal-keybindings))
 
-(al/with-eval-after-load lisp-mode
+(al/eval-after-load lisp-mode
   (defconst al/lisp-shared-keys
     '(("<C-M-tab>" . al/indent-sexp))
     "Alist of auxiliary keys for `lisp-mode-shared-map'.")
@@ -65,10 +65,10 @@
     (al/require al-clisp))
   (add-hook 'lisp-mode-hook 'al/clisp-init))
 
-(al/with-eval-after-load al-clisp
+(al/eval-after-load al-clisp
   (al/clisp-add-font-lock-keywords))
 
-(al/with-eval-after-load elisp-mode
+(al/eval-after-load elisp-mode
   (defconst al/elisp-keys
     '(("C-c C-z" . al/ielm-other-window))
     "Alist of auxiliary keys for `emacs-lisp-mode-map'.")
@@ -79,11 +79,11 @@
 
   (al/require al-elisp))
 
-(al/with-eval-after-load al-elisp
+(al/eval-after-load al-elisp
   (al/elisp-add-font-lock-keywords)
   (advice-add 'elisp--form-quoted-p :override #'al/elisp-form-quoted-p))
 
-(al/with-eval-after-load ielm
+(al/eval-after-load ielm
   (setq ielm-prompt "EL> ")
   (defconst al/ielm-keys
     '("C-j"
@@ -93,17 +93,17 @@
     '(al/lisp-shared-keys al/comint-keys al/ielm-keys))
   (al/add-hook-maybe 'ielm-mode-hook 'al/no-truncate-lines))
 
-(al/with-eval-after-load eldoc
+(al/eval-after-load eldoc
   (setq eldoc-idle-delay 0.3))
 
-(al/with-eval-after-load edebug
+(al/eval-after-load edebug
   (al/bind-keys
    :map edebug-mode-map
    ("v"   . edebug-eval-expression)
    ("C-v" . edebug-eval-last-sexp)))
 
 (al/bind-key "C-c d" toggle-debug-on-error)
-(al/with-eval-after-load debug
+(al/eval-after-load debug
   (al/bind-keys-from-vars 'debugger-mode-map 'al/button-keys t)
   (al/bind-keys
    :map debugger-mode-map
@@ -111,7 +111,7 @@
    ("l" . debugger-toggle-locals)
    ("f" . debugger-list-functions)))
 
-(al/with-eval-after-load ert
+(al/eval-after-load ert
   (defconst al/ert-results-keys
     '(("RET" . ert-results-describe-test-at-point)
       ("g" . ert-results-rerun-all-tests)
@@ -120,10 +120,10 @@
   (al/bind-keys-from-vars 'ert-results-mode-map
     '(al/button-keys al/ert-results-keys)))
 
-(al/with-eval-after-load pp
+(al/eval-after-load pp
   (al/require al-pp))
 
-(al/with-eval-after-load al-pp
+(al/eval-after-load al-pp
   (advice-add 'pp-display-expression :after #'al/pp-enable-undo))
 
 
@@ -187,7 +187,7 @@
  ("M-S" . slime)
  ("s"   . slime-selector))
 
-(al/with-eval-after-load slime
+(al/eval-after-load slime
   (setq
    inferior-lisp-program "sbcl"
    ;; slime-lisp-implementations
@@ -212,7 +212,7 @@
     '(al/free-misc-keys al/slime-keys))
   (al/bind-keys-from-vars '(slime-mode-map slime-editing-map)))
 
-(al/with-eval-after-load slime-repl
+(al/eval-after-load slime-repl
   ;; "C-c C-j" (in `slime-mode-map') is bound in "slime-repl.el", so
   ;; override it here.
   (al/bind-key "C-c C-j"
@@ -229,7 +229,7 @@
     "Alist of auxiliary keys for `slime-repl-mode-map'.")
   (al/bind-keys-from-vars 'slime-repl-mode-map 'al/slime-repl-keys))
 
-(al/with-eval-after-load slime-autodoc
+(al/eval-after-load slime-autodoc
   ;; `slime-autodoc-mode' binds some useless keys into "C-c C-d" prefix.
   (al/clean-map 'slime-autodoc-mode-map)
   (al/bind-keys
@@ -239,7 +239,7 @@
 
 ;;; Scheme, geiser
 
-(al/with-eval-after-load scheme
+(al/eval-after-load scheme
   (put 'plist-new 'scheme-indent-function 1)
   (al/modify-page-break-syntax scheme-mode-syntax-table)
 
@@ -247,7 +247,7 @@
 
   (al/require al-scheme))
 
-(al/with-eval-after-load al-scheme
+(al/eval-after-load al-scheme
   (al/scheme-add-font-lock-keywords)
     (al/add-hook-maybe 'scheme-mode-hook 'al/scheme-fix-docstring-font-lock)
     (advice-add 'scheme-indent-function
@@ -267,7 +267,7 @@
     ("C-c C-j" . geiser-mode-switch-to-repl-and-enter))
   "Alist of auxiliary keys for geiser modes.")
 
-(al/with-eval-after-load geiser-mode
+(al/eval-after-load geiser-mode
   (defvar al/geiser-doc-map)
   (put 'al/geiser-doc-map 'variable-documentation
        "Map for geiser documentation.")
@@ -281,7 +281,7 @@
    ("t" . geiser-autodoc-mode))
   (al/bind-keys-from-vars 'geiser-mode-map 'al/geiser-keys))
 
-(al/with-eval-after-load geiser-repl
+(al/eval-after-load geiser-repl
   (setq
    geiser-repl-skip-version-check-p t
    geiser-repl-use-other-window t
@@ -303,12 +303,12 @@
 
   (al/require al-geiser))
 
-(al/with-eval-after-load geiser-impl
+(al/eval-after-load geiser-impl
   (setq-default geiser-scheme-implementation 'guile)
   (setq geiser-active-implementations '(guile racket))
   (geiser-implementation-extension 'racket "rkt[dl]?"))
 
-(al/with-eval-after-load geiser-doc
+(al/eval-after-load geiser-doc
   (defconst al/geiser-doc-keys
     '((","   . geiser-doc-previous)
       ("p"   . geiser-doc-next)
@@ -318,7 +318,7 @@
   (al/bind-keys-from-vars 'geiser-doc-mode-map
     '(al/button-keys al/geiser-keys al/geiser-doc-keys)))
 
-(al/with-eval-after-load al-geiser
+(al/eval-after-load al-geiser
   (setq
    geiser-repl-buffer-name-function #'al/geiser-repl-buffer-name
    al/geiser-sockets
@@ -339,14 +339,14 @@
   '(("M-d" . haskell-mode-jump-to-def-or-tag))
   "Alist of auxiliary keys for Haskell modes.")
 
-(al/with-eval-after-load haskell-mode
+(al/eval-after-load haskell-mode
   (defconst al/haskell-keys
     '(("C-c C-z" . haskell-interactive-switch))
     "Alist of auxiliary keys `haskell-mode-map'.")
   (al/bind-keys-from-vars 'haskell-mode-map
     '(al/haskell-general-keys al/haskell-keys)))
 
-(al/with-eval-after-load haskell-interactive-mode
+(al/eval-after-load haskell-interactive-mode
   (defconst al/haskell-interactive-keys
     '(("M-." . haskell-interactive-mode-history-previous)
       ("M-e" . haskell-interactive-mode-history-next)
@@ -364,7 +364,7 @@
 
 (setq gud-key-prefix (kbd "M-G"))
 
-(al/with-eval-after-load gud
+(al/eval-after-load gud
   (defun al/gud-bind-keys ()
     (al/bind-keys-from-vars 'gud-mode-map 'al/comint-keys))
   ;; GUD binds its keys inside `gdb' and `gud-gdb' commands.
@@ -375,14 +375,14 @@
 
 ;;; Compilation, Makefile
 
-(al/with-eval-after-load make-mode
+(al/eval-after-load make-mode
   (defconst al/make-keys
     '(("M->" . makefile-previous-dependency)
       ("M-E" . makefile-next-dependency))
     "Alist of auxiliary keys for `make-mode-map'.")
   (al/bind-keys-from-vars 'makefile-mode-map 'al/make-keys))
 
-(al/with-eval-after-load compile
+(al/eval-after-load compile
   (setq
    ;; Don't ask, don't save.
    compilation-ask-about-save nil
@@ -417,7 +417,7 @@
     (al/add-hook-maybe 'compilation-finish-functions
       'al/compilation-notify)))
 
-(al/with-eval-after-load al-compilation
+(al/eval-after-load al-compilation
   (when (al/require al-file)
     (al/setq-file
      al/compilation-sound-success (al/sound-dir-file "bell.oga")
@@ -430,7 +430,7 @@
  magit-auto-revert-mode nil
  magit-define-global-key-bindings nil)
 
-(al/with-eval-after-load vc-hooks
+(al/eval-after-load vc-hooks
   (setq
    vc-make-backup-files t
    vc-handled-backends nil))
@@ -451,11 +451,11 @@
 ;; This happens during initializing `with-editor-emacsclient-executable'
 ;; variable (when `with-editor-locate-emacsclient' is called).
 (al/setq-no-warnings with-editor-emacsclient-executable nil)
-(al/with-eval-after-load with-editor
+(al/eval-after-load with-editor
   (setq with-editor-emacsclient-executable
         (expand-file-name "emacsclient" invocation-directory)))
 
-(al/with-eval-after-load al-magit
+(al/eval-after-load al-magit
   (al/bind-keys
     :map al/magit-switch-map
     ("M-m" . al/magit-switch-buffer)))
@@ -494,10 +494,10 @@
     ("M-e" . magit-section-forward-sibling))
   "Alist of auxiliary keys for moving by magit sections.")
 
-(al/with-eval-after-load magit-status
+(al/eval-after-load magit-status
   (setq magit-status-initial-section '(((unstaged) (status)) 1)))
 
-(al/with-eval-after-load magit-section
+(al/eval-after-load magit-section
   (setq
    ;; I don't use global line numbers modes anyway, so there is no need
    ;; in additional checks.
@@ -508,21 +508,21 @@
      (unpushed . show)
      (stashes . show))))
 
-(al/with-eval-after-load magit-branch
+(al/eval-after-load magit-branch
   (setq magit-branch-read-upstream-first nil)
 
   (transient-suffix-put 'magit-branch 'magit-branch-rename :key "R")
   (transient-suffix-put 'magit-branch 'magit-pull.rebase :key "U")
   )
 
-(al/with-eval-after-load magit-merge
+(al/eval-after-load magit-merge
   (oset (get 'magit-merge 'transient--prefix)
         value '("--ff-only")))
 
-(al/with-eval-after-load magit-tag
+(al/eval-after-load magit-tag
   (transient-suffix-put 'magit-tag 'magit-tag-create :key "n"))
 
-(al/with-eval-after-load magit-mode
+(al/eval-after-load magit-mode
   (setq
    magit-bury-buffer-function #'ignore
    magit-save-repository-buffers nil
@@ -551,7 +551,7 @@
 
   (al/require al-magit))
 
-(al/with-eval-after-load magit-popup
+(al/eval-after-load magit-popup
   (setq
    magit-popup-display-buffer-action '((display-buffer-at-bottom))
    magit-popup-show-common-commands nil
@@ -579,7 +579,7 @@
 ;; the other margins are defined from this one.
 (setq magit-log-margin '(t age-abbreviated magit-log-margin-width t 20))
 
-(al/with-eval-after-load magit-log
+(al/eval-after-load magit-log
   (put 'magit-log-mode 'magit-log-default-arguments
        '("-n99" "--decorate"))
 
@@ -600,7 +600,7 @@
     'al/magit-common-keys
     t))
 
-(al/with-eval-after-load magit-diff
+(al/eval-after-load magit-diff
   (setq-default magit-diff-refine-hunk t)
   (defconst al/magit-diff-visit-keys
     '(("u" . magit-diff-visit-worktree-file)
@@ -616,28 +616,28 @@
   (al/bind-keys-from-vars 'magit-staged-section-map 'al/magit-common-keys)
   (al/bind-key "u" magit-section-toggle magit-file-section-map))
 
-(al/with-eval-after-load magit-sequence
+(al/eval-after-load magit-sequence
   (transient-suffix-put 'magit-cherry-pick "A" :key "C") ; pick
   (transient-suffix-put 'magit-rebase "u" :key "r")      ; upstream
   )
 
-(al/with-eval-after-load magit-remote
+(al/eval-after-load magit-remote
   (transient-suffix-put 'magit-remote "r" :key "R") ; rename
   )
 
-(al/with-eval-after-load magit-push
+(al/eval-after-load magit-push
   (transient-suffix-put 'magit-push "p" :key "P") ; push to remote
   )
 
-(al/with-eval-after-load magit-pull
+(al/eval-after-load magit-pull
   (transient-suffix-put 'magit-pull "u" :key "F") ; pull from upstream
   )
 
-(al/with-eval-after-load magit-fetch
+(al/eval-after-load magit-fetch
   (transient-suffix-put 'magit-fetch "u" :key "f") ; fetch from upstream
   )
 
-(al/with-eval-after-load magit-blame
+(al/eval-after-load magit-blame
   (setq magit-blame-time-format "%F")
   (defconst al/magit-blame-keys
     '(("."   . magit-blame-previous-chunk)
@@ -649,10 +649,10 @@
   (al/bind-keys-from-vars 'magit-blame-mode-map
     '(al/lazy-scrolling-keys al/magit-blame-keys)))
 
-(al/with-eval-after-load magit-git
+(al/eval-after-load magit-git
   (setq magit-git-executable "git"))
 
-(al/with-eval-after-load git-commit
+(al/eval-after-load git-commit
   (defun al/git-commit-fix-syntax ()
     (modify-syntax-entry ?\" "\"   ")
     (al/no-syntactic-font-lock))
@@ -671,7 +671,7 @@
     "Alist of auxiliary keys for `git-commit-mode-map'.")
   (al/bind-keys-from-vars 'git-commit-mode-map 'al/git-commit-keys))
 
-(al/with-eval-after-load git-rebase
+(al/eval-after-load git-rebase
   (al/add-hook-maybe 'git-rebase-mode-hook 'hl-line-mode)
   (defconst al/git-rebase-keys
     '(("p"   . git-rebase-pick)
@@ -682,17 +682,17 @@
     "Alist of auxiliary keys for `git-rebase-mode-map'.")
   (al/bind-keys-from-vars 'git-rebase-mode-map 'al/git-rebase-keys))
 
-(al/with-eval-after-load browse-at-remote
+(al/eval-after-load browse-at-remote
   (al/require al-browse-at-remote))
 
-(al/with-eval-after-load al-browse-at-remote
+(al/eval-after-load al-browse-at-remote
   (advice-add 'browse-at-remote-get-url
     :around #'al/browse-at-remote-get-url))
 
 
 ;;; Misc settings and packages
 
-(al/with-eval-after-load xref
+(al/eval-after-load xref
   (setq xref-backend-functions '(elisp--xref-backend))
   (defconst al/xref-buffer-keys
     '(("." . xref-prev-line)
@@ -703,13 +703,13 @@
   (al/bind-keys-from-vars 'xref--xref-buffer-mode-map
     'al/xref-buffer-keys))
 
-(al/with-eval-after-load prog-mode
+(al/eval-after-load prog-mode
   (defconst al/prog-keys
     '(("<C-M-tab>" . prog-indent-sexp))
     "Alist of auxiliary keys for `prog-mode-map'.")
   (al/bind-keys-from-vars 'prog-mode-map 'al/prog-keys))
 
-(al/with-eval-after-load cc-mode
+(al/eval-after-load cc-mode
   (setq
    c-default-style
    '((c-mode    . "stroustrup")
@@ -722,7 +722,7 @@
   (al/bind-keys-from-vars 'c-mode-base-map
     '(al/prog-keys al/c-base-keys)))
 
-(al/with-eval-after-load js
+(al/eval-after-load js
   (defconst al/js-keys
     '(("M-d" . js-find-symbol)
       ("C-c M-v" . js-eval)
@@ -736,7 +736,7 @@
   (al/add-hook-maybe 'js-mode-hook 'al/js-delimiter))
 
 (al/autoload "python" python-shell-switch-to-shell)
-(al/with-eval-after-load python
+(al/eval-after-load python
   (setq python-shell-interpreter "ipython")
   (defconst al/python-keys
     '(("C-v" . python-shell-send-region)

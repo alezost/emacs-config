@@ -28,7 +28,7 @@
 
 (al/bind-key "H-q" al/package-tui)
 
-(al/with-eval-after-load package
+(al/eval-after-load package
   (setq package-archives nil)
   (al/bind-keys
    :map package-menu-mode-map
@@ -40,7 +40,7 @@
 
   (al/require al-package))
 
-(al/with-eval-after-load al-package
+(al/eval-after-load al-package
   (setq
    al/ignored-packages
    ;; Redundant dependencies of magit:
@@ -57,7 +57,7 @@
  quelpa-dir (al/emacs-data-dir-file "quelpa")
  quelpa-build-dir (expand-file-name "build" quelpa-dir))
 
-(al/with-eval-after-load al-quelpa
+(al/eval-after-load al-quelpa
   (setq
    al/main-packages
    `((quelpa             :fetcher github :repo "quelpa/quelpa")
@@ -142,14 +142,14 @@
     al/bui-list-keys
     al/guix-list-keys))
 
-(al/with-eval-after-load guix-profiles
+(al/eval-after-load guix-profiles
   (setq guix-current-profile al/guix-user-profile-dir))
 
-(al/with-eval-after-load guix-external
+(al/eval-after-load guix-external
   (setq guix-guile-program "guile"))
 
 (defvar al/geiser-sockets)
-(al/with-eval-after-load guix-repl
+(al/eval-after-load guix-repl
   (al/setq-file guix-load-path (al/devel-dir-file "guix"))
 
   (when (al/require al-geiser)
@@ -159,7 +159,7 @@
     (remove-hook 'guix-repl-after-operation-hook
                  'guix-repl-autoload-emacs-packages-maybe)))
 
-(al/with-eval-after-load guix-misc
+(al/eval-after-load guix-misc
   (setq
    guix-operation-option-separator "  │  ")
   (when (display-graphic-p)
@@ -167,13 +167,13 @@
      guix-operation-option-false-string "☐"
      guix-operation-option-true-string  "☑")))
 
-(al/with-eval-after-load guix-ui
+(al/eval-after-load guix-ui
   (defconst al/guix-ui-keys
     '(("M-P" (message "%s" (guix-ui-current-profile))))
     "Alist of auxiliary keys for `guix-ui-map'.")
   (al/bind-keys-from-vars 'guix-ui-map 'al/guix-ui-keys t))
 
-(al/with-eval-after-load guix-ui-package
+(al/eval-after-load guix-ui-package
   (setq
    guix-package-list-type 'package)
 
@@ -206,7 +206,7 @@
     (append al/guix-list-key-vars '(al/guix-output-list-keys))
     t))
 
-(al/with-eval-after-load guix-ui-generation
+(al/eval-after-load guix-ui-generation
   (setq
    guix-generation-list-show-single t
    guix-generation-packages-update-buffer nil
@@ -220,7 +220,7 @@
     (append al/guix-list-key-vars '(al/guix-generation-list-keys))
     t))
 
-(al/with-eval-after-load guix-ui-service
+(al/eval-after-load guix-ui-service
   (defconst al/guix-service-info-keys
     '(("M-d" . guix-service-info-edit))
     "Alist of auxiliary keys for `guix-service-info-mode-map'.")
@@ -234,7 +234,7 @@
     (append al/guix-list-key-vars '(al/guix-service-list-keys))
     t))
 
-(al/with-eval-after-load guix-ui-package-location
+(al/eval-after-load guix-ui-package-location
   (defconst al/guix-package-location-list-keys
     '(("M-d" . guix-package-location-list-edit))
     "Alist of auxiliary keys for `guix-package-location-list-mode-map'.")
@@ -242,7 +242,7 @@
     (append al/guix-list-key-vars '(al/guix-package-location-list-keys))
     t))
 
-(al/with-eval-after-load guix-ui-service-location
+(al/eval-after-load guix-ui-service-location
   (defconst al/guix-service-location-list-keys
     '(("M-d" . guix-service-location-list-edit))
     "Alist of auxiliary keys for `guix-service-location-list-mode-map'.")
@@ -250,7 +250,7 @@
     (append al/guix-list-key-vars '(al/guix-service-location-list-keys))
     t))
 
-(al/with-eval-after-load guix-ui-license
+(al/eval-after-load guix-ui-license
   (defconst al/guix-license-list-keys
     '(("M-d" . guix-license-list-edit))
     "Alist of auxiliary keys for `guix-license-list-mode-map'.")
@@ -258,7 +258,7 @@
     (append al/guix-list-key-vars '(al/guix-license-list-keys))
     t))
 
-(al/with-eval-after-load guix-ui-store-item
+(al/eval-after-load guix-ui-store-item
   (defconst al/guix-store-item-list-keys
     '("R"
       ("M-d" . guix-store-item-list-edit)
@@ -270,16 +270,16 @@
     (append al/guix-list-key-vars '(al/guix-store-item-list-keys))
     t))
 
-(al/with-eval-after-load guix-ui-profile
+(al/eval-after-load guix-ui-profile
   (setq guix-profiles
         (append guix-profiles
                 (al/guix-profiles))))
 
-(al/with-eval-after-load guix-utils
+(al/eval-after-load guix-utils
   (setq
    guix-find-file-function #'org-open-file))
 
-(al/with-eval-after-load guix-build-log
+(al/eval-after-load guix-build-log
   (defconst al/guix-build-log-common-keys
     '(("M-." . guix-build-log-previous-phase)
       ("M-e" . guix-build-log-next-phase))
@@ -294,7 +294,7 @@
 
 ;; TODO `guix-popup' uses `transient' now.
 ;;
-;; (al/with-eval-after-load guix-popup
+;; (al/eval-after-load guix-popup
 ;;   ;; Use "P" for packages and "p" for profiles.
 ;;   (magit-change-popup-key 'guix-popup :action ?p ?–)
 ;;   (magit-change-popup-key 'guix-popup :action ?P ?p)
@@ -355,7 +355,7 @@
  ("m"     . aurel-maintainer-search)
  ("I"     . aurel-installed-packages))
 
-(al/with-eval-after-load aurel
+(al/eval-after-load aurel
   (setq
    aurel-download-directory (al/src-dir-file "abs")
    aurel-aur-user-name "alezost"

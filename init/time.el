@@ -40,13 +40,13 @@
 
 ;;; Misc settings and packages
 
-(al/with-eval-after-load time
+(al/eval-after-load time
   (setq
    display-time-interval 5
    display-time-format " %H:%M:%S"))
 
 (al/setq-no-warnings calendar-date-style 'iso)
-(al/with-eval-after-load calendar
+(al/eval-after-load calendar
   (setq
    diary-file (al/notes-dir-file "diary")
    calendar-week-start-day 1
@@ -81,11 +81,11 @@
   (al/add-hook-maybe 'calendar-mode-hook 'al/bar-cursor-type)
   (add-hook 'calendar-today-visible-hook 'calendar-mark-today))
 
-(al/with-eval-after-load al-calendar
+(al/eval-after-load al-calendar
   (setq al/calendar-date-display-form
         '((format "%s %.3s %2s" year monthname day))))
 
-(al/with-eval-after-load solar
+(al/eval-after-load solar
   (setq
    calendar-latitude 50.6
    calendar-longitude 36.6
@@ -94,20 +94,20 @@
    '(24-hours ":" minutes
      (if time-zone " (") time-zone (if time-zone ")"))))
 
-(al/with-eval-after-load diary-lib
+(al/eval-after-load diary-lib
   (setq
    diary-number-of-entries 3
    diary-comment-start "#")
   (al/require al-calendar)
   (add-hook 'diary-list-entries-hook 'diary-sort-entries t))
 
-(al/with-eval-after-load timer-list
+(al/eval-after-load timer-list
   (al/bind-keys
     :map timer-list-mode-map
     ("k"   . timer-list-cancel)
     ("C-k" . timer-list-cancel)))
 
-(al/with-eval-after-load appt
+(al/eval-after-load appt
   (setq
    appt-audible nil
    appt-display-diary nil
@@ -115,7 +115,7 @@
    appt-display-interval 1)
   (al/require al-appt))
 
-(al/with-eval-after-load al-appt
+(al/eval-after-load al-appt
   (advice-add 'appt-display-message :override #'al/appt-display-message)
   (advice-add 'appt-mode-line :override #'al/appt-mode-line)
 
@@ -124,7 +124,7 @@
      al/appt-notify-normal-sound (al/sound-dir-file "drums.wav")
      al/appt-notify-urgent-sound (al/sound-dir-file "bell.oga"))))
 
-(al/with-eval-after-load al-notification
+(al/eval-after-load al-notification
   (when (al/require al-file)
     (al/setq-file
      al/notification-sound (al/sound-dir-file "alarm.wav"))))

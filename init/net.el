@@ -40,7 +40,7 @@
 
 ;;; Browsing
 
-(al/with-eval-after-load w3m
+(al/eval-after-load w3m
   (setq
    w3m-add-user-agent nil
    w3m-use-cookies nil
@@ -89,19 +89,19 @@
 
   (al/require al-w3m))
 
-(al/with-eval-after-load w3m-save
+(al/eval-after-load w3m-save
   (setq
    w3m-save-buffer-html-only t
    w3m-default-save-directory (al/download-dir-file "html")))
 
-(al/with-eval-after-load w3m-form
+(al/eval-after-load w3m-form
   (defconst al/w3m-form-keys
     '(("u" . w3m-form-input-select-set))
     "Alist of auxiliary keys for `w3m-form-input-select-keymap'.")
   (al/bind-keys-from-vars 'w3m-form-input-select-keymap
     '(al/lazy-moving-keys al/w3m-form-keys)))
 
-(al/with-eval-after-load al-w3m
+(al/eval-after-load al-w3m
   (setq
    al/w3m-search-link-depth 20
    al/w3m-search-re "[^[:alnum:]]*\\<%s\\>")
@@ -109,11 +109,11 @@
   (al/w3m-bind-number-keys 'al/w3m-switch-to-buffer)
   (al/w3m-bind-number-keys 'al/w3m-kill-buffer "k"))
 
-(al/with-eval-after-load browse-url
+(al/eval-after-load browse-url
   (setq browse-url-browser-function 'al/choose-browser-tui)
   (al/require al-browse-url))
 
-(al/with-eval-after-load al-browse-url
+(al/eval-after-load al-browse-url
   (advice-add 'browse-url-default-browser
     :override #'al/browse-url-default))
 
@@ -150,10 +150,10 @@
  ("m"   . gnus-msg-mail)
  ("n"   . gnus-msg-mail))
 
-(al/with-eval-after-load nntp
+(al/eval-after-load nntp
   (setq nntp-connection-timeout 10))
 
-(al/with-eval-after-load gnus
+(al/eval-after-load gnus
   (setq
    gnus-directory (al/gnus-dir-file "news")
    gnus-article-save-directory (al/gnus-dir-file "saved")
@@ -185,15 +185,15 @@
 
   (al/require al-gnus))
 
-(al/with-eval-after-load gnus-msg
+(al/eval-after-load gnus-msg
   (setq gnus-gcc-mark-as-read t))
 
-(al/with-eval-after-load mm-decode
+(al/eval-after-load mm-decode
   (setq
    mm-text-html-renderer 'gnus-w3m
    mm-discouraged-alternatives '("text/html" "text/richtext")))
 
-(al/with-eval-after-load gnus-srvr
+(al/eval-after-load gnus-srvr
   (defconst al/gnus-server-keys
     '(("u"   . gnus-server-read-server)
       ("M-d" . gnus-server-edit-server))
@@ -213,7 +213,7 @@
 ;; are defined in "gnus.el" but are filled in
 ;; "gnus-group.el"/"gnus-sum.el"/"gnus-art.el".
 
-(al/with-eval-after-load gnus-group
+(al/eval-after-load gnus-group
   (setq gnus-group-goto-unread nil)
   (defconst al/gnus-group-keys
     '(("." . gnus-group-prev-group)
@@ -238,7 +238,7 @@
 
   (add-hook 'gnus-group-mode-hook 'hl-line-mode))
 
-(al/with-eval-after-load gnus-sum
+(al/eval-after-load gnus-sum
   (setq
    gnus-summary-mode-line-format "Gnus: %p %Z"
    gnus-user-date-format-alist
@@ -304,14 +304,14 @@
   (al/add-hook-maybe 'gnus-summary-mode-hook
     '(hl-line-mode al/hbar-cursor-type)))
 
-(al/with-eval-after-load gnus-draft
+(al/eval-after-load gnus-draft
   (defconst al/gnus-draft-keys
     '(("M-d" . gnus-draft-edit-message)
       "e")
     "Alist of auxiliary keys for `gnus-draft-mode-map'.")
   (al/bind-keys-from-vars 'gnus-draft-mode-map 'al/gnus-draft-keys))
 
-(al/with-eval-after-load gnus-art
+(al/eval-after-load gnus-art
   (setq
    gnus-treat-display-smileys nil
    gnus-article-truncate-lines nil
@@ -342,23 +342,23 @@
     '(al/button-keys al/gnus-mime-button-keys))
   )
 
-(al/with-eval-after-load gnus-topic
+(al/eval-after-load gnus-topic
   (setq
    gnus-topic-display-empty-topics nil
    gnus-topic-line-format "%i%(%{%n%}%) – %A %v\n")
   (al/bind-keys-from-vars 'gnus-topic-mode-map
     'al/free-important-keys t))
 
-(al/with-eval-after-load gnus-dired
+(al/eval-after-load gnus-dired
   (al/bind-keys
    :map gnus-dired-mode-map
    ("C-c a" . gnus-dired-attach)))
 
-(al/with-eval-after-load sendmail
+(al/eval-after-load sendmail
   (setq
    send-mail-function 'smtpmail-send-it))
 
-(al/with-eval-after-load message
+(al/eval-after-load message
   (setq
    message-directory (al/gnus-dir-file "mail")
    message-signature "Alex"
@@ -370,7 +370,7 @@
     (?' "'   ")
     (?\" "\"   ")))
 
-(al/with-eval-after-load mml
+(al/eval-after-load mml
   (defconst al/mml-keys
     '(("C-c a" . mml-attach-file)
       ("C-c f" . mml-attach-file)
@@ -379,18 +379,18 @@
     "Alist of auxiliary keys for `mml-mode-map'.")
   (al/bind-keys-from-vars 'mml-mode-map 'al/mml-keys))
 
-(al/with-eval-after-load smtpmail
+(al/eval-after-load smtpmail
   (setq
    smtpmail-smtp-server "smtp.gmail.com"
    smtpmail-smtp-service 587))
 
-(al/with-eval-after-load shr
+(al/eval-after-load shr
   (al/bind-keys
    :map shr-map
    ("u" . shr-browse-url)
    ("c" . shr-copy-url)))
 
-(al/with-eval-after-load al-gnus
+(al/eval-after-load al-gnus
   (setq al/atom2rss-file (al/emacs-data-dir-file "atom2rss.xsl"))
   (advice-add 'mm-url-insert
     :after #'al/convert-atom-to-rss)
@@ -465,7 +465,7 @@
  ("s"     (al/display-buffer "#stumpwm"))
  ("M-z"   (al/display-buffer "*status")))
 
-(al/with-eval-after-load erc
+(al/eval-after-load erc
   (setq
    erc-server "chat.freenode.net"
    erc-port 7000
@@ -534,7 +534,7 @@
   (setq after-load-alist
         (assq-delete-all 'erc after-load-alist)))
 
-(al/with-eval-after-load al-erc
+(al/eval-after-load al-erc
   (when (al/znc-running-p)
     (setq erc-server "localhost"
           erc-port 32456))
@@ -552,7 +552,7 @@
   (al/add-hook-maybe 'erc-after-connect 'al/erc-ghost-maybe)
   (advice-add 'erc-notifications-notify :before #'al/play-erc-sound))
 
-(al/with-eval-after-load erc-track
+(al/eval-after-load erc-track
   (setq
    erc-track-showcount t
    erc-track-exclude-types
@@ -565,17 +565,17 @@
      "333"                      ; set topic
      "353" "477")))
 
-(al/with-eval-after-load erc-match
+(al/eval-after-load erc-match
   (setq erc-keywords '("theme" "color" "dvorak" "sql" "guix" "game")))
 
-(al/with-eval-after-load erc-stamp
+(al/eval-after-load erc-stamp
   (setq
    erc-timestamp-format-left "\n[%d %B %Y, %A]\n"))
 
-(al/with-eval-after-load erc-log
+(al/eval-after-load erc-log
   (setq erc-log-file-coding-system 'utf-8))
 
-(al/with-eval-after-load erc-button
+(al/eval-after-load erc-button
   (al/bind-keys
    :map erc-button-keymap
    ("u" . erc-button-press-button)
@@ -584,7 +584,7 @@
    ("c"   (kill-new (car (get-text-property (point) 'erc-data))))
    ("w"   (wget (car (get-text-property (point) 'erc-data))))))
 
-(al/with-eval-after-load erc-list
+(al/eval-after-load erc-list
   (al/bind-keys
    :map erc-list-menu-mode-map
    ("u"   . erc-list-join)
@@ -592,7 +592,7 @@
   (define-key erc-list-menu-sort-button-map
     [header-line mouse-2] 'erc-list-menu-sort-by-column))
 
-(al/with-eval-after-load al-erc
+(al/eval-after-load al-erc
   (setq
    al/erc-log-excluded-regexps
    '("\\`#archlinux\\'" "\\`#emacs\\'" "\\`#freenode\\'" "\\`#znc\\'")
@@ -613,7 +613,7 @@
               'erc-view-log-mode)
         auto-mode-alist))
 
-(al/with-eval-after-load erc-view-log
+(al/eval-after-load erc-view-log
   (setq
    erc-view-log-timestamp-regexp
    (rx "[" (one-or-more (or digit ":")) "]")
@@ -632,7 +632,7 @@
  ("b"     (al/display-buffer "*Guix-Patches Bugs*"))
  ("s"   . debbugs-gnu-search))
 
-(al/with-eval-after-load debbugs-gnu
+(al/eval-after-load debbugs-gnu
   (setq debbugs-gnu-default-packages '("guix-patches"))
 
   (defconst al/debbugs-gnu-keys
@@ -644,19 +644,19 @@
 ;;; Misc settings and packages
 
 (setq url-debug t)
-(al/with-eval-after-load url
+(al/eval-after-load url
   (setq url-configuration-directory (al/emacs-data-dir-file "url")))
 
-(al/with-eval-after-load wget
+(al/eval-after-load wget
   (setq
    wget-debug-buffer "*wget-log*"
    wget-download-directory-filter 'wget-download-dir-filter-regexp
    wget-download-log-file (al/emacs-data-dir-file "emacs-wget.log")))
 
-(al/with-eval-after-load net-utils
+(al/eval-after-load net-utils
   (setq ping-program-options '("-c" "3")))
 
-(al/with-eval-after-load al-net
+(al/eval-after-load al-net
   (setq
    al/net-hosts '("zeus" "leviafan" "hyperion" "192.168.1.1"
                   "google.com" "ya.ru")
@@ -674,7 +674,7 @@
  ("q" . debpaste-quit-buffers)
  ("K" . debpaste-kill-all-buffers))
 
-(al/with-eval-after-load debpaste
+(al/eval-after-load debpaste
   (setq
    debpaste-user-name "alezost"
    debpaste-expire-time (* 3 24 60 60))

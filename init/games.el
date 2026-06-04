@@ -36,11 +36,11 @@
 
 ;;; Misc settings and packages
 
-(al/with-eval-after-load gamegrid
+(al/eval-after-load gamegrid
   (setq gamegrid-user-score-file-directory
         (al/emacs-data-dir-file "games")))
 
-(al/with-eval-after-load ducpel
+(al/eval-after-load ducpel
   (setq ducpel-replay-pause 0.3)
   (let ((ducpel-dir (al/emacs-my-packages-dir-file "ducpel")))
     (setq
@@ -64,7 +64,7 @@
     ("," . ducpel-previous-level)
     ("p" . ducpel-next-level)))
 
-(al/with-eval-after-load tetris
+(al/eval-after-load tetris
   (setq
    tetris-width 10
    tetris-height 26
@@ -81,7 +81,7 @@
    ("RET" . tetris-move-bottom)
    ("SPC" . tetris-pause-game)))
 
-(al/with-eval-after-load snake
+(al/eval-after-load snake
   (al/bind-keys
    :map snake-mode-map
    ("o"   . snake-move-left)
