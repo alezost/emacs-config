@@ -38,9 +38,9 @@
  package-user-dir (al/emacs-data-dir-file "elpa")
  custom-file (al/emacs-init-dir-file "custom.el"))
 
+(defvar al/initial-load-path load-path)
 (push al/emacs-general-utils-dir load-path)
 (push (al/emacs-utils-dir-file "packages") load-path)
-(push (al/emacs-utils-dir-file "tui") load-path)
 
 (require 'al-general)
 
@@ -107,6 +107,7 @@ Do not alter `load-path'.  Instead, push added `load-path' to
   `(("utils"
      ,al/emacs-utils-dir
      ,al/emacs-utils-autoloads
+     :add-to-path prepend
      :subdirs only)
     ("my packages"
      ,al/emacs-my-packages-dir
@@ -129,7 +130,7 @@ Do not alter `load-path'.  Instead, push added `load-path' to
 ;; ones.
 (setq load-path
       (nconc (apply #'nconc (nreverse al/load-paths))
-             load-path))
+             al/initial-load-path))
 
 
 ;;; Final settings

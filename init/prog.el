@@ -149,21 +149,22 @@
    slime-trace-dialog
    slime-indentation))
 
-;; Use SLIME from quicklisp.
-(let* ((quicklisp-dir  (expand-file-name "~/.quicklisp"))
-       (swank.txt-file (expand-file-name
-                        "dists/quicklisp/installed/systems/swank.txt"
-                        quicklisp-dir)))
-  (al/with-check
-    :file swank.txt-file
-    (let* ((swank.txt (with-temp-buffer
-                        (insert-file-contents swank.txt-file)
-                        (buffer-string)))
-           (slime-dir (file-name-directory
-                       (expand-file-name swank.txt quicklisp-dir))))
-      (al/add-to-load-path-maybe slime-dir)
-      (al/autoload "slime" slime slime-mode slime-lisp-mode-hook)
-      (add-hook 'lisp-mode-hook 'slime-lisp-mode-hook))))
+(al/eval-after-init
+  ;; Use SLIME from quicklisp.
+  (let* ((quicklisp-dir  (expand-file-name "~/.quicklisp"))
+         (swank.txt-file (expand-file-name
+                          "dists/quicklisp/installed/systems/swank.txt"
+                          quicklisp-dir)))
+    (al/with-check
+      :file swank.txt-file
+      (let* ((swank.txt (with-temp-buffer
+                          (insert-file-contents swank.txt-file)
+                          (buffer-string)))
+             (slime-dir (file-name-directory
+                         (expand-file-name swank.txt quicklisp-dir))))
+        (al/add-to-load-path-maybe slime-dir)
+        (al/autoload "slime" slime slime-mode slime-lisp-mode-hook)
+        (add-hook 'lisp-mode-hook 'slime-lisp-mode-hook)))))
 
 ;; `al/slime-keys' is required for `al/erc-channel-config'
 (defconst al/slime-keys
