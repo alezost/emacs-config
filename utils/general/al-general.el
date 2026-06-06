@@ -453,6 +453,14 @@ a non-graphical terminal."
                      'after-init-hook)
                    ',name)))))
 
+(defun al/call-after-frame-kill (functions)
+  "Call FUNCTIONS at Emacs terminal (console or window frame) exit.
+FUNCTIONS can be a single function or a list of functions."
+  (mapcar (lambda (fun)
+            (add-hook 'delete-frame-functions
+                      (lambda (_frame) (funcall fun))))
+          (al/list-maybe functions)))
+
 (defmacro al/eval-after-load (feature &rest body)
   "Execute BODY after FEATURE load.
 

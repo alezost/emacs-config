@@ -191,7 +191,7 @@
           'dim-set-major-name
           (lambda () (setq-local page-delimiter "^ *—"))))
 
-  (al/add-hook-maybe 'kill-emacs-hook 'al/emms-save-playlists))
+  (al/call-after-frame-kill 'al/emms-save-playlists))
 
 (al/eval-after-load emms-mode-line
   (setq emms-mode-line-format " %s"))

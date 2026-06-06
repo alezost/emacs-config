@@ -306,17 +306,22 @@
  ("c" . recentf-cleanup))
 
 (al/eval-after-load recentf
+  :load after-init
   (setq
    recentf-exclude (list (al/file-regexp "el" "gz")
                          #'file-remote-p)
    recentf-keep (list #'file-exists-p)
-   recentf-used-hooks '((find-file-hook  recentf-track-opened-file)
-                        (kill-emacs-hook recentf-save-list))
+   recentf-used-hooks nil
    recentf-auto-cleanup 'never
    recentf-max-saved-items 300
-   recentf-save-file (al/emacs-data-dir-file "recentf")))
+   recentf-save-file (al/emacs-data-dir-file "recentf"))
 
-(al/call-after-init 'recentf-mode)
+  ;; I don't use `recentf-mode' as it performs some extra stuff.  All I
+  ;; need is to save a visited file name and to save the name list on
+  ;; frame kill.
+  (recentf-load-list)
+  (al/add-hook-maybe 'find-file-hook 'recentf-track-opened-file)
+  (al/call-after-frame-kill 'recentf-save-list))
 
 (al/eval-after-load ffap
   (al/require al-ffap))
@@ -326,6 +331,7 @@
     :override #'al/ffap-read-file-or-url))
 
 (al/eval-after-load saveplace
+  :load after-init
   (setq
    ;; For some reason, `save-place-loaded' is t after `saveplace' load.
    ;; This bug(?) appeared somewhere between Emacs 29.4 and Emacs 30.1.
@@ -340,11 +346,14 @@
    save-place-file (al/emacs-data-dir-file "save-places")
    save-place-limit 999)
 
-  (remove-hook 'dired-initial-position-hook #'save-place-dired-hook)
+  ;; I don't use `save-place-mode' as it performs some extra stuff.  All
+  ;; I need is to save a position in a visited file and to save the
+  ;; position list on frame kill.
+  (add-hook 'find-file-hook #'save-place-find-file-hook t)
+  (add-hook 'kill-buffer-hook #'save-place-to-alist)
+  (al/call-after-frame-kill 'save-place-kill-emacs-hook)
 
   (al/require al-saveplace))
-
-(al/call-after-init 'save-place-mode)
 
 (al/eval-after-load al-saveplace
   (advice-add 'save-places-to-alist
