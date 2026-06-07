@@ -80,8 +80,10 @@ As you can see, this repository consists of the following directories:
 - [[file:utils][utils]]: various utilities and additional code (for Emacs itself and for
   external packages) that is not needed for start-up.  All of the code
   here has =al/= prefix and is placed in files that provide =al-…=
-  features.  These utils are loaded only if and when they are needed.
-  Also there are many interactive commands there which are autoloaded.
+  features (except for [[file:utils/tui][tui]] packages that have =tui/= prefix and provide
+  [[https://github.com/magit/transient][transient]] interface for various things).  These utils are loaded only
+  if and when they are needed.  Also there are many interactive commands
+  there which are autoloaded.
 
   In the past these utils were placed in a [[https://github.com/alezost/emacs-utils][separate repository]] and had
   "utl-" prefix.

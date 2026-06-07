@@ -632,7 +632,7 @@
 
 ;;; Spelling, translating
 
-(al/bind-key "<XF86Spell>" al/translate-tui)
+(al/bind-key "<XF86Spell>" tui/translate)
 
 (al/bind-keys
  :prefix-map al/spell-map

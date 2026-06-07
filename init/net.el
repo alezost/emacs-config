@@ -26,7 +26,7 @@
 
 ;;; Global keys
 
-(al/bind-key* "M-S" al/web-search-tui)
+(al/bind-key* "M-S" tui/web-search)
 
 (al/bind-keys
  :prefix-map al/net-map
@@ -110,7 +110,7 @@
   (al/w3m-bind-number-keys 'al/w3m-kill-buffer "k"))
 
 (al/eval-after-load browse-url
-  (setq browse-url-browser-function 'al/choose-browser-tui)
+  (setq browse-url-browser-function 'tui/choose-browser)
   (al/require al-browse-url))
 
 (al/eval-after-load al-browse-url

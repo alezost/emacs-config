@@ -26,7 +26,7 @@
 
 ;;; Emacs packages
 
-(al/bind-key "H-q" al/package-tui)
+(al/bind-key "H-q" tui/package)
 
 (al/eval-after-load package
   (setq package-archives nil)

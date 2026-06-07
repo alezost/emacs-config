@@ -1,4 +1,4 @@
-;;; al-package-tui.el --- Transient interface for Emacs package system  -*- lexical-binding: t -*-
+;;; tui-package.el --- Transient interface for Emacs package system  -*- lexical-binding: t -*-
 
 ;; Copyright © 2025–2026 Alex Kost
 
@@ -23,7 +23,7 @@
 (require 'al-quelpa)
 (require 'al-visual)
 
-(transient-define-argument al/package-tui:main-packages ()
+(transient-define-argument tui/package:main-packages ()
   :description (concat "recipes from "
                        (al/with-face 'font-lock-constant-face
                          (symbol-name 'al/main-packages)))
@@ -31,7 +31,7 @@
   :key "-m"
   :argument "main")
 
-(transient-define-argument al/package-tui:extra-packages ()
+(transient-define-argument tui/package:extra-packages ()
   :description (concat "recipes from "
                        (al/with-face 'font-lock-constant-face
                          (symbol-name 'al/extra-packages)))
@@ -39,7 +39,7 @@
   :key "-e"
   :argument "extra")
 
-(defun al/package-tui-archives-info ()
+(defun tui/package-archives-info ()
   "Return a fontified string with `package-archives' value."
   (concat
    (al/with-face 'font-lock-constant-face "package-archives")
@@ -53,30 +53,30 @@
        (font-lock-ensure)
        (buffer-substring (point-min) (point-max))))))
 
-(transient-define-suffix al/package-tui:add-archive ()
+(transient-define-suffix tui/package:add-archive ()
   (interactive)
   (call-interactively #'al/add-package-archive)
-  (al/package-tui))
+  (tui/package))
 
-(transient-define-suffix al/package-tui:add-all-archives ()
+(transient-define-suffix tui/package:add-all-archives ()
   (interactive)
   (setq package-archives al/package-archives)
-  (al/package-tui))
+  (tui/package))
 
-(transient-define-suffix al/package-tui:remove-archive ()
+(transient-define-suffix tui/package:remove-archive ()
   (interactive)
   (call-interactively #'al/remove-package-archive)
-  (al/package-tui))
+  (tui/package))
 
-(transient-define-suffix al/package-tui:remove-all-archives ()
+(transient-define-suffix tui/package:remove-all-archives ()
   (interactive)
   (setq package-archives nil)
-  (al/package-tui))
+  (tui/package))
 
-(transient-define-suffix al/package-tui:install-from-recipes (&rest recipes)
+(transient-define-suffix tui/package:install-from-recipes (&rest recipes)
   "Call `al/quelpa' with RECIPES."
   (interactive
-   (let ((args (transient-args 'al/package-tui)))
+   (let ((args (transient-args 'tui/package)))
      (append (and (transient-arg-value "main" args)
                   al/main-packages)
              (and (transient-arg-value "extra" args)
@@ -84,23 +84,23 @@
   (if recipes
       (apply #'al/quelpa recipes)
     (message "Choose \"main\" and/or \"extra\" recipes.")
-    (al/package-tui)))
+    (tui/package)))
 
 (declare-function al/switch-to-packages "al-buffer.el" nil)
 
-;;;###autoload (autoload 'al/package-tui "al-package-tui" nil t)
-(transient-define-prefix al/package-tui ()
+;;;###autoload (autoload 'tui/package "tui-package" nil t)
+(transient-define-prefix tui/package ()
   "Interface for Emacs packages, recipes, archives, etc."
   :value '("main")
   ["Package archives"
-   (:info #'al/package-tui-archives-info :format "%d")
+   (:info #'tui/package-archives-info :format "%d")
    (:info "")
    ("au" "update archive contents (to refresh package list)"
     package-refresh-contents :transient t)]
-  [[("aa" "add archive"         al/package-tui:add-archive)
-    ("ar" "remove archive"      al/package-tui:remove-archive)]
-   [("aA" "add all archives"    al/package-tui:add-all-archives)
-    ("aR" "remove all archives" al/package-tui:remove-all-archives)]
+  [[("aa" "add archive"         tui/package:add-archive)
+    ("ar" "remove archive"      tui/package:remove-archive)]
+   [("aA" "add all archives"    tui/package:add-all-archives)
+    ("aR" "remove all archives" tui/package:remove-all-archives)]
    [("l" "package list" al/switch-to-packages)]]
   ["Install/upgrade package(s)"
    [(:info
@@ -111,9 +111,9 @@
     ("iq" "package from melpa recipe" quelpa)
     ("im" "package from my recipe" al/quelpa)
     ""
-    (al/package-tui:main-packages)
-    (al/package-tui:extra-packages)
-    ("iA" "packages from my recipes" al/package-tui:install-from-recipes)]
+    (tui/package:main-packages)
+    (tui/package:extra-packages)
+    ("iA" "packages from my recipes" tui/package:install-from-recipes)]
    [(:info
      (concat (al/with-face 'transient-heading " using ")
              (al/with-face 'font-lock-constant-face "package-install")
@@ -123,6 +123,6 @@
     "" ""
     ("R" "remove package" package-delete)]])
 
-(provide 'al-package-tui)
+(provide 'tui-package)
 
-;;; al-package-tui.el ends here
+;;; tui-package.el ends here

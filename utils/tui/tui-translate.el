@@ -1,4 +1,4 @@
-;;; al-translate-tui.el --- Transient interface for language translation  -*- lexical-binding: t -*-
+;;; tui-translate.el --- Transient interface for language translation  -*- lexical-binding: t -*-
 
 ;; Copyright © 2026 Alex Kost
 
@@ -25,11 +25,11 @@
 (require 'al-url)
 (require 'al-visual)
 
-(defvar al/translate-tui-top-languages
+(defvar tui/translate-top-languages
   '("en" "ru" "ko" "ja" "de" "fr" "auto")
-  "List of languages that should be on top of `al/translate-tui-languages'.")
+  "List of languages that should be on top of `tui/translate-languages'.")
 
-(al/defun-lazy al/translate-tui-languages
+(al/defun-lazy tui/translate-languages
   "Return list of available languages for minibuffer completion."
   (let* ((name-fun  (lambda (assoc)
                       (concat (cdr assoc) " (" (car assoc) ")")))
@@ -37,7 +37,7 @@
          (langs     (seq-keep
                      (lambda (assoc)
                        (if (member (cdr assoc)
-                                   al/translate-tui-top-languages)
+                                   tui/translate-top-languages)
                            (progn
                              (push assoc top-langs)
                              nil)
@@ -46,106 +46,106 @@
          (top-langs (mapcar (lambda (lang)
                               (funcall name-fun
                                        (rassoc lang top-langs)))
-                            al/translate-tui-top-languages)))
+                            tui/translate-top-languages)))
     (append top-langs langs)))
 
-(defvar al/translate-tui-text nil
+(defvar tui/translate-text nil
   "Current text to translate.")
 
-(defun al/translate-tui-text ()
+(defun tui/translate-text ()
   (al/with-face 'font-lock-string-face
-    (or al/translate-tui-text "")))
+    (or tui/translate-text "")))
 
-(defun al/translate-tui-set-text (&optional text)
-  (setq al/translate-tui-text
+(defun tui/translate-set-text (&optional text)
+  (setq tui/translate-text
         (or text
             (when (region-active-p)
               (buffer-substring-no-properties
                (region-beginning)
                (region-end)))
-            al/translate-tui-text
+            tui/translate-text
             (read-string "Text to translate: "))))
 
-(transient-define-suffix al/translate-tui:text ()
+(transient-define-suffix tui/translate:text ()
   (interactive)
-  (al/translate-tui (read-string "Text: " al/translate-tui-text)))
+  (tui/translate (read-string "Text: " tui/translate-text)))
 
-(defun al/translate-tui-read-language (prompt initial-input history)
+(defun tui/translate-read-language (prompt initial-input history)
   ;; `icomplete-mode' uses some rubbish sort.  Avoid it by setting
   ;; `:cycle-sort-function' completion property.
   (let* ((completion-extra-properties '(:cycle-sort-function identity))
-         (choice (completing-read prompt (al/translate-tui-languages)
+         (choice (completing-read prompt (tui/translate-languages)
                                   nil nil initial-input history)))
     (and (string-match " (" choice)
          (substring choice 0 (match-beginning 0)))))
 
-(transient-define-argument al/translate-tui:source-language ()
+(transient-define-argument tui/translate:source-language ()
   :description "source language"
   :class 'transient-option
   :key "s"
   :argument "source="
-  :reader #'al/translate-tui-read-language
+  :reader #'tui/translate-read-language
   :always-read t
   :prompt "Source language: ")
 
-(transient-define-argument al/translate-tui:target-language ()
+(transient-define-argument tui/translate:target-language ()
   :description "target language"
   :class 'transient-option
   :key "t"
   :argument "target="
-  :reader #'al/translate-tui-read-language
+  :reader #'tui/translate-read-language
   :always-read t
   :prompt "Target language: ")
 
-(defun al/translate-tui-args ()
-  "Return list of arguments for the current `al/translate-tui' transient.
+(defun tui/translate-args ()
+  "Return list of arguments for the current `tui/translate' transient.
 This list has (SOURCE TARGET) form."
-  (let* ((args   (transient-args 'al/translate-tui))
+  (let* ((args   (transient-args 'tui/translate))
          (source (transient-arg-value "source=" args))
          (target (transient-arg-value "target=" args)))
     (list source target)))
 
-(transient-define-suffix al/translate-tui:google-translate (source target)
-  "Translate `al/translate-tui-text' from SOURCE to TARGET language
+(transient-define-suffix tui/translate:google-translate (source target)
+  "Translate `tui/translate-text' from SOURCE to TARGET language
 using Google Translate."
-  (interactive (al/translate-tui-args))
-  (google-translate-translate source target al/translate-tui-text))
+  (interactive (tui/translate-args))
+  (google-translate-translate source target tui/translate-text))
 
-(transient-define-suffix al/translate-tui:papago (source target)
-  "Translate `al/translate-tui-text' from SOURCE to TARGET language
+(transient-define-suffix tui/translate:papago (source target)
+  "Translate `tui/translate-text' from SOURCE to TARGET language
 using Naver Dictionary."
-  (interactive (al/translate-tui-args))
-  (browse-url (al/url-papago source target al/translate-tui-text)))
+  (interactive (tui/translate-args))
+  (browse-url (al/url-papago source target tui/translate-text)))
 
-(transient-define-suffix al/translate-tui:naver (source target)
-  "Translate `al/translate-tui-text' from SOURCE to TARGET language
+(transient-define-suffix tui/translate:naver (source target)
+  "Translate `tui/translate-text' from SOURCE to TARGET language
 using Naver Dictionary."
-  (interactive (al/translate-tui-args))
+  (interactive (tui/translate-args))
   (let* ((langs (list source target))
          (search-fun (if (member "en" langs)
                          'web-search-naver-en
                        'web-search-naver-ru)))
-    (funcall search-fun al/translate-tui-text)))
+    (funcall search-fun tui/translate-text)))
 
-(defvar al/translate-tui-multitran-data
+(defvar tui/translate-multitran-data
   '((("ru" "en") . web-search-multitran-ru/en)
     (("en" "ru") . web-search-multitran-en/ru)
     (("ru" "de") . web-search-multitran-ru/de)
     (("de" "ru") . web-search-multitran-de/ru))
   "Alist of ((SOURCE TARGET) . FUN) pairs for Multitran.")
 
-(transient-define-suffix al/translate-tui:multitran (source target)
-  "Translate `al/translate-tui-text' from SOURCE to TARGET language
+(transient-define-suffix tui/translate:multitran (source target)
+  "Translate `tui/translate-text' from SOURCE to TARGET language
 using Multitran."
-  (interactive (al/translate-tui-args))
+  (interactive (tui/translate-args))
   (if-let ((search-fun (alist-get (list source target)
-                                  al/translate-tui-multitran-data
+                                  tui/translate-multitran-data
                                   nil nil #'equal)))
-      (funcall search-fun al/translate-tui-text)
+      (funcall search-fun tui/translate-text)
     (user-error "Unknown language pair for Multitran: (%s, %s)"
                 source target)))
 
-(defvar al/translate-tui-verbix-data
+(defvar tui/translate-verbix-data
   '(("en" . web-search-verbix-en)
     ("ko" . web-search-verbix-ko)
     ("de" . web-search-verbix-de)
@@ -153,22 +153,22 @@ using Multitran."
     ("fr" . web-search-verbix-fr))
   "Alist of (LANG . FUN) pairs for Verbix.")
 
-(transient-define-suffix al/translate-tui:verbix (source _)
-  "Open `al/translate-tui-text' in SOURCE language using Verbix."
-  (interactive (al/translate-tui-args))
+(transient-define-suffix tui/translate:verbix (source _)
+  "Open `tui/translate-text' in SOURCE language using Verbix."
+  (interactive (tui/translate-args))
   (if-let ((search-fun (alist-get source
-                                  al/translate-tui-verbix-data
+                                  tui/translate-verbix-data
                                   nil nil #'string=)))
-      (funcall search-fun al/translate-tui-text)
+      (funcall search-fun tui/translate-text)
     (user-error "Unknown language for Verbix: %s" source)))
 
-(defun al/translate-tui-default-value ()
-  (if (null al/translate-tui-text)
+(defun tui/translate-default-value ()
+  (if (null tui/translate-text)
       (list "source=auto"
             "target=ru")
-    (let* ((first-char (seq-first al/translate-tui-text))
+    (let* ((first-char (seq-first tui/translate-text))
            (one-word?  (not (string-match-p "[\n\t ]"
-                                            al/translate-tui-text)))
+                                            tui/translate-text)))
            (script     (aref char-script-table first-char))
            (source     (cond
                         ((eq script 'latin)    "en")
@@ -185,25 +185,25 @@ using Multitran."
       (list (concat "source=" source)
             (concat "target=" target)))))
 
-;;;###autoload (autoload 'al/translate-tui "al-translate-tui" nil t)
-(transient-define-prefix al/translate-tui (&optional text)
+;;;###autoload (autoload 'tui/translate "tui-translate" nil t)
+(transient-define-prefix tui/translate (&optional text)
   "Interface for language translation."
-  :value 'al/translate-tui-default-value
+  :value 'tui/translate-default-value
   ["Text"
-   (:info #'al/translate-tui-text :format "%d")
-   ("T" "set text" al/translate-tui:text)]
-  [[("s" "source" al/translate-tui:source-language)]
-   [("t" "target" al/translate-tui:target-language)]]
+   (:info #'tui/translate-text :format "%d")
+   ("T" "set text" tui/translate:text)]
+  [[("s" "source" tui/translate:source-language)]
+   [("t" "target" tui/translate:target-language)]]
   ["Translate"
-   [("g" "Google" al/translate-tui:google-translate)]
-   [("p" "Papago" al/translate-tui:papago)
-    ("n" "Naver Dictionary" al/translate-tui:naver)]
-   [("m" "Multitran" al/translate-tui:multitran)]
-   [("v" "Verbix" al/translate-tui:verbix)]]
+   [("g" "Google" tui/translate:google-translate)]
+   [("p" "Papago" tui/translate:papago)
+    ("n" "Naver Dictionary" tui/translate:naver)]
+   [("m" "Multitran" tui/translate:multitran)]
+   [("v" "Verbix" tui/translate:verbix)]]
   (interactive)
-  (al/translate-tui-set-text text)
-  (transient-setup 'al/translate-tui))
+  (tui/translate-set-text text)
+  (transient-setup 'tui/translate))
 
-(provide 'al-translate-tui)
+(provide 'tui-translate)
 
-;;; al-translate-tui.el ends here
+;;; tui-translate.el ends here
