@@ -189,9 +189,7 @@
           ;; doesn't set `mode-name'.  Because of this, add
           ;; `dim-set-major-name' to the playlist hook.
           'dim-set-major-name
-          (lambda () (setq-local page-delimiter "^ *—"))))
-
-  (al/call-after-frame-kill 'al/emms-save-playlists))
+          (lambda () (setq-local page-delimiter "^ *—")))))
 
 (al/eval-after-load emms-mode-line
   (setq emms-mode-line-format " %s"))

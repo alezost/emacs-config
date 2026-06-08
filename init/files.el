@@ -317,11 +317,10 @@
    recentf-save-file (al/emacs-data-dir-file "recentf"))
 
   ;; I don't use `recentf-mode' as it performs some extra stuff.  All I
-  ;; need is to save a visited file name and to save the name list on
-  ;; frame kill.
+  ;; need is to save a visited file name and to save the name list
+  ;; (performed by `al/save-everything' on frame kill).
   (recentf-load-list)
-  (al/add-hook-maybe 'find-file-hook 'recentf-track-opened-file)
-  (al/call-after-frame-kill 'recentf-save-list))
+  (al/add-hook-maybe 'find-file-hook 'recentf-track-opened-file))
 
 (al/eval-after-load ffap
   (al/require al-ffap))
@@ -348,10 +347,9 @@
 
   ;; I don't use `save-place-mode' as it performs some extra stuff.  All
   ;; I need is to save a position in a visited file and to save the
-  ;; position list on frame kill.
+  ;; position list (performed by `al/save-everything' on frame kill).
   (add-hook 'find-file-hook #'save-place-find-file-hook t)
   (add-hook 'kill-buffer-hook #'save-place-to-alist)
-  (al/call-after-frame-kill 'save-place-kill-emacs-hook)
 
   (al/require al-saveplace))
 

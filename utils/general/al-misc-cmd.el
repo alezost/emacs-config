@@ -103,6 +103,21 @@ With prefix, prompt for directory as well."
                   (prin1 symbol)
                   (princ "\n"))))))
 
+;;;###autoload
+(defun al/save-everything ()
+  "Save everything that should be saved."
+  (interactive)
+  (save-some-buffers 'no-ask)
+  (with-no-warnings
+    (and (featurep 'emms)
+         (al/emms-save-playlists))
+    (and (featurep 'saveplace)
+         save-place-loaded
+         (save-place-alist-to-file))
+    (and (featurep 'recentf)
+         (memq 'recentf-track-opened-file find-file-hook)
+         (recentf-save-list))))
+
 
 ;;; Highlighting of the current line
 
