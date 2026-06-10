@@ -172,15 +172,30 @@ Do not alter `load-path'.  Instead, push added `load-path' to
   (advice-add 'insert-directory :around #'al/call-with-locale)
   (al/enable-process-hooks))
 
+(declare-function recentf-load-list "recentf")
+
 (al/eval-after-load al-server
   :load t
-  (if-let* ((name (al/server-name)))
-      (progn
+  (let ((name (al/server-name)))
+    (if name
         (setq al/server-running? t)
-        (when (equal name "server-emms")
-          (al/call-after-init 'appt-activate)))
-    (with-demoted-errors "ERROR during server start: %S"
-      (al/server-named-start "server-emms" "server"))))
+      (with-demoted-errors "ERROR during server start: %S"
+        (al/server-named-start "server-emms" "server")))
+
+    (when (or (equal name "server-emms")
+              (equal server-name "server-emms"))
+      (al/eval-after-init
+        (appt-activate)
+        ;; I don't use `recentf-mode' and `save-place-mode' as they perform
+        ;; some extra stuff.  All I need is to save recentf/save-place
+        ;; positions when needed and to write positions to files on exit
+        ;; (performed by `al/save-everything' on frame kill).
+        (when (al/require recentf)
+          (recentf-load-list)
+          (al/add-hook-maybe 'find-file-hook 'recentf-track-opened-file))
+        (when (al/require saveplace)
+          (al/add-hook-maybe 'find-file-hook 'save-place-find-file-hook)
+          (al/add-hook-maybe 'kill-buffer-hook 'save-place-to-alist))))))
 
 (message "Garbage collected %d times." gcs-done)
 (al/title-message "Emacs config has been loaded")

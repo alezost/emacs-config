@@ -314,13 +314,7 @@
    recentf-used-hooks nil
    recentf-auto-cleanup 'never
    recentf-max-saved-items 300
-   recentf-save-file (al/emacs-data-dir-file "recentf"))
-
-  ;; I don't use `recentf-mode' as it performs some extra stuff.  All I
-  ;; need is to save a visited file name and to save the name list
-  ;; (performed by `al/save-everything' on frame kill).
-  (recentf-load-list)
-  (al/add-hook-maybe 'find-file-hook 'recentf-track-opened-file))
+   recentf-save-file (al/emacs-data-dir-file "recentf")))
 
 (al/eval-after-load ffap
   (al/require al-ffap))
@@ -344,12 +338,6 @@
    save-place-forget-unreadable-files nil
    save-place-file (al/emacs-data-dir-file "save-places")
    save-place-limit 999)
-
-  ;; I don't use `save-place-mode' as it performs some extra stuff.  All
-  ;; I need is to save a position in a visited file and to save the
-  ;; position list (performed by `al/save-everything' on frame kill).
-  (add-hook 'find-file-hook #'save-place-find-file-hook t)
-  (add-hook 'kill-buffer-hook #'save-place-to-alist)
 
   (al/require al-saveplace))
 
