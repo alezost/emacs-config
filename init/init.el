@@ -165,6 +165,7 @@ Do not alter `load-path'.  Instead, push added `load-path' to
         (lambda () (setq buffer-read-only nil))))
 (al/call-after-init 'which-key-mode)
 (al/call-after-frame-kill 'al/save-everything)
+(al/add-hook-maybe 'kill-emacs-hook 'al/save-everything)
 
 (al/eval-after-load al-process
   :load t
