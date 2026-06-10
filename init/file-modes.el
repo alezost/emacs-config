@@ -273,6 +273,7 @@
      (conf-unix-mode (".*rc\\'"
                       "/etc/.*\\'")
                      t)
+     (js-mode "/etc/polkit-1/rules\\.d/.+\\.rules")
      (syslog-mode ("/var/log.*\\'"
                    ;;"\\.log\\'" not this because of ~/config/emacs/data/emacs-wget.log
                    )
