@@ -49,7 +49,7 @@
     ([ctrl-m] . al/emms-switch-to-playlist-buffer))
 
   (al/add-hook-maybe 'emms-playlist-source-inserted-hook
-    'al/emms-add-info-size)
+    'al/emms-add-size)
   (al/add-hook-maybe 'emms-mpv-before-process-hook
     'al/emms-playlist-set-mpv-command)
 

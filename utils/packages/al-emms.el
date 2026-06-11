@@ -104,17 +104,17 @@ If ARG is specified, show metadata of the track."
   (list (match-string 1 name)
         (match-string 2 name)))
 
-(defun al/emms-add-info-size ()
-  "Add `info-size' to tracks in the current buffer.
+(defun al/emms-add-size ()
+  "Add `al-size' property to tracks in the current buffer.
 This function is intended to be added to
 `emms-playlist-source-inserted-hook'."
   (dolist (track (emms-playlist-tracks-in-region
                   (point-min) (point-max)))
     (when (and (eq (emms-track-type track) 'file)
-               (not (emms-track-get track 'info-size)))
+               (not (emms-track-get track 'al-size)))
       (when-let* ((attr (file-attributes (emms-track-name track)))
                   (size (file-attribute-size attr)))
-        (emms-track-set track 'info-size size)))))
+        (emms-track-set track 'al-size size)))))
 
 (defun al/emms-playlist-mode-insert-track (track &optional no-newline)
   "Insert the description of TRACK at point.
@@ -175,7 +175,7 @@ Intended to be used for `emms-track-description-function'."
     (if (string-match-p page-delimiter name)
         name
       (cl-flet ((etg (key) (emms-track-get track key)))
-        (let* ((size   (etg 'info-size))
+        (let* ((size   (etg 'al-size))
                (size   (if size
                            (concat (al/format-bytes size 3) " ")
                          ""))
