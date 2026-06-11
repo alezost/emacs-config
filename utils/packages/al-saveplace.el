@@ -1,6 +1,6 @@
-;;; al-saveplace.el --- Additional functionality for saveplace  -*- lexical-binding: t -*-
+;;; al-saveplace.el --- Additional functionality for `saveplace'  -*- lexical-binding: t -*-
 
-;; Copyright © 2016 Alex Kost
+;; Copyright © 2016–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -28,6 +28,15 @@ not save positions for `dired' buffers."
     (with-current-buffer buffer
       (when buffer-file-name
         (save-place-to-alist)))))
+
+;;;###autoload
+(define-minor-mode al/save-place-mode
+  "Replacement for `save-place-mode'."
+  :global t
+  :group 'save-place
+  (let ((hook-fun (if al/save-place-mode #'add-hook #'remove-hook)))
+    (funcall hook-fun 'find-file-hook #'save-place-find-file-hook)
+    (funcall hook-fun 'kill-buffer-hook #'save-place-to-alist)))
 
 (provide 'al-saveplace)
 

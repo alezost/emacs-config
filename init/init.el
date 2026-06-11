@@ -184,18 +184,10 @@ Do not alter `load-path'.  Instead, push added `load-path' to
 
     (when (or (equal name "server-emms")
               (equal server-name "server-emms"))
-      (al/eval-after-init
-        (appt-activate)
-        ;; I don't use `recentf-mode' and `save-place-mode' as they perform
-        ;; some extra stuff.  All I need is to save recentf/save-place
-        ;; positions when needed and to write positions to files on exit
-        ;; (performed by `al/save-everything' on frame kill).
-        (when (al/require recentf)
-          (recentf-load-list)
-          (al/add-hook-maybe 'find-file-hook 'recentf-track-opened-file))
-        (when (al/require saveplace)
-          (al/add-hook-maybe 'find-file-hook 'save-place-find-file-hook)
-          (al/add-hook-maybe 'kill-buffer-hook 'save-place-to-alist))))))
+      (al/call-after-init
+       '(al/save-place-mode
+         al/recentf-mode
+         appt-activate)))))
 
 (message "Garbage collected %d times." gcs-done)
 (al/title-message "Emacs config has been loaded")
