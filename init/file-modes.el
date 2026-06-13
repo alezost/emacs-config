@@ -114,6 +114,7 @@
       [remap delete-backward-char]
       [remap forward-paragraph]
       [remap backward-paragraph]
+      ("RET" . al/org-return)
       ("TAB" . al/org-tab)
       ("M-<return>" . org-meta-return)
       ("M->" . outline-previous-visible-heading)

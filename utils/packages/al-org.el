@@ -68,6 +68,14 @@ return nil; with FORCE return its time value. "
        (eval (cons 'encode-time
                    (org-parse-time-string org-time)))))
 
+(defun al/org-return ()
+  "Open link at point, goto next table row, or insert a newline.
+This is the same as `org-return' but links have a priority."
+  (interactive)
+  (if (org-in-regexp org-link-any-re nil t)
+      (org-open-at-point)
+    (org-return)))
+
 (defun al/org-return-indent ()
   "Insert a new row in tables, insert a newline and indent otherwise."
   (interactive)
