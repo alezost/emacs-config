@@ -17,8 +17,11 @@
 
 ;;; Code:
 
+(require 'seq)
 (require 'browse-url)
 (require 'let-macros)
+(require 'al-general)
+(require 'al-file)
 (require 'al-url)
 
 ;;;###autoload
@@ -97,6 +100,17 @@ parameters from URL."
 
 
 ;;; Additional browsers
+
+(defvar al/firefox-profile-regexp
+  "\\`[0-9a-z]\\{8\\}\\.\\([a-z]+\\)\\'"
+  "Regexp matching Firefox profile directory name.")
+
+(al/defun-lazy al/firefox-profiles
+  "Return list of all firefox profiles."
+  (seq-keep (lambda (name)
+              (and (string-match al/firefox-profile-regexp name)
+                   (match-string 1 name)))
+            (al/subdirs "~/.mozilla/firefox" 'base)))
 
 (defcustom al/browse-url-program "browser"
   "Shell command name for the default browser."
