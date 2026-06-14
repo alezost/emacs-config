@@ -50,14 +50,6 @@
 (al/call-after-init 'icomplete-vertical-mode)
 
 (al/bind-keys
-  :map minibuffer-local-completion-map
-  ("SPC") ("?")
-  ("RET" . icomplete-force-complete-and-exit))
-(al/bind-keys
-  :map minibuffer-local-must-match-map
-  ("RET" . icomplete-force-complete-and-exit))
-
-(al/bind-keys
   :map completion-list-mode-map
   ("." . previous-completion)
   ("e" . next-completion))
@@ -67,6 +59,14 @@
    icomplete-scroll t
    icomplete-tidy-shadowed-file-names t
    icomplete-show-matches-on-no-input t)
+
+  (al/bind-keys
+    :map minibuffer-local-completion-map
+    ("SPC") ("?")
+    ("RET" . icomplete-force-complete-and-exit))
+  (al/bind-keys
+    :map minibuffer-local-must-match-map
+    ("RET" . icomplete-force-complete-and-exit))
 
   (defconst al/icomplete-keys
     ;; Don't bind "RET" in `icomplete-minibuffer-map' because it has a
