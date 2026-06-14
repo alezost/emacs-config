@@ -68,7 +68,15 @@
 
 (transient-define-suffix tui/choose-browser:firefox (url new-window)
   (interactive (tui/choose-browser-args t))
-  (browse-url-firefox url new-window))
+  (apply #'al/browse-url-firefox url
+         (and new-window '("--new-window"))))
+
+(transient-define-suffix tui/choose-browser:firefox-profile (url new-window)
+  (interactive (tui/choose-browser-args t))
+  (let ((profile (completing-read "Profile: " (al/firefox-profiles))))
+    (apply #'al/browse-url-firefox url
+           "-P" profile
+           (and new-window '("--new-window")))))
 
 (transient-define-suffix tui/choose-browser:chromium (url new-window)
   (interactive (tui/choose-browser-args t))
@@ -101,18 +109,19 @@
 Suitable for `browse-url-browser-function'."
   [(tui/choose-browser:url)
    (tui/choose-browser:new-window)]
-  [("k"    "kill URL"     tui/choose-browser:kill-url)]
+  [("k"    "kill URL"           tui/choose-browser:kill-url)]
   ["Browser"
    [:pad-keys t
-    ("RET" "default"      tui/choose-browser:default)
-    ("u"   "default"      tui/choose-browser:default)
-    ("b"   "default"      tui/choose-browser:default)]
-   [("f"   "Firefox"      tui/choose-browser:firefox)
-    ("t"   "TOR Browser"  tui/choose-browser:tor)]
-   [("c"   "Chromium"     tui/choose-browser:chromium)]
-   [("w"   "w3m"          tui/choose-browser:w3m)
-    ("e"   "eww"          tui/choose-browser:eww)
-    ("E"   "Emacs"        tui/choose-browser:emacs)]]
+    ("RET" "default"            tui/choose-browser:default)
+    ("u"   "default"            tui/choose-browser:default)
+    ("b"   "default"            tui/choose-browser:default)]
+   [("f"   "Firefox"            tui/choose-browser:firefox)
+    ("F"   "Firefox profile"    tui/choose-browser:firefox-profile)
+    ("t"   "TOR Browser"        tui/choose-browser:tor)]
+   [("c"   "Chromium"           tui/choose-browser:chromium)]
+   [("w"   "w3m"                tui/choose-browser:w3m)
+    ("e"   "eww"                tui/choose-browser:eww)
+    ("E"   "Emacs"              tui/choose-browser:emacs)]]
   (interactive "sURL: ")
   (transient-setup 'tui/choose-browser nil nil
                    :value (list (concat "url=" url))))

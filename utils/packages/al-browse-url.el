@@ -136,6 +136,17 @@ parameters from URL."
                    (list url)))))
 
 ;;;###autoload
+(defun al/browse-url-firefox (url &rest args)
+  "Ask Firefox browser to load URL."
+  (interactive (browse-url-interactive-arg "URL: "))
+  (let ((url (browse-url-encode-url url))
+        (process-environment (browse-url-process-environment)))
+    (apply #'start-process
+	   (concat "firefox " url) nil
+	   "firefox"
+	   (append args (list url)))))
+
+;;;###autoload
 (defun al/browse-url-tor (url &rest args)
   "Ask the TOR browser to load URL."
   (interactive (browse-url-interactive-arg "URL: "))
