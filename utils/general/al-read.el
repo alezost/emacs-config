@@ -1,6 +1,6 @@
 ;;; al-read.el --- Minibuffer readers  -*- lexical-binding: t -*-
 
-;; Copyright © 2013-2016 Alex Kost
+;; Copyright © 2013–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -32,6 +32,16 @@
        (concat prompt-beg prompt-end))
      initial-input history
      default-value inherit-input-method)))
+
+(defun al/completing-read-no-sort (&rest args)
+  "Similar to `completing-read' but without additional sorting."
+  ;; `icomplete-mode' uses some rubbish sort of COLLECTION.  This can be
+  ;; avoided by setting `:cycle-sort-function' completion property.
+  ;;
+  ;; (completing-read "lang: " '("en" "ru" "fr"))
+  ;; (al/completing-read-no-sort "lang: " '("en" "ru" "fr"))
+  (let ((completion-extra-properties '(:cycle-sort-function identity)))
+    (apply #'completing-read args)))
 
 (provide 'al-read)
 

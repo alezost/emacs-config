@@ -22,6 +22,7 @@
 (require 'google-translate-core-ui)
 (require 'let-macros)
 (require 'al-general)
+(require 'al-read)
 (require 'al-url)
 (require 'al-visual)
 
@@ -71,11 +72,9 @@
   (tui/translate (read-string "Text: " tui/translate-text)))
 
 (defun tui/translate-read-language (prompt initial-input history)
-  ;; `icomplete-mode' uses some rubbish sort.  Avoid it by setting
-  ;; `:cycle-sort-function' completion property.
-  (let* ((completion-extra-properties '(:cycle-sort-function identity))
-         (choice (completing-read prompt (tui/translate-languages)
-                                  nil nil initial-input history)))
+  (let ((choice (al/completing-read-no-sort
+                 prompt (tui/translate-languages)
+                 nil nil initial-input history)))
     (and (string-match " (" choice)
          (substring choice 0 (match-beginning 0)))))
 

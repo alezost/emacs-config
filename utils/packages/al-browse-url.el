@@ -21,6 +21,7 @@
 (require 'browse-url)
 (require 'let-macros)
 (require 'al-general)
+(require 'al-read)
 (require 'al-file)
 (require 'al-url)
 
@@ -63,10 +64,9 @@ point, and `al/urls' list.
 If NO-QUERY is non-nil (interactively, with arg), remove query
 parameters from URL."
   (interactive
-   (let* ((completion-extra-properties '(:cycle-sort-function identity))
-          (url (completing-read "Browse URL: "
-                                (append (al/url-candidates)
-                                        al/urls))))
+   (let ((url (al/completing-read-no-sort
+               "Browse URL: "
+               (append (al/url-candidates) al/urls))))
      (list url current-prefix-arg)))
   (if-let ((url (al/check-url url))
            (url (if no-query
