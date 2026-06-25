@@ -50,7 +50,7 @@ Otherwise, the current buffer has been configured and:
 (defvar al/tempo-alist
   '((al/tempo-elisp-case  . al/tempo-elisp-templates)
     (al/tempo-clisp-case  . al/tempo-clisp-templates)
-    (scheme-mode          . al/tempo-scheme-templates)
+    ((scheme-mode geiser-repl-mode) . al/tempo-scheme-templates)
     (eshell-mode          . al/tempo-eshell-templates)
     (org-mode             . al/tempo-org-templates)
     (al/tempo-commit-message-case . al/tempo-commit-message-templates))
