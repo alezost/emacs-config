@@ -56,10 +56,11 @@ Otherwise, the current buffer has been configured and:
     (al/tempo-commit-message-case . al/tempo-commit-message-templates))
   "Alist of (CASE . TEMPLATES) pairs for generating templates.
 
-CASE can either be a `major-mode' symbol or a function called without
-arguments.  It should check if the current buffer is suitable for
-TEMPLATES.  If not, CASE should return nil.  Otherwise, it should
-return (TAGLIST [ARGS]) list, where
+CASE can either be a `major-mode' symbol, a list of `major-mode'
+symbols, or a function called without arguments.  The function should
+check if the current buffer is suitable for TEMPLATES.  If not, CASE
+should return nil.  Otherwise, it should return (TAGLIST [ARGS]) list,
+where
 
   TAGLIST is a variable name for `tempo-define-template';
 
@@ -281,7 +282,8 @@ Return non-nil otherwise."
 (defun al/tempo-check-case (case)
   "Check if the current buffer suits CASE.
 See `al/tempo-alist' for details."
-  (let ((case-name (symbol-name case)))
+  (let* ((cases (al/list-maybe case))
+         (case-name (symbol-name (car cases))))
     (if (string-match "\\(.+\\)-mode\\'" case-name)
         (and (derived-mode-p case)
              (list (intern (concat "al/tempo-"
