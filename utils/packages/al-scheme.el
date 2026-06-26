@@ -157,6 +157,24 @@ Call this function once!"
      (,al/scheme-symbol-in-quotes-regexp
       (1 font-lock-constant-face prepend)))))
 
+
+;;; Imenu entries
+
+(defvar al/scheme-imenu-define-values-re
+  (rx bol (zero-or-more space)
+      "(define-values"
+      (one-or-more space)
+      "("
+      (group (one-or-more (or word (syntax symbol)))))
+  "Regexp for `define-values' entries in imenu.")
+
+(declare-function al/add-to-imenu "al-imenu")
+
+;;;###autoload
+(defun al/scheme-imenu-add-define-values ()
+  "Add `al/scheme-imenu-define-values-re' to `imenu-generic-expression'."
+  (al/add-to-imenu al/scheme-imenu-define-values-re))
+
 (provide 'al-scheme)
 
 ;;; al-scheme.el ends here

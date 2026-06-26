@@ -543,7 +543,8 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
                       al/elisp-imenu-add-transient
                       al/elisp-imenu-add-eval-after-load)
      (lisp-mode       al/clisp-imenu-add-defcommand)
-     (scheme-mode     al/lisp-imenu-add-sections)
+     (scheme-mode     al/lisp-imenu-add-sections
+                      al/scheme-imenu-add-define-values)
      (js-mode         al/js-imenu-add-sections)))
 
   (advice-add 'imenu--make-index-alist :before #'al/imenu-augment))
