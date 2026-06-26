@@ -139,6 +139,11 @@ This function is intended to be added to `scheme-mode-hook'."
       (group (one-or-more (or (syntax word) (syntax symbol)))))
   "Regexp to match `define-lazy' macro.")
 
+(defvar al/scheme-symbol-in-quotes-regexp
+  ;; Taken from "lisp-mode.el".
+  (concat "[`‘']\\(" (rx lisp-mode-symbol) "\\)['’]")
+  "Regexp to match quoted symbols in strings and commentaries.")
+
 (defun al/scheme-add-font-lock-keywords ()
   "Add `font-lock-keywords' to highlight additional macros.
 Call this function once!"
@@ -148,7 +153,9 @@ Call this function once!"
    'scheme-mode
    `((,al/scheme-define-lazy-regexp
       (1 font-lock-keyword-face)
-      (2 font-lock-function-name-face)))))
+      (2 font-lock-function-name-face))
+     (,al/scheme-symbol-in-quotes-regexp
+      (1 font-lock-constant-face prepend)))))
 
 (provide 'al-scheme)
 
