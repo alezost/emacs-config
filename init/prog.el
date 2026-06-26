@@ -250,9 +250,9 @@
 
 (al/eval-after-load al-scheme
   (al/scheme-add-font-lock-keywords)
-    (al/add-hook-maybe 'scheme-mode-hook 'al/scheme-fix-docstring-font-lock)
-    (advice-add 'scheme-indent-function
-      :override 'al/scheme-indent-function))
+  (al/add-hook-maybe 'scheme-mode-hook 'al/scheme-fix-docstring-font-lock)
+  (advice-add 'scheme-indent-function
+    :override 'al/scheme-indent-function))
 
 (defconst al/geiser-keys
   '(("C-v"   . al/geiser-eval-dwim)
@@ -289,7 +289,8 @@
    geiser-repl-history-filename (al/emacs-data-dir-file "geiser-history"))
 
   (defconst al/geiser-repl-keys
-    '(([return] . al/geiser-repl-enter-dwim)
+    '("TAB"
+      ([return] . al/geiser-repl-enter-dwim)
       ("C-k" . al/geiser-repl-kill-whole-line)
       ("C-a" . geiser-repl--bol)
       ("C-c C-d" . geiser-repl-exit)
