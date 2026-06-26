@@ -324,15 +324,17 @@
   (setq
    geiser-repl-buffer-name-function #'al/geiser-repl-buffer-name
    al/geiser-sockets
-   (list (let* ((xdg-dir (getenv "XDG_RUNTIME_DIR"))
-                (dir (expand-file-name "guile-daemon"
-                                       (or xdg-dir
-                                           (getenv "XDG_CONFIG_HOME")
-                                           "~/.config")))
-                (dir (if xdg-dir
-                         dir
-                       (expand-file-name "run" dir))))
-           (expand-file-name "socket" dir)))))
+   (let* ((xdg-dir (getenv "XDG_RUNTIME_DIR"))
+          (dir (expand-file-name "guile-daemon"
+                                 (or xdg-dir
+                                     (getenv "XDG_CONFIG_HOME")
+                                     "~/.config")))
+          (dir (if xdg-dir
+                   dir
+                 (expand-file-name "run" dir))))
+     (list (expand-file-name "socket" dir)
+           ;; "herd start repl" should be run before using this socket.
+           (expand-file-name "shepherd/repl" xdg-dir)))))
 
 
 ;;; Haskell
