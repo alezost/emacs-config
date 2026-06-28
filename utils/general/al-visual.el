@@ -90,6 +90,22 @@ If FONT-NAMES is nil, use `al/font-candidates'."
               (find-font (font-spec :name name)))
             (or font-names al/font-candidates)))
 
+(defmacro al/set-fontset (&rest specs)
+  "Modify fontset using SPECS.
+Each specification from SPECS list has the following form:
+
+  (FONT . CHAR-SPECS)
+
+where FONT is FONT-SPEC and each element of CHAR-SPECS list is
+CHARACTERS in `set-fontset-font'."
+  (declare (indent 0) (debug t))
+  `(progn
+     ,@(mapcan (pcase-lambda (`(,name . ,char-specs))
+                 (mapcar (lambda (spec)
+                           `(set-fontset-font t ,spec ,name))
+                         char-specs))
+               specs)))
+
 (provide 'al-visual)
 
 ;;; al-visual.el ends here

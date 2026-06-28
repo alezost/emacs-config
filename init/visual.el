@@ -36,13 +36,12 @@
     (setq use-default-font-for-symbols nil)
     (let ((font (al/first-existing-font)))
       (set-frame-font font nil t)
-      (set-fontset-font t 'mathematical "Symbola")
-      (set-fontset-font t 'symbol "Symbola")
-      (set-fontset-font t 'hangul "Droid Sans Mono")
-      (set-fontset-font t 'greek font))
-    ;; This is needed to display unknown symbols (like ￰) properly
-    ;; i.e., without using Droid fallback.
-    (set-fontset-font t nil "Symbola")))
+      (al/set-fontset
+        (font 'greek)
+        ("Droid Sans Mono" 'hangul)
+        ;; Setting nil is needed to display unknown symbols (like ￰)
+        ;; properly i.e., without using Droid fallback.
+        ("Symbola" 'mathematical 'symbol nil)))))
 
 
 ;;; Global keys
