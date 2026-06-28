@@ -172,18 +172,11 @@ Do not alter `load-path'.  Instead, push added `load-path' to
   (advice-add 'insert-directory :around #'al/call-with-locale)
   (al/enable-process-hooks))
 
-(declare-function recentf-load-list "recentf")
-
 (al/eval-after-load al-server
   :load t
-  (let ((name (al/server-name)))
-    (if name
-        (setq al/server-running? t)
-      (with-demoted-errors "ERROR during server start: %S"
-        (al/server-named-start "server-emms" "server")))
-
-    (when (or (equal name "server-emms")
-              (equal server-name "server-emms"))
+  (when-let* ((name (al/server-name)))
+    (setq al/server-running? t)
+    (when (equal name "emms")
       (al/call-after-init
        '(al/save-place-mode
          al/recentf-mode
