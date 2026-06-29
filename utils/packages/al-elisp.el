@@ -70,6 +70,13 @@ Call this function once!"
 
 ;;; Imenu entries
 
+(declare-function al/add-to-imenu "al-imenu")
+
+;;;###autoload
+(defun al/elisp-imenu-add-defun-lazy ()
+  "Add `al/elisp-defun-lazy-regexp' to `imenu-generic-expression'."
+  (al/add-to-imenu al/elisp-defun-lazy-regexp :index 2))
+
 ;;; `use-package' entries
 
 ;; Idea from <https://github.com/jwiegley/use-package/issues/80>.
@@ -85,8 +92,6 @@ Call this function once!"
   "Group name in imenu index of use-package entries.
 If nil, put the entries in a top level.  See MENU-TITLE in
 `imenu-generic-expression' variable for details.")
-
-(declare-function al/add-to-imenu "al-imenu")
 
 ;;;###autoload
 (defun al/elisp-imenu-add-use-package ()

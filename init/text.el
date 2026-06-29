@@ -539,7 +539,8 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   (setq
    al/imenu-mode-alist
    '((lisp-data-mode  al/lisp-imenu-add-sections)
-     (emacs-lisp-mode al/elisp-imenu-add-use-package
+     (emacs-lisp-mode al/elisp-imenu-add-defun-lazy
+                      al/elisp-imenu-add-use-package
                       al/elisp-imenu-add-transient
                       al/elisp-imenu-add-eval-after-load)
      (lisp-mode       al/clisp-imenu-add-defcommand)
