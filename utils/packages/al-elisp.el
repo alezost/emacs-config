@@ -17,6 +17,7 @@
 
 ;;; Code:
 
+(require 'al-general)
 (require 'al-visual)
 
 (defun al/elisp-form-quoted-p (&rest _)
@@ -41,16 +42,14 @@ Usually, these are functions that behave like macros.")
 (defvar al/elisp-feature-macros-regexp
   (rx "(" (group (or "al/eval-after-load"
                      "al/require"))
-      symbol-end
-      (one-or-more blank)
-      (group (one-or-more (or (syntax word) (syntax symbol)))))
+      al/space
+      al/lisp-symbol-group)
   "Regexp to match `al/eval-after-load' macro.")
 
 (defvar al/elisp-defun-lazy-regexp
   (rx "(" (group "al/defun-lazy")
-      symbol-end
-      (one-or-more blank)
-      (group (one-or-more (or (syntax word) (syntax symbol)))))
+      al/space
+      al/lisp-symbol-group)
   "Regexp to match `al/defun-lazy' macro.")
 
 (defun al/elisp-add-font-lock-keywords ()
@@ -82,9 +81,11 @@ Call this function once!"
 ;; Idea from <https://github.com/jwiegley/use-package/issues/80>.
 
 (defvar al/elisp-imenu-use-package-re
-  (rx bol "(use-package" (+ whitespace)
+  (rx line-start
+      "(use-package"
+      al/space
       (? ?\")
-      (group (+ (or (syntax word) (syntax symbol))))
+      al/lisp-symbol-group
       (? ?\"))
   "Regexp for `use-package' entries in imenu.")
 
@@ -102,11 +103,13 @@ If nil, put the entries in a top level.  See MENU-TITLE in
 ;;; (with-)eval-after-load entries
 
 (defvar al/elisp-imenu-eval-after-load-re
-  (rx bol "(" (zero-or-one (or "al/" "with-"))
-      "eval-after-load" (+ whitespace)
-      (zero-or-one (or ?\" ?'))
-      (group (+ (or (syntax word) (syntax symbol))))
-      (zero-or-one ?\"))
+  (rx line-start
+      "(" (zero-or-one (or "al/" "with-"))
+      "eval-after-load"
+      al/space
+      (? (or ?\" ?'))
+      al/lisp-symbol-group
+      (? ?\"))
   "Regexp for `eval-after-load' and `with-eval-after-load' entries in imenu.")
 
 (defvar al/elisp-imenu-eval-after-load-group "(with-)eval-after-load")
@@ -120,9 +123,10 @@ If nil, put the entries in a top level.  See MENU-TITLE in
 ;;; Transient entries
 
 (defvar al/elisp-imenu-transient-re
-  (rx bol "(transient-define-" (+ (or (syntax word) (syntax symbol)))
-      (+ whitespace)
-      (group (+ (or (syntax word) (syntax symbol)))))
+  (rx line-start
+      "(transient-define-" al/lisp-symbol
+      al/space
+      al/lisp-symbol-group)
   "Regexp for transient entries in imenu.")
 
 (defvar al/elisp-imenu-transient-group "transient")

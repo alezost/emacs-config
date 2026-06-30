@@ -17,6 +17,7 @@
 
 ;;; Code:
 
+(require 'al-general)
 (require 'al-visual)
 
 
@@ -134,14 +135,13 @@ This function is intended to be added to `scheme-mode-hook'."
 
 (defvar al/scheme-define-lazy-regexp
   (rx "(" (group "define-lazy")
-      symbol-end
-      (one-or-more blank)
-      (group (one-or-more (or (syntax word) (syntax symbol)))))
+      al/space
+      al/lisp-symbol-group)
   "Regexp to match `define-lazy' macro.")
 
 (defvar al/scheme-symbol-in-quotes-regexp
   ;; Taken from "lisp-mode.el".
-  (concat "[`‘']\\(" (rx lisp-mode-symbol) "\\)['’]")
+  (concat "[`‘']" (rx al/lisp-symbol-group) "['’]")
   "Regexp to match quoted symbols in strings and commentaries.")
 
 (defun al/scheme-add-font-lock-keywords ()
@@ -161,11 +161,10 @@ Call this function once!"
 ;;; Imenu entries
 
 (defvar al/scheme-imenu-define-values-re
-  (rx bol (zero-or-more space)
+  (rx line-start al/space*
       "(define-values"
-      (one-or-more space)
-      "("
-      (group (one-or-more (or word (syntax symbol)))))
+      al/space
+      "(" al/lisp-symbol-group)
   "Regexp for `define-values' entries in imenu.")
 
 (declare-function al/add-to-imenu "al-imenu")

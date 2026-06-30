@@ -20,6 +20,26 @@
 (eval-when-compile (require 'cl-lib))
 (require 'seq)
 
+
+;;; `rx' definitions
+
+;; `lisp-mode.el' defines `lisp-mode-symbol' rx name.  However, it is
+;; not documented anywhere, so I define `al/lisp-symbol' instead.
+(rx-define al/lisp-symbol
+  (+ (or (syntax word) (syntax symbol))))
+
+(rx-define al/lisp-symbol-group
+  (group al/lisp-symbol))
+
+(rx-define al/space
+  (+ (or " " "\t")))
+
+(rx-define al/space*
+  (* (or " " "\t")))
+
+
+;;; Auxiliary code for macros
+
 (defvar al/generate-symbol-counter 0
   "Number used by `al/generate-interned-symbol'.
 This variable must be modified only by `al/generate-interned-symbol'.")

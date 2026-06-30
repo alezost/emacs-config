@@ -17,6 +17,7 @@
 
 ;;; Code:
 
+(require 'al-general)
 (require 'al-visual)
 
 
@@ -43,20 +44,17 @@
 (defvar al/clisp-defcommand-regexp
   (rx line-start
       "(" (group "defcommand")
-      symbol-end
-      (zero-or-more blank)
+      al/space
       (zero-or-one "(")
-      (zero-or-one
-       (group (one-or-more (or (syntax word) (syntax symbol))))))
-  "Regexp to match `defcommand' keyword.")
+      (zero-or-one al/lisp-symbol-group))
+  "Regexp to match `defcommand' StumpWM macro.")
 
 (defvar al/clisp-defun-with-delay-regexp
   (rx "(" (group "al/defun-with-delay")
-      symbol-end
-      (one-or-more blank)
-      (group (one-or-more (or (syntax word) (syntax symbol))))
-      (one-or-more blank)
-      (group (one-or-more (or (syntax word) (syntax symbol)))))
+      al/space
+      al/lisp-symbol-group
+      al/space
+      al/lisp-symbol-group)
   "Regexp to match `al/defun-with-delay' macro.")
 
 (defun al/clisp-add-font-lock-keywords ()
