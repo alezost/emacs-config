@@ -62,7 +62,9 @@
   ;; instead of requiring `al-clisp' here, it is loaded on the first run
   ;; of `lisp-mode' major mode (by `lisp-mode-hook').
   (al/defun-lazy al/clisp-init
-    (al/require al-clisp))
+    (al/require al-clisp)
+    ;; Update fontification of the current buffer.
+    (lisp-mode))
   (add-hook 'lisp-mode-hook 'al/clisp-init))
 
 (al/eval-after-load al-clisp
