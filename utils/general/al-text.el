@@ -57,8 +57,9 @@ nil, this candidate is removed from the final list."
 (defun al/parse-ytdlp-file-name-output (string)
   "Parse and return file name from `yt-dlp' output.
 STRING is the output of \"yt-dlp --print filename\" or similar command.
-Return nil if string cannot be parsed."
-  (if (string-match-p "ERROR" string)
+Return nil if STRING cannot be parsed."
+  (if (let ((case-fold-search nil))
+        (string-match-p "\\`ERROR" string))
       (error "Cannot parse file name output: %S" string)
     (let* ((string (substring-no-properties string))
            (file-name (string-trim-right string "\n")))
