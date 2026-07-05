@@ -156,11 +156,11 @@ fontification."
        (al/with-face 'bold
          (format "%02d" (string-to-number track-number)))))
 
-(defun al/emms-format-playing-time (time)
+(defun al/emms-format-playing-time (time &optional face format)
   "Return TIME formatted to display in EMMS playlist."
-  (format "%7s"
+  (format (or format "%s")
           (if time
-              (al/with-face 'alect-time
+              (al/with-face (or face 'alect-time)
                 (emms-state-format-time time))
             "")))
 
@@ -182,11 +182,22 @@ Intended to be used for `emms-track-description-function'."
                (artist (al/emms-format-artist       (etg 'info-artist)))
                (title  (al/emms-format-title        (etg 'info-title)))
                (note   (al/emms-format-note         (etg 'al-note)))
-               (time   (al/emms-format-playing-time (etg 'info-playing-time)))
                (tnum   (al/emms-format-track-number (etg 'info-tracknumber)))
                (album  (al/emms-format-album        (etg 'info-album)))
                (date   (al/emms-format-date     (or (etg 'info-date)
                                                     (etg 'info-year))))
+               (progress (etg 'progress))
+               (progress (and progress
+                              (al/emms-format-playing-time
+                               progress
+                               'emms-state-current-playing-time)))
+               (time (al/emms-format-playing-time
+                      (etg 'info-playing-time)
+                      'emms-state-total-playing-time
+                      (unless progress "%7s")))
+               (time (if progress
+                         (concat progress "(" time ")")
+                       time))
                (title (cond
                        ((memq (emms-track-type track)
                               '(url streamlist))
@@ -209,7 +220,7 @@ Intended to be used for `emms-track-description-function'."
                        (concat note " " desc " "))
                       (note (concat note " "))
                       (desc (concat desc " ")))))
-          (concat time " " size desc title))))))
+          (concat size time " " desc title))))))
 
 (defun al/emms-short-track-description (track)
   "Return a short description of TRACK suitable for mode-line."
