@@ -24,7 +24,7 @@
 
 ;;; Global keys
 
-(al/bind-key "M-T" tui/notification)
+(al/bind-key* "M-T" tui/notification)
 (al/bind-keys
  :prefix-map al/calendar-map
  :prefix-docstring "Map for calendar, diary, notifications, etc."
