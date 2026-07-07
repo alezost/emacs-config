@@ -247,7 +247,7 @@ buffer."
       ;; to do this?
       (save-excursion
         (forward-char)
-        (ppss-comment-or-string-start (syntax-ppss)))))
+        (ppss-comment-depth (syntax-ppss)))))
 
 (defun parens-move-fallback-p ()
   "Return non-nil, if we should fallback to `parens-open-regexp' search."
