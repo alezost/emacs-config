@@ -43,6 +43,10 @@
          (if (eq (car cmd-spec) 'lambda)
              cmd-spec
            `(lambda () (interactive) ,@cmd-spec)))
+        ((and (symbolp cmd-spec)
+              (not (commandp cmd-spec))
+              (boundp cmd-spec))
+         cmd-spec)
         (t `',cmd-spec)))
 
 (defmacro al/bind-key (key-name command &optional keymap)
@@ -53,7 +57,10 @@ KEY-NAME should be a string or a vector taken by `define-key'.
 COMMAND may be either:
 
   - nil (to unbind the key if it is already bound in KEYMAP),
-  - a command name (an unquoted symbol),
+
+  - an unquoted symbol, which is either a command or a variable with
+    keymap,
+
   - or a list (it will be wrapped into interactive `lambda' form).
 
 If KEYMAP is not specified, use `global-map'.
