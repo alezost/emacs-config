@@ -92,6 +92,12 @@ popped buffer, reuse it."
   (al/with-pop-to-default-window
     (pop-to-buffer buffer)))
 
+;;;###autoload
+(defun al/display-buffer-other-window (buffer)
+  "Switch to BUFFER, preferably in other window."
+  (al/with-pop-to-other-window
+    (pop-to-buffer buffer)))
+
 (cl-defun al/switch-buffer (&key prompt buffers initial-input)
   "Switch to a buffer prompting with PROMPT for a buffer from BUFFERS.
 If the list of BUFFERS is not specified, use all buffers.
