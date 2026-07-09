@@ -223,8 +223,7 @@
     slime-mode-map)
 
   (defconst al/slime-repl-keys
-    '(("C-k" . al/slime-repl-kill-whole-line)
-      ("M-." . slime-repl-previous-input)
+    '(("M-." . slime-repl-previous-input)
       ("M-e" . slime-repl-next-input)
       ("M->" . slime-repl-previous-prompt)
       ("M-E" . slime-repl-next-prompt)

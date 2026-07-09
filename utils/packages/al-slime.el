@@ -1,6 +1,6 @@
 ;;; al-slime.el --- Additional functionality for SLIME  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2016, 2019 Alex Kost
+;; Copyright © 2013–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -39,16 +39,6 @@ buffers."
     (slime-eval-last-expression)))
 
 (defvar slime-repl-input-start-mark)
-
-;;;###autoload
-(defun al/slime-repl-kill-whole-line (arg)
-  "Similar to `kill-whole-line', respecting slime-repl prompt."
-  (interactive "p")
-  (let ((prompt-pos (marker-position slime-repl-input-start-mark)))
-    (if (< (point) prompt-pos)
-        (kill-whole-line arg)
-      (kill-region prompt-pos
-                   (progn (forward-line arg) (point))))))
 
 ;;;###autoload
 (defun al/slime-stumpwm-connect (&optional display)
