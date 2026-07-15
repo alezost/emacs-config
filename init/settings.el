@@ -456,9 +456,12 @@
 
 ;;; Button, custom, widget
 
+(al/autoload "bui-button" bui-button-copy-label)
+
 (al/eval-after-load button
   (defconst al/button-map-keys
-    '(("u" . push-button))
+    '(("u" . push-button)
+      ("c" . bui-button-copy-label))
     "Alist of auxiliary keys for `button-map'.")
   (al/bind-keys-from-vars 'button-map 'al/button-map-keys t)
   (al/bind-keys-from-vars 'button-buffer-map 'al/button-keys t))
