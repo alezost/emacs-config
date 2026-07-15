@@ -587,22 +587,28 @@ Also it (default syntax) breaks `indent-guide-mode'."
     (intern string-or-symbol)))
 
 (defmacro al/defun-lazy (name &rest body)
-  "Define NAME variable and function accepting zero arguments.
-On the first call, NAME function evaluates BODY, writes its value to
-NAME variable, and returns it.  On subsequent calls, just the value of
-NAME variable is returned without BODY evaluation."
+  "Define NAME function accepting zero arguments.
+On the first call, NAME function evaluates BODY and returns result.  On
+subsequent calls, just the result of the first call is returned without
+BODY evaluation."
   (declare (indent 1) (debug t))
-  (let* ((docstring (and (stringp (car body))
-                         (pop body)))
+  (let* ((name-str    (symbol-name name))
+         (called-var  (intern (concat name-str "-called?")))
+         (val-var     (intern (concat name-str "-value")))
+         (docstring   (and (stringp (car body))
+                           (pop body)))
          (interactive (and (equal (car body) '(interactive))
                            (pop body))))
     `(progn
-       (defvar ,name nil)
+       (defvar ,called-var nil)
+       (defvar ,val-var nil)
        (defun ,name ()
          ,docstring
          ,interactive
-         (or ,name
-             (setq ,name (progn ,@body)))))))
+         (if ,called-var
+             ,val-var
+           (setq ,called-var t
+                 ,val-var (progn ,@body)))))))
 
 (defmacro al/with-check-point (&rest body)
   "Evaluate BODY.
