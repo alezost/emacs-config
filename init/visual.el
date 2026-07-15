@@ -115,8 +115,9 @@
 ;; <http://lists.gnu.org/archive/html/help-gnu-emacs/2013-12/msg00191.html>
 (defvar al/mode-server
   '(al/server-running?
-    (:eval (list (propertize " " 'display
-                             `(space :align-to (- right ,(length server-name))))
+    (:eval (list (propertize " "
+                   'display `(space :align-to
+                                    (- right ,(length server-name))))
                  server-name)))
   "Mode line construct for displaying `server-name' if server is running.")
 (put 'al/mode-server 'risky-local-variable t)
@@ -242,21 +243,20 @@
  mode-line-mule-info
  `(""
    (current-input-method
-    (:propertize
-     current-input-method-title
-     help-echo (concat ,(purecopy "Input method: ")
-                       current-input-method
-                       ,(purecopy
-                         (concat "\n" "mouse-2: Disable input method\n"
-                                 "mouse-3: Describe input method")))
-     local-map ,mode-line-input-method-map
-     face font-lock-warning-face
-     mouse-face mode-line-highlight))
-   ,(propertize
-     "%z"
-     'help-echo 'mode-line-mule-info-help-echo
-     'mouse-face 'mode-line-highlight
-     'local-map mode-line-coding-system-map)
+    (:propertize current-input-method-title
+      help-echo (concat ,(purecopy "Input method: ")
+                        current-input-method
+                        ,(purecopy
+                          (concat "\n"
+                                  "mouse-2: Disable input method\n"
+                                  "mouse-3: Describe input method")))
+      local-map ,mode-line-input-method-map
+      face font-lock-warning-face
+      mouse-face mode-line-highlight))
+   ,(propertize "%z"
+      'help-echo 'mode-line-mule-info-help-echo
+      'mouse-face 'mode-line-highlight
+      'local-map mode-line-coding-system-map)
    (:eval (mode-line-eol-desc))))
 
 (setq
@@ -272,38 +272,39 @@
    (list '(:eval
            (let ((proc (get-buffer-process (current-buffer))))
              (propertize
-              (if proc (symbol-name (process-status proc)) "–")
-              'face 'font-lock-constant-face)))
+                 (if proc (symbol-name (process-status proc)) "–")
+               'face 'font-lock-constant-face)))
          " "
          (propertize "%["
-                     'help-echo recursive-edit-help-echo
-                     'face 'font-lock-warning-face)
+           'help-echo recursive-edit-help-echo
+           'face 'font-lock-warning-face)
          "│"
          `(:propertize mode-name
-                       help-echo ,mode-help-echo
-                       face al/mode-name
-                       mouse-face mode-line-highlight
-                       local-map ,mode-line-major-mode-keymap)
+            help-echo ,mode-help-echo
+            face al/mode-name
+            mouse-face mode-line-highlight
+            local-map ,mode-line-major-mode-keymap)
          '(al/mode-info
            ("("
-            (:propertize al/mode-info face font-lock-comment-face)
+            (:propertize al/mode-info
+              face font-lock-comment-face)
             ")"))
          `(:propertize minor-mode-alist
-                       mouse-face mode-line-highlight
-                       help-echo ,mode-help-echo
-                       local-map ,mode-line-minor-mode-keymap)
+            mouse-face mode-line-highlight
+            help-echo ,mode-help-echo
+            local-map ,mode-line-minor-mode-keymap)
          '(:eval
            (if (buffer-narrowed-p)
                (propertize " ↕"
-                           'help-echo "mouse-1: Remove narrowing"
-                           'mouse-face 'mode-line-highlight
-                           'local-map (make-mode-line-mouse-map
-                                       'mouse-1 #'mode-line-widen))
+                 'help-echo "mouse-1: Remove narrowing"
+                 'mouse-face 'mode-line-highlight
+                 'local-map (make-mode-line-mouse-map
+                             'mouse-1 #'mode-line-widen))
              ""))
          "│"
          (propertize "%]"
-                     'help-echo recursive-edit-help-echo
-                     'face 'font-lock-warning-face))))
+           'help-echo recursive-edit-help-echo
+           'face 'font-lock-warning-face))))
 
 
 ;;; Misc settings and packages
