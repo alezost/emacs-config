@@ -124,8 +124,8 @@ to the whole track line, so the track description can have custom
 fontification."
   (emms-playlist-ensure-playlist-buffer)
   (emms-with-inhibit-read-only-t
-   (insert (emms-propertize (emms-track-force-description track)
-                            'emms-track track))
+   (insert (propertize (emms-track-force-description track)
+             'emms-track track))
    (unless no-newline
      (insert "\n"))))
 
