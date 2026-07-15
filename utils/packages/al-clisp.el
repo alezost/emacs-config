@@ -42,8 +42,7 @@
   "List of additional keywords to highlight in `lisp-mode'.")
 
 (defvar al/clisp-defcommand-regexp
-  (rx line-start
-      "(" (group "defcommand")
+  (rx "(" (group "defcommand")
       al/space
       (zero-or-one "(")
       (zero-or-one al/lisp-symbol-group))
@@ -78,6 +77,8 @@ Call this function once!"
 (defun al/clisp-imenu-add-defcommand ()
   "Add `defcommand' entries to `imenu-generic-expression'."
   (al/add-to-imenu al/clisp-defcommand-regexp
+                   :add-line-start t
+                   :title "Commands"
                    :index 2))
 
 (provide 'al-clisp)

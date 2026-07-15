@@ -19,11 +19,16 @@
 
 (eval-when-compile (require 'cl-lib))
 
-(cl-defun al/add-to-imenu (regexp &key (index 1) title append)
+(cl-defun al/add-to-imenu (regexp &key (index 1) title append add-line-start)
   "Add REGEXP with INDEX and TITLE to `imenu-generic-expression'.
-If APPEND is nil, add the new element at the end."
+If APPEND is non-nil, add the new element at the end.
+If ADD-LINE-START is non-nil, add line-start to REGEXP."
   (add-to-list 'imenu-generic-expression
-               (list title regexp index)
+               (list title
+                     (if add-line-start
+                         (concat "^" regexp)
+                       regexp)
+                     index)
                append))
 
 (defvar al/imenu-mode-alist nil
