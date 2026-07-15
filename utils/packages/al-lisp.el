@@ -27,7 +27,7 @@
 ;; (add-hook 'lisp-mode-hook 'al/lisp-imenu-add-sections)
 ;; (add-hook 'scheme-mode-hook 'al/lisp-imenu-add-sections)
 
-(defvar al/lisp-imenu-sections-re "^;;; \\(.+\\)$"
+(defvar al/lisp-imenu-sections-re "^;;;+ \\(.+\\)$"
   "Regexp for \"Sections\" imenu entries in Lisp modes.")
 
 (defvar al/lisp-imenu-sections-group "Sections"
