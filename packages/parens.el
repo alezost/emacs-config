@@ -116,7 +116,8 @@ If not, throw an error."
 
 DIRECTION should be either `forward' or `backward' symbol.
 
-Return non-nil, if something was skipped.  Return nil otherwise."
+Return non-nil, if both, parentheses and whitespaces, were skipped.
+Return nil otherwise."
   (cl-flet ((skip (str)
               (abs (funcall (cl-ecase direction
                               (forward  #'skip-chars-forward)
@@ -126,7 +127,9 @@ Return non-nil, if something was skipped.  Return nil otherwise."
            (skipped2 (if (> skipped1 0)
                          (skip " \t\n")
                        0))
-           (skipped  (+ skipped1 skipped2)))
+           (skipped  (if (> skipped2 0)
+                         (+ skipped1 skipped2)
+                       0)))
       (> skipped 0))))
 
 ;;;###autoload
