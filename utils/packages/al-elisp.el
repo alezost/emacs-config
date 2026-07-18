@@ -31,7 +31,8 @@ I always want to complete all symbols!"
 ;;; Highlighting and indenting additional macros
 
 (al/put lisp-indent-function
-  (1 :propertize
+  (1 advice-add
+     :propertize
      propertize))
 
 (al/put doc-string-elt

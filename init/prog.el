@@ -28,8 +28,6 @@
  eval-expression-print-length nil
  parens-require-spaces nil)
 
-(put 'advice-add 'lisp-indent-function 1)
-
 (al/bind-key* "M-v" al/pp-eval-expression)
 (al/bind-keys
  ("C-v"   . al/eval-dwim)
