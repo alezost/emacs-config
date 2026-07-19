@@ -25,24 +25,23 @@
 ;; - `negate',
 ;; - `compose',
 ;; - `compose-left',
-;; - `compose-right',
-;; - `multi-filter'.
+;; - `compose-right'.
 
 ;;; Code:
 
 (defun and=> (value &rest functions)
   "Return result of consecutive applying FUNCTIONS to VALUE.
 
-More precisely, for a given list of FUNCTIONS, (FUN1 FUN2 ... FUNn),
+More precisely, for a given list of FUNCTIONS, (F1 F2 ... Fn),
 return nil if:
 
   VALUE is nil or
-  (FUN1 VALUE) is nil or
-  (FUN2 (FUN1 VALUE)) is nil or
+  (F1 VALUE) is nil or
+  (F2 (F1 VALUE)) is nil or
   ...
-  (FUNn ... (FUN2 (FUN1 VALUE))) is nil.
+  (Fn ... (F2 (F1 VALUE))) is nil.
 
-Otherwise, return (FUNn ... (FUN2 (FUN1 VALUE)))."
+Otherwise, return (Fn ... (F2 (F1 VALUE)))."
   (and value
        (if functions
            (apply #'and=>
@@ -53,13 +52,13 @@ Otherwise, return (FUNn ... (FUN2 (FUN1 VALUE)))."
 (defmacro and<= (value &rest functions)
   "Return VALUE if (FUN VALUE) is not false for all FUNCTIONS.
 
-More precisely, for a given list of FUNCTIONS, (FUN1 FUN2 ... FUNn),
+More precisely, for a given list of FUNCTIONS, (F1 F2 ... Fn),
 return nil if:
 
-  (FUN1 VALUE) is nil or
-  (FUN2 VALUE) is nil or
+  (F1 VALUE) is nil or
+  (F2 VALUE) is nil or
   ...
-  (FUNn VALUE) is nil.
+  (Fn VALUE) is nil.
 
 Otherwise, return VALUE."
   (let ((var (make-symbol "val")))
@@ -111,22 +110,6 @@ See `compose' for details."
   "Compose FUNCTIONS from right to left into a single function.
 See `compose' for details."
   (compose functions 'right))
-
-(defun multi-filter (element filters)
-  "Pass ELEMENT through FILTERS.
-
-FILTERS is a list of functions, (F1 F2 ... FN), applied from left to
-right, passing result to the next function i.e.,
-
-  (FN (... (F2 (F1 ELEMENT))))
-
-If any filter returns nil, the rest filters are not applied.
-
-Return result of the final filter application."
-  (if (null filters)
-      element
-    (when-let* ((res (funcall (car filters) element)))
-      (multi-filter res (cdr filters)))))
 
 (provide 'fp-utils)
 

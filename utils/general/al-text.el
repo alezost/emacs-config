@@ -52,7 +52,7 @@ nil, this candidate is removed from the final list."
                      (gui--selection-value-internal 'PRIMARY)
                      (car kill-ring))))
     (seq-keep (lambda (candidate)
-                (multi-filter candidate filters))
+                (apply #'and=> candidate filters))
               (seq-uniq (delq nil candidates)))))
 
 (defun al/parse-ytdlp-file-name-output (string)
