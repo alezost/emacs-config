@@ -37,6 +37,17 @@ This function is intended to be used as an `after' advice for
     (values--store-value result)
     (pp-display-expression result "*Pp Eval Output*")))
 
+;;;###autoload
+(defun al/pp-macroexpand-last-sexp (&optional arg)
+  "Macroexpand sexp before point.
+If ARG is nil, use `macroexpand-all'.
+Otherwise (interactively, with prefix), use `macroexpand-1'."
+  (interactive "P")
+  (pp-display-expression
+   (funcall (if arg #'macroexpand-1 #'macroexpand-all)
+            (pp-last-sexp))
+   "*Pp Macroexpand Output*"))
+
 (provide 'al-pp)
 
 ;;; al-pp.el ends here

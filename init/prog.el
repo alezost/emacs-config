@@ -32,7 +32,7 @@
 (al/bind-keys
  ("C-v"   . al/eval-dwim)
  ("C-s-v" . al/pp-eval-dwim)
- ("C-S-v" . pp-macroexpand-last-sexp)
+ ("C-S-v" . al/pp-macroexpand-last-sexp)
  ("C-M-v" . eval-defun)
  ("M-s-v" . eval-buffer)
  ("C-d"   . elisp-slime-nav-describe-elisp-thing-at-point)
