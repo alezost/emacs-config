@@ -113,8 +113,8 @@ This function is intended to be used as a substitution for
   (when (derived-mode-p 'sql-mode)
     (set-syntax-table (sql-product-syntax-table))
     (sql-product-font-lock nil t))
-  (and (or (derived-mode-p 'sql-mode)
-           (derived-mode-p 'sql-interactive-mode))
+  (and (derived-mode-p '(sql-mode
+                         sql-interactive-mode))
        (setq al/mode-info
              (or (sql-get-product-feature sql-product :name)
                  (symbol-name sql-product)))))
