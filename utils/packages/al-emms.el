@@ -23,6 +23,7 @@
 (require 'emms-playlist-mode)
 (require 'emms-state)
 (require 'let-macros)
+(require 'fp-utils)
 (require 'al-text)
 (require 'al-format)
 (require 'al-buffer)
@@ -160,7 +161,7 @@ fontification."
   "Return TIME formatted to display in EMMS playlist."
   (format (or format "%s")
           (if time
-              (al/with-face (or face 'alect-time)
+              (al/with-face (or face 'emms-state-current-playing-time)
                 (emms-state-format-time time))
             "")))
 
@@ -186,11 +187,8 @@ Intended to be used for `emms-track-description-function'."
                (album  (al/emms-format-album        (etg 'info-album)))
                (date   (al/emms-format-date     (or (etg 'info-date)
                                                     (etg 'info-year))))
-               (progress (etg 'progress))
-               (progress (and progress
-                              (al/emms-format-playing-time
-                               progress
-                               'emms-state-current-playing-time)))
+               (progress (and=> (etg 'progress)
+                                #'al/emms-format-playing-time))
                (time (al/emms-format-playing-time
                       (etg 'info-playing-time)
                       'emms-state-total-playing-time

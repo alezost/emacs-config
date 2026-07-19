@@ -25,6 +25,7 @@
 (require 'emms)
 (require 'emms-source-playlist)
 (require 'emms-playing-time)
+(require 'fp-utils)
 (require 'let-macros)
 (require 'al-buffer)
 (require 'al-url)
@@ -54,8 +55,8 @@ This function is intended to be added to `emms-mpv-file-loaded-hook'."
   "Play EMMS FILE from `org-mode'."
   (let* ((path (split-string file "::"))
 	 (file (car path))
-         (time (cadr path))
-	 (time (and time (al/time-string-to-seconds time)))
+	 (time (and=> (cadr path)
+                      #'al/time-string-to-seconds))
          (track (emms-playlist-current-selected-track)))
     (when time
       (setq al/org-emms-seek-time time))
