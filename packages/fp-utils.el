@@ -22,6 +22,11 @@
 ;;
 ;; - `and=>',
 ;; - `and=<',
+;; - `negate',
+;; - `compose',
+;; - `compose-left',
+;; - `compose-right',
+;; - `multi-filter'.
 
 ;;; Code:
 
@@ -63,6 +68,65 @@ Otherwise, return VALUE."
                         `(funcall ,fun ,var))
                       functions)
             ,var))))
+
+(defun negate (fun)
+  "Return a function that negates the result of FUN."
+  (lambda (&rest args)
+    (not (apply fun args))))
+
+(defun compose (functions &optional direction)
+  "Compose FUNCTIONS into a single function.
+
+DIRECTION should be one of the following symbols: `left' (default) or
+`right'.
+
+If DIRECTION is `left', FUNCTIONS are composed from left to right i.e.,
+the first function is applied to arguments, then the second function is
+applied to the result, and so on.
+
+If DIRECTION is `right', FUNCTIONS are composed from right to left i.e.,
+the last function is applied to arguments, then the function before it
+is applied to the result, and so on."
+  (cond
+   ((null functions)
+    #'identity)
+   ((null (cdr functions))
+    (car functions))
+   (t
+    (let ((functions (if (eq direction 'right)
+                         (reverse functions)
+                       functions)))
+      (lambda (&rest args)
+        (let ((res (apply (car functions) args)))
+          (dolist (fun (cdr functions))
+            (setq res (funcall fun res)))
+          res))))))
+
+(defun compose-left (&rest functions)
+  "Compose FUNCTIONS from left to right into a single function.
+See `compose' for details."
+  (compose functions 'left))
+
+(defun compose-right (&rest functions)
+  "Compose FUNCTIONS from right to left into a single function.
+See `compose' for details."
+  (compose functions 'right))
+
+(defun multi-filter (element filters)
+  "Pass ELEMENT through FILTERS.
+
+FILTERS is a list of functions, (F1 F2 ... FN), applied from left to
+right, passing result to the next function i.e.,
+
+  (FN (... (F2 (F1 ELEMENT))))
+
+If any filter returns nil, the rest filters are not applied.
+
+Return result of the final filter application."
+  (if (null filters)
+      element
+    (when-let* ((res (funcall (car filters) element)))
+      (multi-filter res (cdr filters)))))
 
 (provide 'fp-utils)
 

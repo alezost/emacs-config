@@ -18,6 +18,7 @@
 ;;; Code:
 
 (require 'seq)
+(require 'fp-utils)
 (require 'let-macros)
 (require 'al-general)
 
@@ -51,7 +52,7 @@ nil, this candidate is removed from the final list."
                      (gui--selection-value-internal 'PRIMARY)
                      (car kill-ring))))
     (seq-keep (lambda (candidate)
-                (al/multi-filter candidate filters))
+                (multi-filter candidate filters))
               (seq-uniq (delq nil candidates)))))
 
 (defun al/parse-ytdlp-file-name-output (string)
