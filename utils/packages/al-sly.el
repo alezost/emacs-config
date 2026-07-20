@@ -22,6 +22,18 @@
 (require 'sly-mrepl "contrib/sly-mrepl")
 (require 'let-macros)
 
+(defun al/sly-change-action-button-label (fun label &rest args)
+  "Replace brackets with spaces in LABEL string.
+This function is intended to be used as an `around' advice for
+`sly-make-action-button'."
+  (let* ((label (if (string-match "\\`\\[" label)
+                    (concat " " (substring label (match-end 0)))
+                  label))
+         (label (if (string-match "\\]\\'" label)
+                    (concat (substring label 0 (match-beginning 0)) " ")
+                  label)))
+    (apply fun label args)))
+
 ;;;###autoload
 (defun al/sly-eval-dwim ()
   "Eval (with SLY) last sexp or region if it is active."

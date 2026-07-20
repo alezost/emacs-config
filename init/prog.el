@@ -205,7 +205,13 @@
   ;; Bind `sly-mode' keys after loading contribs because `sly-mrepl'
   ;; binds "C-c C-z".
   (al/bind-keys-from-vars 'sly-prefix-map 'al/sly-prefix-keys)
-  (al/bind-keys-from-vars 'sly-mode-map 'al/sly-keys))
+  (al/bind-keys-from-vars 'sly-mode-map 'al/sly-keys)
+
+  (al/require al-sly))
+
+(al/eval-after-load al-sly
+  (advice-add 'sly-make-action-button
+    :around #'al/sly-change-action-button-label))
 
 (al/eval-after-load sly-mrepl
   (defconst al/sly-repl-keys
