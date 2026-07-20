@@ -210,6 +210,7 @@
 (al/eval-after-load sly-mrepl
   (defconst al/sly-repl-keys
     '("TAB"
+      ("C-c C-d" . al/sly-repl-disconnect-or-quit)
       ("M-r" . comint-history-isearch-backward-regexp)
       ("M-." . sly-mrepl-previous-input-or-button)
       ("M-e" . sly-mrepl-next-input-or-button)

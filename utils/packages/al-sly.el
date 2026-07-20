@@ -74,6 +74,13 @@ prefer the current window."
   ;; Taken from `sly-mrepl-set-package'.
   (sly-mrepl--eval-for-repl `(slynk-mrepl:guess-and-set-package ,package)))
 
+(defun al/sly-repl-disconnect-or-quit (&optional arg)
+  "Close the current connection or kill the inferior process."
+  (interactive "P")
+  (if arg
+      (sly-quit-lisp)
+    (sly-disconnect)))
+
 ;;;###autoload
 (defun al/sly-switch-to-repl-and-enter ()
   "Switch to SLY REPL and enter the current buffer's module.
