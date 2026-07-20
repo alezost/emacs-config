@@ -210,6 +210,7 @@
   (al/require al-sly))
 
 (al/eval-after-load al-sly
+  (setq sly--mode-line-format `(:eval (al/sly-mode-line-format)))
   (advice-add 'sly-make-action-button
     :around #'al/sly-change-action-button-label))
 

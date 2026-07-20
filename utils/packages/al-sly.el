@@ -17,10 +17,35 @@
 
 ;;; Code:
 
+(require 'cl-lib)
 (require 'sly)
 (require 'sly-autodoc "contrib/sly-autodoc")    ; required by `mrepl'
 (require 'sly-mrepl "contrib/sly-mrepl")
+(require 'fp-utils)
 (require 'let-macros)
+
+(defun al/sly-current-package ()
+  "Return Common Lisp package of the current buffer.
+This is a replacement for `sly-current-package'...  Actually, this
+function is used only by `al/sly-mode-line-format'.  But since it sets
+`sly-buffer-package' variable, `sly-current-package' just returns its
+value."
+  ;; By default, the current package in REPL depends on the nearest
+  ;; prompt which is overkill in my opinion.  Ideally,
+  ;; `sly-buffer-package' variable should be set when a package is
+  ;; changed for the current prompt.  Anyway, noone needs the current
+  ;; package in the mode-line for REPL buffer because you can always see
+  ;; it in the REPL prompt.
+  (unless (derived-mode-p 'sly-mrepl-mode)
+    ;; `sly-buffer-package' variable should be set by
+    ;; `sly-current-package' for non-REPL buffers but this is not
+    ;; happens for some reason, so by default, a package is searched
+    ;; (eventually, by `sly-search-buffer-package') on every mode line
+    ;; update (since `sly-current-package' is used in the mode-line
+    ;; construct).
+    (or sly-buffer-package
+        (setq sly-buffer-package
+              (sly-current-package)))))
 
 (defun al/sly-change-action-button-label (fun label &rest args)
   "Replace brackets with spaces in LABEL string.
@@ -102,6 +127,87 @@ This command is analogous to `geiser-mode-switch-to-repl-and-enter' for
   (let ((pkg (sly-current-package)))
     (al/sly 'other-window)
     (al/sly-repl-set-package pkg)))
+
+
+;;; Mode line
+
+(defvar al/sly-ml-connection-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map [mode-line down-mouse-1] sly-menu)
+    map))
+
+(defvar al/sly-ml-pending-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map [mode-line mouse-1] 'sly-pop-to-events-buffer)
+    (define-key map [mode-line mouse-3] 'sly-forget-pending-events)
+    map))
+
+(defvar al/sly-ml-dbs-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map [mode-line mouse-1] 'sly-db-pop-to-debugger)
+    map))
+
+(defun al/sly-ml-format-number (n)
+  (cond ((and n (< 0 n))
+         (format "%d" n))
+        (n "-")
+        (t "*")))
+
+(defun al/sly-ml-connection (conn-name)
+  (propertize conn-name
+    'face 'sly-mode-line
+    'help-echo "mouse-1: pop-up SLY menu"
+    'mouse-face 'mode-line-highlight
+    'keymap al/sly-ml-connection-map))
+
+(defun al/sly-ml-pending (conn)
+  (let ((pending (length (sly-rex-continuations conn))))
+    (apply #'propertize
+           (al/sly-ml-format-number pending)
+           'help-echo (format "%s %s\n%s\n%s"
+                              pending
+                              "pending events outgoing"
+                              "mouse-1: go to *sly-events* buffer"
+                              "mouse-3: forget pending continuations")
+           'mouse-face 'mode-line-highlight
+           'keymap al/sly-ml-pending-map
+           (and (< 0 pending)
+                '(face error)))))
+
+(defun al/sly-ml-dbs (conn)
+  (let ((dbs (length (sly-db-buffers conn))))
+    (apply #'propertize
+           (al/sly-ml-format-number dbs)
+           'help-echo (format "%s %s\n%s"
+                              dbs
+                              "SLY-DB buffers waiting"
+                              "mouse-1: go to first one")
+           'mouse-face 'mode-line-highlight
+           'keymap al/sly-ml-dbs-map
+           (and (< 0 dbs)
+                '(face error)))))
+
+(defun al/sly-mode-line-format ()
+  "Simplified and improved version of `sly--mode-line-format'."
+  (let* ((conn      (and<= (sly-current-connection)
+                           #'identity #'process-live-p))
+         (conn-name (or (and=> conn #'sly-connection-name)
+                        "*"))
+         (pkg-name  (and=> (al/sly-current-package)
+                           #'sly--pretty-package-name)))
+    (cl-list*
+     (al/sly-ml-connection conn-name)
+     " "
+     (and pkg-name
+          (list (propertize pkg-name
+                  'face 'font-lock-builtin-face)
+                " "))
+     (if conn
+         (list (al/sly-ml-pending conn)
+               "|"
+               (al/sly-ml-dbs conn))
+       (list (propertize "–"
+               'help-echo "No connection"))))))
 
 (provide 'al-sly)
 
