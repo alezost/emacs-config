@@ -100,6 +100,7 @@
      geiser
      geiser-guile
      geiser-racket
+     sly
      w3m
      (wget               :fetcher github :repo "ataka/emacs-wget")
      agent-shell

@@ -36,7 +36,9 @@ I always want to complete all symbols!"
      propertize))
 
 (al/put doc-string-elt
-  (2 al/defun-lazy))
+  (2 al/defun-lazy
+     define-sly-contrib)
+  (3 sly-def-connection-var))
 
 (defvar al/elisp-keywords
   '("with-no-warnings"

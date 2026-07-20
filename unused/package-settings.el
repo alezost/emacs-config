@@ -225,6 +225,116 @@
   (al/bind-keys-from-vars 'vertico-map 'al/vertico-keys))
 
 
+;;; SLIME
+
+;; This should be set before loading slime.
+(al/setq-no-warnings
+ slime-contribs
+ '(slime-repl
+   slime-autodoc
+   ;; slime-editing-commands  ; Binds C-M-e to some rubbish
+   ;; slime-c-p-c             ; requires slime-editing-commands
+   slime-fancy-inspector
+   slime-fancy-trace
+   slime-fuzzy
+   slime-mdot-fu
+   slime-macrostep
+   slime-presentations
+   ;; slime-scratch
+   slime-references
+   slime-package-fu
+   slime-fontifying-fu
+   slime-trace-dialog
+   slime-indentation))
+
+(al/eval-after-init
+  ;; Use SLIME from quicklisp.
+  (let* ((quicklisp-dir  (expand-file-name "~/.quicklisp"))
+         (swank.txt-file (expand-file-name
+                          "dists/quicklisp/installed/systems/swank.txt"
+                          quicklisp-dir)))
+    (al/with-check
+      :file swank.txt-file
+      (let* ((swank.txt (with-temp-buffer
+                          (insert-file-contents swank.txt-file)
+                          (buffer-string)))
+             (slime-dir (file-name-directory
+                         (expand-file-name swank.txt quicklisp-dir))))
+        (al/add-to-load-path-maybe slime-dir)
+        (al/autoload "slime" slime slime-mode slime-lisp-mode-hook)
+        (add-hook 'lisp-mode-hook 'slime-lisp-mode-hook)))))
+
+;; `al/slime-keys' is required for `al/erc-channel-config'
+(defconst al/slime-keys
+  '(("C-v"     . al/slime-eval-dwim)
+    ("C-M-v"   . slime-eval-defun)
+    ("M-s-v"   . slime-eval-buffer)
+    ("C-S-v"   . slime-expand-1)
+    ("C-d"     . slime-describe-symbol)
+    ("M-d"     . slime-edit-definition)
+    ("C-M-d"   . slime-doc-map)
+    "C-c C-d")
+  "Alist of auxiliary keys for slime modes.")
+(al/bind-keys
+ :prefix-map al/slime-map
+ :prefix-docstring "Map for slime commands."
+ :prefix "M-L"
+ ("l"   . slime-repl)
+ ("M-L" . slime-repl)
+ ("c"   . al/slime-stumpwm-connect)
+ ("d"   . slime-disconnect)
+ ("M-S" . slime)
+ ("s"   . slime-selector))
+
+(al/eval-after-load slime
+  (setq
+   inferior-lisp-program "sbcl"
+   ;; slime-lisp-implementations
+   ;; `((sbcl ("sbcl" "--core" ,(al/src-dir-file "sbcl-with-swank"))))
+   ;; Do not ask about version difference.
+   slime-protocol-version 'ignore)
+
+  (defconst al/slime-xref-keys
+    '(("." . slime-xref-prev-line)
+      ("e" . slime-xref-next-line)
+      ("u" . slime-goto-xref)
+      ("d" . slime-show-xref))
+    "Alist of auxiliary keys for `slime-xref-mode'.")
+  (al/bind-keys-from-vars 'slime-xref-mode-map 'al/slime-xref-keys)
+
+  (defconst al/slime-doc-keys
+    '(("C-d" . slime-documentation-lookup))
+    "Alist of auxiliary keys for `slime-doc-map'.")
+  (al/bind-keys-from-vars 'slime-doc-map 'al/slime-doc-keys)
+
+  (al/bind-keys-from-vars 'slime-parent-map
+    '(al/free-misc-keys al/slime-keys))
+  (al/bind-keys-from-vars '(slime-mode-map slime-editing-map)))
+
+(al/eval-after-load slime-repl
+  ;; "C-c C-j" (in `slime-mode-map') is bound in "slime-repl.el", so
+  ;; override it here.
+  (al/bind-key "C-c C-j"
+    al/slime-switch-to-repl-and-enter
+    slime-mode-map)
+
+  (defconst al/slime-repl-keys
+    '(("M-." . slime-repl-previous-input)
+      ("M-e" . slime-repl-next-input)
+      ("M->" . slime-repl-previous-prompt)
+      ("M-E" . slime-repl-next-prompt)
+      ("M-r" . slime-repl-previous-matching-input))
+    "Alist of auxiliary keys for `slime-repl-mode-map'.")
+  (al/bind-keys-from-vars 'slime-repl-mode-map 'al/slime-repl-keys))
+
+(al/eval-after-load slime-autodoc
+  ;; `slime-autodoc-mode' binds some useless keys into "C-c C-d" prefix.
+  (al/clean-map 'slime-autodoc-mode-map)
+  (al/bind-keys
+   :map slime-autodoc-mode-map
+   ("SPC" . slime-autodoc-space)))
+
+
 ;;; Windows and frames
 
 (setq

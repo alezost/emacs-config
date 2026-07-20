@@ -524,7 +524,7 @@
         (al/bind-local-keys-from-vars 'al/slime-keys))
        ((string-match "#stumpwm" buf)
         (setq-local slime-buffer-package :stumpwm)
-        (al/bind-local-keys-from-vars 'al/slime-keys)))))
+        (al/bind-local-keys-from-vars 'al/sly-keys)))))
   (al/add-hook-maybe 'erc-join-hook 'al/erc-channel-config)
 
   (al/require al-erc)
