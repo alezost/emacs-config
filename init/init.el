@@ -98,11 +98,14 @@ Do not alter `load-path'.  Instead, push added `load-path' to
                    args))
         (error (message (concat "ERROR during generating "
                                 name " autoloads: %S")
-                        error)
-               nil)))
-    (let ((load-path nil))
-      (al/load autoloads-file)
-      (push load-path al/load-paths))))
+                        error))))
+    (condition-case error
+        (let ((load-path nil))
+          (al/load autoloads-file)
+          (push load-path al/load-paths))
+      (error (message (concat "ERROR during loading "
+                              name " autoloads: %S")
+                      error)))))
 
 (defvar al/autoloads-presets
   `(("utils"
