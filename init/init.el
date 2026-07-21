@@ -41,6 +41,7 @@
 (defvar al/initial-load-path load-path)
 (push al/emacs-general-utils-dir load-path)
 (push (al/emacs-utils-dir-file "packages") load-path)
+(push al/emacs-my-packages-dir load-path)
 
 (require 'al-general)
 
