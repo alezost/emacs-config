@@ -17,6 +17,8 @@
 
 ;;; Code:
 
+(require 'let-macros)
+
 
 ;;; Make 2 windows
 
@@ -26,15 +28,16 @@
 FUN is a function for splitting
 windows (`split-window-below' by default)."
   (interactive)
-  (let ((fun (or fun #'split-window-below))
-        (windows (window-list nil 'no-minibuffer)))
-    (if (= 1 (length windows))
-        (funcall fun)
-      (let ((cur-buffer (current-buffer)))
-        (other-window -1)
-        (delete-other-windows)
-        (funcall fun)
-        (switch-to-buffer cur-buffer)))))
+  (if-let- ((fun (or fun #'split-window-below))
+            (windows (window-list nil 'no-minibuffer)
+                     (=> #'length)
+                     (<= (lambda (n) (= 1 n)))))
+      (funcall fun)
+    (let ((cur-buffer (current-buffer)))
+      (other-window -1)
+      (delete-other-windows)
+      (funcall fun)
+      (switch-to-buffer cur-buffer))))
 
 ;;;###autoload
 (defalias 'al/make-vertical-windows #'al/make-2-windows
@@ -90,7 +93,7 @@ otherwise select the next window."
 (defun al/switch-to-minibuffer ()
   "Switch to minibuffer window."
   (interactive)
-  (if-let* ((mb (active-minibuffer-window)))
+  (if-let ((mb (active-minibuffer-window)))
       (select-window mb)
     (error "Minibuffer is not active")))
 

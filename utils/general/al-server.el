@@ -19,6 +19,7 @@
 
 (require 'server)
 (require 'seq)
+(require 'let-macros)
 
 (defvar al/server-running? nil
   "The state of the current server.
@@ -27,7 +28,7 @@ This variable is set by `al/server-start'.")
 (defun al/server-name ()
   "Return daemon or server name.
 Return nil if server is not started."
-  (if-let* ((name (daemonp)))
+  (if-let ((name (daemonp)))
       (if (stringp name)
           name
         server-name)
@@ -51,7 +52,7 @@ Return nil if server is not started."
   "Start server using the first `server-name' from NAMES.
 If there is such server running, try the second name and so on.
 If servers with all NAMES are running, do not start the server."
-  (if-let* ((name (car names)))
+  (if-let ((name (car names)))
       (if (server-running-p name)
           (apply #'al/server-named-start (cdr names))
         (setq server-name name)

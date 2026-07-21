@@ -17,7 +17,7 @@
 
 ;;; Code:
 
-(require 'al-general)
+(require 'let-macros)
 (require 'al-general)
 (require 'al-read)
 
@@ -31,7 +31,7 @@ If FILENAME is a directory, call `find-file' starting from it."
       (let ((default-directory (file-name-as-directory
                                 (or filename default-directory))))
         (call-interactively #'find-file))
-    (if-let* ((buf (get-file-buffer filename)))
+    (if-let ((buf (get-file-buffer filename)))
         (switch-to-buffer buf)
       (find-file filename))))
 
@@ -100,7 +100,7 @@ with \\[universal-argument] \\[universal-argument], prompt for a default host as
   (interactive
    (list (completing-read "Find PATH file: "
                           (al/path-completions))))
-  (when-let* ((file (executable-find file)))
+  (when-let ((file (executable-find file)))
     (find-file file)))
 
 

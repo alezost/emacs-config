@@ -18,7 +18,7 @@
 ;;; Code:
 
 (eval-when-compile (require 'cl-lib))
-(require 'al-general)
+(require 'let-macros)
 (require 'al-general)
 
 
@@ -106,13 +106,13 @@ With ARG, PRIMARY has the priority over CLIPBOARD."
   ;; Not using `gui-selection-value' here because it returns value only
   ;; once (!) i.e., the first call returns the value and successive
   ;; calls return nil until CLIPBOARD/PRIMARY is changed.
-  (let ((clip (gui--selection-value-internal 'CLIPBOARD))
-        (prim (gui--selection-value-internal 'PRIMARY)))
-    (if-let* ((str (if arg
-                       (or prim clip)
-                     (or clip prim))))
-        (insert str)
-      (message "Clipboard is empty."))))
+  (if-letn ((clip (gui--selection-value-internal 'CLIPBOARD))
+            (prim (gui--selection-value-internal 'PRIMARY))
+            (str  (if arg
+                      (or prim clip)
+                    (or clip prim))))
+      (insert str)
+    (message "Clipboard is empty.")))
 
 (defun al/yank-or-pop (n)
   "Replace just-yanked text with the N-th kill.

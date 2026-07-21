@@ -17,6 +17,7 @@
 
 ;;; Code:
 
+(require 'let-macros)
 (require 'al-places)
 
 (defun al/start-process (program &rest args)
@@ -69,7 +70,7 @@ Interactively prompt for PROCESS name."
 
 (defun al/process-is-program (args name)
   "Return non-nil, if process defined by ARGS has program NAME."
-  (when-let* ((prog (car args)))
+  (when-let ((prog (car args)))
     (or (string= prog name)
         (and (string-match-p "sh\\'" prog) ; if it is bash/sh/...
              (string= (nth 1 args) "-c")

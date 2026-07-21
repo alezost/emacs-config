@@ -20,6 +20,7 @@
 (require 'seq)
 (require 'timer)
 (require 'notifications)
+(require 'let-macros)
 (require 'al-general)
 (require 'al-file)
 
@@ -103,8 +104,8 @@ Return nil if TIMER is not a proper timer."
 
 (defun al/timer-live? (timer)
   "Return t if TIMER is not expired."
-  (let ((seconds (al/timer-remaining-seconds timer)))
-    (and seconds (< 0 seconds))))
+  (when-let ((seconds (al/timer-remaining-seconds timer)))
+    (< 0 seconds)))
 
 
 ;;; Timers in the mode line
@@ -118,20 +119,19 @@ Return nil if TIMER is not a proper timer."
 ;; (put 'al/timer-mode-line-string 'risky-local-variable t)
 
 (defun al/timer-update-mode-line ()
-  (let ((times
-         (seq-keep
-          (lambda (notif)
-            (let* ((timer (plist-get notif :timer))
-                   (seconds (al/timer-remaining-seconds timer)))
-              (when (< 0 seconds)
-                (format-time-string al/notification-time-format
-                                    (seconds-to-time seconds)))))
-          al/notifications)))
-    (if times
-        (setq al/timer-mode-line-string
-              (concat " 🕒 " (mapconcat #'identity times ", ")))
-      (al/timer-mode -1))
-    (force-mode-line-update)))
+  (if-let ((times
+            (seq-keep
+             (lambda (notif)
+               (let* ((timer (plist-get notif :timer))
+                      (seconds (al/timer-remaining-seconds timer)))
+                 (when (< 0 seconds)
+                   (format-time-string al/notification-time-format
+                                       (seconds-to-time seconds)))))
+             al/notifications)))
+      (setq al/timer-mode-line-string
+            (concat " 🕒 " (mapconcat #'identity times ", ")))
+    (al/timer-mode -1))
+  (force-mode-line-update))
 
 (define-minor-mode al/timer-mode
   "Toggle displaying active timers in the mode line."
