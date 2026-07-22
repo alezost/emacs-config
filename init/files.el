@@ -97,7 +97,7 @@
   ;; Emacs does not create a directory of an autosave file and just
   ;; complains when it doesn't exist.
   (unless (file-exists-p dir)
-    (with-demoted-errors "ERROR during making auto-save directory: %S"
+    (al/with-demoted-errors "Making auto-save directory failed: %S"
       (mkdir dir t)))
   (setq auto-save-file-name-transforms
         `((".*" ,(file-name-as-directory dir) t))))

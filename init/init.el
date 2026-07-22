@@ -66,12 +66,9 @@
     "custom"))
 
 (dolist (file al/init-files)
-  (condition-case error
-      (al/init-load file)
-    (error (message (concat "ERROR during loading \""
-                            file "\" init file: %S")
-                    error)
-           nil)))
+  (al/with-demoted-errors
+      (concat "Loading \"" file "\" init file failed: %S")
+    (al/init-load file)))
 
 (defvar al/load-paths nil)
 
@@ -90,24 +87,19 @@ Do not alter `load-path'.  Instead, push added `load-path' to
   (when (file-exists-p directory)
     (al/title-message (concat "Autoloading " name))
     (unless (file-exists-p autoloads-file)
-      (condition-case error
-          (progn
-            (require 'al-autoload)
-            (apply #'al/generate-autoloads directory
-                   :output-file autoloads-file
-                   args))
-        (error (message (concat "ERROR during generating "
-                                name " autoloads: %S")
-                        error))))
-    (condition-case error
-        (let ((count (length load-path)))
-          (al/load autoloads-file)
-          ;; Pick the freshly added paths for further use.
-          (push (seq-subseq load-path 0 (- count))
-                al/load-paths))
-      (error (message (concat "ERROR during loading "
-                              name " autoloads: %S")
-                      error)))))
+      (al/with-demoted-errors
+          (concat "Generating " name " autoloads failed: %S")
+        (require 'al-autoload)
+        (apply #'al/generate-autoloads directory
+               :output-file autoloads-file
+               args)))
+    (al/with-demoted-errors
+        (concat "Loading " name " autoloads failed: %S")
+      (let ((count (length load-path)))
+        (al/load autoloads-file)
+        ;; Pick the freshly added paths for further use.
+        (push (seq-subseq load-path 0 (- count))
+              al/load-paths)))))
 
 (defvar al/autoloads-presets
   `(("utils"

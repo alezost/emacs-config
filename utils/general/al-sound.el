@@ -17,6 +17,8 @@
 
 ;;; Code:
 
+(require 'al-general)
+
 
 ;;; Playing sound
 
@@ -35,7 +37,7 @@ If nil, use `play-sound-file'.")
       (apply #'start-process
              al/play-sound-program nil al/play-sound-program
              (append al/play-sound-args (list file)))
-    (with-demoted-errors "ERROR during playing sound: %S"
+    (al/with-demoted-errors "Playing sound failed: %S"
       (play-sound-file file))))
 
 

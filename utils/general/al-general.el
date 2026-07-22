@@ -230,6 +230,7 @@ N must be a positive integer.  START must be a non-negative integer."
          ,(concat "Display " name-str " message.")
          (message (apply #',str-name format-string args))))))
 
+(al/define-message error "ERROR: ")
 (al/define-message warning "WARNING: ")
 (al/define-message important "XXX ")
 (al/define-message title "⏺ ")
@@ -512,6 +513,20 @@ Also it (default syntax) breaks `indent-guide-mode'."
 
 
 ;;; Miscellaneous utils
+
+(defmacro al/with-demoted-errors (format &rest body)
+  "Run BODY and demote any errors to simple messages.
+
+See `with-demoted-errors' for the meaning of arguments.
+
+`with-demoted-errors' supports an obsolete use where FORMAT string can
+be missing.  Because of this, (concat ...) cannot be used for FORMAT in
+`with-demoted-errors'.  That is why this macro exists."
+  (declare (debug t) (indent 1))
+  (let ((err (make-symbol "error")))
+    `(condition-case ,err
+         ,(macroexp-progn body)
+       (error (al/error-message ,format ,err) nil))))
 
 (defmacro al/setq-no-warnings (&rest args)
   "Same as `setq' but suppressing free variable compilation warnings."

@@ -18,6 +18,7 @@
 ;;; Code:
 
 (require 'seq)
+(require 'al-general)
 
 (defvar al/default-input-methods
   '((text-mode . "al/utf"))
@@ -38,7 +39,7 @@ If `major-mode' is not derived from one of the modes specified at
       ;; `al/set-default-input-method' is added to
       ;; `after-change-major-mode-hook' so make sure it is not failed
       ;; (in case input-method doesn't exist).
-      (with-demoted-errors "ERROR during setting input method: %S"
+      (al/with-demoted-errors "Setting input method failed: %S"
         (set-input-method input-method)))))
 
 ;;;###autoload
