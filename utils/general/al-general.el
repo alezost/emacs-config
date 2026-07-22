@@ -213,27 +213,26 @@ N must be a positive integer.  START must be a non-negative integer."
 
 ;;; Auxiliary messages
 
-(defun al/warning-message (format-string &rest args)
-  "Display a warning message."
-  (apply #'message
-         (concat "WARNING: " format-string)
-         args))
+(defmacro al/define-message (name string)
+  "Define `al/NAME-string' and `al/NAME-message' functions."
+  (declare (indent 0) (debug t))
+  (let* ((name-str (symbol-name name))
+         (str-name (intern (concat "al/" name-str "-string")))
+         (msg-name (intern (concat "al/" name-str "-message"))))
+    `(progn
+       (defun ,str-name (format-string &rest args)
+         ,(concat "Return " name-str " string.")
+         (apply #'format
+                (concat ,string format-string)
+                args))
 
-(defun al/important-message (format-string &rest args)
-  "Display an important message."
-  (apply #'message
-         (concat "XXX " format-string)
-         args))
+       (defun ,msg-name (format-string &rest args)
+         ,(concat "Display " name-str " message.")
+         (message (apply #',str-name format-string args))))))
 
-(defun al/title-string (format-string &rest args)
-  "Return title string."
-  (apply #'format
-         (concat "⏺ " format-string)
-         args))
-
-(defun al/title-message (format-string &rest args)
-  "Display title message."
-  (message (apply #'al/title-string format-string args)))
+(al/define-message warning "WARNING: ")
+(al/define-message important "XXX ")
+(al/define-message title "⏺ ")
 
 
 ;;; Auxiliary predicates
