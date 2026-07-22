@@ -100,9 +100,11 @@ Do not alter `load-path'.  Instead, push added `load-path' to
                                 name " autoloads: %S")
                         error))))
     (condition-case error
-        (let ((load-path nil))
+        (let ((count (length load-path)))
           (al/load autoloads-file)
-          (push load-path al/load-paths))
+          ;; Pick the freshly added paths for further use.
+          (push (seq-subseq load-path 0 (- count))
+                al/load-paths))
       (error (message (concat "ERROR during loading "
                               name " autoloads: %S")
                       error)))))
