@@ -20,6 +20,7 @@
 (eval-when-compile (require 'cl-lib))
 (require 'seq)
 (require 'emms-mpv)
+(require 'count)
 (require 'al-general)
 (require 'al-window)
 
@@ -96,11 +97,7 @@ should be a list of values, e.g.:
        (message
         (mapconcat #'identity
                    ;; Remove nils and empty strings.
-                   (seq-remove (lambda (elt)
-                                 (or (null elt)
-                                     (and (stringp elt)
-                                          (string= elt ""))))
-                               (list title name description))
+                   (seq-remove #'=0 (list title name description))
                    "\n"))))))
 
 (declare-function al/emms-notify "al-emms-notification" ())

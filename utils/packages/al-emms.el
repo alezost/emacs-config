@@ -22,6 +22,7 @@
 (require 'emms)
 (require 'emms-playlist-mode)
 (require 'emms-state)
+(require 'count)
 (require 'let-macros)
 (require 'fp-utils)
 (require 'al-text)
@@ -443,7 +444,7 @@ See `al/emms-playlist-mpv-command-alist' for details."
   (interactive
    (let* ((prompt "Add URL: ")
           (candidates (al/url-candidates))
-          (url (if (cdr candidates)
+          (url (if (>1 candidates)
                    (completing-read prompt candidates)
                  (read-string prompt (car candidates)))))
      (list url)))

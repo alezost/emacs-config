@@ -25,6 +25,7 @@
 (require 'emms)
 (require 'emms-source-playlist)
 (require 'emms-playing-time)
+(require 'count)
 (require 'fp-utils)
 (require 'let-macros)
 (require 'al-buffer)
@@ -75,7 +76,7 @@ This function is intended to be added to `emms-mpv-file-loaded-hook'."
   "Return org link for EMMS TRACK.
 TIME is seeking time in seconds."
   (concat "emms:" (emms-track-name track)
-          (and time (/= 0 time)
+          (and time (>0 time)
                (concat "::" (format-seconds al/org-emms-time-format
                                             time)))))
 
@@ -124,11 +125,11 @@ If TIME is zero, play from the beginning."
         (message "Playlist %S already exists." buf-name))
     (emms-mpv-set-current-playlist (emms-playlist-new buf-name))
     (emms-add-playlist file)
-    (if-let ((time (cadr path))
-             (time (and (not (equal "" time))
-                        (al/time-string-to-seconds time))))
+    (if-let ((time (cadr path)
+                   (<= #'>0)
+                   (=> #'al/time-string-to-seconds)))
         (progn
-          (when (< 0 time)
+          (when (>0 time)
             (setq al/org-emms-seek-time time))
           (emms-start))
       (al/display-buffer emms-playlist-buffer))))

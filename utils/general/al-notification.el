@@ -20,6 +20,7 @@
 (require 'seq)
 (require 'timer)
 (require 'notifications)
+(require 'count)
 (require 'let-macros)
 (require 'al-general)
 (require 'al-file)
@@ -122,11 +123,11 @@ Return nil if TIMER is not a proper timer."
   (if-let ((times
             (seq-keep
              (lambda (notif)
-               (let* ((timer (plist-get notif :timer))
-                      (seconds (al/timer-remaining-seconds timer)))
-                 (when (< 0 seconds)
-                   (format-time-string al/notification-time-format
-                                       (seconds-to-time seconds)))))
+               (let- ((timer (plist-get notif :timer))
+                      (seconds (al/timer-remaining-seconds timer)
+                               (<= #'>0)))
+                 (format-time-string al/notification-time-format
+                                     (seconds-to-time seconds))))
              al/notifications)))
       (setq al/timer-mode-line-string
             (concat " 🕒 " (mapconcat #'identity times ", ")))

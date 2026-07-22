@@ -17,6 +17,7 @@
 
 ;;; Code:
 
+(require 'count)
 (require 'let-macros)
 
 
@@ -30,8 +31,7 @@ windows (`split-window-below' by default)."
   (interactive)
   (if-let- ((fun (or fun #'split-window-below))
             (windows (window-list nil 'no-minibuffer)
-                     (=> #'length)
-                     (<= (lambda (n) (= 1 n)))))
+                     (<= #'=1)))
       (funcall fun)
     (let ((cur-buffer (current-buffer)))
       (other-window -1)

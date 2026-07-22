@@ -1,6 +1,6 @@
 ;;; al-appt.el --- Additional functionality for appointments  -*- lexical-binding: t -*-
 
-;; Copyright © 2014–2025 Alex Kost
+;; Copyright © 2014–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 ;;; Code:
 
 (require 'notifications)
+(require 'count)
 (require 'al-sound)
 (require 'al-file)
 
@@ -71,7 +72,7 @@ because I know better what to do."
 (defun al/appt-mode-line (min-list &rest _)
   "Replacement for `appt-mode-line'."
   (format " appt%s in %s"
-          (if (cdr min-list) "s" "")
+          (if (>1 min-list) "s" "")
           (mapconcat #'identity min-list ",")))
 
 ;; `appt-check' adds an extra space to the mode line which can be fixed

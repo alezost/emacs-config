@@ -19,6 +19,7 @@
 
 (eval-when-compile (require 'cl-lib))
 (require 'seq)
+(require 'count)
 (require 'al-general)
 
 (defun al/file-if-exists (file)
@@ -93,7 +94,7 @@ OUT-FILE is a name of the output file.
 If INSERT-FILE-NAMES is non-nil, insert a file name before the
 contents of each file."
   (if (and (listp in-files)
-           (> (length in-files) 1))
+           (>1 in-files))
       (with-temp-buffer
         (dolist (file in-files)
           (when (file-regular-p file)
