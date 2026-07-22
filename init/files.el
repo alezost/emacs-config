@@ -306,7 +306,6 @@
  ("c" . recentf-cleanup))
 
 (al/eval-after-load recentf
-  :load after-init
   (setq
    recentf-exclude (list (al/file-regexp "el" "gz")
                          #'file-remote-p)
@@ -324,7 +323,6 @@
     :override #'al/ffap-read-file-or-url))
 
 (al/eval-after-load saveplace
-  :load after-init
   (setq
    ;; For some reason, `save-place-loaded' is t after `saveplace' load.
    ;; This bug(?) appeared somewhere between Emacs 29.4 and Emacs 30.1.
