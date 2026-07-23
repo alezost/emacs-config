@@ -1,6 +1,6 @@
 ;;; al-w3m.el --- Additional functionality for w3m  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2025 Alex Kost
+;; Copyright © 2013–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 (eval-when-compile (require 'cl-lib))
 (require 'w3m)
 (require 'wget nil t)
+(require 'let-macros)
 (require 'al-buffer)
 
 ;;;###autoload
@@ -69,14 +70,13 @@ Defined function has a name `al/w3m-TYPE-url'."
     `(defun ,name ()
        ,desc
        (interactive)
-       (let ((url (or ,type-url
-                      (al/w3m-search-url ,type (point-min) 'w3m-next-anchor)
-                      (al/w3m-search-url ,type (point-max) 'w3m-previous-anchor))))
-         (if url
-             (let ((w3m-prefer-cache t))
-               (w3m-history-store-position)
-               (w3m-goto-url url))
-           (message ,(concat "No '" type "' link found.")))))))
+       (if-let ((url (or ,type-url
+                         (al/w3m-search-url ,type (point-min) 'w3m-next-anchor)
+                         (al/w3m-search-url ,type (point-max) 'w3m-previous-anchor))))
+           (let ((w3m-prefer-cache t))
+             (w3m-history-store-position)
+             (w3m-goto-url url))
+         (message ,(concat "No '" type "' link found."))))))
 
 (al/w3m-define-goto-url "next")
 (al/w3m-define-goto-url "previous")
@@ -98,8 +98,8 @@ Same as `w3m-wget' but works."
 (defun al/w3m-buffer-number-action (function buffer-number)
   "Call FUNCTION on a w3m buffer with BUFFER-NUMBER.
 Buffers are enumerated from 1."
-  (when-let* ((buf (nth (- buffer-number 1)
-                        (w3m-list-buffers))))
+  (when-let ((buf (nth (- buffer-number 1)
+                       (w3m-list-buffers))))
     (funcall function buf)))
 
 ;;;###autoload

@@ -125,13 +125,13 @@ Return nil if no matches found."
 (defun al/gnus-article-find-url-1 (predicate)
   (al/button-next)
   (unless (eobp)
-    (let* ((point (point))
-           ;; Text property with URL depends on `mm-text-html-renderer'.
-           (url (or (get-text-property point 'gnus-string)
-                    (get-text-property point 'shr-url))))
-      (if (and url (funcall predicate url))
-          url
-        (al/gnus-article-find-url-1 predicate)))))
+    (if-letn ((point (point))
+              ;; Text property with URL depends on `mm-text-html-renderer'.
+              (url (or (get-text-property point 'gnus-string)
+                       (get-text-property point 'shr-url))
+                   (<= predicate)))
+        url
+      (al/gnus-article-find-url-1 predicate))))
 
 (defun al/gnus-article-find-url-by-re (regexp &optional group)
   "Return the first URL matching REGEXP.

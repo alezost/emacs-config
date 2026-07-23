@@ -19,6 +19,7 @@
 
 (require 'notifications)
 (require 'count)
+(require 'let-macros)
 (require 'al-sound)
 (require 'al-file)
 
@@ -64,10 +65,10 @@ Use `al/appt-notify-urgent-sound'."
   "Notify about an appointment if needed.
 This function is a substitution for `appt-display-message',
 because I know better what to do."
-  (let* ((string (car strings))
-         (min    (car mins))
-         (fun    (cdr (assq min al/appt-actions))))
-    (and fun (funcall fun string))))
+  (when-letn ((string (car strings))
+              (min    (car mins))
+              (fun    (cdr (assq min al/appt-actions))))
+    (funcall fun string)))
 
 (defun al/appt-mode-line (min-list &rest _)
   "Replacement for `appt-mode-line'."

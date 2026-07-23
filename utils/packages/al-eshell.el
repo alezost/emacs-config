@@ -80,14 +80,14 @@ This function is intended to be used as a substitution for
   info NAME  =>  if NAME is a file '*.info', visit it;
   info NAME  =>  otherwise go to top info node and then menu item NAME."
   (require 'info)
-  (let* ((name (car args))
-         (file (and (stringp name)
-                    (string-match "\\.info" name)
-                    (expand-file-name name))))
-    (if (and file (file-exists-p file))
-        (Info-find-node file "Top")
-      (Info-directory)
-      (Info-menu name))))
+  (if-let ((name (car args)
+                 (<= #'stringp
+                     (lambda (n) (string-match "\\.info" n))))
+           (file (expand-file-name name)
+                 (<= #'file-exists-p)))
+      (Info-find-node file "Top")
+    (Info-directory)
+    (Info-menu name)))
 
 
 ;;; Replacing eshell commands

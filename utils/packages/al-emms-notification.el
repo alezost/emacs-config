@@ -1,6 +1,6 @@
 ;;; al-emms-notification.el --- EMMS notifications  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2025 Alex Kost
+;; Copyright © 2013–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 (require 'emms-state)
 (require 'notifications)
 (require 'xml)
+(require 'let-macros)
 (require 'al-emms)
 (require 'al-emms-mpv)
 
@@ -90,21 +91,21 @@
 (defun al/emms-notify ()
   "Notify about the current track using `notifications-notify'."
   (interactive)
-  (when-let* ((track (emms-playlist-current-selected-track)))
-    (let ((time (concat emms-state-current-playing-time
-                        (and emms-state-total-playing-time
-                             (concat " ("
-                                     emms-state-total-playing-time
-                                     ")")))))
-      (if (al/emms-mpv-playing-radio?)
-          (al/emms-mpv-call-with-metadata
-           (lambda (data)
-             (al/emms-notification-notify
-              emms-state time
-              (al/emms-notification-radio-description data))))
-        (al/emms-notification-notify
-         emms-state time
-         (al/emms-notification-track-description track))))))
+  (when-let1 ((track (emms-playlist-current-selected-track))
+              (time  (concat emms-state-current-playing-time
+                             (and emms-state-total-playing-time
+                                  (concat " ("
+                                          emms-state-total-playing-time
+                                          ")")))))
+    (if (al/emms-mpv-playing-radio?)
+        (al/emms-mpv-call-with-metadata
+         (lambda (data)
+           (al/emms-notification-notify
+            emms-state time
+            (al/emms-notification-radio-description data))))
+      (al/emms-notification-notify
+       emms-state time
+       (al/emms-notification-track-description track)))))
 
 ;;;###autoload
 (define-minor-mode al/emms-notification-mode

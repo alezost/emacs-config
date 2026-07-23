@@ -23,6 +23,7 @@
 (require 'erc-networks)
 (require 'erc-stamp)
 (require 'erc-track)
+(require 'let-macros)
 (require 'al-file)
 
 (defvar al/erc-notification-sound
@@ -42,12 +43,12 @@ This function is intended to be used as `before' or `after' advice for
 (defun al/erc-number-of-users ()
   "Show a number of users on the current channel."
   (interactive)
-  (let ((channel (erc-default-target)))
-    (if (and channel (erc-channel-p channel))
-        (message "The number of users on %s: %d"
-                 channel
-                 (hash-table-count erc-channel-users))
-      (user-error "The current buffer is not a channel"))))
+  (if-let- ((channel (erc-default-target)
+                     (<= #'erc-channel-p)))
+      (message "The number of users on %s: %d"
+               channel
+               (hash-table-count erc-channel-users))
+    (user-error "The current buffer is not a channel")))
 
 (defun al/znc-running-p ()
   "Return non-nil if `znc' daemon is running."
@@ -89,7 +90,7 @@ the server buffer does not exist."
 (defun al/erc-switch-buffer ()
   "Switch to ERC buffer, or start ERC if not already started."
   (interactive)
-  (if-let* ((bufs (mapcar #'buffer-name (erc-buffer-list))))
+  (if-let ((bufs (mapcar #'buffer-name (erc-buffer-list))))
       (switch-to-buffer (completing-read "ERC buffer: " bufs))
     (erc)))
 
@@ -97,7 +98,7 @@ the server buffer does not exist."
 (defun al/erc-track-switch-buffer (arg)
   "Same as `erc-track-switch-buffer', but start ERC if not already started."
   (interactive "p")
-  (if-let* ((buf (al/erc-server-buffer t)))
+  (if-let ((buf (al/erc-server-buffer t)))
       (erc-track-switch-buffer arg)
     (erc)))
 
@@ -111,7 +112,7 @@ the server buffer does not exist."
   "Switch to ERC channel buffer, or run `erc-select'.
 When called repeatedly, cycle through the buffers."
   (interactive)
-  (if-let* ((buffers (al/erc-get-channel-buffer-list)))
+  (if-let ((buffers (al/erc-get-channel-buffer-list)))
       (progn (when (eq (current-buffer) (car buffers))
                (bury-buffer)
                (setq buffers (cdr buffers)))

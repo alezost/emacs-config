@@ -112,11 +112,11 @@ This function is intended to be added to
 `emms-playlist-source-inserted-hook'."
   (dolist (track (emms-playlist-tracks-in-region
                   (point-min) (point-max)))
-    (when (and (eq (emms-track-type track) 'file)
-               (not (emms-track-get track 'al-size)))
-      (when-let* ((attr (file-attributes (emms-track-name track)))
-                  (size (file-attribute-size attr)))
-        (emms-track-set track 'al-size size)))))
+    (when-let ((file-type? (eq (emms-track-type track) 'file))
+               (no-size?   (not (emms-track-get track 'al-size)))
+               (file-attr  (file-attributes (emms-track-name track)))
+               (file-size  (file-attribute-size file-attr)))
+      (emms-track-set track 'al-size file-size))))
 
 (defun al/emms-playlist-mode-insert-track (track &optional no-newline)
   "Insert the description of TRACK at point.
@@ -347,7 +347,7 @@ available properties."
 (defun al/emms-mode-line-song-string ()
   "Format the currently playing song.
 Intended to be used for `emms-mode-line-mode-line-function'."
-  (if-let* ((track (emms-playlist-current-selected-track)))
+  (if-let ((track (emms-playlist-current-selected-track)))
       (format emms-mode-line-format
               (funcall al/emms-mode-line-song-function track))
     " (no track)"))
@@ -399,16 +399,16 @@ Open this playlist if is not opened yet.
 See `al/emms-get-playlist-name' for details."
   (let ((name (al/emms-get-playlist-name string)))
     (or (get-buffer name)
-        (let ((buf  (emms-playlist-new name))
-              (file (expand-file-name (concat name ".pl")
-                                      emms-directory)))
-          (if (file-exists-p file)
-              (with-current-buffer buf
-                (al/emms-add-source 'emms-source-playlist file)
-                buf)
-            ;; Actually, this error should never happen: if NAME is
-            ;; found then FILE should exist.
-            (error "File <%s> does not exist" file))))))
+        (if-let- ((buf  (emms-playlist-new name))
+                  (file (expand-file-name (concat name ".pl")
+                                          emms-directory)
+                        (<= #'file-exists-p)))
+            (with-current-buffer buf
+              (al/emms-add-source 'emms-source-playlist file)
+              buf)
+          ;; Actually, this error should never happen: if NAME is
+          ;; found then FILE should exist.
+          (error "File <%s> does not exist" file)))))
 
 (defvar emms-mpv-command)
 
