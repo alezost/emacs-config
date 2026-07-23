@@ -30,15 +30,15 @@
     (when (al/require alect-themes)
       (al/load-theme 'alect-light))
     ;; Should be "solved":
-    ;; 안녕, ひらがな, 漢字 (droid);
-    ;; 武; 🐼, 😻, ⚽, 💩, ∵, ⸪, 🃜, 🜒, 🝖, ←↑→↓ (symbola);
+    ;; 한글, ひらがな, 漢字, ＃＊ (droid);
+    ;; 🐼, 😻, ⚽, 💩, ∵, ⸪, 🃜, 🜒, 🝖, ←↑→↓ (symbola);
     ;; ࿌ (unifont).
     (setq use-default-font-for-symbols nil)
     (let ((font (al/first-existing-font)))
       (set-frame-font font nil t)
       (al/set-fontset
         (font 'greek)
-        ("Droid Sans Mono" 'han 'hangul 'kana)
+        ("Droid Sans Mono" 'han 'hangul 'kana 'cjk-misc)
         ;; Setting nil is needed to display unknown symbols (like ￰)
         ;; properly i.e., without using Droid fallback.
         ("Symbola" 'mathematical 'symbol nil)))))
