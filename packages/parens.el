@@ -190,8 +190,9 @@ buffer."
       (forward-sexp)
     ;; Error may happen if there are non-balanced parentheses (e.g., in
     ;; a diff buffer).
-    (ignore-errors
-      (parens-forward-up-sexp))
+    (parens-handle-scan-error
+        (parens-forward-up-sexp)
+      (forward-char))
     (ignore-errors
       (parens-forward-down-sexp))
     (parens-forward)))
@@ -209,7 +210,11 @@ buffer."
   (interactive)
   (parens-handle-scan-error
       (backward-sexp)
-    (parens-backward-up-sexp)
+    ;; Error may happen if there are non-balanced parentheses (e.g.,
+    ;; using `' in an org buffer).
+    (parens-handle-scan-error
+        (parens-backward-up-sexp)
+      (backward-char))
     (ignore-errors
       (parens-backward-down-sexp))
     (parens-backward)))
