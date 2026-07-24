@@ -75,10 +75,8 @@ was not converted."
     ;; If `case-fold-search' is t, then searching makes no
     ;; difference between "\alpha" and "\Alpha".
     (let (case-fold-search)
-      (mapc (lambda (entry)
-              (let* ((tex   (car entry))
-                     (char  (cdr entry))
-                     (subst (string char)))
+      (mapc (pcase-lambda (`(,tex . ,char))
+              (let ((subst (string char)))
                 (goto-char (point-min))
                 (while (search-forward tex nil t)
                   (replace-match subst))))

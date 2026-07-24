@@ -495,12 +495,9 @@ for details."
     `(al/with-check
        :var ',table-name
        (let ((,table-var (symbol-value ',table-name)))
-         ,@(mapcar
-            (lambda (spec)
-              (pcase spec
-                (`(,char ,entry)
-                 `(modify-syntax-entry ,char ,entry ,table-var))))
-            specs)))))
+         ,@(mapcar (pcase-lambda (`(,char ,entry))
+                     `(modify-syntax-entry ,char ,entry ,table-var))
+                   specs)))))
 
 (defmacro al/modify-page-break-syntax (table-name)
   "Set non-whitespace syntax for ^L in syntax table TABLE-NAME.
