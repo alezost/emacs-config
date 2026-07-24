@@ -17,6 +17,7 @@
 
 ;;; Code:
 
+(require 'fp-utils)
 (require 'let-macros)
 
 (defvar al/completion-ignored-extensions completion-ignored-extensions
@@ -67,8 +68,7 @@ into
     (prefix \"ab\" any \"cd\" any \"ef\" any)"
   (mapcan (lambda (elem)
             (if (stringp elem)
-                (mapcan (lambda (str)
-                          (list str 'any))
+                (mapcan (cut #'list <> 'any)
                         (split-string elem "[ -]+"))
               (list elem)))
           pattern))

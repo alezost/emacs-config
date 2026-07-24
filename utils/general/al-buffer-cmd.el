@@ -18,6 +18,7 @@
 ;;; Code:
 
 (require 'seq)
+(require 'fp-utils)
 (require 'let-macros)
 (require 'al-general)
 (require 'al-buffer)
@@ -72,7 +73,7 @@ If CHARSET is nil, use `unicode-bmp'.  With prefix, use `unicode-smp'."
   (interactive)
   (al/switch-to-buffer-or-funcall
    "*Packages*"
-   (lambda () (list-packages 'no-fetch))))
+   (cut #'list-packages 'no-fetch)))
 
 ;;;###autoload
 (defun al/switch-to-faces ()

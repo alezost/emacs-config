@@ -1,6 +1,6 @@
 ;;; al-imenus.el --- Additional functionality for imenus  -*- lexical-binding: t -*-
 
-;; Copyright © 2014–2025 Alex Kost
+;; Copyright © 2014–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 ;;; Code:
 
 (require 'imenus)
+(require 'fp-utils)
 
 
 ;;; Searching/"imenu"-ing elisp files
@@ -35,8 +36,7 @@
 (defun al/imenus-search-elisp-directories ()
   "Perform `imenus' on elisp files from `al/imenus-elisp-directories'."
   (interactive)
-  (let ((files (mapcan (lambda (dir)
-                         (directory-files dir t al/imenus-elisp-re))
+  (let ((files (mapcan (cut #'directory-files <> t al/imenus-elisp-re)
                        al/imenus-elisp-directories)))
     (imenus-files files nil al/imenus-elisp-prompt)))
 

@@ -18,6 +18,7 @@
 ;;; Code:
 
 (require 'tempo)
+(require 'fp-utils)
 (require 'al-general)
 
 (defvar al/tempo-start ","
@@ -82,8 +83,7 @@ with (TAG ELEMENTS NAME) entries.")
 
 (defvar al/tempo-any-lisp-static-templates
   (append
-   (mapcar (lambda (args)
-             (apply #'al/tempo-let-like-template args))
+   (mapcar (cut #'apply #'al/tempo-let-like-template <>)
            '(("let*"      "l")
              ("if-let"    "il")
              ("if-let1"   "il1")

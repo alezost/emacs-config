@@ -19,6 +19,7 @@
 
 (eval-when-compile (require 'cl-lib))
 (require 'seq)
+(require 'fp-utils)
 
 
 ;;; `rx' definitions
@@ -170,8 +171,7 @@ LIST-VAR.
 TEST key is `eq' by default."
   (let ((list (symbol-value list-var))
         (test (or test #'eq)))
-    (unless (seq-find (lambda (elt)
-                        (funcall test elt new-element))
+    (unless (seq-find (cut test <> new-element)
                       list)
       (set list-var
            (al/push-after list after-element new-element test)))))
@@ -250,8 +250,7 @@ Otherwise display warning MESSAGE on VAL and return nil."
 If VALS is not a list, call PREDICATE on this value."
   (if (and (listp vals)
            (not (functionp vals))) ; to avoid treating "(lambda …)" as list
-      (seq-every-p (lambda (val)
-                     (al/p predicate val message))
+      (seq-every-p (cut #'al/p predicate <> message)
                    vals)
     (al/p predicate vals message)))
 
@@ -356,8 +355,7 @@ Both HOOKS and FUNCTIONS may be single variables or lists of those."
       (al/with-check
         :fun fun
         (al/funcall-or-dolist hooks
-          (lambda (hook)
-            (add-hook hook fun append local)))))))
+          (cut #'add-hook <> fun append local))))))
 
 (defun al/call-after-init (functions)
   "Call FUNCTIONS after Emacs init.

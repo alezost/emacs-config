@@ -139,7 +139,7 @@ If GROUP is non-nil, it should be a number specifying a
 parenthesized expression from REGEXP that should be returned.
 Return nil if no matches found."
   (let ((url (al/gnus-article-find-url
-              (lambda (url) (string-match-p regexp url)))))
+              (cut #'string-match-p regexp <>))))
     (if (null group)
         url
       (string-match regexp url)

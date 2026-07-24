@@ -23,6 +23,7 @@
 (require 'erc-networks)
 (require 'erc-stamp)
 (require 'erc-track)
+(require 'fp-utils)
 (require 'let-macros)
 (require 'al-file)
 
@@ -105,7 +106,7 @@ the server buffer does not exist."
 (defun al/erc-get-channel-buffer-list ()
   "Return a list of the ERC-channel-buffers."
   (erc-buffer-filter
-   (lambda () (string-match "^#.*" (buffer-name (current-buffer))))))
+   (cut #'string-match "^#.*" (buffer-name (current-buffer)))))
 
 ;;;###autoload
 (defun al/erc-cycle ()
@@ -279,8 +280,7 @@ This function is suitable for `erc-generate-log-file-name-function'."
 Use `al/erc-log-excluded-regexps' to check if BUFFER should be
 logged or not.
 The function is intended to be used for `erc-enable-logging'."
-  (not (seq-some (lambda (re)
-                   (string-match-p re (buffer-name buffer)))
+  (not (seq-some (cut #'string-match-p <> (buffer-name buffer))
                  al/erc-log-excluded-regexps)))
 
 (provide 'al-erc)

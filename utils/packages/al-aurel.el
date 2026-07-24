@@ -1,6 +1,6 @@
 ;;; al-aurel.el --- Additional functionality for AURel  -*- lexical-binding: t -*-
 
-;; Copyright © 2016 Alex Kost
+;; Copyright © 2016–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 ;;; Code:
 
 (require 'aurel)
+(require 'fp-utils)
 (require 'al-buffer)
 
 ;;;###autoload
@@ -26,7 +27,7 @@
   (interactive)
   (al/switch-to-buffer-or-funcall
    aurel-list-buffer-name
-   (lambda () (call-interactively 'aurel-package-search))))
+   (cut #'call-interactively 'aurel-package-search)))
 
 ;;;###autoload
 (defun al/switch-to-aurel-info ()
@@ -34,7 +35,7 @@
   (interactive)
   (al/switch-to-buffer-or-funcall
    aurel-info-buffer-name
-   (lambda () (call-interactively 'aurel-package-info))))
+   (cut #'call-interactively 'aurel-package-info)))
 
 (provide 'al-aurel)
 

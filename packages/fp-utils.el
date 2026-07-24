@@ -22,6 +22,7 @@
 ;;
 ;; - `and=>',
 ;; - `and=<',
+;; - `cut',
 ;; - `negate',
 ;; - `compose',
 ;; - `compose-left',
@@ -67,6 +68,26 @@ Otherwise, return VALUE."
                         `(funcall ,fun ,var))
                       functions)
             ,var))))
+
+(defmacro cut (&rest args)
+  "Return a function to call (ARG1 REST-ARGS ...) with selected arguments.
+Any argument can be `<>', the last argument can be `<...>'.
+See Info node `(guile) SRFI-26' for details."
+  (let* ((lambda-args '())
+         (args (mapcar (lambda (arg)
+                         (if (eq arg '<>)
+                             (let ((sym (gensym)))
+                               (push sym lambda-args)
+                               sym)
+                           arg))
+                       args))
+         (lambda-args (nreverse lambda-args))
+         (call-expr `(funcall ,@args)))
+    (when (eq (car (last args)) '<...>)
+      (let ((last-sym (gensym)))
+        (setq lambda-args (append lambda-args `(&rest ,last-sym))
+              call-expr `(apply ,@(butlast args) ,last-sym))))
+    `(lambda ,lambda-args ,call-expr)))
 
 (defun negate (fun)
   "Return a function that negates the result of FUN."

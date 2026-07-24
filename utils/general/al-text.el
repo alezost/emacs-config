@@ -51,8 +51,7 @@ nil, this candidate is removed from the final list."
                      (gui--selection-value-internal 'CLIPBOARD)
                      (gui--selection-value-internal 'PRIMARY)
                      (car kill-ring))))
-    (seq-keep (lambda (candidate)
-                (apply #'and=> candidate filters))
+    (seq-keep (cut #'apply #'and=> <> filters)
               (seq-uniq (delq nil candidates)))))
 
 (defun al/parse-ytdlp-file-name-output (string)

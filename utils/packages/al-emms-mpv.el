@@ -21,6 +21,7 @@
 (require 'seq)
 (require 'emms-mpv)
 (require 'count)
+(require 'fp-utils)
 (require 'al-general)
 (require 'al-window)
 
@@ -48,10 +49,7 @@ If there is no such PROPERTY, call FALLBACK function without arguments."
 
 (defun al/emms-mpv-call-with-metadata (function)
   "Call FUNCTION on the metadata of the current mpv track."
-  (al/emms-mpv-call-with-property
-   "metadata"
-   (lambda (value)
-     (funcall function value))))
+  (al/emms-mpv-call-with-property "metadata" function))
 
 (defun al/emms-mpv-run-command (command &optional handler)
   "Run mpv COMMAND for the current EMMS mpv process.
@@ -73,8 +71,7 @@ should be a list of values, e.g.:
   "Display PROPERTY of the current TRACK."
   (interactive "smpv property: ")
   (al/emms-mpv-call-with-property property
-   (lambda (value)
-     (message "mpv %s: %S" property value))))
+   (cut #'message "mpv %s: %S" property <>)))
 
 (declare-function pp-display-expression "pp" (expression buffer-name))
 
@@ -83,8 +80,7 @@ should be a list of values, e.g.:
   (interactive)
   (require 'pp)
   (al/emms-mpv-call-with-metadata
-   (lambda (data)
-     (pp-display-expression data "*EMMS track metadata*"))))
+   (cut #'pp-display-expression <> "*EMMS track metadata*")))
 
 (defun al/emms-mpv-show-radio-description ()
   "Display a message about the current radio (url or streamlist) TRACK."

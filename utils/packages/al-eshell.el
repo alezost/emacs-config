@@ -21,6 +21,7 @@
 (require 'em-dirs)
 (require 'em-unix)
 (require 'em-prompt)
+(require 'fp-utils)
 (require 'let-macros)
 (require 'al-general)
 (require 'al-places)
@@ -82,7 +83,7 @@ This function is intended to be used as a substitution for
   (require 'info)
   (if-let ((name (car args)
                  (<= #'stringp
-                     (lambda (n) (string-match "\\.info" n))))
+                     (cut #'string-match "\\.info" <>)))
            (file (expand-file-name name)
                  (<= #'file-exists-p)))
       (Info-find-node file "Top")

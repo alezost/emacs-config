@@ -1,6 +1,6 @@
 ;;; al-minibuffer-cmd.el --- Various interactive commands for minibuffer  -*- lexical-binding: t -*-
 
-;; Copyright © 2025 Alex Kost
+;; Copyright © 2025–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -17,6 +17,7 @@
 
 ;;; Code:
 
+(require 'fp-utils)
 (require 'al-minibuffer)
 
 (defun al/minibuffer-current-completion ()
@@ -92,7 +93,7 @@ See also `al/describe-variable'."
   (let* ((symbol-name (al/minibuffer-current-completion))
          (symbol (intern symbol-name)))
     (setq al/minibuffer-fallback
-          (lambda () (describe-symbol symbol)))
+          (cut #'describe-symbol symbol))
     (al/minibuffer-replace-and-exit symbol-name)))
 
 (declare-function magit-toplevel "magit-git")
@@ -106,7 +107,7 @@ See also `al/describe-variable'."
   (let ((dir (magit-toplevel
               (file-name-directory (minibuffer-contents)))))
     (setq al/minibuffer-fallback
-          (lambda () (magit-status dir)))
+          (cut #'magit-status dir))
     (al/minibuffer-replace-and-exit "/")))
 
 (declare-function al/switch-to-shell-buffer "al-shell")
@@ -125,8 +126,7 @@ See also `al/describe-variable'."
   "Call `al/magit-switch-buffer'."
   (interactive)
   (setq al/minibuffer-fallback
-        (lambda ()
-          (al/magit-switch-buffer 'all)))
+        (cut #'al/magit-switch-buffer 'all))
   (al/minibuffer-replace-and-exit))
 
 (provide 'al-minibuffer-cmd)
