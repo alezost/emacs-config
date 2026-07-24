@@ -241,7 +241,9 @@
 
 (al/eval-after-load al-scheme
   (al/scheme-add-font-lock-keywords)
-  (al/add-hook-maybe 'scheme-mode-hook 'al/scheme-fix-docstring-font-lock)
+  (al/add-hook-maybe 'scheme-mode-hook
+    '(al/scheme-fix-docstring-font-lock
+      al/scheme-fix-fill))
   (advice-add 'scheme-indent-function
     :override 'al/scheme-indent-function))
 

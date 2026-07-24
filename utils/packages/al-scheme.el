@@ -105,12 +105,24 @@ This function is intended to be added to `scheme-mode-hook'."
   (setq-local font-lock-syntactic-face-function
               'lisp-font-lock-syntactic-face-function))
 
+(defun al/scheme-fix-fill ()
+  "Set `adaptive-fill-mode' to t."
+  ;; `adaptive-fill-mode' is t by default but it is set to nil in
+  ;; `scheme-mode' (by `scheme-mode-variables').  This was probably
+  ;; needed in the past since `lisp-mode-variables' has the same comment
+  ;; about `adaptive-fill-mode' but it is not needed anymore.
+  ;;
+  ;; If it is set to nil, then `fill-paragraph' does not respect
+  ;; fill-prefix (i.e., the starting whitespaces) of the first line.
+  (setq-local adaptive-fill-mode t))
+
 
 ;;; Highlighting and indenting additional macros
 
 (al/put scheme-indent-function
   (0 case-lambda*)
   (1 if
+     let+
      if-let
      if-let1
      if-letn
