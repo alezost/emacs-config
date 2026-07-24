@@ -251,9 +251,23 @@ to something like this:
   (declare (indent 1) (debug if-let-))
   (list 'if-letn bindings (macroexp-progn body)))
 
+;; Not using simple aliases because `debug' declare form needs to be
+;; adjusted as well.
+;;
+;; (defalias 'if-let 'if-let+)
+;; (defalias 'when-let 'when-let+)
+
+(defmacro if-let (&rest args)
+  "Alias for `if-let+'."
+  (declare (indent 2) (debug if-let-))
+  `(if-let+ ,@args))
+
+(defmacro when-let (&rest args)
+  "Alias for `when-let+'."
+  (declare (indent 1) (debug if-let-))
+  `(when-let+ ,@args))
+
 (defalias 'let- 'when-let-)
-(defalias 'if-let 'if-let+)
-(defalias 'when-let 'when-let+)
 
 (provide 'let-macros)
 
