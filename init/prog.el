@@ -247,6 +247,12 @@
   (advice-add 'scheme-indent-function
     :override 'al/scheme-indent-function))
 
+(al/eval-after-load xscheme
+  ;; I don't how this `xscheme' package is loaded from time to time but
+  ;; it pollutes `scheme-mode-map' (in particular, it breaks my "M-o"
+  ;; key binding).
+  (al/clean-map 'scheme-mode-map))
+
 (defconst al/geiser-keys
   '(("C-v"   . al/geiser-eval-dwim)
     ("C-S-v" . geiser-expand-last-sexp)
