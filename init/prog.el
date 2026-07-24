@@ -207,6 +207,10 @@
   (al/bind-keys-from-vars 'sly-prefix-map 'al/sly-prefix-keys)
   (al/bind-keys-from-vars 'sly-mode-map 'al/sly-keys)
 
+  ;; Fix some indentation broken by `sly-cl-indent'.
+  (when (al/require al-clisp)
+    (al/clisp-setup-indentation))
+
   (al/require al-sly))
 
 (al/eval-after-load al-sly

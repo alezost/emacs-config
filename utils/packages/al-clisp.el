@@ -23,11 +23,14 @@
 
 ;;; Highlighting and indenting additional macros
 
-(al/put common-lisp-indent-function
-  (1 if
-     defsystem
-     al/run-after-sleep)
-  (3 al/defun-with-delay))
+(defun al/clisp-setup-indentation ()
+  "Setup indentation for Common Lisp code."
+  (al/put (common-lisp-indent-function
+           sly-common-lisp-indent-function)
+    (1 if
+       defsystem
+       al/run-after-sleep)
+    (3 al/defun-with-delay)))
 
 (al/put doc-string-elt
   (4 defcommand
