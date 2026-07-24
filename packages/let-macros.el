@@ -89,8 +89,8 @@ See example for `when-let-'."
         `(let ((,var ,expr))
            (if-let- ,rest-bindings ,then ,@else)))
        (`((<= . ,functions) . ,rest-clauses)
-        `(let ((,var (and<= ,expr ,@functions)))
-           (if ,var
+        `(let ((,var ,expr))
+           (if (and<= ,var ,@functions)
                (if-let- (,@(and rest-clauses
                                 `((,var ,var ,@rest-clauses)))
                          ,@rest-bindings)
@@ -132,11 +132,14 @@ checks), evaluate THEN."
                (if-let+ ,rest-bindings ,then ,@else)
              ,@else)))
        (`((<= . ,functions) . ,rest-clauses)
-        `(if-let+ ((,var (and<= ,expr #'identity ,@functions)
-                         ,@rest-clauses)
-                   ,@rest-bindings)
-             ,then
-           ,@else))
+        `(let ((,var ,expr))
+           (if (and<= ,var ,@functions)
+               (if-let+ (,@(and rest-clauses
+                                `((,var ,var ,@rest-clauses)))
+                         ,@rest-bindings)
+                   ,then
+                 ,@else)
+             ,@else)))
        (`((=> . ,functions) . ,rest-clauses)
         `(if-let+ ((,var (and=> ,expr ,@functions)
                          ,@rest-clauses)
