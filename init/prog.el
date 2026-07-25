@@ -323,6 +323,9 @@
   (al/bind-keys-from-vars 'geiser-doc-mode-map
     '(al/button-keys al/geiser-keys al/geiser-doc-keys)))
 
+(al/eval-after-load geiser-debug
+  (advice-add 'geiser-debug-mode :override 'scheme-mode))
+
 (al/eval-after-load al-geiser
   (setq
    geiser-repl-buffer-name-function #'al/geiser-repl-buffer-name
