@@ -369,7 +369,7 @@
 
 ;;; GDB, GUD
 
-(setq gud-key-prefix (kbd "M-G"))
+(al/setq-no-warnings gud-key-prefix (kbd "M-G"))
 
 (al/eval-after-load gud
   (defun al/gud-bind-keys ()
