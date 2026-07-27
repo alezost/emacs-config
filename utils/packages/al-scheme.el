@@ -122,10 +122,14 @@ This function is intended to be added to `scheme-mode-hook'."
 (al/put scheme-indent-function
   (0 case-lambda*)
   (1 if
-     let+
+     if-let-
+     if-let+
      if-let
      if-let1
      if-letn
+     let-
+     when-let-
+     when-let+
      when-let
      when-let1
      when-letn))
@@ -137,9 +141,14 @@ This function is intended to be added to `scheme-mode-hook'."
     "map-indexed"
     "for-each-indexed"
     "count-indexed"
+    "if-let-"
+    "if-let+"
     "if-let"
     "if-let1"
     "if-letn"
+    "let-"
+    "when-let-"
+    "when-let+"
     "when-let"
     "when-let1"
     "when-letn")
