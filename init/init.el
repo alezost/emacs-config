@@ -26,11 +26,14 @@
 
 ;;; (Auto)loading various files
 
-(defvar al/emacs-utils-autoloads (al/emacs-utils-dir-file "utils-autoloads.el")
+(defvar al/emacs-utils-autoloads
+  (al/emacs-utils-dir-file "utils-autoloads.el")
   "`autoloads' file for my utils.")
-(defvar al/emacs-my-packages-autoloads (al/emacs-data-dir-file "my-autoloads.el")
+(defvar al/emacs-my-packages-autoloads
+  (al/emacs-data-dir-file "my-autoloads.el")
   "`autoloads' file for my packages.")
-(defvar al/emacs-elpa-packages-autoloads (al/emacs-data-dir-file "elpa-autoloads.el")
+(defvar al/emacs-elpa-packages-autoloads
+  (al/emacs-data-dir-file "elpa-autoloads.el")
   "`autoloads' file for ELPA packages.")
 
 (setq
@@ -102,7 +105,7 @@ Do not alter `load-path'.  Instead, push added `load-path' to
               al/load-paths)))))
 
 (defvar al/autoloads-presets
-  `(("utils"
+  `(("my utils"
      ,al/emacs-utils-dir
      ,al/emacs-utils-autoloads
      :add-to-path prepend
