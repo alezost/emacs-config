@@ -216,7 +216,7 @@ Example:
   (when-let- ((file \"/tmp/foo\"
                     (<= #\\='file-symlink-p)
                     (=> #\\='file-truename #\\='file-name-nondirectory)
-                    (<= (lambda (f) (string-match-p \"\\`emacs\" f)))))
+                    (<= (lambda (f) (string-match-p \"\\\\\\=`emacs\" f)))))
     file)
 
 Here, we check if FILE exists and is a symlink, and if so, we take file
@@ -228,7 +228,7 @@ to something like this:
   (let ((file (and<= \"/tmp/foo\" #\\='file-symlink-p)))
     (if file
         (let ((file (and<= (file-name-nondirectory (file-truename val))
-                           (lambda (f) (string-match-p \"\\`emacs\" f)))))
+                           (lambda (f) (string-match-p \"\\\\\\=`emacs\" f)))))
           file)))"
   (declare (indent 1) (debug if-let-))
   (list 'if-let- bindings (macroexp-progn body)))
