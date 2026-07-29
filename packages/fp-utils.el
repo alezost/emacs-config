@@ -21,7 +21,8 @@
 ;; that Emacs lacks:
 ;;
 ;; - `and=>',
-;; - `and=<',
+;; - `and<=',
+;; - `compose-funcall',
 ;; - `cut',
 ;; - `negate',
 ;; - `compose',
@@ -29,6 +30,20 @@
 ;; - `compose-right'.
 
 ;;; Code:
+
+(defmacro compose-funcall (value &rest functions)
+  "Return result of consecutive applying FUNCTIONS to VALUE.
+
+More precisely, (compose-funcall VALUE #\\='F1 #\\='F2 ... #\\='Fn)
+expands to (Fn ... (F2 (F1 VALUE))).
+
+Unlike `and=>', `compose-funcall' does not check intermediate results
+for nil."
+  (declare (indent 1) (debug t))
+  (if functions
+      `(compose-funcall (funcall ,(car functions) ,value)
+         ,@(cdr functions))
+    value))
 
 (defun and=> (value &rest functions)
   "Return result of consecutive applying FUNCTIONS to VALUE.
@@ -42,7 +57,10 @@ return nil if:
   ...
   (Fn ... (F2 (F1 VALUE))) is nil.
 
-Otherwise, return (Fn ... (F2 (F1 VALUE)))."
+Otherwise, return (Fn ... (F2 (F1 VALUE))).
+
+See also `compose-funcall' which does the same without checking
+intermediate results for nil."
   (and value
        (if functions
            (apply #'and=>

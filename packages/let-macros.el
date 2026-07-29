@@ -38,16 +38,6 @@
 
 (require 'fp-utils)
 
-(defmacro if-let--compose-funcall (value &rest functions)
-  "Call composed FUNCTIONS on VALUE.
-More precisely, (if-let--compose-funcall VALUE #\\='F1 #\\='F2 ... #\\='Fn)
-expands to (Fn ... (F2 (F1 VALUE)))."
-  (declare (indent 1) (debug t))
-  (if functions
-      `(if-let--compose-funcall (funcall ,(car functions) ,value)
-         ,@(cdr functions))
-    value))
-
 (defmacro if-let- (bindings then &rest else)
   "Augmented `let'-like macro.
 
@@ -98,7 +88,7 @@ See example for `when-let-'."
                  ,@else)
              ,@else)))
        (`((=> . ,functions) . ,rest-clauses)
-        `(if-let- ((,var (if-let--compose-funcall ,expr ,@functions)
+        `(if-let- ((,var (compose-funcall ,expr ,@functions)
                          ,@rest-clauses)
                    ,@rest-bindings)
              ,then
