@@ -22,6 +22,7 @@
 ;; STRING:
 ;;
 ;; - `=0',
+;; - `/=0',
 ;; - `>0',
 ;; - `<0',
 ;; - `=1',
@@ -49,6 +50,10 @@
 (cl-defmethod =0 ((array array))
   "Return non-nil if ARRAY length is zero."
   (length= array 0))
+
+(cl-defgeneric /=0 (object)
+  "Return non-nil if OBJECT has non-zero number of elements."
+  (not (=0 object)))
 
 ;; `<0' exists only for numbers because it does not make sense to check
 ;; a sequence for negative number of elements.
