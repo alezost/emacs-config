@@ -193,14 +193,11 @@ expands to
         0)
     0)"
   (declare (indent 2) (debug if-let-))
-  (let* ((reversed (nreverse bindings))
-         (last (car reversed))
-         (all-but-last (nreverse (cdr reversed))))
-    `(if-let- ,all-but-last
-         (if-let+ (,last)
-             ,then
-           ,@else)
-       ,@else)))
+  `(if-let- ,(butlast bindings)
+       (if-let+ ,(last bindings)
+           ,then
+         ,@else)
+     ,@else))
 
 (defmacro when-let- (bindings &rest body)
   "Usual `when'-like wrapper for `if-let-'.
