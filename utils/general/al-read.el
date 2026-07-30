@@ -6,32 +6,32 @@
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
 ;; (at your option) any later version.
-
+;;
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-
+;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Code:
 
+(eval-when-compile (require 'cl-lib))
+
 (defun al/read-string (prompt &optional initial-input history
                               default-value inherit-input-method)
   "Similar to `read-string', but put DEFAULT-VALUE in the prompt."
-  (let (prompt-beg prompt-end)
-    (if (string-match "^\\(.*\\)\\(:\\s-*\\)$" prompt)
-        (setq prompt-beg (match-string 1 prompt)
-              prompt-end (match-string 2 prompt))
-      (setq prompt-beg prompt
-            prompt-end ": "))
+  (cl-multiple-value-bind (prompt-beg prompt-end)
+      (if (string-match "^\\(.*\\)\\(:\\s-*\\)$" prompt)
+          (list (match-string 1 prompt)
+                (match-string 2 prompt))
+        (list prompt ": "))
     (read-string
      (if default-value
          (format "%s (%s)%s" prompt-beg default-value prompt-end)
        (concat prompt-beg prompt-end))
-     initial-input history
-     default-value inherit-input-method)))
+     initial-input history default-value inherit-input-method)))
 
 (defun al/completing-read-no-sort (&rest args)
   "Similar to `completing-read' but without additional sorting."
