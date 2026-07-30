@@ -190,7 +190,7 @@ This command is analogous to `geiser-mode-switch-to-repl-and-enter' for
 (defun al/sly-mode-line-format ()
   "Simplified and improved version of `sly--mode-line-format'."
   (let* ((conn      (and<= (sly-current-connection)
-                           #'identity #'process-live-p))
+                           #'process-live-p))
          (conn-name (or (and=> conn #'sly-connection-name)
                         "*"))
          (pkg-name  (and=> (al/sly-current-package)

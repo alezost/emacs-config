@@ -62,8 +62,9 @@ Each clause from CLAUSES should have one of the following forms:
   (<= FUNCTIONS ...)
 
     each function from FUNCTIONS is called with NAME variable as a
-    single argument.  If any of them returns nil, evaluate ELSE.
-    If all checks in all \"<=\" clauses pass, evaluate THEN.
+    single argument.  If any of them returns nil or if NAME itself is
+    nil, evaluate ELSE.  If all checks in all \"<=\" clauses pass,
+    evaluate THEN.
 
 See example for `when-let-'."
   (declare (indent 2)

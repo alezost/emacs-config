@@ -69,11 +69,12 @@ intermediate results for nil."
          value)))
 
 (defmacro and<= (value &rest functions)
-  "Return VALUE if (FUN VALUE) is not false for all FUNCTIONS.
+  "Return VALUE if (FUN VALUE) is non-nil for all FUNCTIONS.
 
 More precisely, for a given list of FUNCTIONS, (F1 F2 ... Fn),
 return nil if:
 
+  VALUE is nil or
   (F1 VALUE) is nil or
   (F2 VALUE) is nil or
   ...
@@ -82,7 +83,8 @@ return nil if:
 Otherwise, return VALUE."
   (let ((var (make-symbol "val")))
     `(let ((,var ,value))
-       (and ,@(mapcar (lambda (fun)
+       (and ,var
+            ,@(mapcar (lambda (fun)
                         `(funcall ,fun ,var))
                       functions)
             ,var))))
