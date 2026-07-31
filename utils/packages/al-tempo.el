@@ -195,7 +195,7 @@ with (TAG ELEMENTS NAME) entries.")
    al/tempo-scheme-static-templates))
 
 (defun al/tempo-clisp-case ()
-  (and (derived-mode-p 'lisp-mode)
+  (and (derived-mode-p '(lisp-mode sly-mrepl-mode))
        '(al/tempo-clisp-tags "al/")))
 
 (defun al/tempo-elisp-case ()
