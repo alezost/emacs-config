@@ -161,6 +161,8 @@ Do not alter `load-path'.  Instead, push added `load-path' to
     abbrev-mode
     al/set-comment-column
     al/show-trailing-whitespace))
+(al/add-hook-maybe 'comint-mode-hook
+  'hl-todo-mode)
 (al/add-hook-maybe 'messages-buffer-mode-hook
   (list 'hl-todo-mode
         (lambda () (setq buffer-read-only nil))))
