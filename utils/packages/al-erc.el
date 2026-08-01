@@ -75,6 +75,14 @@ the server buffer does not exist."
       (unless noerror
         (error "No active ERC server buffer"))))
 
+(defmacro al/erc-with-server-buffer (&rest body)
+  "Execute BODY in the current ERC server buffer.
+This macro exists because `erc-with-server-buffer' works only in ERC
+buffers (where `erc-server-process' is set)."
+  (declare (indent 0) (debug t))
+  `(with-current-buffer (al/erc-server-buffer)
+     ,@body))
+
 (defun al/erc-server-buffer-rename ()
   "Rename current server buffer (make a general name)."
   ;; Sometimes we need to modify names like "irc.freenode.net:7000<2>".
@@ -142,14 +150,14 @@ Similar to `erc-join-channel', but use `al/erc-channel-list'."
       (completing-read "Join channel: " al/erc-channel-list nil nil chn))
     (when (or current-prefix-arg erc-prompt-for-channel-key)
       (read-from-minibuffer "Channel key (RET for none): " nil))))
-  (with-current-buffer (al/erc-server-buffer)
+  (al/erc-with-server-buffer
     (erc-cmd-JOIN channel (when (>= (length key) 1) key))))
 
 (defun al/erc-quit-server (reason)
   "Disconnect from current server.
 Similar to `erc-quit-server', but without prompting for REASON."
   (interactive (list ""))
-  (with-current-buffer (al/erc-server-buffer)
+  (al/erc-with-server-buffer
     (erc-cmd-QUIT reason)))
 
 (defun al/erc-ghost-maybe (_server nick)
@@ -201,13 +209,13 @@ Reasons are taken from `al/erc-away-msg-list'."
              ""
            (completing-read "Reason for AWAY: "
                             al/erc-away-msg-list))))
-  (with-current-buffer (al/erc-server-buffer)
+  (al/erc-with-server-buffer
     (erc-cmd-AWAY (or reason ""))))
 
 (defun al/erc-away-time ()
   "Return non-nil if the current ERC process is set away.
 Similar to `erc-away-time', but no need to be in ERC buffer."
-  (with-current-buffer (al/erc-server-buffer)
+  (al/erc-with-server-buffer
     (erc-away-time)))
 
 
