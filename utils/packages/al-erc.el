@@ -26,6 +26,7 @@
 (require 'fp-utils)
 (require 'let-macros)
 (require 'al-general)
+(require 'al-buffer)
 (require 'al-file)
 
 (defvar al/erc-notification-sound
@@ -82,6 +83,22 @@ buffers (where `erc-server-process' is set)."
   (declare (indent 0) (debug t))
   `(with-current-buffer (al/erc-server-buffer)
      ,@body))
+
+(al/defun-lazy al/erc-channel-list-buffer
+  "Return channel list buffer of the current server."
+  :predicates buffer-live-p
+  (seq-find (lambda (buf)
+              (with-current-buffer buf
+                (derived-mode-p 'erc-list-menu-mode)))
+            (buffer-list)))
+
+(defun al/erc-channel-list ()
+  "Switch to (make if needed) buffer with channels of the current server."
+  (interactive)
+  (if-let ((buf (al/erc-channel-list-buffer)))
+      (al/display-buffer buf)
+    (al/erc-with-server-buffer
+      (erc-cmd-LIST))))
 
 (defun al/erc-server-buffer-rename ()
   "Rename current server buffer (make a general name)."

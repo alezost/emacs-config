@@ -448,6 +448,7 @@
  :prefix "M-c"
  ("M-c" . al/erc-track-switch-buffer)
  ("M-n" . al/erc-cycle)
+ ("l"   . al/erc-channel-list)
  ("b"   . al/erc-switch-buffer)
  ("M-s" . al/erc-switch-to-server-buffer)
  ;; Interactive erc - compute everything without prompting:
