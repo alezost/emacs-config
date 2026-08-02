@@ -538,27 +538,42 @@ be missing.  Because of this, (concat ...) cannot be used for FORMAT in
 
 (defmacro al/defun-lazy (name &rest body)
   "Define NAME function accepting zero arguments.
+
 On the first call, NAME function evaluates BODY and returns result.  On
 subsequent calls, just the result of the first call is returned without
-BODY evaluation."
+BODY evaluation.
+
+BODY can start with the following optional keywords:
+
+  `:predicates'     unquoted list of predicates or a single predicate
+                    called on the latest result; if any predicate
+                    returns nil, body is reevaluated again to update the
+                    result."
   (declare (indent 1) (debug t))
   (let* ((name-str    (symbol-name name))
          (called-var  (intern (concat name-str "-called?")))
          (val-var     (intern (concat name-str "-value")))
          (docstring   (and (stringp (car body))
-                           (pop body)))
-         (interactive (and (equal (car body) '(interactive))
                            (pop body))))
-    `(progn
-       (defvar ,called-var nil)
-       (defvar ,val-var nil)
-       (defun ,name ()
-         ,docstring
-         ,interactive
-         (if ,called-var
-             ,val-var
-           (setq ,called-var t
-                 ,val-var (progn ,@body)))))))
+    (al/with-keywords body
+        (predicates)
+      (let ((interactive (and (equal (car body) '(interactive))
+                              (pop body))))
+        `(progn
+           ,(unless predicates
+              `(defvar ,called-var nil))
+           (defvar ,val-var nil)
+           (defun ,name ()
+             ,docstring
+             ,interactive
+             (if ,(if predicates
+                      `(and ,val-var
+                            ,@(mapcar (lambda (p) `(funcall #',p ,val-var))
+                                      (al/list-maybe predicates)))
+                    called-var)
+                 ,val-var
+               (setq ,@(unless predicates (list called-var t))
+                     ,val-var ,(macroexp-progn body)))))))))
 
 (defmacro al/with-check-point (&rest body)
   "Evaluate BODY.
