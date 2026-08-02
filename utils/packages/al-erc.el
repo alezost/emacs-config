@@ -25,6 +25,7 @@
 (require 'erc-track)
 (require 'fp-utils)
 (require 'let-macros)
+(require 'al-general)
 (require 'al-file)
 
 (defvar al/erc-notification-sound
@@ -61,17 +62,16 @@ This function is intended to be used as `before' or `after' advice for
   (concat (erc-compute-server) ":"
           (number-to-string (erc-compute-port))))
 
-(defvar al/erc-server-buffer nil
-  "Current ERC server buffer.")
+(al/defun-lazy al/erc--server-buffer
+  "Return the current ERC server buffer."
+  :predicates buffer-live-p
+  (car (erc-buffer-list #'erc--server-buffer-p)))
 
 (defun al/erc-server-buffer (&optional noerror)
   "Return the current ERC server buffer.
 If NOERROR is non-nil, return nil instead of raising an error if
 the server buffer does not exist."
-  (or (and<= al/erc-server-buffer
-             #'buffer-live-p)
-      (setq al/erc-server-buffer
-            (car (erc-buffer-list #'erc--server-buffer-p)))
+  (or (al/erc--server-buffer)
       (unless noerror
         (error "No active ERC server buffer"))))
 
