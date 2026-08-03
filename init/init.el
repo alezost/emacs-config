@@ -65,36 +65,7 @@
  "games"
  "custom")
 
-(defvar al/load-paths nil)
-
-(declare-function al/generate-autoloads "al-autoload")
-
-(defun al/load-autoloads (name directory autoloads-file &rest args)
-  "Load AUTOLOADS-FILE, generate it for DIRECTORY if needed.
-
-NAME is a string used for messages.
-
-Additional ARGS are sent to `al/generate-autoloads'.
-
-Do not alter `load-path'.  Instead, push added `load-path' to
-`al/load-paths' for further use."
-  (declare (indent 1))
-  (when (file-exists-p directory)
-    (al/title-message (concat "Autoloading " name))
-    (unless (file-exists-p autoloads-file)
-      (al/with-demoted-errors
-          (concat "Generating " name " autoloads failed: %S")
-        (require 'al-autoload)
-        (apply #'al/generate-autoloads directory
-               :output-file autoloads-file
-               args)))
-    (al/with-demoted-errors
-        (concat "Loading " name " autoloads failed: %S")
-      (let ((count (length load-path)))
-        (al/load autoloads-file)
-        ;; Pick the freshly added paths for further use.
-        (push (seq-subseq load-path 0 (- count))
-              al/load-paths)))))
+(al/title-message (concat "Loading \"autoloads\" files"))
 
 (defvar al/autoloads-presets
   `(("my utils"
@@ -114,9 +85,8 @@ Do not alter `load-path'.  Instead, push added `load-path' to
      :subdirs only))
   "Presets for \"autoloads.el\" files.")
 
-(pcase-dolist (`(,name ,dir ,file . ,args)
-               al/autoloads-presets)
-  (apply #'al/load-autoloads name dir file args))
+(dolist (args al/autoloads-presets)
+  (apply #'al/load-autoloads args))
 
 ;; Prepend paths added by the above autoloads to `load-path' in reverse
 ;; order.  So the first loaded autoloads have precedence over the last

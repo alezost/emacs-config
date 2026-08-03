@@ -454,6 +454,34 @@ Return nil and show warning messages otherwise."
                  nil)))
         features)))
 
+(defvar al/load-paths nil
+  "List of `load-path' lists added by `al/load-autoloads'.")
+
+(declare-function al/generate-autoloads "al-autoload")
+
+(defun al/load-autoloads (name directory autoloads-file &rest args)
+  "Load AUTOLOADS-FILE, generate it for DIRECTORY if needed.
+
+NAME is a string used for messages.
+
+Additional ARGS are sent to `al/generate-autoloads'.
+
+Push added `load-path' to `al/load-paths'."
+  (when (file-exists-p directory)
+    (unless (file-exists-p autoloads-file)
+      (al/with-demoted-errors
+          (concat "Generating " name " autoloads failed: %S")
+        (require 'al-autoload)
+        (apply #'al/generate-autoloads directory
+               :output-file autoloads-file
+               args)))
+    (al/with-demoted-errors
+        (concat "Loading " name " autoloads failed: %S")
+      (let ((count (length load-path)))
+        (al/load autoloads-file)
+        (push (seq-subseq load-path 0 (- count))
+              al/load-paths)))))
+
 
 ;;; Hook and "after load" functionality
 
