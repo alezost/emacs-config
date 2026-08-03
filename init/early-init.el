@@ -6,7 +6,9 @@
 (setq
  gc-cons-threshold (expt 2 24)  ; 16 MiB
  garbage-collection-messages t
- package-enable-at-startup nil)
+ package-enable-at-startup nil
+ ;; Show all loading messages (by default, `require' suppresses messages).
+ force-load-messages t)
 
 ;; Set `file-name-handler-alist' to nil until Emacs startup is finished.
 (defvar al/file-name-handler-alist file-name-handler-alist
