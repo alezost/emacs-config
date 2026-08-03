@@ -49,29 +49,21 @@
 (require 'al-general)
 
 (al/title-message "Loading init files")
-(defun al/init-load (file)
-  "Load FILE from `al/emacs-init-dir'."
-  (al/load (al/emacs-init-dir-file file)))
 
-(defvar al/init-files
-  '("keys"
-    "text"
-    "packages"
-    "settings"
-    "files"
-    "prog"
-    "time"
-    "file-modes"
-    "mmedia"
-    "net"
-    "visual"
-    "games"
-    "custom"))
-
-(dolist (file al/init-files)
-  (al/with-demoted-errors
-      (concat "Loading \"" file "\" init file failed: %S")
-    (al/init-load file)))
+(al/init-load
+ "keys"
+ "text"
+ "packages"
+ "settings"
+ "files"
+ "prog"
+ "time"
+ "file-modes"
+ "mmedia"
+ "net"
+ "visual"
+ "games"
+ "custom")
 
 (defvar al/load-paths nil)
 

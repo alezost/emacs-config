@@ -20,6 +20,7 @@
 (eval-when-compile (require 'cl-lib))
 (require 'seq)
 (require 'fp-utils)
+(require 'al-places)
 
 
 ;;; `rx' definitions
@@ -421,6 +422,13 @@ FILE may omit an extension.  See `load' for details."
     (or (load file 'noerror)
         (progn (al/warning-message "Failed to load '%s'." file)
                nil))))
+
+(defun al/init-load (&rest files)
+  "Load FILES from `al/emacs-init-dir'."
+  (dolist (file files)
+    (al/with-demoted-errors
+        (concat "Loading \"" file "\" init file failed: %S")
+      (al/load (al/emacs-init-dir-file file)))))
 
 (defmacro al/autoload (file &rest symbols)
   "Autoload (unquoted) SYMBOLS from file as interactive commands."
