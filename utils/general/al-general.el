@@ -274,6 +274,9 @@ If VALS is not a list, call PREDICATE on this value."
   (al/every? #'file-directory-p object
              "Directory '%s' does not exist."))
 
+
+;;; Auxiliary macros
+
 (defmacro al/with-check (&rest body)
   "Call rest of BODY if all checks are passed successfully.
 
@@ -292,6 +295,113 @@ Return nil if checks are not passed."
                 ,(or (null file) `(al/file?      ,file))
                 ,(or (null dir)  `(al/directory? ,dir)))
        ,@body)))
+
+(defmacro al/with-demoted-errors (format &rest body)
+  "Run BODY and demote any errors to simple messages.
+
+See `with-demoted-errors' for the meaning of arguments.
+
+`with-demoted-errors' supports an obsolete use where FORMAT string can
+be missing.  Because of this, (concat ...) cannot be used for FORMAT in
+`with-demoted-errors'.  That is why this macro exists."
+  (declare (debug t) (indent 1))
+  (let ((err (make-symbol "error")))
+    `(condition-case ,err
+         ,(macroexp-progn body)
+       (error (al/error-message ,format ,err) nil))))
+
+(defmacro al/setq-no-warnings (&rest args)
+  "Same as `setq' but suppressing free variable compilation warnings."
+  (declare (debug setq))
+  (let ((vars (al/every-nth-element 2 args)))
+    `(with-suppressed-warnings ((free-vars ,@vars))
+       (setq ,@args))))
+
+(defmacro al/defun-lazy (name &rest body)
+  "Define NAME function accepting zero arguments.
+
+On the first call, NAME function evaluates BODY and returns result.  On
+subsequent calls, just the result of the first call is returned without
+BODY evaluation.
+
+BODY can start with the following optional keywords:
+
+  `:predicates'     unquoted list of predicates or a single predicate
+                    called on the latest result; if any predicate
+                    returns nil, body is reevaluated again to update the
+                    result."
+  (declare (indent 1) (debug t))
+  (let* ((name-str    (symbol-name name))
+         (called-var  (intern (concat name-str "-called?")))
+         (val-var     (intern (concat name-str "-value")))
+         (docstring   (and (stringp (car body))
+                           (pop body))))
+    (al/with-keywords body
+        (predicates)
+      (let ((interactive (and (equal (car body) '(interactive))
+                              (pop body))))
+        `(progn
+           ,(unless predicates
+              `(defvar ,called-var nil))
+           (defvar ,val-var nil)
+           (defun ,name ()
+             ,docstring
+             ,interactive
+             (if ,(if predicates
+                      `(and ,val-var
+                            ,@(mapcar (lambda (p) `(funcall #',p ,val-var))
+                                      (al/list-maybe predicates)))
+                    called-var)
+                 ,val-var
+               (setq ,@(unless predicates (list called-var t))
+                     ,val-var ,(macroexp-progn body)))))))))
+
+(defmacro al/with-check-point (&rest body)
+  "Evaluate BODY.
+Return non-nil, if point position is changed after evaluating.
+Return nil otherwise."
+  (declare (indent 0) (debug t))
+  `(let ((pos (point)))
+     ,@body
+     (/= pos (point))))
+
+(defmacro al/eval-to-kill-ring (&rest body)
+  "Evaluate BODY and return its result.
+If the result is string or symbol, put it into `kill-ring' and display
+it in minibuffer."
+  (declare (indent 0) (debug (name body)))
+  (let ((res-var     (make-symbol "res"))
+        (res-str-var (make-symbol "res-str")))
+    `(let* ((,res-var (progn ,@body))
+            (,res-str-var (cond
+                           ((stringp ,res-var) ,res-var)
+                           ((symbolp ,res-var) (symbol-name ,res-var)))))
+       (when ,res-str-var
+         (kill-new ,res-str-var)
+         (message "%s" ,res-str-var))
+       ,res-var)))
+
+(defmacro al/put (properties &rest args)
+  "Put symbol PROPERTIES to values.
+Each element of ARGS should have (VALUE SYMBOL ...) form.
+PROPERTIES can be a list of symbols or a single symbol.
+Call (put SYMBOL PROPERTY VALUE) for each PROPERTY and each SYMBOL."
+  (declare (indent 1) (debug (name body)))
+  (let ((props (al/list-maybe properties))
+        (val-var (make-symbol "value")))
+    `(progn
+       ,@(mapcar
+          (lambda (arg)
+            (let ((value   (car arg))
+                  (symbols (cdr arg)))
+              `(let ((,val-var ,value))
+                 ,@(mapcan
+                    (lambda (symbol)
+                      (mapcar (lambda (prop)
+                                `(put ',symbol ',prop ,val-var))
+                              props))
+                    symbols))))
+          args))))
 
 
 ;;; (Auto)loading utils
@@ -509,118 +619,11 @@ Also it (default syntax) breaks `indent-guide-mode'."
 
 ;;; Miscellaneous utils
 
-(defmacro al/with-demoted-errors (format &rest body)
-  "Run BODY and demote any errors to simple messages.
-
-See `with-demoted-errors' for the meaning of arguments.
-
-`with-demoted-errors' supports an obsolete use where FORMAT string can
-be missing.  Because of this, (concat ...) cannot be used for FORMAT in
-`with-demoted-errors'.  That is why this macro exists."
-  (declare (debug t) (indent 1))
-  (let ((err (make-symbol "error")))
-    `(condition-case ,err
-         ,(macroexp-progn body)
-       (error (al/error-message ,format ,err) nil))))
-
-(defmacro al/setq-no-warnings (&rest args)
-  "Same as `setq' but suppressing free variable compilation warnings."
-  (declare (debug setq))
-  (let ((vars (al/every-nth-element 2 args)))
-    `(with-suppressed-warnings ((free-vars ,@vars))
-       (setq ,@args))))
-
 (defun al/intern (string-or-symbol)
   "Like `intern' except STRING-OR-SYMBOL can also be a symbol."
   (if (symbolp string-or-symbol)
       string-or-symbol
     (intern string-or-symbol)))
-
-(defmacro al/defun-lazy (name &rest body)
-  "Define NAME function accepting zero arguments.
-
-On the first call, NAME function evaluates BODY and returns result.  On
-subsequent calls, just the result of the first call is returned without
-BODY evaluation.
-
-BODY can start with the following optional keywords:
-
-  `:predicates'     unquoted list of predicates or a single predicate
-                    called on the latest result; if any predicate
-                    returns nil, body is reevaluated again to update the
-                    result."
-  (declare (indent 1) (debug t))
-  (let* ((name-str    (symbol-name name))
-         (called-var  (intern (concat name-str "-called?")))
-         (val-var     (intern (concat name-str "-value")))
-         (docstring   (and (stringp (car body))
-                           (pop body))))
-    (al/with-keywords body
-        (predicates)
-      (let ((interactive (and (equal (car body) '(interactive))
-                              (pop body))))
-        `(progn
-           ,(unless predicates
-              `(defvar ,called-var nil))
-           (defvar ,val-var nil)
-           (defun ,name ()
-             ,docstring
-             ,interactive
-             (if ,(if predicates
-                      `(and ,val-var
-                            ,@(mapcar (lambda (p) `(funcall #',p ,val-var))
-                                      (al/list-maybe predicates)))
-                    called-var)
-                 ,val-var
-               (setq ,@(unless predicates (list called-var t))
-                     ,val-var ,(macroexp-progn body)))))))))
-
-(defmacro al/with-check-point (&rest body)
-  "Evaluate BODY.
-Return non-nil, if point position is changed after evaluating.
-Return nil otherwise."
-  (declare (indent 0) (debug t))
-  `(let ((pos (point)))
-     ,@body
-     (/= pos (point))))
-
-(defmacro al/eval-to-kill-ring (&rest body)
-  "Evaluate BODY and return its result.
-If the result is string or symbol, put it into `kill-ring' and display
-it in minibuffer."
-  (declare (indent 0) (debug (name body)))
-  (let ((res-var     (make-symbol "res"))
-        (res-str-var (make-symbol "res-str")))
-    `(let* ((,res-var (progn ,@body))
-            (,res-str-var (cond
-                           ((stringp ,res-var) ,res-var)
-                           ((symbolp ,res-var) (symbol-name ,res-var)))))
-       (when ,res-str-var
-         (kill-new ,res-str-var)
-         (message "%s" ,res-str-var))
-       ,res-var)))
-
-(defmacro al/put (properties &rest args)
-  "Put symbol PROPERTIES to values.
-Each element of ARGS should have (VALUE SYMBOL ...) form.
-PROPERTIES can be a list of symbols or a single symbol.
-Call (put SYMBOL PROPERTY VALUE) for each PROPERTY and each SYMBOL."
-  (declare (indent 1) (debug (name body)))
-  (let ((props (al/list-maybe properties))
-        (val-var (make-symbol "value")))
-    `(progn
-       ,@(mapcar
-          (lambda (arg)
-            (let ((value   (car arg))
-                  (symbols (cdr arg)))
-              `(let ((,val-var ,value))
-                 ,@(mapcan
-                    (lambda (symbol)
-                      (mapcar (lambda (prop)
-                                `(put ',symbol ',prop ,val-var))
-                              props))
-                    symbols))))
-          args))))
 
 (provide 'al-general)
 
