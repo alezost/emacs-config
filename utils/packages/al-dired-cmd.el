@@ -1,6 +1,6 @@
 ;;; al-dired-cmd.el --- Additional commands for dired  -*- lexical-binding: t -*-
 
-;; Copyright © 2012–2025 Alex Kost
+;; Copyright © 2012–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'let-macros))
 (require 'dired)
 (require 'dired-x)
 (require 'al-general)
@@ -131,10 +133,10 @@ except it quotes file names for a shell, unless ARG is non-nil."
 (defun al/dired-man-or-chmod ()
   "Perform `dired-man' on a Man-file or `dired-do-chmod' otherwise."
   (interactive)
-  (let ((file (dired-get-filename)))
-    (if (al/man-file-p file)
-        (dired-do-man)
-      (dired-do-chmod))))
+  (if-let- ((file (dired-get-filename)
+                  (<= #'al/man-file-p)))
+      (dired-do-man)
+    (dired-do-chmod)))
 
 (declare-function image-dired-backward-image
                   "image-dired" (&optional arg))
