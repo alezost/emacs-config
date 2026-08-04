@@ -125,6 +125,8 @@
     al/show-trailing-whitespace))
 (al/add-hook-maybe 'comint-mode-hook
   'hl-todo-mode)
+(al/add-hook-maybe 'compilation-mode-hook
+  'al/hl-line-mode)
 (al/add-hook-maybe 'messages-buffer-mode-hook
   (list 'hl-todo-mode
         (lambda () (setq buffer-read-only nil))))

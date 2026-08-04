@@ -421,8 +421,6 @@
       '(compilation-mode-map compilation-minor-mode-map)
     '(al/compilation-common-keys al/compilation-keys))
 
-  (al/add-hook-maybe 'compilation-mode-hook 'al/hl-line-mode)
-
   (when (al/require al-compilation)
     (al/add-hook-maybe 'compilation-finish-functions
       'al/compilation-notify)))
