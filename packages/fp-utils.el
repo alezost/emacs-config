@@ -45,7 +45,7 @@ for nil."
          ,@(cdr functions))
     value))
 
-(defun and=> (value &rest functions)
+(defmacro and=> (value &rest functions)
   "Return result of consecutive applying FUNCTIONS to VALUE.
 
 More precisely, for a given list of FUNCTIONS, (F1 F2 ... Fn),
@@ -61,12 +61,13 @@ Otherwise, return (Fn ... (F2 (F1 VALUE))).
 
 See also `compose-funcall' which does the same without checking
 intermediate results for nil."
-  (and value
-       (if functions
-           (apply #'and=>
-                  (funcall (car functions) value)
-                  (cdr functions))
-         value)))
+  (if (null functions)
+      value
+    (let ((var (make-symbol "val")))
+      `(let ((,var ,value))
+         (and ,var
+              (and=> (funcall ,(car functions) ,var)
+                     ,@(cdr functions)))))))
 
 (defmacro and<= (value &rest functions)
   "Return VALUE if (FUN VALUE) is non-nil for all FUNCTIONS.
@@ -113,6 +114,16 @@ See Info node `(guile) SRFI-26' for details."
   "Return a function that negates the result of FUN."
   (lambda (&rest args)
     (not (apply fun args))))
+
+(defun multi-filter (value &rest functions)
+  "Return result of consecutive applying FUNCTIONS to VALUE.
+This is the same as `and=>' except it is a function not a macro."
+  (and value
+       (if functions
+           (apply #'multi-filter
+                  (funcall (car functions) value)
+                  (cdr functions))
+         value)))
 
 (defun compose (functions &optional direction)
   "Compose FUNCTIONS into a single function.
