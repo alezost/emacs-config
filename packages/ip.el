@@ -22,7 +22,8 @@
 
 ;;; Code:
 
-(require 'let-macros)
+(eval-when-compile
+  (require 'let-macros))
 
 (defvar ip-urls
   '("http://ifconfig.me/ip"

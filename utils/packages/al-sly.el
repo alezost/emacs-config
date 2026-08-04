@@ -17,12 +17,13 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'fp-utils)
+  (require 'let-macros))
 (require 'cl-lib)
 (require 'sly)
 (require 'sly-autodoc "contrib/sly-autodoc")    ; required by `mrepl'
 (require 'sly-mrepl "contrib/sly-mrepl")
-(require 'fp-utils)
-(require 'let-macros)
 
 (defun al/sly-current-package ()
   "Return Common Lisp package of the current buffer.

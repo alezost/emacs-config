@@ -17,7 +17,8 @@
 
 ;;; Code:
 
-(require 'let-macros)
+(eval-when-compile
+  (require 'let-macros))
 (require 'al-format)
 (require 'al-text)
 

@@ -17,9 +17,10 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'let-macros))
 (require 'haskell)
 (require 'count)
-(require 'let-macros)
 
 ;;;###autoload
 (defun al/haskell-interactive-switch-or-start ()

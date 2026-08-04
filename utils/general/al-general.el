@@ -17,9 +17,10 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'cl-lib))
+(eval-when-compile
+  (require 'cl-lib)
+  (require 'fp-utils))
 (require 'seq)
-(require 'fp-utils)
 (require 'al-places)
 
 

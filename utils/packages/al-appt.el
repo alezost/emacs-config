@@ -17,9 +17,10 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'let-macros))
 (require 'notifications)
 (require 'count)
-(require 'let-macros)
 (require 'al-sound)
 (require 'al-file)
 

@@ -17,7 +17,8 @@
 
 ;;; Code:
 
-(require 'fp-utils)
+(eval-when-compile
+  (require 'fp-utils))
 (require 'al-minibuffer)
 
 (defun al/minibuffer-current-completion ()

@@ -17,12 +17,13 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'fp-utils)
+  (require 'let-macros))
 (require 'em-alias)
 (require 'em-dirs)
 (require 'em-unix)
 (require 'em-prompt)
-(require 'fp-utils)
-(require 'let-macros)
 (require 'al-general)
 (require 'al-places)
 (require 'al-buffer)

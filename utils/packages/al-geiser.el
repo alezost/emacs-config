@@ -17,8 +17,9 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'let-macros))
 (require 'geiser-mode)
-(require 'let-macros)
 
 (defun al/geiser-repl ()
   "Return the current Geiser REPL."

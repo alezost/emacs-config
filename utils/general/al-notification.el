@@ -17,11 +17,12 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'let-macros))
 (require 'seq)
 (require 'timer)
 (require 'notifications)
 (require 'count)
-(require 'let-macros)
 (require 'al-general)
 (require 'al-file)
 

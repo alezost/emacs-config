@@ -17,9 +17,10 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'let-macros))
 (require 'seq)
 (require 'fp-utils)
-(require 'let-macros)
 (require 'al-general)
 
 (defun al/shorten-string (string length)

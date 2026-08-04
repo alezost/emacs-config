@@ -17,14 +17,15 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'cl-lib))
+(eval-when-compile
+  (require 'cl-lib)
+  (require 'fp-utils)
+  (require 'let-macros))
 (require 'seq)
 (require 'emms)
 (require 'emms-playlist-mode)
 (require 'emms-state)
 (require 'count)
-(require 'let-macros)
-(require 'fp-utils)
 (require 'al-text)
 (require 'al-format)
 (require 'al-buffer)

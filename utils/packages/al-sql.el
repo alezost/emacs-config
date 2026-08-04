@@ -17,8 +17,9 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'let-macros))
 (require 'sql)
-(require 'let-macros)
 (require 'al-buffer)
 
 ;;;###autoload

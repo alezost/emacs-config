@@ -17,9 +17,10 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'let-macros))
 (require 'seq)
 (require 'browse-url)
-(require 'let-macros)
 (require 'al-general)
 (require 'al-read)
 (require 'al-file)

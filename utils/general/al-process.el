@@ -17,7 +17,8 @@
 
 ;;; Code:
 
-(require 'let-macros)
+(eval-when-compile
+  (require 'let-macros))
 (require 'al-places)
 
 (defun al/start-process (program &rest args)

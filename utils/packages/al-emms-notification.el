@@ -17,12 +17,13 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'cl-lib))
+(eval-when-compile
+  (require 'cl-lib)
+  (require 'let-macros))
 (require 'emms)
 (require 'emms-state)
 (require 'notifications)
 (require 'xml)
-(require 'let-macros)
 (require 'al-emms)
 (require 'al-emms-mpv)
 

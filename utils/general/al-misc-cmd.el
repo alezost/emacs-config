@@ -17,7 +17,8 @@
 
 ;;; Code:
 
-(require 'let-macros)
+(eval-when-compile
+  (require 'let-macros))
 (require 'al-buffer)
 
 (defvar org-link-plain-re)

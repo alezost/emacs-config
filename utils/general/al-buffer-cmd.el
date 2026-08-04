@@ -17,9 +17,10 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'fp-utils)
+  (require 'let-macros))
 (require 'seq)
-(require 'fp-utils)
-(require 'let-macros)
 (require 'al-general)
 (require 'al-buffer)
 

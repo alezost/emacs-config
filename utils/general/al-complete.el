@@ -17,8 +17,9 @@
 
 ;;; Code:
 
-(require 'fp-utils)
-(require 'let-macros)
+(eval-when-compile
+  (require 'fp-utils)
+  (require 'let-macros))
 
 (defvar al/completion-ignored-extensions completion-ignored-extensions
   "Original value of `completion-ignored-extensions'.

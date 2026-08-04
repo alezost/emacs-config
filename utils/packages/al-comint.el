@@ -17,8 +17,9 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'let-macros))
 (require 'comint)
-(require 'let-macros)
 
 ;;;###autoload
 (defun al/comint-previous-matching-input-from-input (arg)

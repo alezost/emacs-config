@@ -17,8 +17,9 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'fp-utils))
 (require 'tempo)
-(require 'fp-utils)
 (require 'al-general)
 
 (defvar al/tempo-start ","

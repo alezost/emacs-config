@@ -17,9 +17,10 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'let-macros))
 (require 'gnus-sum)
 (require 'gnus-art)
-(require 'let-macros)
 (require 'al-buffer)
 
 (defun al/gnus-buffer-p ()

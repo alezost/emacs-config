@@ -17,8 +17,9 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'fp-utils))
 (require 'aurel)
-(require 'fp-utils)
 (require 'al-buffer)
 
 ;;;###autoload

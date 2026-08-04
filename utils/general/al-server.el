@@ -17,9 +17,10 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'let-macros))
 (require 'server)
 (require 'seq)
-(require 'let-macros)
 
 (defvar al/server-running? nil
   "The state of the current server.

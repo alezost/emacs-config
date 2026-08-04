@@ -17,14 +17,15 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'fp-utils)
+  (require 'let-macros))
 (require 'seq)
 (require 'erc)
 (require 'erc-log)
 (require 'erc-networks)
 (require 'erc-stamp)
 (require 'erc-track)
-(require 'fp-utils)
-(require 'let-macros)
 (require 'al-general)
 (require 'al-buffer)
 (require 'al-file)

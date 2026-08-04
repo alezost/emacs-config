@@ -17,9 +17,10 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'cl-lib))
+(eval-when-compile
+  (require 'cl-lib)
+  (require 'let-macros))
 (require 'seq)
-(require 'let-macros)
 (require 'al-general)
 
 

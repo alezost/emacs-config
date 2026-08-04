@@ -17,10 +17,11 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'cl-lib))
+(eval-when-compile
+  (require 'cl-lib)
+  (require 'let-macros))
 (require 'w3m)
 (require 'wget nil t)
-(require 'let-macros)
 (require 'al-buffer)
 
 ;;;###autoload

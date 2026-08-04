@@ -21,13 +21,14 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'fp-utils)
+  (require 'let-macros))
 (require 'ol)
 (require 'emms)
 (require 'emms-source-playlist)
 (require 'emms-playing-time)
 (require 'count)
-(require 'fp-utils)
-(require 'let-macros)
 (require 'al-buffer)
 (require 'al-url)
 (require 'al-format)

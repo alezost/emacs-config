@@ -17,8 +17,9 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'fp-utils))
 (require 'imenus)
-(require 'fp-utils)
 
 
 ;;; Searching/"imenu"-ing elisp files
