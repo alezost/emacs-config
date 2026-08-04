@@ -135,7 +135,7 @@
 (al/eval-after-load al-process
   :load t
   (advice-add 'insert-directory :around #'al/call-with-locale)
-  (al/enable-process-hooks))
+  (al/process-hook-mode))
 
 (al/eval-after-load al-server
   :load t

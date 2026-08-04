@@ -108,18 +108,17 @@ program arguments.")
   (al/run-before-process-hook program args))
 
 ;;;###autoload
-(defun al/enable-process-hooks ()
-  "Make `al/before-process-functions' active."
-  (interactive)
-  (advice-add 'call-process :before #'al/run-before-call-process-hook)
-  (advice-add 'start-process :before #'al/run-before-start-process-hook))
-
-;;;###autoload
-(defun al/disable-process-hooks ()
-  "Make `al/before-process-functions' inactive."
-  (interactive)
-  (advice-remove 'call-process #'al/run-before-call-process-hook)
-  (advice-remove 'start-process #'al/run-before-start-process-hook))
+(define-minor-mode al/process-hook-mode
+  "Make `al/before-process-functions' active or inactive."
+  :lighter ""
+  :global t
+  :group 'al/process
+  (if al/process-hook-mode
+      (progn
+        (advice-add 'call-process :before #'al/run-before-call-process-hook)
+        (advice-add 'start-process :before #'al/run-before-start-process-hook))
+    (advice-remove 'call-process #'al/run-before-call-process-hook)
+    (advice-remove 'start-process #'al/run-before-start-process-hook)))
 
 
 ;;; Synchronizing zathura theme
