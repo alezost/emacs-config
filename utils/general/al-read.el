@@ -17,7 +17,8 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'cl-lib))
+(eval-when-compile
+  (require 'cl-lib))
 
 (defun al/read-string (prompt &optional initial-input history
                               default-value inherit-input-method)

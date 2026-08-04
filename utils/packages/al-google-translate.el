@@ -17,7 +17,8 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'cl-lib))
+(eval-when-compile
+  (require 'cl-lib))
 (require 'google-translate-smooth-ui)
 (require 'al-general)
 

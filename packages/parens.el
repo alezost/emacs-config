@@ -51,7 +51,8 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'cl-lib))
+(eval-when-compile
+  (require 'cl-lib))
 
 (defmacro parens-handle-scan-error (body &rest on-error-body)
   "Evaluate BODY expression.

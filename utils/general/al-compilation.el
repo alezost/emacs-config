@@ -17,7 +17,8 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'cl-lib))
+(eval-when-compile
+  (require 'cl-lib))
 (require 'notifications)
 (require 'al-sound)
 (require 'al-file)
