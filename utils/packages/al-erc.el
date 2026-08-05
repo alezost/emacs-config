@@ -88,10 +88,7 @@ buffers (where `erc-server-process' is set)."
 (al/defun-lazy al/erc-channel-list-buffer
   "Return channel list buffer of the current server."
   :predicates buffer-live-p
-  (seq-find (lambda (buf)
-              (with-current-buffer buf
-                (derived-mode-p 'erc-list-menu-mode)))
-            (buffer-list)))
+  (car (al/buffers-by-mode 'erc-list-menu-mode)))
 
 (defun al/erc-channel-list ()
   "Switch to (make if needed) buffer with channels of the current server."
