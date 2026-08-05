@@ -414,6 +414,7 @@
    move-to-prompt
    netsplit
    networks
+   nicks
    command-indicator
    notifications
    pcomplete
