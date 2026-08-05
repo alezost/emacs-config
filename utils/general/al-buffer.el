@@ -19,9 +19,15 @@
 
 (eval-when-compile
   (require 'cl-lib)
+  (require 'fp-utils)
   (require 'let-macros))
 (require 'seq)
 (require 'al-general)
+
+(defun al/buffer-derived-mode? (buffer &rest modes)
+  "Return non-nil if BUFFER major mode is derived from one of MODES."
+  (with-current-buffer buffer
+    (derived-mode-p modes)))
 
 
 ;;; Getting buffers
@@ -48,11 +54,8 @@ See `al/buffers' for the meaning of SORT-PRED."
 (defun al/buffers-by-mode (mode &optional sort-pred)
   "Return a list of buffers which `major-mode' is derived from MODE.
 See `al/buffers' for the meaning of SORT-PRED."
-  (al/buffers
-   (lambda (buf)
-     (with-current-buffer buf
-       (derived-mode-p mode)))
-   sort-pred))
+  (al/buffers (cut #'al/buffer-derived-mode? <> mode)
+              sort-pred))
 
 (defun al/buffer-name< (b1 b2)
   "Call `string<' on names of buffers B1 and B2."
