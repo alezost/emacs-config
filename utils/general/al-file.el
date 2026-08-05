@@ -50,11 +50,6 @@ v2 will be set, while v1 will not."
                         (setq ,var file)))))
                (seq-partition body 2))))
 
-(defun al/file-regexp (&rest extensions)
-  "Return regexp to match file name by EXTENSIONS."
-  (rx-to-string `(and "." (or ,@extensions) string-end)
-                'no-group))
-
 (defun al/subdirs (directory &optional base)
   "Return list of DIRECTORY sub-directories.
 If BASE is non-nil, return only directories names, otherwise return full

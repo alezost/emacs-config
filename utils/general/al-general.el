@@ -40,6 +40,11 @@
 (rx-define al/space*
   (* (or " " "\t")))
 
+(defmacro al/file-regexp (&rest extensions)
+  "Return regexp to match file name by EXTENSIONS."
+  (declare (indent 0))
+  `(rx "." (or ,@extensions) string-end))
+
 
 ;;; Auxiliary code for macros
 

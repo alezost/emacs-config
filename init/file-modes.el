@@ -21,8 +21,6 @@
 (require 'al-general)
 (require 'al-key)
 
-(declare-function al/file-regexp "al-file")
-
 
 ;;; Org
 
@@ -65,17 +63,16 @@
   (setq org-emphasis-alist
         (al/assoc-delete-all '("/" "_") org-emphasis-alist))
 
-  (when (al/require al-file)
-    (setq
-     org-file-apps
-     `(("\\.mm\\'" . default)
-       ("\\.x?html?\\'" . al/choose-browser)
-       (,(al/file-regexp "jpg" "png" "gif") . "sxiv %s")
-       (,(al/file-regexp "pdf") . "zathura %s")
-       (,(al/file-regexp "djvu") . "zathura %s")
-       ("\\.pdf::\\([0-9]+\\)\\'" . "zathura --page %1 %s")
-       ("\\.djvu::\\([0-9]+\\)\\'" . "zathura --page %1 %s")
-       (auto-mode . emacs))))
+  (setq
+   org-file-apps
+   `(("\\.mm\\'" . default)
+     ("\\.x?html?\\'" . al/choose-browser)
+     (,(al/file-regexp "jpg" "png" "gif") . "sxiv %s")
+     (,(al/file-regexp "pdf") . "zathura %s")
+     (,(al/file-regexp "djvu") . "zathura %s")
+     ("\\.pdf::\\([0-9]+\\)\\'" . "zathura --page %1 %s")
+     ("\\.djvu::\\([0-9]+\\)\\'" . "zathura --page %1 %s")
+     (auto-mode . emacs)))
 
   (setq
    org-modules '(ol-info)
