@@ -426,7 +426,7 @@
  ;; Set `erc-autojoin-channels-alist' in the top level so that it can be
  ;; changed before loading ERC.
  erc-autojoin-channels-alist
- '(("freenode.net"
+ '(("libera"
     "#emacs"
     "#erc"
     "#gnus"
@@ -469,8 +469,8 @@
 
 (al/eval-after-load erc
   (setq
-   erc-server "chat.freenode.net"
-   erc-port 7000
+   erc-server "irc.libera.chat"
+   erc-port 6697
    erc-nick "alezost"
    erc-user-full-name user-full-name
    erc-server-reconnect-timeout 60
