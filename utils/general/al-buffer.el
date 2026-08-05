@@ -153,8 +153,8 @@ returning one of those.  If there is no such buffer, call
 FUNCTION if it is specified."
   (if-let ((buffer (if (functionp buffer)
                        (funcall buffer)
-                     buffer))
-           (buffer (get-buffer buffer)))
+                     buffer)
+                   (=> #'get-buffer)))
       (al/display-buffer buffer)
     (when function (funcall function))))
 
