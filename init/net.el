@@ -550,6 +550,16 @@
    erc-ctcp-query-ECHO-hook    '(al/erc-ctcp-query-ECHO)
    erc-ctcp-query-TIME-hook    '(al/erc-ctcp-query-TIME)
    erc-ctcp-query-VERSION-hook '(al/erc-ctcp-query-VERSION))
+  (setq
+   al/erc-log-excluded-regexps
+   '("\\`#archlinux\\'" "\\`#emacs\\'" "\\`#freenode\\'" "\\`#znc\\'")
+   al/erc-away-msg-list
+   '("just away" "watching athletics" "watching darts"
+     "eating" "i'm not ready to chat" "time to sleep")
+   al/erc-channel-list
+   '("#emacs" "#archlinux" "#archlinux-classroom" "#trivialand" "##latin"
+     "#lisp" "#lispgames" "#git" "#github" "#netfilter" "#wesnoth"
+     "#themanaworld" "##french" "##english" "##programming"))
 
   (al/add-hook-maybe 'erc-after-connect 'al/erc-ghost-maybe)
   (advice-add 'erc-notifications-notify :before #'al/play-erc-sound))
@@ -593,18 +603,6 @@
    ("RET" . erc-list-join))
   (define-key erc-list-menu-sort-button-map
     [header-line mouse-2] 'erc-list-menu-sort-by-column))
-
-(al/eval-after-load al-erc
-  (setq
-   al/erc-log-excluded-regexps
-   '("\\`#archlinux\\'" "\\`#emacs\\'" "\\`#freenode\\'" "\\`#znc\\'")
-   al/erc-away-msg-list
-   '("just away" "watching athletics" "watching darts"
-     "eating" "i'm not ready to chat" "time to sleep")
-   al/erc-channel-list
-   '("#emacs" "#archlinux" "#archlinux-classroom" "#trivialand" "##latin"
-     "#lisp" "#lispgames" "#git" "#github" "#netfilter" "#wesnoth"
-     "#themanaworld" "##french" "##english" "##programming")))
 
 (al/autoload "erc-view-log" erc-view-log-mode)
 (al/with-check
