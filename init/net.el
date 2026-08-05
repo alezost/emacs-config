@@ -414,7 +414,7 @@
    move-to-prompt
    netsplit
    networks
-   noncommands
+   command-indicator
    notifications
    pcomplete
    readonly
