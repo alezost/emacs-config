@@ -175,6 +175,13 @@ Similar to `erc-quit-server', but without prompting for REASON."
   (al/erc-with-server-buffer
     (erc-cmd-QUIT reason)))
 
+(defun al/erc-part-or-quit (reason)
+  "Part/disconnect from the current channel/server buffer."
+  (interactive (list ""))
+  (if (erc--server-buffer-p)
+      (erc-cmd-QUIT reason)
+    (erc-part-from-channel reason)))
+
 (defun al/erc-ghost-maybe (_server nick)
   "Send GHOST message to NickServ if NICK ends with `erc-nick-uniquifier'.
 The function is suitable for `erc-after-connect'."

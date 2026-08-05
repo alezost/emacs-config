@@ -493,6 +493,7 @@
     '(("M-." . erc-previous-command)
       ("M-e" . erc-next-command)
       ("C-a" . erc-bol)
+      ("C-c C-d" . al/erc-part-or-quit)
       ("C-l" . al/erc-view-log-file)
       ("<s-kanji>" . al/recenter-end-of-buffer-top)
       ("C-H-3" . al/recenter-end-of-buffer-top))
