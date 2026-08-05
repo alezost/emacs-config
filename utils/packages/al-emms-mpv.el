@@ -208,10 +208,10 @@ If prefix argument is numerical, use it for VALUE."
                   (error (al/emms-mpv-show-osd-text
                           (concat "No " str " track"))))))
       (with-current-buffer emms-playlist-buffer
-        (cond
-         ((equal arg0 "al/playlist-prev")
+        (pcase arg0
+         ("al/playlist-prev"
           (play-track #'emms-playlist-select-previous "previous"))
-         ((equal arg0 "al/playlist-next")
+         ("al/playlist-next"
           (play-track #'emms-playlist-select-next "next")))))))
 
 (defun al/emms-edit-mpv-command ()
