@@ -49,7 +49,7 @@
 (defmacro al/with-face (face &rest body)
   "Propertize string returned by BODY with FACE."
   (declare (indent 1) (debug t))
-  `(propertize (progn ,@body) 'face ,face))
+  `(propertize ,(macroexp-progn body) 'face ,face))
 
 (defun al/get-face (&optional pos)
   "Return name of the face at point POS.
@@ -99,12 +99,12 @@ Each specification from SPECS list has the following form:
 where FONT is FONT-SPEC and each element of CHAR-SPECS list is
 CHARACTERS in `set-fontset-font'."
   (declare (indent 0) (debug t))
-  `(progn
-     ,@(mapcan (pcase-lambda (`(,name . ,char-specs))
-                 (mapcar (lambda (spec)
-                           `(set-fontset-font t ,spec ,name))
-                         char-specs))
-               specs)))
+  (macroexp-progn
+   (mapcan (pcase-lambda (`(,name . ,char-specs))
+             (mapcar (lambda (spec)
+                       `(set-fontset-font t ,spec ,name))
+                     char-specs))
+           specs)))
 
 (provide 'al-visual)
 

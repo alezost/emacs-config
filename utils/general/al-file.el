@@ -41,14 +41,13 @@ Example:
 
 v2 will be set, while v1 will not."
   (declare (debug setq))
-  `(progn
-     ,@(mapcar (lambda (lst)
-                 (let ((var  (car lst))
-                       (file (cadr lst)))
-                   `(let ((file ,file))
-                      (when (file-exists-p file)
-                        (setq ,var file)))))
-               (seq-partition body 2))))
+  (let ((file-var (make-symbol "file")))
+    (macroexp-progn
+     (mapcar (pcase-lambda (`(,var ,file))
+               `(let ((,file-var ,file))
+                  (when (file-exists-p ,file-var)
+                    (setq ,var ,file-var))))
+             (seq-partition body 2)))))
 
 (defun al/subdirs (directory &optional base)
   "Return list of DIRECTORY sub-directories.

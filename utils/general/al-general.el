@@ -379,7 +379,7 @@ it in minibuffer."
   (declare (indent 0) (debug (name body)))
   (let ((res-var     (make-symbol "res"))
         (res-str-var (make-symbol "res-str")))
-    `(let* ((,res-var (progn ,@body))
+    `(let* ((,res-var ,(macroexp-progn body))
             (,res-str-var (cond
                            ((stringp ,res-var) ,res-var)
                            ((symbolp ,res-var) (symbol-name ,res-var)))))
@@ -396,19 +396,16 @@ Call (put SYMBOL PROPERTY VALUE) for each PROPERTY and each SYMBOL."
   (declare (indent 1) (debug (name body)))
   (let ((props (al/list-maybe properties))
         (val-var (make-symbol "value")))
-    `(progn
-       ,@(mapcar
-          (lambda (arg)
-            (let ((value   (car arg))
-                  (symbols (cdr arg)))
-              `(let ((,val-var ,value))
-                 ,@(mapcan
-                    (lambda (symbol)
-                      (mapcar (lambda (prop)
-                                `(put ',symbol ',prop ,val-var))
-                              props))
-                    symbols))))
-          args))))
+    (macroexp-progn
+     (mapcar (pcase-lambda (`(,value . ,symbols))
+               `(let ((,val-var ,value))
+                  ,@(mapcan
+                     (lambda (symbol)
+                       (mapcar (lambda (prop)
+                                 `(put ',symbol ',prop ,val-var))
+                               props))
+                     symbols)))
+             args))))
 
 
 ;;; (Auto)loading utils
@@ -439,10 +436,10 @@ FILE may omit an extension.  See `load' for details."
 (defmacro al/autoload (file &rest symbols)
   "Autoload (unquoted) SYMBOLS from file as interactive commands."
   (declare (indent 1))
-  `(progn
-     ,@(mapcar (lambda (symbol)
-                 `(autoload ',symbol ,file nil t))
-               symbols)))
+  (macroexp-progn
+   (mapcar (lambda (symbol)
+             `(autoload ',symbol ,file nil t))
+           symbols)))
 
 (defmacro al/require (&rest features)
   "Load FEATURES if not loaded yet.
@@ -450,15 +447,14 @@ FEATURES should be unquoted symbols.
 Return non-nil if all FEATURES loaded successfully.
 Return nil and show warning messages otherwise."
   (declare (indent 0))
-  `(progn
-     ,@(mapcar
-        (lambda (feature)
-          `(or (require ',feature nil t)
-               (progn
-                 (al/warning-message "`%s' feature is not available"
-                                     ',feature)
-                 nil)))
-        features)))
+  (macroexp-progn
+   (mapcar (lambda (feature)
+             `(or (require ',feature nil t)
+                  (progn
+                    (al/warning-message "`%s' feature is not available"
+                                        ',feature)
+                    nil)))
+           features)))
 
 (defvar al/load-paths nil
   "List of `load-path' lists added by `al/load-autoloads'.")
