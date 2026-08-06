@@ -60,6 +60,21 @@ This function is intended to be used as `before' or `after' advice for
   (string-match-p "\\`[[:digit:]]+ znc"
                   (shell-command-to-string "pgrep -l znc")))
 
+(defun al/erc-buffers (&optional predicate)
+  "Return a list of ERC buffers satisfying PREDICATE.
+
+For each ERC buffer, PREDICATE is called with this buffer as a single
+argument and inside this buffer.
+
+This is similar to `erc-buffer-list' but faster and better."
+  (al/buffers
+   (lambda (buffer)
+     (with-current-buffer buffer
+       (and (derived-mode-p 'erc-mode)
+            (if predicate
+                (funcall predicate buffer)
+              t))))))
+
 (defun al/erc-server-buffer-name ()
   "Return a name of buffer with default server."
   (concat (erc-compute-server) ":"
@@ -68,7 +83,7 @@ This function is intended to be used as `before' or `after' advice for
 (al/defun-lazy al/erc--server-buffer
   "Return the current ERC server buffer."
   :predicates buffer-live-p
-  (car (erc-buffer-list #'erc--server-buffer-p)))
+  (car (al/erc-buffers #'erc--server-buffer-p)))
 
 (defun al/erc-server-buffer (&optional noerror)
   "Return the current ERC server buffer.
@@ -120,9 +135,7 @@ buffers (where `erc-server-process' is set)."
 (defun al/erc-switch-buffer ()
   "Switch to ERC buffer, or start ERC if not already started."
   (interactive)
-  (if-let ((bufs (mapcar #'buffer-name (erc-buffer-list))))
-      (switch-to-buffer (completing-read "ERC buffer: " bufs))
-    (erc)))
+  (al/rotate-or-select-buffer #'al/erc-buffers #'erc "ERC buffer: "))
 
 ;;;###autoload
 (defun al/erc-track-switch-buffer (arg)
@@ -134,8 +147,7 @@ buffers (where `erc-server-process' is set)."
 
 (defun al/erc-get-channel-buffer-list ()
   "Return a list of the ERC-channel-buffers."
-  (erc-buffer-filter
-   (cut #'al/buffer-name-match? "^#.*")))
+  (al/erc-buffers (cut #'al/buffer-name-match? "^#.*" <>)))
 
 ;;;###autoload
 (defun al/erc-cycle ()
