@@ -75,6 +75,10 @@ This is similar to `erc-buffer-list' but faster and better."
                 (funcall predicate buffer)
               t))))))
 
+(defun al/erc-channel-buffers ()
+  "Return a list of ERC channel buffers."
+  (al/erc-buffers (cut #'al/buffer-name-match? "^#.*" <>)))
+
 (defun al/erc-server-buffer-name ()
   "Return a name of buffer with default server."
   (concat (erc-compute-server) ":"
@@ -145,22 +149,18 @@ buffers (where `erc-server-process' is set)."
       (erc-track-switch-buffer arg)
     (erc)))
 
-(defun al/erc-get-channel-buffer-list ()
-  "Return a list of the ERC-channel-buffers."
-  (al/erc-buffers (cut #'al/buffer-name-match? "^#.*" <>)))
-
 ;;;###autoload
 (defun al/erc-cycle ()
   "Switch to ERC channel buffer, or run `erc-select'.
 When called repeatedly, cycle through the buffers."
   (interactive)
-  (if-let ((buffers (al/erc-get-channel-buffer-list)))
+  (if-let ((buffers (al/erc-channel-buffers)))
       (progn (when (eq (current-buffer) (car buffers))
                (bury-buffer)
                (setq buffers (cdr buffers)))
              (and buffers
                   (switch-to-buffer (car buffers))))
-    (call-interactively 'erc-select)))
+    (call-interactively #'erc-select)))
 
 (defvar al/erc-channel-list '("#emacs" "#erc" "#gnus")
   "A list of channels used in `al/erc-join-channel'.")
