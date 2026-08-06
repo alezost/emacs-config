@@ -22,6 +22,7 @@
   (require 'let-macros))
 (require 'seq)
 (require 'erc)
+(require 'erc-button)
 (require 'erc-log)
 (require 'erc-networks)
 (require 'erc-stamp)
@@ -215,6 +216,18 @@ changed)."
       (erc-put-text-property 0 (length stamp) 'field 'erc-timestamp stamp)
       (insert stamp)
       (setq erc-timestamp-last-inserted-left stamp))))
+
+(declare-function al/end-of-buffer "al-text-cmd")
+
+(defun al/erc-next-button-maybe (&optional arg)
+  "Move to the ARGth next button if possible.
+Return non-nil if next button is reached, nil otherwise."
+  (interactive "p")
+  (and (derived-mode-p 'erc-mode)
+       (< (point) erc-input-marker)
+       (condition-case _
+           (erc-button-next (or arg 1))
+         (error (al/end-of-buffer) nil))))
 
 
 ;;; Away

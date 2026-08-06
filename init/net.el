@@ -490,7 +490,8 @@
    erc-part-reason 'al/erc-quit-part-reason)
 
   (defconst al/erc-keys
-    '(("M-." . erc-previous-command)
+    '("TAB"
+      ("M-." . erc-previous-command)
       ("M-e" . erc-next-command)
       ("C-a" . erc-bol)
       ("C-c C-d" . al/erc-part-or-quit)
@@ -562,6 +563,9 @@
      "#lisp" "#lispgames" "#git" "#github" "#netfilter" "#wesnoth"
      "#themanaworld" "##french" "##english" "##programming"))
 
+  (defvar al/tab-functions)
+  (push 'al/erc-next-button-maybe al/tab-functions)
+
   (al/add-hook-maybe 'erc-after-connect 'al/erc-ghost-maybe)
   (advice-add 'erc-notifications-notify :before #'al/play-erc-sound))
 
@@ -589,13 +593,14 @@
   (setq erc-log-file-coding-system 'utf-8))
 
 (al/eval-after-load erc-button
-  (al/bind-keys
-   :map erc-button-keymap
-   ("u" . erc-button-press-button)
-   ("e" . al/next-link)
-   ("." . al/previous-link)
-   ("c"   (kill-new (car (get-text-property (point) 'erc-data))))
-   ("w"   (wget (car (get-text-property (point) 'erc-data))))))
+  (defconst al/erc-button-keys
+    '("TAB"
+      ("u" . erc-button-press-button)
+      ("e" . al/next-link)
+      ("." . al/previous-link)
+      ("c"   (kill-new (car (get-text-property (point) 'erc-data))))
+      ("w"   (wget (car (get-text-property (point) 'erc-data))))))
+  (al/bind-keys-from-vars 'erc-button-keymap 'al/erc-button-keys))
 
 (al/eval-after-load erc-list
   (al/bind-keys
