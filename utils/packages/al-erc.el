@@ -134,7 +134,7 @@ buffers (where `erc-server-process' is set)."
 (defun al/erc-get-channel-buffer-list ()
   "Return a list of the ERC-channel-buffers."
   (erc-buffer-filter
-   (cut #'string-match "^#.*" (buffer-name (current-buffer)))))
+   (cut #'al/buffer-name-match? "^#.*")))
 
 ;;;###autoload
 (defun al/erc-cycle ()
@@ -315,7 +315,7 @@ This function is suitable for `erc-generate-log-file-name-function'."
 Use `al/erc-log-excluded-regexps' to check if BUFFER should be
 logged or not.
 The function is intended to be used for `erc-enable-logging'."
-  (not (seq-some (cut #'string-match-p <> (buffer-name buffer))
+  (not (seq-some (cut #'al/buffer-name-match? <> buffer)
                  al/erc-log-excluded-regexps)))
 
 (provide 'al-erc)

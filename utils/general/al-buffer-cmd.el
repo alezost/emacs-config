@@ -107,7 +107,7 @@ name.")
    (lambda (checker)
      (cond
       ((stringp checker)
-       (string-match-p checker (buffer-name buffer)))
+       (al/buffer-name-match? checker buffer))
       ((functionp checker)
        (funcall checker buffer))
       (t

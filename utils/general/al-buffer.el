@@ -29,6 +29,11 @@
   (with-current-buffer buffer
     (derived-mode-p modes)))
 
+(defun al/buffer-name-match? (regexp &optional buffer)
+  "Return non-nil if BUFFER name matches REGEXP.
+If BUFFER is nil, use `current-buffer'."
+  (string-match-p regexp (buffer-name (or buffer (current-buffer)))))
+
 
 ;;; Getting buffers
 
@@ -46,10 +51,8 @@ See `sort' for details."
 (defun al/buffers-by-regexp (regexp &optional sort-pred)
   "Return a list of buffers which names match REGEXP.
 See `al/buffers' for the meaning of SORT-PRED."
-  (al/buffers
-   (lambda (buf)
-     (string-match-p regexp (buffer-name buf)))
-   sort-pred))
+  (al/buffers (cut #'al/buffer-name-match? regexp <>)
+              sort-pred))
 
 (defun al/buffers-by-mode (mode &optional sort-pred)
   "Return a list of buffers which `major-mode' is derived from MODE.
