@@ -24,6 +24,7 @@
 (require 'sly)
 (require 'sly-autodoc "contrib/sly-autodoc")    ; required by `mrepl'
 (require 'sly-mrepl "contrib/sly-mrepl")
+(require 'count)
 
 (defun al/sly-current-package ()
   "Return Common Lisp package of the current buffer.
@@ -149,7 +150,7 @@ This command is analogous to `geiser-mode-switch-to-repl-and-enter' for
     map))
 
 (defun al/sly-ml-format-number (n)
-  (cond ((and n (< 0 n))
+  (cond ((>0 n)
          (format "%d" n))
         (n "-")
         (t "*")))
@@ -172,7 +173,7 @@ This command is analogous to `geiser-mode-switch-to-repl-and-enter' for
                               "mouse-3: forget pending continuations")
            'mouse-face 'mode-line-highlight
            'keymap al/sly-ml-pending-map
-           (and (< 0 pending)
+           (and (>0 pending)
                 '(face error)))))
 
 (defun al/sly-ml-dbs (conn)
@@ -185,7 +186,7 @@ This command is analogous to `geiser-mode-switch-to-repl-and-enter' for
                               "mouse-1: go to first one")
            'mouse-face 'mode-line-highlight
            'keymap al/sly-ml-dbs-map
-           (and (< 0 dbs)
+           (and (>0 dbs)
                 '(face error)))))
 
 (defun al/sly-mode-line-format ()
