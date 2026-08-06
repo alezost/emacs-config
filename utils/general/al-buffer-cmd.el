@@ -66,7 +66,7 @@ If CHARSET is nil, use `unicode-bmp'.  With prefix, use `unicode-smp'."
    (list (and current-prefix-arg 'unicode-smp)))
   (al/switch-to-buffer-or-funcall
    "*Character List*"
-   (lambda () (list-charset-chars (or charset 'unicode-bmp)))))
+   (cut #'list-charset-chars (or charset 'unicode-bmp))))
 
 ;;;###autoload
 (defun al/switch-to-packages ()

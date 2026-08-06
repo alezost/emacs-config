@@ -18,7 +18,8 @@
 ;;; Code:
 
 (eval-when-compile
-  (require 'cl-lib))
+  (require 'cl-lib)
+  (require 'fp-utils))
 (require 'loaddefs-gen)
 (require 'al-file)
 
@@ -86,8 +87,7 @@ SUBDIRS can have one of the following values:
                (push doc-dir info-dirs))
               ((file-exists-p (expand-file-name "dir" dir))
                (push dir info-dirs)))
-        (if (seq-find (lambda (pkg)
-                        (string-match-p pkg dir-name))
+        (if (seq-find (cut #'string-match-p <> dir-name)
                       al/ignored-packages-autoloads)
             (message "Ignoring %s" dir)
           (push elisp-dir auto-dirs))))
