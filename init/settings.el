@@ -862,7 +862,14 @@
            "\\|COMMIT_EDITMSG\\|git-rebase-todo")))
 
 (al/eval-after-load al-server
-  (advice-add 'server-visit-files :around #'al/autoload-org-protocol))
+  :load after-init
+  (advice-add 'server-visit-files :around #'al/autoload-org-protocol)
+  (when-let* ((name (al/server-name)))
+    (setq al/server-running? t)
+    (when (equal name "emms")
+      (al/funcall 'al/save-place-mode)
+      (al/funcall 'al/recentf-mode)
+      (al/funcall 'appt-activate))))
 
 ;; Default value of `tramp-ssh-controlmaster-options' variable slows
 ;; down loading tramp significantly.  This should be set before tramp

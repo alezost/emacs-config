@@ -139,16 +139,6 @@
   (advice-add 'insert-directory :around #'al/call-with-locale)
   (al/process-hook-mode))
 
-(al/eval-after-load al-server
-  :load t
-  (when-let* ((name (al/server-name)))
-    (setq al/server-running? t)
-    (when (equal name "emms")
-      (al/call-after-init
-        al/save-place-mode
-        al/recentf-mode
-        appt-activate))))
-
 (message "Garbage collected %d times." gcs-done)
 (al/title-message "Emacs config has been loaded")
 
