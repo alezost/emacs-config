@@ -870,6 +870,11 @@
 
 (al/bind-keys-from-vars 'special-mode-map 'al/lazy-moving-keys t)
 
+(al/eval-after-load al-process
+  :load after-init
+  (advice-add 'insert-directory :around #'al/call-with-locale)
+  (al/process-hook-mode))
+
 (al/eval-after-load server
   (setq
    server-kill-new-buffers nil

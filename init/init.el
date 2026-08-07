@@ -134,11 +134,6 @@
 (al/call-after-frame-kill al/save-everything)
 (al/add-hook-maybe 'kill-emacs-hook 'al/save-everything)
 
-(al/eval-after-load al-process
-  :load t
-  (advice-add 'insert-directory :around #'al/call-with-locale)
-  (al/process-hook-mode))
-
 (message "Garbage collected %d times." gcs-done)
 (al/title-message "Emacs config has been loaded")
 
