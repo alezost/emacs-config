@@ -47,7 +47,23 @@
 
 (al/add-hook-maybe 'minibuffer-setup-hook 'al/hbar-cursor-type)
 (al/bind-keys-from-vars 'minibuffer-local-map 'al/minibuffer-keys)
-(al/call-after-init icomplete-vertical-mode)
+
+;; (al/call-after-init icomplete-vertical-mode)
+
+;; Enabling `icomplete-vertical-mode' manually to avoid loading
+;; `icomplete' on Emacs start and load it only when minibuffer is used
+;; for the first time.
+
+(al/autoload "icomplete"
+  icomplete-minibuffer-setup
+  icomplete--vertical-minibuffer-setup)
+(al/eval-after-init
+  (setq icomplete-mode t
+        icomplete-vertical-mode t)
+  (al/add-hook-maybe 'minibuffer-setup-hook
+    'icomplete-minibuffer-setup)
+  (al/add-hook-maybe 'icomplete-minibuffer-setup-hook
+    'icomplete--vertical-minibuffer-setup))
 
 (al/bind-keys
   :map completion-list-mode-map
