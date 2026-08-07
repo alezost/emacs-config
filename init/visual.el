@@ -227,12 +227,18 @@
 
 (setq-default
  mode-line-format
- `("%e" mode-line-front-space
-   mode-line-mule-info mode-line-client mode-line-modified mode-line-remote
-   " " mode-line-buffer-identification " " mode-line-position
+ '("%e"
+   mode-line-front-space
+   mode-line-mule-info
+   mode-line-client
+   mode-line-modified
+   mode-line-remote
+   " " mode-line-buffer-identification
+   " " mode-line-position
    " %l,%c"
    (vc-mode vc-mode)
-   " " mode-line-modes mode-line-misc-info
+   " " mode-line-modes
+   mode-line-misc-info
    al/mode-server
    mode-line-end-spaces)
 
@@ -243,12 +249,9 @@
  `(""
    (current-input-method
     (:propertize current-input-method-title
-      help-echo (concat ,(purecopy "Input method: ")
-                        current-input-method
-                        ,(purecopy
-                          (concat "\n"
-                                  "mouse-2: Disable input method\n"
-                                  "mouse-3: Describe input method")))
+      help-echo (concat "Input method: " current-input-method "\n"
+                        "mouse-2: Disable input method\n"
+                        "mouse-3: Describe input method")
       local-map ,mode-line-input-method-map
       face font-lock-warning-face
       mouse-face mode-line-highlight))
@@ -288,13 +291,13 @@
             mouse-face mode-line-highlight
             help-echo ,mode-help-echo
             local-map ,mode-line-minor-mode-keymap)
-         '(:eval
+         `(:eval
            (if (buffer-narrowed-p)
-               (propertize " ↕"
-                 'help-echo "mouse-1: Remove narrowing"
-                 'mouse-face 'mode-line-highlight
-                 'local-map (make-mode-line-mouse-map
-                             'mouse-1 #'mode-line-widen))
+               ,(propertize " ↕"
+                  'help-echo "mouse-1: Remove narrowing"
+                  'mouse-face 'mode-line-highlight
+                  'local-map (make-mode-line-mouse-map
+                              'mouse-1 #'mode-line-widen))
              ""))
          "│"
          (propertize "%]"
