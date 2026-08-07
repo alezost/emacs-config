@@ -124,14 +124,11 @@
  mail-user-agent 'gnus-user-agent
  user-full-name "Alex Kost")
 
-(defvar al/mail-user-name nil)
+(defvar al/mail-user-name "alezost")
 
 (al/eval-after-init
-  ;; Append to make sure `al/mail-user-name' is available (defined in
-  ;; "custom.el").
+  ;; Append because `al/mail-user-name' can be changed later.
   :append t
-  (unless al/mail-user-name
-    (setq al/mail-user-name "alezost"))
   (al/file-accessors "gnus"
     (al/emacs-data-dir-file (concat "gnus-" al/mail-user-name)))
   (al/setq-no-warnings

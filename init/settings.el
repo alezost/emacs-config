@@ -867,6 +867,12 @@
   (when-let* ((name (al/server-name)))
     (setq al/server-running? t)
     (when (equal name "emms")
+      (al/with-check
+        :var '(al/mail-user-name   ; defined in "net.el"
+               al/mail-user-name2) ; defined in "custom.el"
+        (with-no-warnings
+          (setq al/mail-user-name
+                al/mail-user-name2)))
       (al/funcall 'al/save-place-mode)
       (al/funcall 'al/recentf-mode)
       (al/funcall 'appt-activate))))
