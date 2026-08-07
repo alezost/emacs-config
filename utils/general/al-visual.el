@@ -17,6 +17,8 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'let-macros))
 (require 'seq)
 (require 'al-general)
 
@@ -126,6 +128,13 @@ This function is intended to be added to `ibuffer-mode-hook'."
         '(""
           (ibuffer-sorting-mode (:eval (symbol-name ibuffer-sorting-mode)))
           (ibuffer-sorting-reversep "|r"))))
+
+(defun al/mode-line-process-info ()
+  "Return mode line construct for process of the current buffer."
+  (al/with-face 'font-lock-constant-face
+    (if-let ((proc (get-buffer-process (current-buffer))))
+        (symbol-name (process-status proc))
+      "–")))
 
 (defun al/mode-line-default-buffer-identification (mode)
   "Set `mode-line-buffer-identification' to the default value for MODE.

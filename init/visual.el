@@ -269,11 +269,7 @@
                                "mouse-1: Show menu\n"
                                "mouse-2: Show help\n"
                                "mouse-3: Minor modes")))
-   (list '(:eval
-           (let ((proc (get-buffer-process (current-buffer))))
-             (propertize
-                 (if proc (symbol-name (process-status proc)) "–")
-               'face 'font-lock-constant-face)))
+   (list '(:eval (al/mode-line-process-info))
          " "
          (propertize "%["
            'help-echo recursive-edit-help-echo
