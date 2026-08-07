@@ -70,7 +70,7 @@ no marked region, then the whole buffer is used."
           ;; Extend/shrink the end bound after replacing.
           (setq end (+ end str-diff)))))
     (unless (= 0 count)
-      (message "'%s' has been replaced with '%s' %d time(s)."
+      (message "`%s' has been replaced with `%s' %d time(s)."
                from-string to-string count))))
 
 
@@ -290,7 +290,7 @@ With argument ARG, do this that many times."
     (delete-region beg end)
     (goto-char beg)
     (insert str)
-    (message "String '%s' was decoded." str)))
+    (message "String `%s' was decoded." str)))
 
 (defun al/get-string (&optional msg)
   "Return a string from selected region or prompt for it.

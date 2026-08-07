@@ -45,7 +45,7 @@ If there is no such PROPERTY, call FALLBACK function without arguments."
      (if error
          (if fallback
              (funcall fallback)
-           (message "mpv refuses to return '%s' property" property))
+           (message "mpv refuses to return `%s' property" property))
        (funcall function value)))))
 
 (defun al/emms-mpv-call-with-metadata (function)

@@ -127,7 +127,7 @@ buffers (where `erc-server-process' is set)."
     (when (string-match (concat (erc-compute-server) ":.*")
                         old-name)
       (rename-buffer new-name)
-      (message "Current buffer was renamed from '%s' to '%s'."
+      (message "Current buffer was renamed from `%s' to `%s'."
                old-name new-name))))
 
 (defun al/erc-switch-to-server-buffer ()

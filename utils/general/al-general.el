@@ -264,22 +264,22 @@ If VALS is not a list, call PREDICATE on this value."
 (defun al/function? (object)
   "Non-nil if OBJECT is a function or a list of functions."
   (al/every? #'functionp object
-             "Unknown function '%S'."))
+             "Unknown function `%S'."))
 
 (defun al/bound? (object)
   "Non-nil if OBJECT is a bound symbol or a list of bound symbols."
   (al/every? #'boundp object
-             "Symbol '%S' is not bound."))
+             "Symbol `%S' is not bound."))
 
 (defun al/file? (object)
   "Non-nil if OBJECT is an existing file or a list of directories."
   (al/every? #'file-exists-p object
-             "File '%s' does not exist."))
+             "File `%s' does not exist."))
 
 (defun al/directory? (object)
   "Non-nil if OBJECT is an existing directory or a list of directories."
   (al/every? #'file-directory-p object
-             "Directory '%s' does not exist."))
+             "Directory `%s' does not exist."))
 
 
 ;;; Auxiliary macros
@@ -441,7 +441,7 @@ Return t if FILE is loaded successfully, nil otherwise.
 FILE may omit an extension.  See `load' for details."
   (when (stringp file)
     (or (load file 'noerror)
-        (progn (al/warning-message "Failed to load '%s'." file)
+        (progn (al/warning-message "Failed to load `%s'." file)
                nil))))
 
 (defun al/init-load (&rest files)

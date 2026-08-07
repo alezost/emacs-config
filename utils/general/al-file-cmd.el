@@ -135,7 +135,7 @@ all sub-directories recursively.  If STRING is nil, use \"_\"."
                         " " string (file-name-nondirectory file)))
              (new-file (expand-file-name new-name
                                          (file-name-directory file))))
-        (message "Renaming '%s' to '%s'." file new-file)
+        (message "Renaming `%s' to `%s'." file new-file)
         (rename-file file new-file)))))
 
 (provide 'al-file-cmd)

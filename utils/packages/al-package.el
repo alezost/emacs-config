@@ -82,7 +82,7 @@ This function is intendend to be used as an `around' advice for
   (if-let* ((name (al/package-name package))
             (ignore? (memq name al/ignored-packages)))
       (progn
-        (message "Ignoring '%s' package." name)
+        (message "Ignoring `%s' package." name)
         ;; `quelpa-package-install' returns version string.
         "99999.9")
     (apply fun package args)))
