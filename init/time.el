@@ -119,14 +119,12 @@
   (advice-add 'appt-display-message :override #'al/appt-display-message)
   (advice-add 'appt-mode-line :override #'al/appt-mode-line)
 
-  (when (al/require al-file)
-    (al/setq-file
-     al/appt-notify-normal-sound (al/sound-dir-file "drums.wav")
-     al/appt-notify-urgent-sound (al/sound-dir-file "bell.oga"))))
+  (al/setq-file
+   al/appt-notify-normal-sound (al/sound-dir-file "drums.wav")
+   al/appt-notify-urgent-sound (al/sound-dir-file "bell.oga")))
 
 (al/eval-after-load al-notification
-  (when (al/require al-file)
-    (al/setq-file
-     al/notification-sound (al/sound-dir-file "alarm.wav"))))
+  (al/setq-file
+   al/notification-sound (al/sound-dir-file "alarm.wav")))
 
 ;;; time.el ends here

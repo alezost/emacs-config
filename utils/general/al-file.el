@@ -31,24 +31,6 @@
   "Return a list of existing files from FILE-NAMES."
   (seq-filter #'file-exists-p file-names))
 
-(defmacro al/setq-file (&rest body)
-  "Like `setq' but for setting to file name values.
-Check each file, and if it exists set the variable accordingly.
-Example:
-
-  (al/setq-file v1 \"/foo\"
-                v2 \"/tmp\")
-
-v2 will be set, while v1 will not."
-  (declare (debug setq))
-  (let ((file-var (make-symbol "file")))
-    (macroexp-progn
-     (mapcar (pcase-lambda (`(,var ,file))
-               `(let ((,file-var ,file))
-                  (when (file-exists-p ,file-var)
-                    (setq ,var ,file-var))))
-             (seq-partition body 2)))))
-
 (defun al/subdirs (directory &optional base)
   "Return list of DIRECTORY sub-directories.
 If BASE is non-nil, return only directories names, otherwise return full
