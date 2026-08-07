@@ -21,7 +21,7 @@
 (require 'al-general)
 (require 'al-key)
 
-(declare-function al/mode-line-default-buffer-identification "al-mode-line")
+(declare-function al/mode-line-default-buffer-identification "al-visual")
 (declare-function al/find-file "al-file-cmd")
 
 
@@ -210,7 +210,7 @@
 
   (al/add-hook-maybe 'dired-mode-hook 'hl-line-mode)
 
-  (when (al/require al-mode-line)
+  (when (al/require al-visual)
     (al/mode-line-default-buffer-identification 'dired-mode))
 
   (al/require dired-x al-dired))

@@ -105,7 +105,7 @@ Use `al/sql-history-dir'."
 
 ;;; Mode line
 
-(require 'al-mode-line)
+(defvar al/mode-info)
 
 (defun al/sql-highlight-product ()
   "Add sql product name to `al/mode-info' instead of `mode-name'.

@@ -21,7 +21,7 @@
 (require 'al-general)
 (require 'al-key)
 
-(declare-function al/mode-line-default-buffer-identification "al-mode-line")
+(declare-function al/mode-line-default-buffer-identification "al-visual")
 (declare-function al/file-if-exists "al-file")
 (declare-function al/existing-files "al-file")
 (declare-function al/find-file "al-file-cmd")
@@ -553,7 +553,7 @@
                                (expand-file-name "include" p)))
                             (al/guix-profiles))
                   Man-header-file-path)))
-  (when (al/require al-mode-line)
+  (when (al/require al-visual)
     (al/mode-line-default-buffer-identification 'Man-mode))
 
   (defconst al/man-keys

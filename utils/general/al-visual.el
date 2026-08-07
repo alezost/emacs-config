@@ -106,6 +106,41 @@ CHARACTERS in `set-fontset-font'."
                      char-specs))
            specs)))
 
+
+;;; Additional mode line info
+
+;; To see some additional info in the mode line, I add `al/mode-info' to
+;; the `mode-line-modes'.
+
+(defvar-local al/mode-info nil
+  "Part of mode line with additional info for the current major mode.")
+(put 'al/mode-info 'risky-local-variable t)
+
+;;;###autoload
+(defun al/mode-ibuffer-info ()
+  ;; TODO This function should be moved to "al-ibuffer.el"… which does
+  ;; not exist.
+  "Set `al/mode-info' to the additional info for `ibuffer-mode'.
+This function is intended to be added to `ibuffer-mode-hook'."
+  (setq al/mode-info
+        '(""
+          (ibuffer-sorting-mode (:eval (symbol-name ibuffer-sorting-mode)))
+          (ibuffer-sorting-reversep "|r"))))
+
+(defun al/mode-line-default-buffer-identification (mode)
+  "Set `mode-line-buffer-identification' to the default value for MODE.
+Some major modes like to override `mode-line-buffer-identification'.
+If you want to force a mode to use the default value, call this function
+like this:
+
+  (al/mode-line-default-buffer-identification \\='Man-mode)
+  (al/mode-line-default-buffer-identification \\='dired-mode)"
+  (let ((hook (intern (concat (symbol-name mode) "-hook"))))
+    (add-hook hook
+              (lambda ()
+                (setq mode-line-buffer-identification
+                      (default-value 'mode-line-buffer-identification))))))
+
 (provide 'al-visual)
 
 ;;; al-visual.el ends here
