@@ -494,8 +494,10 @@
       ("C-c C-d" . al/erc-part-or-quit)
       ("C-l" . al/erc-view-log-file)
       ("<s-kanji>" . al/recenter-end-of-buffer-top)
-      ("C-H-3" . al/recenter-end-of-buffer-top))
-    "Alist of auxiliary keys for erc mode.")
+      ("C-H-3" . al/recenter-end-of-buffer-top)))
+
+  ;; This auxiliary function is needed because some modules (`erc-ring')
+  ;; add their key bindings to `erc-mode-map'.
   (defun al/erc-bind-keys ()
     (al/bind-keys-from-vars 'erc-mode-map 'al/erc-keys))
   (al/add-hook-maybe 'erc-ring-mode-hook 'al/erc-bind-keys)
@@ -528,12 +530,8 @@
         (al/bind-local-keys-from-vars 'al/sly-keys)))))
   (al/add-hook-maybe 'erc-join-hook 'al/erc-channel-config)
 
-  (al/require al-erc)
+  (al/require al-erc))
 
-  ;; ERC is loaded twice somehow (why??); so clear erc assoc of
-  ;; `after-load-alist' to prevent the second loading of these settings.
-  (setq after-load-alist
-        (assq-delete-all 'erc after-load-alist)))
 
 (al/eval-after-load al-erc
   (when (al/znc-running-p)
