@@ -47,7 +47,7 @@
 
 (al/add-hook-maybe 'minibuffer-setup-hook 'al/hbar-cursor-type)
 (al/bind-keys-from-vars 'minibuffer-local-map 'al/minibuffer-keys)
-(al/call-after-init 'icomplete-vertical-mode)
+(al/call-after-init icomplete-vertical-mode)
 
 (al/bind-keys
   :map completion-list-mode-map
@@ -828,8 +828,8 @@
     (messages-buffer-mode)))
 
 (al/call-after-init
- '(al/set-scratch-message
-   al/reinit-messages-buffer))
+  al/set-scratch-message
+  al/reinit-messages-buffer)
 
 
 ;;; Misc settings and packages

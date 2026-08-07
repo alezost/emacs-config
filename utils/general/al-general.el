@@ -514,8 +514,7 @@ Push added `load-path' to `al/load-paths'."
 
 ;; My naming rule:
 ;;
-;; - `al/call-after-*' is a function accepting a function (or a list of
-;;   functions) to call after some event;
+;; - `al/call-after-*' is a macro calling functions after some event;
 ;;
 ;; - `al/eval-after-*' is a macro evaluating body after some event.
 
@@ -530,11 +529,6 @@ Both HOOKS and FUNCTIONS may be single variables or lists of those."
         (al/funcall-or-dolist hooks
           (cut #'add-hook <> fun append local))))))
 
-(defun al/call-after-init (functions)
-  "Call FUNCTIONS after Emacs init.
-See `al/add-hook-maybe' for the meaning of FUNCTIONS."
-  (al/add-hook-maybe 'after-init-hook functions))
-
 (defmacro al/eval-after-init (&rest body)
   "Evaluate BODY after Emacs init.
 If `:append' keyword argument is specified, then the expression will be
@@ -546,6 +540,15 @@ respectively."
     `(add-hook 'after-init-hook (lambda () ,@body)
                ;; See documentation of `add-hook'.
                ,(if append 100 -100))))
+
+(defmacro al/call-after-init (&rest functions)
+  "Call FUNCTIONS after Emacs init.
+FUNCTIONS should be unquoted symbols, they will be called using
+`al/funcall'."
+  (declare (indent 0))
+  `(al/eval-after-init
+     ,@(mapcar (lambda (fun) `(al/funcall ',fun))
+               functions)))
 
 (defmacro al/eval-after-frame-init (&rest body)
   "Evaluate BODY after frame start.
@@ -585,13 +588,18 @@ a non-graphical terminal."
                      'after-init-hook)
                    ',name)))))
 
-(defun al/call-after-frame-kill (functions)
+(defmacro al/call-after-frame-kill (&rest functions)
   "Call FUNCTIONS at Emacs terminal (console or window frame) exit.
-FUNCTIONS can be a single function or a list of functions."
-  (mapcar (lambda (fun)
-            (add-hook 'delete-frame-functions
-                      (lambda (_frame) (funcall fun))))
-          (al/list-maybe functions)))
+FUNCTIONS should be unquoted symbols, they will be called using
+`al/funcall'."
+  (declare (indent 0))
+  (let ((name (gensym (concat (symbol-name (car functions)) "--")))
+        (body (mapcar (lambda (fun) `(al/funcall ',fun))
+                      functions)))
+    `(progn
+       (defun ,name (_frame)
+         ,@body)
+       (add-hook 'delete-frame-functions ',name))))
 
 (defmacro al/eval-after-load (feature &rest body)
   "Execute BODY after FEATURE load.

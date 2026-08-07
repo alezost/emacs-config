@@ -130,8 +130,8 @@
 (al/add-hook-maybe 'messages-buffer-mode-hook
   (list 'hl-todo-mode
         (lambda () (setq buffer-read-only nil))))
-(al/call-after-init 'which-key-mode)
-(al/call-after-frame-kill 'al/save-everything)
+(al/call-after-init which-key-mode)
+(al/call-after-frame-kill al/save-everything)
 (al/add-hook-maybe 'kill-emacs-hook 'al/save-everything)
 
 (al/eval-after-load al-process
@@ -145,9 +145,9 @@
     (setq al/server-running? t)
     (when (equal name "emms")
       (al/call-after-init
-       '(al/save-place-mode
-         al/recentf-mode
-         appt-activate)))))
+        al/save-place-mode
+        al/recentf-mode
+        appt-activate))))
 
 (message "Garbage collected %d times." gcs-done)
 (al/title-message "Emacs config has been loaded")

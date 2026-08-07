@@ -364,7 +364,7 @@
 (al/eval-after-load paren
   (setq show-paren-when-point-inside-paren t
         show-paren-when-point-in-periphery t))
-(al/call-after-init 'show-paren-mode)
+(al/call-after-init show-paren-mode)
 
 (al/eval-after-load make-color
   (al/add-hook-maybe 'make-color-mode-hook 'al/bar-cursor-type))
