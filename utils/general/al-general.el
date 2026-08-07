@@ -125,6 +125,13 @@ The following local variables are available inside REST:
 
 ;;; Function utils
 
+(defun al/funcall (function &rest arguments)
+  "Call FUNCTION with ARGUMENTS.
+This is the same as `funcall' except it returns nil instead of error if
+FUNCTION does not exist."
+  (and (al/function? function)
+       (apply function arguments)))
+
 (defun al/funcall-or-dolist (val function)
   "Call FUNCTION on VAL if VAL is not a list.
 If VAL is a list, call FUNCTION on each element of the list."
