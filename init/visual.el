@@ -203,7 +203,6 @@
      (auto-fill-function         " ↵")
      (isearch-mode               " 🔎")
      (whitespace-mode            " _"           whitespace)
-     (indent-guide-mode          " ¦"           indent-guide)
      (rainbow-mode               " 🖌"           rainbow-mode)
      (abbrev-mode                " Ab"          abbrev)
      (company-mode               " ⍈"           company)
@@ -363,19 +362,6 @@
   (setq show-paren-when-point-inside-paren t
         show-paren-when-point-in-periphery t))
 (al/call-after-init 'show-paren-mode)
-
-(al/eval-after-load indent-guide
-  (setq
-   indent-guide-delay 0.3
-   indent-guide-char "¦")
-  ;; https://github.com/zk-phi/indent-guide/issues/29
-  (defun al/indent-guide-post-command-hook ()
-    (if (null indent-guide-delay)
-        (indent-guide-show)
-      (run-with-idle-timer indent-guide-delay nil
-                           #'indent-guide-show)))
-  (advice-add 'indent-guide-post-command-hook
-    :override 'al/indent-guide-post-command-hook))
 
 (al/eval-after-load make-color
   (al/add-hook-maybe 'make-color-mode-hook 'al/bar-cursor-type))

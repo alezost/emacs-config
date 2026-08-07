@@ -177,7 +177,6 @@
  ("s" . sh-mode)
  ("t" . toggle-truncate-lines)
  ("v" . view-mode)
- ("T" . text-mode)
- ("|" . indent-guide-mode))
+ ("T" . text-mode))
 
 ;;; keys.el ends here

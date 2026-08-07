@@ -107,8 +107,7 @@
      pdf-tools)
 
    al/extra-packages
-   `(indent-guide
-     outline-magic
+   `(outline-magic
      (erc-view-log       :fetcher github :repo "alezost/erc-view-log"
                          :branch "general-regexps")
      (mysql              :fetcher github :repo "haxney/mysql")
