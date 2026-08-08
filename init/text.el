@@ -329,8 +329,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 ;; (al/call-at-hook after-change-major-mode-hook
 ;;   al/set-default-input-method)
 
-(defvar al/input-method-map nil)
-(define-prefix-command 'al/input-method-map)
+(defvar al/input-method-map (make-sparse-keymap))
 (al/bind-keys
   :map al/input-method-map
   ("<kanji>" . al/set-input-method)
