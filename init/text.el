@@ -295,7 +295,17 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
  scroll-preserve-screen-position t)
 
 (prefer-coding-system 'utf-8)
-(al/modify-syntax text-mode-syntax-table (?\" "\"   "))
+(al/call-at-hook after-save-hook al/check-parens)
+
+(al/eval-after-load text-mode
+  (al/modify-syntax text-mode-syntax-table (?\" "\"   "))
+
+  (al/call-at-hook text-mode-hook
+    visual-line-mode
+    hl-line-mode
+    abbrev-mode
+    al/no-syntactic-font-lock
+    al/show-trailing-whitespace))
 
 (al/eval-after-load mwim
   (defun al/mwim-set-default (var fun)
@@ -313,6 +323,11 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 
 
 ;;; Input methods, abbreviations, etc.
+
+;; I rarely need "al/utf" input method for text modes nowadays.
+;;
+;; (al/call-at-hook after-change-major-mode-hook
+;;   al/set-default-input-method)
 
 (defvar al/input-method-map nil)
 (define-prefix-command 'al/input-method-map)

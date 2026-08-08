@@ -420,6 +420,8 @@
       '(compilation-mode-map compilation-minor-mode-map)
     '(al/compilation-common-keys al/compilation-keys))
 
+  (al/call-at-hook compilation-mode-hook al/hl-line-mode)
+
   (al/require al-compilation))
 
 (al/eval-after-load al-compilation
@@ -712,7 +714,14 @@
   (defconst al/prog-keys
     '(("<C-M-tab>" . prog-indent-sexp))
     "Alist of auxiliary keys for `prog-mode-map'.")
-  (al/bind-keys-from-vars 'prog-mode-map 'al/prog-keys))
+  (al/bind-keys-from-vars 'prog-mode-map 'al/prog-keys)
+
+  (al/call-at-hook prog-mode-hook
+    hl-line-mode
+    hl-todo-mode
+    abbrev-mode
+    al/set-comment-column
+    al/show-trailing-whitespace))
 
 (al/eval-after-load cc-mode
   (setq

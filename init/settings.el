@@ -264,6 +264,9 @@
 
 (setq split-width-threshold 120)
 
+(al/call-at-hook window-configuration-change-hook
+  al/set-windows-num-property)
+
 (defvar al/display-buffer-regexp
   (rx (or "*Apropos"
           "*Character List*"
@@ -339,9 +342,6 @@
         (rx-to-string `(or (and bol "Password")
                            (regex ,comint-password-prompt-regexp))))
 
-  (al/call-at-hook comint-output-filter-functions
-    comint-truncate-buffer)
-
   (defconst al/comint-keys
     '(("M-." . comint-previous-input)
       ("M-e" . comint-next-input)
@@ -354,7 +354,10 @@
       ("RET" . al/comint-send-input-maybe)
       "C-d")
     "Alist of auxiliary keys for comint modes.")
-  (al/bind-keys-from-vars 'comint-mode-map 'al/comint-keys))
+  (al/bind-keys-from-vars 'comint-mode-map 'al/comint-keys)
+
+  (al/call-at-hook comint-mode-hook hl-todo-mode)
+  (add-hook 'comint-output-filter-functions #'comint-truncate-buffer))
 
 (al/eval-after-load shell
   (defconst al/shell-keys
@@ -654,6 +657,7 @@
    which-key-idle-secondary-delay 0.1
    which-key-add-column-padding 2
    which-key-max-display-columns 5))
+(al/call-after-init which-key-mode)
 
 
 ;;; Spelling, translating
@@ -838,12 +842,20 @@
   (with-current-buffer (messages-buffer)
     (messages-buffer-mode)))
 
+(al/eval-at-hook messages-buffer-mode-hook
+  (al/funcall 'hl-todo-mode)
+  (setq buffer-read-only nil))
+
 (al/call-after-init
   al/set-scratch-message
   al/reinit-messages-buffer)
 
 
 ;;; Misc settings and packages
+
+(al/call-at-hook (delete-frame-functions
+                  kill-emacs-hook)
+  al/save-everything)
 
 (setq
  password-cache-expiry (* 24 60 60)

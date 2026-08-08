@@ -95,44 +95,6 @@
       (nconc (apply #'nconc (nreverse al/load-paths))
              al/initial-load-path))
 
-
-;;; Final settings
-
-;; Settings that cannot be set in other config files because they are
-;; loaded before external packages are autoloaded.
-
-(al/title-message "Final settings")
-
-;; These hooks cannot be set in my init files because my utils, my
-;; packages, and external packages are autoloaded after loading the init
-;; files.
-(al/call-at-hook after-save-hook al/check-parens)
-;; (al/call-at-hook after-change-major-mode-hook
-;;   al/set-default-input-method)
-(al/call-at-hook window-configuration-change-hook
-  al/set-windows-num-property)
-(al/call-at-hook text-mode-hook
-  visual-line-mode
-  hl-line-mode
-  abbrev-mode
-  al/no-syntactic-font-lock
-  al/show-trailing-whitespace)
-(al/call-at-hook prog-mode-hook
-  hl-line-mode
-  hl-todo-mode
-  abbrev-mode
-  al/set-comment-column
-  al/show-trailing-whitespace)
-(al/call-at-hook comint-mode-hook hl-todo-mode)
-(al/call-at-hook compilation-mode-hook al/hl-line-mode)
-(al/eval-at-hook messages-buffer-mode-hook
-  (al/funcall 'hl-todo-mode)
-  (setq buffer-read-only nil))
-(al/call-after-init which-key-mode)
-(al/call-at-hook (delete-frame-functions
-                  kill-emacs-hook)
-  al/save-everything)
-
 (message "Garbage collected %d times." gcs-done)
 (al/title-message "Emacs config has been loaded")
 
