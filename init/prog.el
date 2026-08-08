@@ -269,8 +269,10 @@
     ("C-c l" . al/geiser-add-to-load-path)
     ("C-c a" . geiser-autodoc-mode)
     ("C-c j" . switch-to-geiser-module)
-    ("C-c C-j" . geiser-mode-switch-to-repl-and-enter))
-  "Alist of auxiliary keys for geiser modes.")
+    ;; Although this "C-c C-z" exists in `geiser-mode-map',
+    ;; `al/geiser-keys' is also used in ERC buffers.
+    ("C-c C-z" . geiser-mode-switch-to-repl)
+    ("C-c C-j" . geiser-mode-switch-to-repl-and-enter)))
 
 (al/eval-after-load geiser-mode
   (defvar al/geiser-doc-map)
