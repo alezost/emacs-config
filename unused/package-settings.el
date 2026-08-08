@@ -362,6 +362,11 @@
 
 ;;; Misc
 
+(al/eval-after-load org-ref
+  (defvar al/org-ref-cite-keys
+    '("H-o" "H-u" "H-e"))
+  (al/bind-keys-from-vars 'org-ref-cite-keymap 'al/org-ref-cite-keys))
+
 (with-eval-after-load 'org-emms
   (setq org-emms-delay 2
         org-emms-time-format "%m:%.2s")

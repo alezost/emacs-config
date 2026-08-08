@@ -168,11 +168,6 @@
    ("." . org-agenda-previous-line)
    ("e" . org-agenda-next-line)))
 
-(al/eval-after-load org-ref
-  (defvar al/org-ref-cite-keys
-    '("H-o" "H-u" "H-e"))
-  (al/bind-keys-from-vars 'org-ref-cite-keymap 'al/org-ref-cite-keys))
-
 
 ;;; Pdf tools
 
