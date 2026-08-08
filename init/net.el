@@ -509,29 +509,7 @@
   ;; (used by `elisp-slime-nav' functions) returns a proper symbol.
   (al/modify-syntax erc-mode-syntax-table (?' "'   "))
 
-  (defun al/erc-channel-config ()
-    "Define additional settings depending on a channel."
-    (let ((buf (buffer-name (current-buffer))))
-      (cond
-       ((or (string-match "#scheme" buf)
-            (string-match "#guile" buf))
-        ;; Some hacks to make it possible to use guile process in erc
-        ;; buffer.
-        (setq-local geiser-impl--implementation 'guile)
-        (setq-local geiser-eval--get-module-function
-                    (lambda (_module) :f))
-        (setq-local geiser-eval--geiser-procedure-function
-                    'geiser-guile--geiser-procedure)
-        (al/bind-local-keys-from-vars 'al/geiser-keys))
-       ((string-match "#lisp" buf)
-        (al/bind-local-keys-from-vars 'al/slime-keys))
-       ((string-match "#stumpwm" buf)
-        (setq-local slime-buffer-package :stumpwm)
-        (al/bind-local-keys-from-vars 'al/sly-keys)))))
-  (al/add-hook-maybe 'erc-join-hook 'al/erc-channel-config)
-
   (al/require al-erc))
-
 
 (al/eval-after-load al-erc
   (when (al/znc-running-p)
@@ -561,6 +539,7 @@
   (defvar al/tab-functions)
   (push 'al/erc-next-button-maybe al/tab-functions)
 
+  (al/add-hook-maybe 'erc-join-hook 'al/erc-channel-config)
   (al/add-hook-maybe 'erc-after-connect 'al/erc-ghost-maybe)
   (advice-add 'erc-notifications-notify :before #'al/play-erc-sound))
 
