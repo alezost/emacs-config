@@ -257,12 +257,11 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
       ("u"   . browse-kill-ring-insert-and-quit)
       ("M-d" . browse-kill-ring-edit))
     "Alist of auxiliary keys for `browse-kill-ring-mode-map'.")
-  ;; The keys are defined inside `browse-kill-ring-mode'.
-  (defun al/browse-kill-ring-bind-keys ()
+
+  (al/eval-at-hook browse-kill-ring-mode-hook
+    ;; Key bindings are defined inside `browse-kill-ring-mode'.
     (al/bind-keys-from-vars 'browse-kill-ring-mode-map
-      'al/browse-kill-ring-keys t))
-  (al/add-hook-maybe 'browse-kill-ring-mode-hook
-    'al/browse-kill-ring-bind-keys))
+      'al/browse-kill-ring-keys t)))
 
 (al/eval-after-load register
   (setq register-preview-delay 0.3)
@@ -486,10 +485,9 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
     "Alist of auxiliary keys for `occur-mode-map'.")
   (al/bind-keys-from-vars 'occur-mode-map 'al/occur-keys)
 
-  (defun al/occur-set-paragraph ()
-    "Set paragraph to be started from any non-space symbol."
-    (setq-local paragraph-start "[^ ]"))
-  (al/add-hook-maybe 'occur-mode-hook 'al/occur-set-paragraph))
+  (al/eval-at-hook occur-mode-hook
+    ;; Start paragraph from any non-space symbol.
+    (setq-local paragraph-start "[^ ]")))
 
 (al/eval-after-load grep
   (setq grep-save-buffers nil))

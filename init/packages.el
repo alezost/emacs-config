@@ -152,9 +152,8 @@
   (al/setq-file guix-load-path (al/devel-dir-file "guix"))
 
   (when (al/require al-geiser)
-    (defun al/geiser-add-guix-socket ()
+    (al/eval-at-hook guix-repl-after-start-hook
       (al/push-new al/geiser-sockets guix-repl-current-socket))
-    (add-hook 'guix-repl-after-start-hook 'al/geiser-add-guix-socket)
     (remove-hook 'guix-repl-after-operation-hook
                  'guix-repl-autoload-emacs-packages-maybe)))
 

@@ -55,7 +55,7 @@ This variable must be modified only by `al/generate-interned-symbol'.")
 (defun al/generate-interned-symbol (&optional prefix)
   "Return a new interned symbol.
 This is similar to `gensym' except the returned symbol is interned."
-  (intern (format "%s%d" (or prefix "al/generated-")
+  (intern (format "%s%d" (or prefix "al/generated--")
                   (setq al/generate-symbol-counter
                         (1+ al/generate-symbol-counter)))))
 
@@ -514,20 +514,53 @@ Push added `load-path' to `al/load-paths'."
 
 ;; My naming rule:
 ;;
-;; - `al/call-after-*' is a macro calling functions after some event;
+;; - `al/call-*' is a macro calling FUNCTIONS when some event occurs;
 ;;
-;; - `al/eval-after-*' is a macro evaluating body after some event.
+;; - `al/eval-*' is a macro evaluating BODY when some event occurs.
 
-(defun al/add-hook-maybe (hooks functions &optional append local)
-  "Add all bound FUNCTIONS to all HOOKS.
-Both HOOKS and FUNCTIONS may be single variables or lists of those."
+(defmacro al/eval-at-hook (hooks &rest body)
+  "Generate function with BODY and add it to all HOOKS.
+
+HOOKS should be an unquoted symbol (hook variable) or list of those.
+
+BODY can start with the following optional keywords:
+
+  `:name'       name of the generated function;
+
+  `:depth',`:local'
+                additional arguments passed to `add-hook'."
   (declare (indent 1))
-  (al/funcall-or-dolist functions
-    (lambda (fun)
-      (al/with-check
-        :fun fun
-        (al/funcall-or-dolist hooks
-          (cut #'add-hook <> fun append local))))))
+  (al/with-keywords body
+      (name depth local)
+    (let ((hooks (al/list-maybe hooks))
+          (name  (or name (al/generate-interned-symbol))))
+      `(progn
+         (defun ,name (&rest _) ,@body)
+         ,@(mapcar (lambda (hook)
+                     `(add-hook ',hook ',name ,depth ,local))
+                   hooks)))))
+
+(defmacro al/call-at-hook (hooks &rest functions)
+  "Call all FUNCTIONS in all HOOKS.
+
+Both HOOKS and FUNCTIONS should be unquoted symbols or lists of those.
+Each function will be called using `al/funcall', so non-existing
+functions are safe to add.
+
+FUNCTIONS can optionally start with keywords supported by
+`al/eval-at-hook'."
+  (declare (indent 1))
+  (let ((kw-args '()))
+    ;; TODO Generate `:name' from FUNCTIONS.
+    (while (keywordp (car functions))
+      (setq kw-args
+            (append (list (pop functions)
+                          (pop functions))
+                    kw-args)))
+    `(al/eval-at-hook ,hooks
+       ,@kw-args
+       ,@(mapcar (lambda (f) `(al/funcall ',f))
+                 functions))))
 
 (defmacro al/eval-after-init (&rest body)
   "Evaluate BODY after Emacs init.
@@ -587,19 +620,6 @@ a non-graphical terminal."
                        'server-after-make-frame-hook
                      'after-init-hook)
                    ',name)))))
-
-(defmacro al/call-after-frame-kill (&rest functions)
-  "Call FUNCTIONS at Emacs terminal (console or window frame) exit.
-FUNCTIONS should be unquoted symbols, they will be called using
-`al/funcall'."
-  (declare (indent 0))
-  (let ((name (gensym (concat (symbol-name (car functions)) "--")))
-        (body (mapcar (lambda (fun) `(al/funcall ',fun))
-                      functions)))
-    `(progn
-       (defun ,name (_frame)
-         ,@body)
-       (add-hook 'delete-frame-functions ',name))))
 
 (defmacro al/eval-after-load (feature &rest body)
   "Execute BODY after FEATURE load.

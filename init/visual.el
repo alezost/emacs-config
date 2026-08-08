@@ -367,7 +367,7 @@
 (al/call-after-init show-paren-mode)
 
 (al/eval-after-load make-color
-  (al/add-hook-maybe 'make-color-mode-hook 'al/bar-cursor-type))
+  (al/call-at-hook make-color-mode-hook al/bar-cursor-type))
 
 (al/eval-after-load rainbow-mode
   (setq rainbow-x-colors t))

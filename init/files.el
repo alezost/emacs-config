@@ -135,8 +135,8 @@
   (when (al/require al-complete)
     (setq al/dired-ignored-extensions
           (cons ".go" al/completion-ignored-extensions)))
-  (al/add-hook-maybe 'dired-mode-hook
-    'al/dired-set-completion-ignored-extensions)
+  (al/call-at-hook dired-mode-hook
+    al/dired-set-completion-ignored-extensions)
   (advice-add 'dired-sort-set-mode-line
     :override 'al/dired-sort-set-mode-line))
 
@@ -208,7 +208,7 @@
    ("s"     (al/dired-start-process-on-marked-files "sxiv"))
    ("b"   . al/dired-browse-url))
 
-  (al/add-hook-maybe 'dired-mode-hook 'hl-line-mode)
+  (add-hook 'dired-mode-hook #'hl-line-mode)
 
   (when (al/require al-visual)
     (al/mode-line-default-buffer-identification 'dired-mode))

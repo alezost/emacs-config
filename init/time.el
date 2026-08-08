@@ -78,8 +78,8 @@
   ;; Do not ruin the mode-line.
   (setq calendar-mode-line-format nil)
 
-  (al/add-hook-maybe 'calendar-mode-hook 'al/bar-cursor-type)
-  (add-hook 'calendar-today-visible-hook 'calendar-mark-today))
+  (al/call-at-hook calendar-mode-hook al/bar-cursor-type)
+  (al/call-at-hook calendar-today-visible-hook calendar-mark-today))
 
 (al/eval-after-load al-calendar
   (setq al/calendar-date-display-form

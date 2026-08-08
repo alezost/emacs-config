@@ -174,11 +174,7 @@
 
    gnus-large-newsgroup 400)
 
-  ;; Wrap text in gnus-article buffers by words.
-  (add-hook 'gnus-article-mode-hook 'visual-line-mode)
-
-  (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
-  (al/add-hook-maybe 'dired-mode-hook 'turn-on-gnus-dired-mode)
+  (al/call-at-hook dired-mode-hook turn-on-gnus-dired-mode)
 
   (al/require al-gnus))
 
@@ -233,7 +229,9 @@
     "Alist of auxiliary keys for `gnus-group-mode-map'.")
   (al/bind-keys-from-vars 'gnus-group-mode-map 'al/gnus-group-keys)
 
-  (add-hook 'gnus-group-mode-hook 'hl-line-mode))
+  (al/call-at-hook gnus-group-mode-hook
+    gnus-topic-mode
+    hl-line-mode))
 
 (al/eval-after-load gnus-sum
   (setq
@@ -298,8 +296,9 @@
     ("M-s" . gnus-summary-search-article-forward)
     ("M-r" . gnus-summary-search-article-backward))
 
-  (al/add-hook-maybe 'gnus-summary-mode-hook
-    '(hl-line-mode al/hbar-cursor-type)))
+  (al/call-at-hook gnus-summary-mode-hook
+    al/hbar-cursor-type
+    hl-line-mode))
 
 (al/eval-after-load gnus-draft
   (defconst al/gnus-draft-keys
@@ -337,7 +336,9 @@
     '(al/button-keys al/gnus-url-button-keys))
   (al/bind-keys-from-vars 'gnus-mime-button-map
     '(al/button-keys al/gnus-mime-button-keys))
-  )
+
+  ;; Wrap text in gnus-article buffers by words.
+  (add-hook 'gnus-article-mode-hook #'visual-line-mode))
 
 (al/eval-after-load gnus-topic
   (setq
@@ -496,14 +497,13 @@
       ("<s-kanji>" . al/recenter-end-of-buffer-top)
       ("C-H-3" . al/recenter-end-of-buffer-top)))
 
-  ;; This auxiliary function is needed because some modules (`erc-ring')
-  ;; add their key bindings to `erc-mode-map'.
-  (defun al/erc-bind-keys ()
+  ;; Some modules (`erc-ring') add their key bindings to `erc-mode-map'.
+  (al/eval-at-hook erc-ring-mode-hook
     (al/bind-keys-from-vars 'erc-mode-map 'al/erc-keys))
-  (al/add-hook-maybe 'erc-ring-mode-hook 'al/erc-bind-keys)
 
-  (al/add-hook-maybe 'erc-mode-hook
-    '(visual-line-mode abbrev-mode))
+  (al/call-at-hook erc-mode-hook
+    visual-line-mode
+    abbrev-mode)
 
   ;; Do not consider "'" a part of a symbol, so that `symbol-at-point'
   ;; (used by `elisp-slime-nav' functions) returns a proper symbol.
@@ -539,8 +539,8 @@
   (defvar al/tab-functions)
   (push 'al/erc-next-button-maybe al/tab-functions)
 
-  (al/add-hook-maybe 'erc-join-hook 'al/erc-channel-config)
-  (al/add-hook-maybe 'erc-after-connect 'al/erc-ghost-maybe)
+  (al/call-at-hook erc-join-hook al/erc-channel-config)
+  (al/call-at-hook erc-after-connect al/erc-ghost-maybe)
   (advice-add 'erc-notifications-notify :before #'al/play-erc-sound))
 
 (al/eval-after-load erc-track

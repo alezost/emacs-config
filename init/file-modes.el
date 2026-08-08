@@ -56,9 +56,6 @@
  '(ascii html icalendar latex odt texinfo man))
 
 (al/eval-after-load org
-  (when (al/require al-text)
-    (al/add-hook-maybe 'org-mode-hook 'al/set-default-paragraph))
-
   ;; "/" and "_" are common for file names, so don't fontify them:
   (setq org-emphasis-alist
         (al/assoc-delete-all '("/" "_") org-emphasis-alist))
@@ -137,6 +134,8 @@
   (org-link-set-parameters
    "emms-pl"
    :follow #'al/org-emms-playlist-play)
+
+  (al/call-at-hook org-mode-hook al/set-default-paragraph)
 
   (al/require
     ;; "org-compat.el" adds a hook to set `imenu-create-index-function' to
@@ -223,7 +222,7 @@
       al/lazy-scrolling-keys
       al/pdf-outline-buffer-keys))
 
-  (add-hook 'pdf-outline-buffer-mode-hook 'hl-line-mode))
+  (add-hook 'pdf-outline-buffer-mode-hook #'hl-line-mode))
 
 (al/eval-after-load pdf-links
   (setq pdf-links-convert-pointsize-scale 0.02)
@@ -287,7 +286,7 @@
      (maxima-mode ,(al/file-regexp "max")))))
 
 (al/eval-after-load conf-mode
-  (al/add-hook-maybe 'conf-mode-hook 'hl-line-mode))
+  (add-hook 'conf-mode-hook #'hl-line-mode))
 
 (al/eval-after-load image-mode
   (defconst al/image-keys
@@ -320,7 +319,7 @@
    ("e" . tar-next-line)
    ("u" . tar-extract))
 
-  (add-hook 'tar-mode-hook 'hl-line-mode))
+  (add-hook 'tar-mode-hook #'hl-line-mode))
 
 (al/eval-after-load nxml-mode
   (defconst al/nxml-keys
@@ -330,8 +329,9 @@
       ("C-M-u" . nxml-forward-element))
     "Alist of auxiliary keys for `nxml-mode-map'.")
   (al/bind-keys-from-vars 'nxml-mode-map 'al/nxml-keys)
-  (add-hook 'nxml-mode-hook
-            (lambda () (rng-validate-mode 0))))
+
+  (al/eval-at-hook nxml-mode-hook
+    (rng-validate-mode 0)))
 
 (al/eval-after-load sgml-mode
   ;; Bind default keys to get rid of "M-o" key binding there.

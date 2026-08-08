@@ -91,7 +91,8 @@
     "Alist of auxiliary keys for `ielm-map'.")
   (al/bind-keys-from-vars 'ielm-map
     '(al/lisp-shared-keys al/comint-keys al/ielm-keys))
-  (al/add-hook-maybe 'ielm-mode-hook 'al/no-truncate-lines))
+
+  (al/call-at-hook ielm-mode-hook al/no-truncate-lines))
 
 (al/eval-after-load eldoc
   (setq eldoc-idle-delay 0.3))
@@ -239,15 +240,15 @@
   (put 'plist-new 'scheme-indent-function 1)
   (al/modify-page-break-syntax scheme-mode-syntax-table)
 
-  (al/add-hook-maybe 'scheme-mode-hook 'guix-devel-mode)
+  (al/call-at-hook scheme-mode-hook guix-devel-mode)
 
   (al/require al-scheme))
 
 (al/eval-after-load al-scheme
   (al/scheme-add-font-lock-keywords)
-  (al/add-hook-maybe 'scheme-mode-hook
-    '(al/scheme-fix-docstring-font-lock
-      al/scheme-fix-fill))
+  (al/call-at-hook scheme-mode-hook
+    al/scheme-fix-docstring-font-lock
+    al/scheme-fix-fill)
   (advice-add 'scheme-indent-function
     :override 'al/scheme-indent-function))
 
@@ -302,9 +303,9 @@
   (al/bind-keys-from-vars 'geiser-repl-mode-map
     '(al/comint-keys al/geiser-keys al/geiser-repl-keys))
 
-  (al/add-hook-maybe 'geiser-repl-mode-hook
-    '(al/inhibit-field-motion
-      al/no-syntactic-font-lock))
+  (al/call-at-hook geiser-repl-mode-hook
+    al/inhibit-field-motion
+    al/no-syntactic-font-lock)
 
   (al/require al-geiser))
 
@@ -375,12 +376,10 @@
 (al/setq-no-warnings gud-key-prefix (kbd "M-G"))
 
 (al/eval-after-load gud
-  (defun al/gud-bind-keys ()
-    (al/bind-keys-from-vars 'gud-mode-map 'al/comint-keys))
   ;; GUD binds its keys inside `gdb' and `gud-gdb' commands.
-  (al/add-hook-maybe '(gdb-mode-hook
-                       gud-gdb-mode-hook)
-    'al/gud-bind-keys))
+  (al/call-at-hook (gdb-mode-hook
+                    gud-gdb-mode-hook)
+    (al/bind-keys-from-vars 'gud-mode-map 'al/comint-keys)))
 
 
 ;;; Compilation, Makefile
@@ -421,14 +420,14 @@
       '(compilation-mode-map compilation-minor-mode-map)
     '(al/compilation-common-keys al/compilation-keys))
 
-  (when (al/require al-compilation)
-    (al/add-hook-maybe 'compilation-finish-functions
-      'al/compilation-notify)))
+  (al/require al-compilation))
 
 (al/eval-after-load al-compilation
   (al/setq-file
    al/compilation-sound-success (al/sound-dir-file "bell.oga")
-   al/compilation-sound-error   (al/sound-dir-file "splat.wav")))
+   al/compilation-sound-error   (al/sound-dir-file "splat.wav"))
+
+  (add-hook 'compilation-finish-functions 'al/compilation-notify))
 
 
 ;;; Version control
@@ -574,7 +573,7 @@
     'al/magit-popup-keys
     t)
 
-  (al/add-hook-maybe 'magit-popup-mode-hook 'al/bar-cursor-type)
+  (al/call-at-hook magit-popup-mode-hook al/bar-cursor-type)
 
   ;; Move away from buttons.  Adding `al/beginning-of-buffer' to
   ;; `magit-popup-mode-hook' wouldn't work because
@@ -660,14 +659,12 @@
   (setq magit-git-executable "git"))
 
 (al/eval-after-load git-commit
-  (defun al/git-commit-fix-syntax ()
+  (al/eval-at-hook git-commit-setup-hook
+    ;; Not `git-commit-turn-on-flyspell' because it calls `flyspell-buffer'.
+    (flyspell-mode)
+    ;; `git-commit-setup-font-lock' spoils my `text-mode' syntax stuff.
     (modify-syntax-entry ?\" "\"   ")
     (al/no-syntactic-font-lock))
-  (al/add-hook-maybe 'git-commit-setup-hook
-    '(;; Not `git-commit-turn-on-flyspell' because it calls `flyspell-buffer'.
-      flyspell-mode
-      ;; `git-commit-setup-font-lock' spoils my `text-mode' syntax stuff.
-      al/git-commit-fix-syntax))
 
   (defconst al/git-commit-keys
     '(("M->" . git-commit-prev-message)
@@ -679,7 +676,6 @@
   (al/bind-keys-from-vars 'git-commit-mode-map 'al/git-commit-keys))
 
 (al/eval-after-load git-rebase
-  (al/add-hook-maybe 'git-rebase-mode-hook 'hl-line-mode)
   (defconst al/git-rebase-keys
     '(("p"   . git-rebase-pick)
       ("w"   . git-rebase-reword)
@@ -687,7 +683,9 @@
       ("M-." . git-rebase-move-line-up)
       ("M-e" . git-rebase-move-line-down))
     "Alist of auxiliary keys for `git-rebase-mode-map'.")
-  (al/bind-keys-from-vars 'git-rebase-mode-map 'al/git-rebase-keys))
+  (al/bind-keys-from-vars 'git-rebase-mode-map 'al/git-rebase-keys)
+
+  (add-hook 'git-rebase-mode-hook #'hl-line-mode))
 
 (al/eval-after-load browse-at-remote
   (al/require al-browse-at-remote))
@@ -737,10 +735,9 @@
     "Alist of auxiliary keys for `js-mode-map'.")
   (al/bind-keys-from-vars 'js-mode-map 'al/js-keys)
 
-  (defun al/js-delimiter ()
+  (al/eval-at-hook js-mode-hook
     (setq-local al/delimiter
-                (concat (make-string 64 ?/) "\n///")))
-  (al/add-hook-maybe 'js-mode-hook 'al/js-delimiter))
+                (concat (make-string 64 ?/) "\n///"))))
 
 (al/autoload "python" python-shell-switch-to-shell)
 (al/eval-after-load python

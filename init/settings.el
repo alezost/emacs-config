@@ -45,7 +45,7 @@
  completion-ignore-case t
  enable-recursive-minibuffers t)
 
-(al/add-hook-maybe 'minibuffer-setup-hook 'al/hbar-cursor-type)
+(al/call-at-hook minibuffer-setup-hook al/hbar-cursor-type)
 (al/bind-keys-from-vars 'minibuffer-local-map 'al/minibuffer-keys)
 
 ;; (al/call-after-init icomplete-vertical-mode)
@@ -60,10 +60,10 @@
 (al/eval-after-init
   (setq icomplete-mode t
         icomplete-vertical-mode t)
-  (al/add-hook-maybe 'minibuffer-setup-hook
-    'icomplete-minibuffer-setup)
-  (al/add-hook-maybe 'icomplete-minibuffer-setup-hook
-    'icomplete--vertical-minibuffer-setup))
+  (al/call-at-hook minibuffer-setup-hook
+    icomplete-minibuffer-setup)
+  (al/call-at-hook icomplete-minibuffer-setup-hook
+    icomplete--vertical-minibuffer-setup))
 
 (al/bind-keys
   :map completion-list-mode-map
@@ -160,8 +160,8 @@
   (al/require al-pcomplete))
 
 (al/eval-after-load al-pcomplete
-  (al/add-hook-maybe '(shell-mode-hook eshell-mode-hook)
-    'al/pcomplete-no-space))
+  (al/call-at-hook (shell-mode-hook eshell-mode-hook)
+    al/pcomplete-no-space))
 
 (al/eval-after-load pcmpl-args
   (setq
@@ -254,8 +254,10 @@
       ("* o" . ibuffer-mark-old-buffers))
     "Alist of auxiliary keys for `ibuffer-mode-map'.")
   (al/bind-keys-from-vars 'ibuffer-mode-map 'al/ibuffer-keys)
-  (al/add-hook-maybe 'ibuffer-mode-hook
-    '(al/mode-ibuffer-info hl-line-mode)))
+
+  (al/call-at-hook ibuffer-mode-hook
+    al/mode-ibuffer-info
+    hl-line-mode))
 
 
 ;;; Working with windows and frames
@@ -336,8 +338,9 @@
         comint-password-prompt-regexp
         (rx-to-string `(or (and bol "Password")
                            (regex ,comint-password-prompt-regexp))))
-  (al/add-hook-maybe 'comint-output-filter-functions
-    'comint-truncate-buffer)
+
+  (al/call-at-hook comint-output-filter-functions
+    comint-truncate-buffer)
 
   (defconst al/comint-keys
     '(("M-." . comint-previous-input)
@@ -360,9 +363,10 @@
       ("M-U" . shell-forward-command))
     "Alist of auxiliary keys for `shell-mode-map'.")
   (al/bind-keys-from-vars 'shell-mode-map 'al/shell-keys)
-  (al/add-hook-maybe 'shell-mode-hook
-    '(abbrev-mode
-      al/no-truncate-lines))
+
+  (al/call-at-hook shell-mode-hook
+    abbrev-mode
+    al/no-truncate-lines)
 
   (al/require sh-script al-shell))
 
@@ -381,7 +385,8 @@
           ("*shell*<2>" . ,al/download-dir)
           ("*shell*<3>" . ,al/download-dir)))
 
-  (al/add-hook-maybe 'shell-mode-hook 'al/shell-set-local-variables))
+  (al/call-at-hook shell-mode-hook
+    al/shell-set-local-variables))
 
 (al/bind-keys
  ("C-z"   . al/eshell)
@@ -447,7 +452,8 @@
 
 (al/eval-after-load al-eshell
   (setq eshell-prompt-function #'al/eshell-prompt)
-  (al/add-hook-maybe 'eshell-mode-hook 'al/eshell-set-local-variables)
+  (al/call-at-hook eshell-mode-hook
+    al/eshell-set-local-variables)
   (advice-add 'eshell/info :override #'al/eshell/info))
 
 (al/eval-after-load agent-shell
@@ -558,7 +564,8 @@
    :map help-mode-map
    ("," . help-go-back)
    ("p" . help-go-forward))
-  (al/add-hook-maybe 'help-mode-hook 'al/no-truncate-lines))
+
+  (al/call-at-hook help-mode-hook al/no-truncate-lines))
 
 (al/eval-after-load man
   (setq Man-notify-method 'pushy)
@@ -695,7 +702,7 @@
   (al/bind-keys-from-vars 'google-translate-minibuffer-keymap
     '(al/minibuffer-keys al/google-translate-keys))
 
-  (al/add-hook-maybe 'google-translate-mode-hook 'al/text-scale+1))
+  (al/call-at-hook google-translate-mode-hook al/text-scale+1))
 
 (al/eval-after-load al-google-translate
   (advice-add 'google-translate-listen-translation
@@ -738,12 +745,12 @@
   (when (al/require al-sql)
     (advice-add 'sql-highlight-product
       :override 'al/sql-highlight-product)
-    (al/add-hook-maybe 'sql-mode-hook
-      'al/sql-set-comment-start-skip)
-    (al/add-hook-maybe 'sql-interactive-mode-hook
-      '(al/sql-save-history
-        al/sql-highlight-product
-        al/sql-completion-setup)))
+    (al/call-at-hook sql-mode-hook
+      al/sql-set-comment-start-skip)
+    (al/call-at-hook sql-interactive-mode-hook
+      al/sql-save-history
+      al/sql-highlight-product
+      al/sql-completion-setup))
 
   ;; Fix bug with mariadb prompt:
   ;; <http://debbugs.gnu.org/cgi/bugreport.cgi?bug=17426>.
@@ -803,10 +810,10 @@
   (setq
    journal-open-block "┃"
    journal-close-block "┃")
-  (defun al/journal-no-double-space ()
+
+  (al/eval-at-hook org-mode-hook
     (and (journal-buffer-p)
-         (setq-local sentence-end-double-space nil)))
-  (al/add-hook-maybe 'org-mode-hook 'al/journal-no-double-space))
+         (setq-local sentence-end-double-space nil))))
 
 (al/autoload "darts-value"
   darts-throw-string-to-points
@@ -980,18 +987,17 @@
     '(("h" . ediff-previous-difference)
       ("H" . ediff-toggle-hilit))
     "Alist of auxiliary keys for `ediff-mode-map'.")
-  (defun al/ediff-bind-keys ()
+  (al/eval-at-hook ediff-startup-hook
     (al/bind-keys-from-vars 'ediff-mode-map 'al/ediff-keys))
-  (al/add-hook-maybe 'ediff-startup-hook 'al/ediff-bind-keys)
 
   (al/require al-ediff))
 
 (al/eval-after-load al-ediff
-  (al/add-hook-maybe 'ediff-before-setup-hook
-    'al/ediff-save-window-configuration)
-  (al/add-hook-maybe 'ediff-quit-hook
-    'al/ediff-restore-window-configuration
-    t))
+  (al/call-at-hook ediff-before-setup-hook
+    al/ediff-save-window-configuration)
+  (al/call-at-hook ediff-quit-hook
+    :depth 100
+    al/ediff-restore-window-configuration))
 
 (al/eval-after-load view
   (defconst al/view-keys
@@ -1016,7 +1022,7 @@
   (al/bind-keys-from-vars 'tabulated-list-mode-map
     '(al/lazy-moving-keys al/tabulated-list-keys)
     t)
-  (add-hook 'tabulated-list-mode-hook 'hl-line-mode))
+  (add-hook 'tabulated-list-mode-hook #'hl-line-mode))
 
 (al/eval-after-load simple
   (defconst al/process-menu-mode-keys
@@ -1095,7 +1101,7 @@
 
 (al/eval-after-load al-transient
   (advice-add 'transient-setup :before #'al/transient-fix-input-method)
-  (al/add-hook-maybe 'transient-post-exit-hook
-    'al/transient-restore-input-method))
+  (al/call-at-hook transient-post-exit-hook
+    al/transient-restore-input-method))
 
 ;;; settings.el ends here

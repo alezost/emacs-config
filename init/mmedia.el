@@ -48,10 +48,10 @@
     :map al/emms-switch-playlist-map
     ([ctrl-m] . al/emms-switch-to-playlist-buffer))
 
-  (al/add-hook-maybe 'emms-playlist-source-inserted-hook
-    'al/emms-add-size)
-  (al/add-hook-maybe 'emms-mpv-before-process-hook
-    'al/emms-playlist-set-mpv-command)
+  (al/call-at-hook emms-playlist-source-inserted-hook
+    al/emms-add-size)
+  (al/call-at-hook emms-mpv-before-process-hook
+    al/emms-playlist-set-mpv-command)
 
   (advice-add 'emms-source-play
     :override #'al/emms-source-add-and-play)
@@ -181,15 +181,16 @@
       al/emms-playlist-keys)
     t)
   (suppress-keymap emms-playlist-mode-map)
-  (al/add-hook-maybe 'emms-playlist-mode-hook
-    (list 'hl-line-mode
-          ;; `emms-playlist-mode' is not defined properly (with
-          ;; `define-derived-mode'), it is just a `defun', so
-          ;; `after-change-major-mode-hook' doesn't work and `dim'
-          ;; doesn't set `mode-name'.  Because of this, add
-          ;; `dim-set-major-name' to the playlist hook.
-          'dim-set-major-name
-          (lambda () (setq-local page-delimiter "^ *—")))))
+
+  (al/eval-at-hook emms-playlist-mode-hook
+    (hl-line-mode)
+    ;; `emms-playlist-mode' is not defined properly (with
+    ;; `define-derived-mode'), it is just a `defun', so
+    ;; `after-change-major-mode-hook' doesn't work and `dim'
+    ;; doesn't set `mode-name'.  Because of this, add
+    ;; `dim-set-major-name' to the playlist hook.
+    (al/funcall 'dim-set-major-name)
+    (setq-local page-delimiter "^ *—")))
 
 (al/eval-after-load emms-mode-line
   (setq emms-mode-line-format " %s"))
@@ -201,15 +202,16 @@
 (al/autoload "emms-info-native" emms-info-native)
 
 (al/eval-after-load emms-info
-  (push 'emms-info-initialize-track emms-track-initialize-functions)
+  (add-hook 'emms-track-initialize-functions
+            #'emms-info-initialize-track)
   (setq emms-info-functions '(emms-info-native emms-info-cueinfo)))
 
 (al/eval-after-load emms-source-file
   (setq emms-source-file-default-directory al/music-dir))
 
 (al/eval-after-load emms-last-played
-  (al/add-hook-maybe 'emms-player-started-hook
-    'emms-last-played-update-current))
+  (add-hook 'emms-player-started-hook
+            #'emms-last-played-update-current))
 
 (al/eval-after-load emms-later-do
   (setq emms-later-do-interval 0.1))
@@ -227,10 +229,9 @@
   (emms-state-mode))
 
 (al/eval-after-load al-emms-mpv
-  (al/add-hook-maybe
-      '(emms-player-seeked-functions
-        emms-player-time-set-functions)
-    'al/emms-mpv-show-video-progress)
+  (al/call-at-hook (emms-player-seeked-functions
+                    emms-player-time-set-functions)
+    al/emms-mpv-show-video-progress)
   (push '("client-message" . al/emms-mpv-handle-client-message)
         emms-mpv-event-handlers))
 
