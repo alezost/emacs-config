@@ -110,8 +110,6 @@
    `(outline-magic
      (erc-view-log       :fetcher github :repo "alezost/erc-view-log"
                          :branch "general-regexps")
-     (mysql              :fetcher github :repo "haxney/mysql")
-     (sql-completion     :fetcher github :repo "emacsmirror/sql-completion")
      (journal            :fetcher git :url ,(al/emacs-repo "journal"))
      (learn-alphabet     :fetcher git :url ,(al/emacs-repo "learn-alphabet"))
      (mana               :fetcher git :url ,(al/emacs-repo "mana"))

@@ -757,18 +757,6 @@
   (sql-set-product-feature 'mysql :prompt-regexp
                            "^\\(?:mysql\\|mariadb\\).*> "))
 
-(al/eval-after-load mysql
-  (setq mysql-user sql-user)
-  (when (al/require al-mysql)
-    (advice-add 'mysql-shell-query :override 'al/mysql-shell-query)))
-
-(al/eval-after-load sql-completion
-  (setq
-   sql-mysql-database sql-database
-   sql-mysql-exclude-databases
-   '("mysql" "information_schema" "performance_schema"))
-  (al/require cl))
-
 (al/eval-after-load al-sql
   (setq al/sql-history-dir (al/emacs-data-dir-file "sql")))
 

@@ -225,6 +225,20 @@
   (al/bind-keys-from-vars 'vertico-map 'al/vertico-keys))
 
 
+;;; SQL
+
+(al/eval-after-load mysql
+  (setq mysql-user sql-user)
+  (when (al/require al-mysql)
+    (advice-add 'mysql-shell-query :override 'al/mysql-shell-query)))
+
+(al/eval-after-load sql-completion
+  (setq
+   sql-mysql-database sql-database
+   sql-mysql-exclude-databases
+   '("mysql" "information_schema" "performance_schema")))
+
+
 ;;; SLIME
 
 ;; This should be set before loading slime.
