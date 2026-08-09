@@ -534,19 +534,24 @@ BODY can start with the following optional keywords:
 
   `:name'       name of the generated function;
 
-  `:depth',`:local'
+  `:eval-hook'  if non-nil, use HOOKS verbatim i.e., evaluate HOOKS
+                expression during `add-hook' call instead of
+                considering it a list of hook variables;
+
+  `:depth', `:local'
                 additional arguments passed to `add-hook'."
   (declare (indent 1))
   (al/with-keywords body
-      (name depth local)
-    (let* ((single-hook? (symbolp hooks))
+      (name eval-hook depth local)
+    (let* ((single-hook? (or eval-hook (symbolp hooks)))
            (fun-expr `(lambda (&rest _) ,@body))
            (fun      (if name `',name fun-expr))
            (fun-var  (and (not name)
                           (not single-hook?)
                           (make-symbol "fun")))
            (exprs    (if single-hook?
-                         `((add-hook ',hooks ,fun ,depth ,local))
+                         `((add-hook ,(if eval-hook hooks `',hooks)
+                                     ,fun ,depth ,local))
                        (mapcar (lambda (hook)
                                  `(add-hook ',hook ,(or fun-var fun)
                                             ,depth ,local))
