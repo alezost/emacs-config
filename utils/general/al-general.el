@@ -519,7 +519,7 @@ Push added `load-path' to `al/load-paths'."
 ;; - `al/eval-*' is a macro evaluating BODY when some event occurs.
 
 (defmacro al/eval-at-hook (hooks &rest body)
-  "Generate function with BODY and add it to all HOOKS.
+  "Add function evaluating BODY to all HOOKS.
 
 HOOKS should be an unquoted symbol (hook variable) or list of those.
 
@@ -532,13 +532,26 @@ BODY can start with the following optional keywords:
   (declare (indent 1))
   (al/with-keywords body
       (name depth local)
-    (let ((hooks (al/list-maybe hooks))
-          (name  (or name (al/generate-interned-symbol))))
-      `(progn
-         (defun ,name (&rest _) ,@body)
-         ,@(mapcar (lambda (hook)
-                     `(add-hook ',hook ',name ,depth ,local))
-                   hooks)))))
+    (let* ((single-hook? (symbolp hooks))
+           (fun-expr `(lambda (&rest _) ,@body))
+           (fun      (if name `',name fun-expr))
+           (fun-var  (and (not name)
+                          (not single-hook?)
+                          (make-symbol "fun")))
+           (exprs    (if single-hook?
+                         `((add-hook ',hooks ,fun ,depth ,local))
+                       (mapcar (lambda (hook)
+                                 `(add-hook ',hook ,(or fun-var fun)
+                                            ,depth ,local))
+                               hooks))))
+      (cond
+       (fun-var
+        `(let ((,fun-var ,fun)) ,@exprs))
+       (name
+        `(progn
+           (defalias ,fun ,fun-expr)
+           ,@exprs))
+       (t (car exprs))))))
 
 (defmacro al/call-at-hook (hooks &rest functions)
   "Call all FUNCTIONS in all HOOKS.
@@ -551,7 +564,6 @@ FUNCTIONS can optionally start with keywords supported by
 `al/eval-at-hook'."
   (declare (indent 1))
   (let ((kw-args '()))
-    ;; TODO Generate `:name' from FUNCTIONS.
     (while (keywordp (car functions))
       (setq kw-args
             (append (list (pop functions)
