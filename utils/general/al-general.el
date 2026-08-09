@@ -576,24 +576,20 @@ FUNCTIONS can optionally start with keywords supported by
 
 (defmacro al/eval-after-init (&rest body)
   "Evaluate BODY after Emacs init.
-If `:append' keyword argument is specified, then the expression will be
-added to the end/start of `after-init-hook' if `:append' value is t/nil
-respectively."
+BODY can optionally start with keywords supported by `al/eval-at-hook'."
   (declare (indent 0))
-  (al/with-keywords body
-      (append)
-    `(add-hook 'after-init-hook (lambda () ,@body)
-               ;; See documentation of `add-hook'.
-               ,(if append 100 -100))))
+  `(al/eval-at-hook after-init-hook ,@body))
 
 (defmacro al/call-after-init (&rest functions)
   "Call FUNCTIONS after Emacs init.
+
 FUNCTIONS should be unquoted symbols, they will be called using
-`al/funcall'."
+`al/funcall'.
+
+FUNCTIONS can optionally start with keywords supported by
+`al/eval-at-hook'."
   (declare (indent 0))
-  `(al/eval-after-init
-     ,@(mapcar (lambda (fun) `(al/funcall ',fun))
-               functions)))
+  `(al/call-at-hook after-init-hook ,@functions))
 
 (defmacro al/eval-after-frame-init (&rest body)
   "Evaluate BODY after frame start.

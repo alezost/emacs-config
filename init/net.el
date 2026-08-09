@@ -128,7 +128,7 @@
 
 (al/eval-after-init
   ;; Append because `al/mail-user-name' can be changed later.
-  :append t
+  :depth 90
   (al/file-accessors "gnus"
     (al/emacs-data-dir-file (concat "gnus-" al/mail-user-name)))
   (al/setq-no-warnings
