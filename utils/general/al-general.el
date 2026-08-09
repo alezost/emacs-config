@@ -349,34 +349,35 @@ v2 will be set, while v1 will not."
                     (setq ,var ,file-var))))
              (seq-partition body 2)))))
 
-(defmacro al/defun-lazy (name &rest body)
-  "Define NAME function accepting zero arguments.
+(defmacro al/lambda-lazy (&rest body)
+  "Return an anonymous function ignoring its arguments.
 
-On the first call, NAME function evaluates BODY and returns result.  On
+On the first call, the function evaluates BODY and returns result.  On
 subsequent calls, just the result of the first call is returned without
 BODY evaluation.
 
-BODY can start with the following optional keywords:
+As usual, BODY can optionally start with docstring.  After that (before
+the optional `interactive' clause), the following optional keywords can
+be specified:
 
   `:predicates'     unquoted list of predicates or a single predicate
                     called on the latest result; if any predicate
                     returns nil, body is reevaluated again to update the
                     result."
-  (declare (indent 1) (debug t))
-  (let* ((name-str    (symbol-name name))
-         (called-var  (intern (concat name-str "-called?")))
-         (val-var     (intern (concat name-str "-value")))
-         (docstring   (and (stringp (car body))
-                           (pop body))))
+  (declare (indent 0) (debug t))
+  (let ((docstring (and (stringp (car body))
+                        (pop body))))
     (al/with-keywords body
         (predicates)
       (let ((interactive (and (equal (car body) '(interactive))
-                              (pop body))))
-        `(progn
-           ,(unless predicates
-              `(defvar ,called-var nil))
-           (defvar ,val-var nil)
-           (defun ,name ()
+                              (pop body)))
+            (called-var  (unless predicates
+                           (make-symbol "called?")))
+            (val-var     (make-symbol "value")))
+        `(let ((,val-var nil)
+               ,@(unless predicates
+                   `((,called-var nil))))
+           (lambda (&rest _)
              ,docstring
              ,interactive
              (if ,(if predicates
@@ -387,6 +388,12 @@ BODY can start with the following optional keywords:
                  ,val-var
                (setq ,@(unless predicates (list called-var t))
                      ,val-var ,(macroexp-progn body)))))))))
+
+(defmacro al/defun-lazy (name &rest body)
+  "Define NAME function evaluating BODY once.
+See `al/lambda-lazy' for details."
+  (declare (indent 1) (debug t))
+  `(defalias ',name (al/lambda-lazy ,@body)))
 
 (defmacro al/with-check-point (&rest body)
   "Evaluate BODY.
