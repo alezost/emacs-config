@@ -534,6 +534,9 @@ BODY can start with the following optional keywords:
 
   `:name'       name of the generated function;
 
+  `:once'       if non-nil, evaluate BODY only once during the first
+                hook call;
+
   `:eval-hook'  if non-nil, use HOOKS verbatim i.e., evaluate HOOKS
                 expression during `add-hook' call instead of
                 considering it a list of hook variables;
@@ -542,9 +545,11 @@ BODY can start with the following optional keywords:
                 additional arguments passed to `add-hook'."
   (declare (indent 1))
   (al/with-keywords body
-      (name eval-hook depth local)
+      (name once eval-hook depth local)
     (let* ((single-hook? (or eval-hook (symbolp hooks)))
-           (fun-expr `(lambda (&rest _) ,@body))
+           (fun-expr (if once
+                         `(al/lambda-lazy ,@body)
+                       `(lambda (&rest _) ,@body)))
            (fun      (if name `',name fun-expr))
            (fun-var  (and (not name)
                           (not single-hook?)

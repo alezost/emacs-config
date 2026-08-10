@@ -59,11 +59,11 @@
   ;; want to load additional Common Lisp functionality on start.  So
   ;; instead of requiring `al-clisp' here, it is loaded on the first run
   ;; of `lisp-mode' major mode (by `lisp-mode-hook').
-  (al/defun-lazy al/clisp-init
+  (al/eval-at-hook lisp-mode-hook
+    :once t
     (al/require al-clisp)
     ;; Update fontification of the current buffer.
-    (lisp-mode))
-  (add-hook 'lisp-mode-hook 'al/clisp-init))
+    (lisp-mode)))
 
 (al/eval-after-load al-clisp
   (al/clisp-add-font-lock-keywords))
