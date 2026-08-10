@@ -61,7 +61,9 @@ PACKAGES_ELCS = $(PACKAGES_ELS:.el=.elc)
 INIT_ELS = $(shell find -L $(MY_INIT_DIR) -maxdepth 1 -name '*.el')
 INIT_ELCS = $(INIT_ELS:.el=.elc)
 
-all: packages utils
+packages+utils: packages utils
+
+all: packages utils init
 
 packages: $(PACKAGES_ELCS)
 
@@ -72,10 +74,10 @@ utils: $(UTILS_ELCS)
 	-@$(EMACS_BATCH) --eval "(setq load-prefer-newer t)" \
 	-f batch-byte-compile $< ;
 
-# Init files consist mostly of key bindings, setting variables and
-# hooks, so compiling them is not very useful as it is.  The main
-# purpose of this target is to check for useful compilation warnings
-# (like obsolete variables).
+# The main purpose of "init" target is to check for useful compilation
+# warnings (like obsolete variables).  Also different macros are used
+# heavily in init files, so compilation makes sense to avoid
+# macro-expansion during loading.
 init: $(INIT_ELCS)
 
 clean-packages:
@@ -90,8 +92,11 @@ clean-init:
 	@printf "Removing init/*.elc...\n"
 	$(RM) $(INIT_ELCS)
 
-clean: clean-packages clean-utils clean-init
+clean: clean-packages clean-utils
 
-.PHONY: all init clean clean-utils clean-init
+clean-all: clean-packages clean-utils clean-init
+
+.PHONY: all init utils packages packages+utils
+.PHONY: clean clean-all clean-init clean-utils clean-packages
 
 # Makefile ends here
