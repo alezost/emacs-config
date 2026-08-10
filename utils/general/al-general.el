@@ -59,21 +59,15 @@ This is similar to `gensym' except the returned symbol is interned."
                   (setq al/generate-symbol-counter
                         (1+ al/generate-symbol-counter)))))
 
-(defmacro al/with-keywords (body variables &rest rest)
-  "Auxiliary macro used to define macros with keywords.
-
-The following local variables are available inside REST:
-
-  All symbols from VARIABLES list; these variables have values from
-  keywords (with the same names) taken from BODY.
-
-  BODY with keyword pairs removed."
+(defmacro al/with-keywords-1 (body variables allow-other-keys &rest rest)
+  "Helper macro for `al/with-keywords'."
   (declare (indent 2))
-  `(let ((body ,body)
+  `(let ((%body ,body)
+         ,@(and allow-other-keys '(%other-keys))
          ,@variables)
-     (while (keywordp (car body))
-       (let ((keyword (pop body))
-             (value   (pop body)))
+     (while (keywordp (car %body))
+       (let ((keyword (pop %body))
+             (value   (pop %body)))
          (cond
           ,@(mapcar (lambda (var)
                       `((eq keyword ,(intern
@@ -81,8 +75,38 @@ The following local variables are available inside REST:
                         (setq ,var value)))
                     variables)
           (t
-           (al/warning-message "Unknown keyword: %s" keyword)))))
+           ,(if allow-other-keys
+                '(setq %other-keys (append (list keyword value)
+                                           %other-keys))
+              '(al/warning-message "Unknown keyword: %s" keyword))))))
      ,@rest))
+
+(defmacro al/with-keywords (body variables &rest rest)
+  "Auxiliary macro used to define macros with keywords.
+
+REST can start with the following optional keywords:
+
+  `:allow-other-keys'   if non-nil, add `%other-keys' symbol to
+                        VARIABLES and do not print warning message for
+                        BODY keywords that are not in the VARIABLES
+                        list.
+
+The following local variables are available inside REST:
+
+  All symbols from VARIABLES list; these variables have values from
+  keywords (with the same names) taken from BODY.
+
+  `%other-keys' if `:allow-other-keys' was specified as described above.
+
+  `%body' with keyword pairs removed."
+  (declare (indent 2))
+  (al/with-keywords-1 rest
+      (allow-other-keys)
+    nil
+    `(al/with-keywords-1 ,body
+         ,variables
+       ,allow-other-keys
+       ,@%body)))
 
 (defmacro al/eval-when-compile (&rest body)
   "Evaluate BODY at compile time and do nothing for interpreted code."
@@ -308,7 +332,7 @@ Return nil if checks are not passed."
                 ,(or (null var)  `(al/bound?     ,var))
                 ,(or (null file) `(al/file?      ,file))
                 ,(or (null dir)  `(al/directory? ,dir)))
-       ,@body)))
+       ,@%body)))
 
 (defmacro al/with-demoted-errors (format &rest body)
   "Run BODY and demote any errors to simple messages.
@@ -369,8 +393,8 @@ be specified:
                         (pop body))))
     (al/with-keywords body
         (predicates)
-      (let ((interactive (and (equal (car body) '(interactive))
-                              (pop body)))
+      (let ((interactive (and (equal (car %body) '(interactive))
+                              (pop %body)))
             (called-var  (unless predicates
                            (make-symbol "called?")))
             (val-var     (make-symbol "value")))
@@ -387,7 +411,7 @@ be specified:
                     called-var)
                  ,val-var
                (setq ,@(unless predicates (list called-var t))
-                     ,val-var ,(macroexp-progn body)))))))))
+                     ,val-var ,(macroexp-progn %body)))))))))
 
 (defmacro al/defun-lazy (name &rest body)
   "Define NAME function evaluating BODY once.
@@ -548,8 +572,8 @@ BODY can start with the following optional keywords:
       (name once eval-hook depth local)
     (let* ((single-hook? (or eval-hook (symbolp hooks)))
            (fun-expr (if once
-                         `(al/lambda-lazy ,@body)
-                       `(lambda (&rest _) ,@body)))
+                         `(al/lambda-lazy ,@%body)
+                       `(lambda (&rest _) ,@%body)))
            (fun      (if name `',name fun-expr))
            (fun-var  (and (not name)
                           (not single-hook?)
@@ -639,7 +663,7 @@ a non-graphical terminal."
                         ((eq terminal 'text)
                          '(null (display-graphic-p)))
                         (t t)))
-             ,@body
+             ,@%body
              ,(and once `(setq ,name t))))
          (add-hook (if (daemonp)
                        'server-after-make-frame-hook
@@ -667,13 +691,13 @@ BODY can start with the following optional keywords:
         (al/warning-message "`%s' feature is not available" feature)))
     (cond
      ((null load)
-      `(eval-after-load ',feature (lambda () ,@body)))
+      `(eval-after-load ',feature (lambda () ,@%body)))
      ((eq t load)
       `(when (al/require ,feature)
-         ,@body))
+         ,@%body))
      (t
       `(progn
-         (eval-after-load ',feature (lambda () ,@body))
+         (eval-after-load ',feature (lambda () ,@%body))
          (al/eval-after-init (al/require ,feature)))))))
 
 
