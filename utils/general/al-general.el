@@ -48,17 +48,6 @@
 
 ;;; Auxiliary code for macros
 
-(defvar al/generate-symbol-counter 0
-  "Number used by `al/generate-interned-symbol'.
-This variable must be modified only by `al/generate-interned-symbol'.")
-
-(defun al/generate-interned-symbol (&optional prefix)
-  "Return a new interned symbol.
-This is similar to `gensym' except the returned symbol is interned."
-  (intern (format "%s%d" (or prefix "al/generated--")
-                  (setq al/generate-symbol-counter
-                        (1+ al/generate-symbol-counter)))))
-
 (defmacro al/with-keywords-1 (body variables allow-other-keys &rest rest)
   "Helper macro for `al/with-keywords'."
   (declare (indent 2))
@@ -639,36 +628,28 @@ BODY can start with the following optional keywords:
 
   `:terminal'   can be `graphical' to evaluate BODY only for a graphical
                 frame, `text' to evaluate BODY for a text-only terminal,
-                or `any' (default) to evaluate BODY for any terminal.
+                or `any' (default) to evaluate BODY for any terminal;
 
-  `:once'       can be `nil' (default) meaning BODY is evaluated for
-                every new frame, or `t' to evaluate BODY only once after
-                starting the first frame.
+  any other keyword supported by `al/eval-at-hook'.
 
 This macro exists because standalone Emacs and Emacs started as a daemon
 start frames differently.  Also not all settings are possible/desired on
 a non-graphical terminal."
   (declare (indent 0))
   (al/with-keywords body
-      (name terminal once)
-    (let ((name (or name (al/generate-interned-symbol "al/frame-init-"))))
-      `(progn
-         ,(and once `(defvar ,name nil))
-         (defun ,name ()
-           (when (and ,(or (null once)
-                           `(null ,name))
-                      ,(cond
-                        ((eq terminal 'graphical)
-                         '(display-graphic-p))
-                        ((eq terminal 'text)
-                         '(null (display-graphic-p)))
-                        (t t)))
-             ,@%body
-             ,(and once `(setq ,name t))))
-         (add-hook (if (daemonp)
-                       'server-after-make-frame-hook
-                     'after-init-hook)
-                   ',name)))))
+      (terminal)
+    :allow-other-keys t
+    `(al/eval-at-hook (if (daemonp)
+                          'server-after-make-frame-hook
+                        'after-init-hook)
+       :eval-hook t
+       ,@%other-keys
+       (when ,(cond ((eq terminal 'graphical)
+                     '(display-graphic-p))
+                    ((eq terminal 'text)
+                     '(null (display-graphic-p)))
+                    (t t))
+         ,@%body))))
 
 (defmacro al/eval-after-load (feature &rest body)
   "Execute BODY after FEATURE load.
