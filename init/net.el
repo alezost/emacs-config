@@ -433,9 +433,14 @@
     "#guix"
     "#geiser"
     "#dunst"
-    "#conkeror"
+    "#lisp"
+    "#nyxt"
     "#stumpwm"
     "#openmw"
+    "#yt-dlp"
+    "#mpv"
+    "##math"
+    "#ai"
     "#org-mode"))
  erc-log-channels-directory (al/emacs-data-dir-file "erc-log"))
 
@@ -528,13 +533,21 @@
   (setq
    al/erc-log-excluded-regexps
    '("\\`#archlinux\\'" "\\`#emacs\\'" "\\`#freenode\\'" "\\`#znc\\'")
-   al/erc-away-msg-list
-   '("just away" "watching athletics" "watching darts"
-     "eating" "i'm not ready to chat" "time to sleep")
+   al/erc-away-msg-list '("just away"))
+
+  (defvar erc-autojoin-channels-alist)
+  (setq
    al/erc-channel-list
-   '("#emacs" "#archlinux" "#archlinux-classroom" "#trivialand" "##latin"
-     "#lisp" "#lispgames" "#git" "#github" "#netfilter" "#wesnoth"
-     "#themanaworld" "##french" "##english" "##programming"))
+   (append (cdar erc-autojoin-channels-alist)
+   '("#archlinux"
+     "##programming"
+     "##English"
+     "##latin"
+     "#lispgames"
+     "#git"
+     "#guix-offtopic"
+     "#wesnoth"
+     "#themanaworld")))
 
   (defvar al/tab-functions)
   (push 'al/erc-next-button-maybe al/tab-functions)
