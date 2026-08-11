@@ -20,7 +20,7 @@
 (eval-when-compile
   (require 'cl-lib))
 (require 'google-translate-smooth-ui)
-(require 'al-general)
+(require 'al-list)
 
 (defun al/google-translate-listen-translation (language text)
   "Replacement for `google-translate-listen-translation'."

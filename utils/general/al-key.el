@@ -19,6 +19,7 @@
 
 (require 'seq)
 (require 'al-general)
+(require 'al-list)
 
 
 ;;; Binding keys

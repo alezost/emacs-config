@@ -22,7 +22,7 @@
   (require 'fp-utils)
   (require 'let-macros))
 (require 'seq)
-(require 'al-general)
+(require 'al-list)
 
 (defun al/buffer-derived-mode? (buffer &rest modes)
   "Return non-nil if BUFFER major mode is derived from one of MODES."

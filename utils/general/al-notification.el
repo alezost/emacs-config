@@ -23,7 +23,7 @@
 (require 'timer)
 (require 'notifications)
 (require 'count)
-(require 'al-general)
+(require 'al-list)
 (require 'al-file)
 
 (defvar al/notification-sound

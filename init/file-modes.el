@@ -21,6 +21,8 @@
 (require 'al-general)
 (require 'al-key)
 
+(declare-function al/assoc-delete-all "al-list")
+
 
 ;;; Org
 

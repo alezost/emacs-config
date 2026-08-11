@@ -21,6 +21,7 @@
   (require 'cl-lib)
   (require 'let-macros))
 (require 'al-general)
+(require 'al-list)
 
 
 ;;; Searching and replacing

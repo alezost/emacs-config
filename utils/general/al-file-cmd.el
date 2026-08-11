@@ -20,6 +20,7 @@
 (eval-when-compile
   (require 'let-macros))
 (require 'al-general)
+(require 'al-list)
 (require 'al-read)
 
 ;;;###autoload

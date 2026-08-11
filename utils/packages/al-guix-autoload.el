@@ -18,7 +18,7 @@
 ;;; Code:
 
 (require 'seq)
-(require 'al-general)
+(require 'al-list)
 (require 'al-autoload)
 (require 'al-file)
 

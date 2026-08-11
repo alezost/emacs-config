@@ -21,7 +21,7 @@
   (require 'cl-lib))
 (require 'seq)
 (require 'count)
-(require 'al-general)
+(require 'al-list)
 
 (defun al/file-if-exists (file)
   "Return FILE if it exists, or nil."
@@ -45,6 +45,7 @@ absolute file names."
                 subdirs)
       subdirs)))
 
+;;TODO maybe replace this with a macro and put to al-general ?
 (defun al/add-to-auto-mode-alist (specs)
   "Add SPECS to `auto-mode-alist'.
 Each specification from SPECS list may have one of the following forms:
