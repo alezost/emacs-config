@@ -863,7 +863,7 @@
  echo-keystrokes 0.2
  disabled-command-function nil
  inhibit-startup-screen t
- find-function-C-source-directory (al/src-dir-file "emacs-git/src"))
+ source-directory (al/src-dir-file "emacs"))
 
 (setq
  warning-minimum-level :warning
