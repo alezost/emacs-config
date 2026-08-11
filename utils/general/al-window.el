@@ -99,18 +99,25 @@ otherwise select the next window."
     (error "Minibuffer is not active")))
 
 
+;;; Auxiliary code for StumpWM
+
+(defvar al/last-window-count 0
+  "Internal variable for `al/set-windows-num-property'.")
+
 ;; Update WINDOWS_NUM property for a stumpwm command, see
 ;; <https://github.com/alezost/stumpwm-config/blob/master/utils.lisp>.
 ;; Intended to be used with:
 ;; (add-hook 'window-configuration-change-hook 'al/set-windows-num-property)
+
 ;;;###autoload
 (defun al/set-windows-num-property ()
   "Set X window property WINDOWS_NUM to the current number of windows."
-  (and (display-graphic-p)
-       (x-change-window-property
-        "WINDOWS_NUM"
-        (string (length (window-list)))
-        nil nil nil t)))
+  (when (eq 'x (terminal-live-p nil))
+    (let ((num (length (window-list))))
+      (unless (= num al/last-window-count)
+        (x-change-window-property "WINDOWS_NUM" (string num)
+                                  nil nil nil t)
+        (setq al/last-window-count num)))))
 
 ;;;###autoload
 (defun al/run-stumpwm-command (string)
