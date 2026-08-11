@@ -54,11 +54,12 @@ Usually, these are functions that behave like macros.")
       al/lisp-symbol-group)
   "Regexp to match `al/eval-after-load' macro.")
 
-(defvar al/elisp-defun-lazy-regexp
-  (rx "(" (group "al/defun-lazy")
+(defvar al/elisp-defun-regexp
+  (rx "(" (group (or "al/defun-lazy"
+                     "al/define-multi-command"))
       al/space
       al/lisp-symbol-group)
-  "Regexp to match `al/defun-lazy' macro.")
+  "Regexp to match various `defun'-like macros.")
 
 (defun al/elisp-add-font-lock-keywords ()
   "Add `font-lock-keywords' to highlight additional macros.
@@ -67,7 +68,7 @@ Call this function once!"
    'emacs-lisp-mode al/elisp-keywords)
   (font-lock-add-keywords
    'emacs-lisp-mode
-   `((,al/elisp-defun-lazy-regexp
+   `((,al/elisp-defun-regexp
       (1 font-lock-keyword-face)
       (2 font-lock-function-name-face))
      (,al/elisp-feature-macros-regexp
@@ -80,9 +81,9 @@ Call this function once!"
 (declare-function al/add-to-imenu "al-imenu")
 
 ;;;###autoload
-(defun al/elisp-imenu-add-defun-lazy ()
-  "Add `al/elisp-defun-lazy-regexp' to `imenu-generic-expression'."
-  (al/add-to-imenu al/elisp-defun-lazy-regexp :index 2))
+(defun al/elisp-imenu-add-defun ()
+  "Add `al/elisp-defun-regexp' to `imenu-generic-expression'."
+  (al/add-to-imenu al/elisp-defun-regexp :index 2))
 
 ;;; `use-package' entries
 
