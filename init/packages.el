@@ -151,7 +151,8 @@
 
   (when (al/require al-geiser)
     (al/eval-at-hook guix-repl-after-start-hook
-      (al/push-new al/geiser-sockets guix-repl-current-socket))
+      :once t
+      (push al/geiser-sockets guix-repl-current-socket))
     (remove-hook 'guix-repl-after-operation-hook
                  'guix-repl-autoload-emacs-packages-maybe)))
 
