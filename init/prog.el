@@ -275,10 +275,7 @@
     ("C-c C-j" . geiser-mode-switch-to-repl-and-enter)))
 
 (al/eval-after-load geiser-mode
-  (defvar al/geiser-doc-map)
-  (put 'al/geiser-doc-map 'variable-documentation
-       "Map for geiser documentation.")
-  (define-prefix-command 'al/geiser-doc-map)
+  (defvar al/geiser-doc-map (make-sparse-keymap))
   (al/bind-keys
    :map al/geiser-doc-map
    ("d" . geiser-doc-symbol-at-point)
@@ -286,24 +283,26 @@
    ("m" . geiser-doc-module)
    ("s" . geiser-autodoc-show)
    ("t" . geiser-autodoc-mode))
-  (al/bind-keys-from-vars 'geiser-mode-map 'al/geiser-keys))
+  (al/bind-keys-from-vars 'geiser-mode-map 'al/geiser-keys)
+
+  ;; `geiser-mode' requires `geiser-repl', not vice versa.  So if keys
+  ;; are bound after loading `geiser-repl', "C-M-d" in REPL is bound to
+  ;; a non-existing `al/geiser-doc-map' command (because
+  ;; `al/geiser-doc-map' variable with keymap does not exist yet).
+  (defconst al/geiser-repl-keys
+    '("TAB" "C-c k"
+      ("RET" . al/geiser-repl-enter-dwim)
+      ("C-k" . al/geiser-repl-kill-whole-line)
+      ("C-a" . geiser-repl--bol)
+      ("C-c C-d" . geiser-repl-exit)))
+  (al/bind-keys-from-vars 'geiser-repl-mode-map
+    '(al/comint-keys al/geiser-keys al/geiser-repl-keys)))
 
 (al/eval-after-load geiser-repl
   (setq
    geiser-repl-skip-version-check-p t
    geiser-repl-use-other-window t
    geiser-repl-history-filename (al/emacs-data-dir-file "geiser-history"))
-
-  (defconst al/geiser-repl-keys
-    '("TAB"
-      ([return] . al/geiser-repl-enter-dwim)
-      ("C-k" . al/geiser-repl-kill-whole-line)
-      ("C-a" . geiser-repl--bol)
-      ("C-c C-d" . geiser-repl-exit)
-      "C-c k")
-    "Alist of auxiliary keys for `geiser-repl-mode'.")
-  (al/bind-keys-from-vars 'geiser-repl-mode-map
-    '(al/comint-keys al/geiser-keys al/geiser-repl-keys))
 
   (al/call-at-hook geiser-repl-mode-hook
     al/inhibit-field-motion
