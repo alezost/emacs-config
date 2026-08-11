@@ -140,14 +140,17 @@ buffers (where `erc-server-process' is set)."
 (defun al/erc-switch-buffer ()
   "Switch to ERC buffer, or start ERC if not already started."
   (interactive)
-  (al/rotate-or-select-buffer #'al/erc-buffers #'erc "ERC buffer: "))
+  (al/rotate-or-select-buffer #'al/erc-buffers #'erc "ERC buffer: ")
+  (recenter-top-bottom 2))
 
 ;;;###autoload
 (defun al/erc-track-switch-buffer (arg)
   "Same as `erc-track-switch-buffer', but start ERC if not already started."
   (interactive "p")
-  (if-let ((buf (al/erc-server-buffer t)))
-      (erc-track-switch-buffer arg)
+  (if (al/erc-server-buffer t)
+      (progn
+        (erc-track-switch-buffer arg)
+        (recenter-top-bottom 2))
     (erc)))
 
 ;;;###autoload
