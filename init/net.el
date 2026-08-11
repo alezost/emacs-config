@@ -583,8 +583,8 @@
   (defconst al/erc-button-keys
     '("TAB"
       ("u" . erc-button-press-button)
-      ("e" . al/next-link)
-      ("." . al/previous-link)
+      ("e" . erc-button-next)
+      ("." . erc-button-previous)
       ("c"   (kill-new (car (get-text-property (point) 'erc-data))))
       ("w"   (wget (car (get-text-property (point) 'erc-data))))))
   (al/bind-keys-from-vars 'erc-button-keymap 'al/erc-button-keys))
