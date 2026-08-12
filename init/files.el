@@ -164,20 +164,7 @@
   (al/bind-keys-from-vars 'mule-keymap 'al/mule-keys))
 
 (al/eval-after-load bookmark
-  (setq
-   bookmark-save-flag 1
-   bookmark-default-file (al/emacs-data-dir-file "bookmarks"))
-  (defconst al/bookmark-keys
-    '(("u"   . bookmark-bmenu-relocate)
-      ("d"   . bookmark-bmenu-other-window)
-      ("C-d" . bookmark-bmenu-switch-other-window)
-      ("R"   . bookmark-bmenu-rename)
-      ("z"   . bookmark-bmenu-unmark)
-      ("D"   . bookmark-bmenu-delete)
-      ("M-d" . bookmark-bmenu-edit-annotation))
-    "Alist of auxiliary keys for `bookmark-bmenu-mode'.")
-  (al/bind-keys-from-vars 'bookmark-bmenu-mode-map
-    '(al/lazy-moving-keys al/bookmark-keys)))
+  (al/load-settings "bookmark"))
 
 (al/bind-keys
  :prefix-map al/recentf-map
