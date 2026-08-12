@@ -189,17 +189,14 @@ Return nil if checks are not passed."
   "Load FILE.
 Return t if FILE is loaded successfully, nil otherwise.
 FILE may omit an extension.  See `load' for details."
-  (when (stringp file)
-    (or (load file 'noerror)
-        (progn (al/warning-message "Failed to load `%s'." file)
-               nil))))
+  (al/with-demoted-errors
+      (concat "Failed to load `" file "': %S")
+    (load file)))
 
-(defun al/init-load (&rest files)
+(defun al/load-init (&rest files)
   "Load FILES from `al/emacs-init-dir'."
   (dolist (file files)
-    (al/with-demoted-errors
-        (concat "Loading \"" file "\" init file failed: %S")
-      (al/load (al/emacs-init-dir-file file)))))
+    (al/load (al/emacs-init-dir-file file))))
 
 (defvar al/load-paths nil
   "List of `load-path' lists added by `al/load-autoloads'.")

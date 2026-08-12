@@ -50,7 +50,7 @@
 
 (al/title-message "Loading init files")
 
-(al/init-load
+(al/load-init
  "keys"
  "text"
  "packages"
