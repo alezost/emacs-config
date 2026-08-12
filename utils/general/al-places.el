@@ -35,6 +35,7 @@
 (al/file-accessors "emacs"             (al/emacs-utils-dir-file "../"))
 (al/file-accessors "emacs-data"        (al/emacs-dir-file "data"))
 (al/file-accessors "emacs-init"        (al/emacs-dir-file "init"))
+(al/file-accessors "emacs-settings"    (al/emacs-dir-file "settings"))
 (al/file-accessors "emacs-my-packages" (al/emacs-dir-file "packages"))
 
 (al/file-accessors "config"     "~/config")

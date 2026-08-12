@@ -26,6 +26,7 @@
 EMACS = emacs
 
 MY_INIT_DIR = $(CURDIR)/init
+MY_SETTINGS_DIR = $(CURDIR)/settings
 MY_UTILS_DIR = $(CURDIR)/utils
 MY_ELPA_DIR = $(CURDIR)/packages
 MY_GUIXEL_DIR = $(CURDIR)/packages/guix/elisp
@@ -58,16 +59,21 @@ UTILS_ELCS = $(UTILS_ELS:.el=.elc)
 PACKAGES_ELS = $(shell find -L $(MY_ELPA_DIR) -maxdepth 1 -name '*.el')
 PACKAGES_ELCS = $(PACKAGES_ELS:.el=.elc)
 
+SETTINGS_ELS = $(shell find -L $(MY_SETTINGS_DIR) -maxdepth 1 -name '*.el')
+SETTINGS_ELCS = $(SETTINGS_ELS:.el=.elc)
+
 INIT_ELS = $(shell find -L $(MY_INIT_DIR) -maxdepth 1 -name '*.el')
 INIT_ELCS = $(INIT_ELS:.el=.elc)
 
 packages+utils: packages utils
 
-all: packages utils init
+all: packages utils init settings
 
 packages: $(PACKAGES_ELCS)
 
 utils: $(UTILS_ELCS)
+
+settings: $(SETTINGS_ELCS)
 
 %.elc: %.el
 	@printf "⏺ Compiling $< ...\n"
@@ -88,15 +94,19 @@ clean-utils:
 	@printf "Removing utils/*.elc...\n"
 	$(RM) $(UTILS_ELCS)
 
+clean-settings:
+	@printf "Removing settings/*.elc...\n"
+	$(RM) $(SETTINGS_ELCS)
+
 clean-init:
 	@printf "Removing init/*.elc...\n"
 	$(RM) $(INIT_ELCS)
 
 clean: clean-packages clean-utils
 
-clean-all: clean-packages clean-utils clean-init
+clean-all: clean-packages clean-utils clean-init clean-settings
 
-.PHONY: all init utils packages packages+utils
-.PHONY: clean clean-all clean-init clean-utils clean-packages
+.PHONY: all init utils packages packages+utils settings
+.PHONY: clean clean-all clean-init clean-utils clean-packages clean-settings
 
 # Makefile ends here

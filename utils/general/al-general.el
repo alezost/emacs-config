@@ -198,6 +198,11 @@ FILE may omit an extension.  See `load' for details."
   (dolist (file files)
     (al/load (al/emacs-init-dir-file file))))
 
+(defun al/load-settings (&rest files)
+  "Load FILES from `al/emacs-settings-dir'."
+  (dolist (file files)
+    (al/load (al/emacs-settings-dir-file file))))
+
 (defvar al/load-paths nil
   "List of `load-path' lists added by `al/load-autoloads'.")
 
