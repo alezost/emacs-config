@@ -117,7 +117,9 @@
      ".o" ".bin" ".lbin" ".so" ".a" ".la" ".lo"
      ".elc" ".go" ".pyc"))
 
-  (advice-add 'completion--styles :override #'al/completion-styles)
+  ;; This breaks company completions in SLY buffers
+  ;; (advice-add 'completion--styles :override #'al/completion-styles)
+
   (advice-add 'completion-all-completions :around #'al/completion-all-completions))
 
 (al/eval-after-load al-minibuffer
