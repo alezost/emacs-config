@@ -17,7 +17,8 @@
 
 ;;; Code:
 
-(require 'al-general)
+(eval-when-compile
+  (require 'al-aux-macros))
 
 
 ;;; Playing sound

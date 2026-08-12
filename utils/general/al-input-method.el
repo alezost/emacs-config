@@ -17,8 +17,9 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'al-aux-macros))
 (require 'seq)
-(require 'al-general)
 
 (defvar al/default-input-methods
   '((text-mode . "al/utf"))

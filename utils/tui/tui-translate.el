@@ -18,11 +18,11 @@
 ;;; Code:
 
 (eval-when-compile
+  (require 'al-aux-macros)
   (require 'let-macros))
 (require 'seq)
 (require 'transient)
 (require 'google-translate-core-ui)
-(require 'al-general)
 (require 'al-read)
 (require 'al-url)
 (require 'al-visual)

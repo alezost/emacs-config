@@ -19,6 +19,7 @@
 
 (eval-when-compile
   (require 'cl-lib)
+  (require 'al-aux-macros)
   (require 'fp-utils)
   (require 'let-macros))
 (require 'seq)

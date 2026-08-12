@@ -19,6 +19,7 @@
 
 (eval-when-compile
   (require 'fp-utils)
+  (require 'al-aux-macros)
   (require 'let-macros))
 (require 'seq)
 (require 'erc)
@@ -27,7 +28,6 @@
 (require 'erc-networks)
 (require 'erc-stamp)
 (require 'erc-track)
-(require 'al-general)
 (require 'al-buffer)
 (require 'al-file)
 (require 'al-key)

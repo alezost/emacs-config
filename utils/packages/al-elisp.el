@@ -17,7 +17,8 @@
 
 ;;; Code:
 
-(require 'al-general)
+(eval-when-compile
+  (require 'al-aux-macros))
 (require 'al-visual)
 
 (defun al/elisp-form-quoted-p (&rest _)
@@ -36,9 +37,7 @@ I always want to complete all symbols!"
      propertize))
 
 (al/put doc-string-elt
-  (1 al/lambda-lazy)
-  (2 al/defun-lazy
-     define-sly-contrib)
+  (2 define-sly-contrib)
   (3 sly-def-connection-var))
 
 (defvar al/elisp-keywords

@@ -19,8 +19,8 @@
 
 (eval-when-compile
   (require 'cl-lib)
+  (require 'al-aux-macros)
   (require 'let-macros))
-(require 'al-general)
 (require 'al-list)
 
 

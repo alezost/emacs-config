@@ -18,7 +18,8 @@
 ;;; Code:
 
 (eval-when-compile
-  (require 'cl-lib))
+  (require 'cl-lib)
+  (require 'al-aux-macros))
 (require 'al-general)
 (require 'al-text-cmd)
 (require 'org)

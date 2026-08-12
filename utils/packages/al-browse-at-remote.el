@@ -17,10 +17,11 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'al-aux-macros))
 (require 'browse-at-remote)
 (require 'magit-section)
 (require 'magit-git)
-(require 'al-general)
 
 (defun al/browse-at-remote-get-url (fun &rest args)
   "Return URL with full commit hash to browse.

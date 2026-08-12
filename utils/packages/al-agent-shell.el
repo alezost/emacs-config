@@ -17,6 +17,8 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'al-aux-macros))
 (require 'agent-shell)
 (require 'al-buffer)
 

@@ -24,9 +24,10 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'al-aux-macros))
 (require 'transient)
 (require 'browse-url)
-(require 'al-general)
 (require 'al-browse-url)
 
 (defun tui/choose-browser-read-url (prompt _initial-input history)

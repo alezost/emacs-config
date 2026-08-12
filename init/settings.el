@@ -17,6 +17,8 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'al-aux-macros))
 (require 'al-places)
 (require 'al-general)
 (require 'al-key)

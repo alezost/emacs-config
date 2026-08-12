@@ -18,10 +18,10 @@
 ;;; Code:
 
 (eval-when-compile
+  (require 'al-aux-macros)
   (require 'fp-utils)
   (require 'let-macros))
 (require 'seq)
-(require 'al-general)
 (require 'al-buffer)
 
 

@@ -18,9 +18,9 @@
 ;;; Code:
 
 (eval-when-compile
+  (require 'al-aux-macros)
   (require 'fp-utils))
 (require 'tempo)
-(require 'al-general)
 (require 'al-list)
 
 (defvar al/tempo-start ","
