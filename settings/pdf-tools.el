@@ -7,23 +7,36 @@
 (require 'al-pdf)
 (require 'al-key)
 
+(al/autoload "pdf-links"
+  pdf-links-isearch-link)
+(al/autoload "pdf-outline"
+  pdf-outline-imenu-create-index-tree)
+(al/autoload "pdf-misc"
+  pdf-misc-display-metadata
+  pdf-misc-popup-context-menu)
+
+(declare-function pdf-history-minor-mode "pdf-history")
+(declare-function pdf-isearch-minor-mode "pdf-isearch")
+
 (setq-default pdf-view-display-size 'fit-page)
 
-(setq pdf-view-mode-hook
-      '(pdf-history-minor-mode
-        pdf-isearch-minor-mode
-        pdf-links-minor-mode
-        pdf-misc-minor-mode
-        pdf-outline-minor-mode
-        pdf-misc-context-menu-minor-mode
-        pdf-cache-prefetch-minor-mode
-        pdf-occur-global-minor-mode))
+(al/eval-at-hook pdf-view-mode-hook
+  (pdf-history-minor-mode)
+  (pdf-isearch-minor-mode)
+  (pdf-cache-prefetch-minor-mode)
+  (setq-local imenu-create-index-function
+              'pdf-outline-imenu-create-index-tree))
 
 (al/bind-keys
   :map pdf-view-mode-map
+  ("u" . pdf-links-action-perform)
+  ("U" . pdf-links-isearch-link)
+  ("i" . pdf-outline)
+  ("f" . pdf-misc-display-metadata)
   ("h" . al/pdf-view-previous-page)
   ("n" . al/pdf-view-next-page)
   ("c" . pdf-view-themed-minor-mode)
+  ([down-mouse-3] . pdf-misc-popup-context-menu)
   ([down-mouse-1] . al/pdf-view-select-region)
   ([double-mouse-1] . al/pdf-view-select-word))
 
@@ -32,9 +45,6 @@
 
 (al/eval-after-load pdf-outline
   (al/clean-map 'pdf-outline-minor-mode-map)
-  (al/bind-keys
-   :map pdf-outline-minor-mode-map
-   ("i" . pdf-outline))
 
   (defconst al/pdf-outline-buffer-keys
     '(("TAB" . outline-cycle)
@@ -51,12 +61,7 @@
 
 (al/eval-after-load pdf-links
   (setq pdf-links-convert-pointsize-scale 0.02)
-
-  (al/clean-map 'pdf-links-minor-mode-map)
-  (al/bind-keys
-   :map pdf-links-minor-mode-map
-   ("u" . pdf-links-action-perform)
-   ("U" . pdf-links-isearch-link)))
+  (al/clean-map 'pdf-links-minor-mode-map))
 
 (al/eval-after-load pdf-history
   (al/clean-map 'pdf-history-minor-mode-map)
@@ -64,12 +69,5 @@
    :map pdf-history-minor-mode-map
    ("," . pdf-history-backward)
    ("p" . pdf-history-forward)))
-
-(al/eval-after-load pdf-misc
-  (al/clean-map 'pdf-misc-minor-mode-map)
-  (al/bind-keys
-   :map pdf-misc-minor-mode-map
-   ("f" . pdf-misc-display-metadata)
-   ("F" . pdf-misc-display-metadata)))
 
 ;;; pdf-tools.el ends here
