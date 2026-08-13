@@ -94,7 +94,9 @@ parameters from URL."
   "Browse IRC log of the CHANNEL from DATE."
   (interactive
    (list (completing-read "IRC channel: " al/irc-log-channels nil t)
-         (org-read-date nil nil nil "Log date: ")))
+         (progn
+           (require 'org)
+           (org-read-date nil nil nil "Log date: "))))
   (require 'url-expand)
   (browse-url (url-expand-file-name (concat channel "/" date)
                                     al/irc-log-base-url)))
