@@ -855,6 +855,61 @@
   al/reinit-messages-buffer)
 
 
+;;; EMMS
+
+(declare-function emms-playlist-simple-uniq "emms")
+(declare-function al/emms-playlist-select "al-emms")
+
+(al/bind-keys
+  :prefix-map al/emms-map
+  :prefix-docstring "Map for EMMS."
+  :prefix [ctrl-m]
+  ([ctrl-m] . al/emms-switch-to-playlist-buffer)
+  ("SPC" . emms-pause)
+  ("M-SPC" . emms-stop)
+  ("s" . al/emms-show)
+  ("m" . emms-state-toggle-mode-line)
+  ("n" . al/emms-notification-mode)
+  ("B" . emms-browser)
+  ("l"   (al/emms-playlist-select t))
+  ("b" . al/emms-playlist-select)
+  ("C-b" . al/emms-playlist-select)
+  ("r" . emms-streams)
+  ("g" . al/emms-seek-to)
+  ("y" . al/emms-mpv-sync-playing-time)
+  ("S" . al/emms-save-playlists)
+  ("u"   (emms-playlist-simple-uniq)))
+
+(al/bind-keys
+  :map al/emms-map
+  :prefix-map al/emms-play-map
+  :prefix-docstring "Map for playing EMMS entries."
+  :prefix "p"
+  ("t" . emms-play-directory-tree)
+  ("d" . emms-play-directory)
+  ("f" . emms-play-file)
+  ("l" . emms-play-playlist)
+  ("u" . emms-play-url))
+
+(al/bind-keys
+  :map al/emms-map
+  :prefix-map al/emms-add-map
+  :prefix-docstring "Map for adding EMMS entries."
+  :prefix "a"
+  ("t" . emms-add-directory-tree)
+  ("d" . emms-add-directory)
+  ("f" . emms-add-file)
+  ("l" . emms-add-playlist)
+  ("u" . emms-add-url))
+
+(al/setq-no-warnings
+ emms-directory (al/emacs-data-dir-file "emms")
+ emms-playlist-sort-prefix "s")
+
+(al/eval-after-load emms
+  (al/load-settings "emms"))
+
+
 ;;; Misc settings and packages
 
 (al/call-at-hook (delete-frame-functions

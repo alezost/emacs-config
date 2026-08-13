@@ -59,7 +59,6 @@
  "prog"
  "time"
  "file-modes"
- "mmedia"
  "net"
  "visual"
  "games"
