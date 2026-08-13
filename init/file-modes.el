@@ -38,7 +38,7 @@
  ("M-b" . org-mark-ring-goto)
  ("c"   . org-capture)
  ("a"   . org-agenda)
- ("b"   . org-iswitchb)
+ ("b"   . org-switchb)
  ("i"   . org-toggle-inline-images)
  ("e"   . org-export)
  ("TAB" . org-indent-mode))
