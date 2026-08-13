@@ -94,14 +94,7 @@
   (add-hook 'conf-mode-hook #'hl-line-mode))
 
 (al/eval-after-load image-mode
-  (defconst al/image-keys
-    '(("C-a" . image-bol)
-      ("<ctrl-i>" . image-eol)
-      ("h"   . image-previous-file)
-      ("H"   . image-previous-frame)
-      ("N"   . image-next-frame))
-    "Alist of auxiliary keys for `image-mode-map'.")
-  (al/bind-keys-from-vars 'image-mode-map 'al/image-keys))
+  (al/load-settings "image-mode"))
 
 (al/eval-after-load doc-view
   (setq doc-view-cache-directory "~/.cache/docview")
@@ -109,34 +102,13 @@
   )
 
 (al/eval-after-load markdown-mode
-  (defconst al/markdown-keys
-    '(("M->" . markdown-previous-link)
-      ("M-E" . markdown-next-link))
-    "Alist of auxiliary keys for `markdown-mode-map'.")
-  (al/bind-keys-from-vars 'markdown-mode-map 'al/markdown-keys))
+  (al/load-settings "markdown-mode"))
 
 (al/eval-after-load tar-mode
-  (setq tar-mode-show-date t)
-
-  (al/bind-keys
-   :map tar-mode-map
-   ("." . tar-previous-line)
-   ("e" . tar-next-line)
-   ("u" . tar-extract))
-
-  (add-hook 'tar-mode-hook #'hl-line-mode))
+  (al/load-settings "tar-mode"))
 
 (al/eval-after-load nxml-mode
-  (defconst al/nxml-keys
-    '(("C-M-." . nxml-backward-up-element)
-      ("C-M-e" . nxml-down-element)
-      ("C-M-o" . nxml-backward-element)
-      ("C-M-u" . nxml-forward-element))
-    "Alist of auxiliary keys for `nxml-mode-map'.")
-  (al/bind-keys-from-vars 'nxml-mode-map 'al/nxml-keys)
-
-  (al/eval-at-hook nxml-mode-hook
-    (rng-validate-mode 0)))
+  (al/load-settings "nxml-mode"))
 
 (al/eval-after-load sgml-mode
   ;; Bind default keys to get rid of "M-o" key binding there.
