@@ -43,53 +43,12 @@
         (al/emacs-data-dir-file "games")))
 
 (al/eval-after-load ducpel
-  (setq ducpel-replay-pause 0.3)
-  (let ((ducpel-dir (al/emacs-my-packages-dir-file "ducpel")))
-    (setq
-     ducpel-user-levels-directory
-     (file-name-as-directory (expand-file-name "levels" ducpel-dir))
-     ducpel-user-saves-directory
-     (file-name-as-directory (expand-file-name "temp" ducpel-dir))))
-
-  (al/bind-keys
-    :map al/games-map
-    ("D" (princ ducpel-moves-history (current-buffer))))
-
-  (al/bind-keys
-    :map ducpel-mode-map
-    ("o" . ducpel-move-left)
-    ("u" . ducpel-move-right)
-    ("." . ducpel-move-up)
-    ("e" . ducpel-move-down)
-    ("h" . ducpel-previous-man)
-    ("n" . ducpel-next-man)
-    ("," . ducpel-previous-level)
-    ("p" . ducpel-next-level)))
+  (al/load-settings "ducpel"))
 
 (al/eval-after-load tetris
-  (setq
-   tetris-width 10
-   tetris-height 26
-   tetris-buffer-width 30
-   tetris-buffer-height 28)
-
-  (al/bind-keys
-   :map tetris-mode-map
-   ("o"   . tetris-move-left)
-   ("u"   . tetris-move-right)
-   ("."   . tetris-rotate-prev)
-   ("e"   . tetris-rotate-next)
-   ("d"   . tetris-move-bottom)
-   ("RET" . tetris-move-bottom)
-   ("SPC" . tetris-pause-game)))
+  (al/load-settings "tetris"))
 
 (al/eval-after-load snake
-  (al/bind-keys
-   :map snake-mode-map
-   ("o"   . snake-move-left)
-   ("u"   . snake-move-right)
-   ("."   . snake-move-up)
-   ("e"   . snake-move-down)
-   ("SPC" . snake-pause-game)))
+  (al/load-settings "snake"))
 
 ;;; games.el ends here
