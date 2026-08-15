@@ -133,9 +133,11 @@ See `al/bind-key' for details."
              (al/bind-key ,prefix ,prefix-map ,map)))
        (if (not (boundp ',map))
            (message "Keymap does not exist: %S" ',map)
-         ,@(mapcar (lambda (form)
-                     `(al/bind-key ,(car form) ,(cdr form)
-                                   ,(or prefix-map map)))
+         ,@(mapcar (lambda (binding)
+                     (pcase (al/list-maybe binding)
+                       (`(,key . ,command)
+                        `(al/bind-key ,key ,command
+                                      ,(or prefix-map map)))))
                    bindings)))))
 
 (defmacro al/bind-keys* (&rest args)

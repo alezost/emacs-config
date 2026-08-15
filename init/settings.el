@@ -80,7 +80,7 @@
 
   (al/bind-keys
     :map minibuffer-local-completion-map
-    ("SPC") ("?")
+    "SPC" "?"
     ("RET" . icomplete-force-complete-and-exit))
   (al/bind-keys
     :map minibuffer-local-must-match-map
