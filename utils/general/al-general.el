@@ -169,11 +169,15 @@ Return nil if checks are not passed."
   (declare (indent 0) (debug (name body)))
   (al/with-keywords body
       (fun var file dir)
-    `(when (and ,(or (null fun)  `(al/function?  ,fun))
-                ,(or (null var)  `(al/bound?     ,var))
-                ,(or (null file) `(al/file?      ,file))
-                ,(or (null dir)  `(al/directory? ,dir)))
-       ,@%body)))
+    (let ((check-list
+           (list (and fun  `(al/function?  ,fun))
+                 (and var  `(al/bound?     ,var))
+                 (and file `(al/file?      ,file))
+                 (and dir  `(al/directory? ,dir)))))
+      `(if ,(pcase (delq nil check-list)
+              (`(,check) check)
+              (_ `(and ,@check-list)))
+           ,(macroexp-progn %body)))))
 
 
 ;;; (Auto)loading utils
