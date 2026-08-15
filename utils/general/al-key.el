@@ -46,6 +46,8 @@
          (if (eq (car cmd-spec) 'lambda)
              cmd-spec
            `(lambda () (interactive) ,@cmd-spec)))
+        ((stringp cmd-spec)
+         (key-parse cmd-spec))
         ((and (symbolp cmd-spec)
               (not (commandp cmd-spec))
               (boundp cmd-spec))
@@ -71,6 +73,7 @@ If KEYMAP is not specified, use `global-map'.
 Examples:
 
   (al/bind-key \"C-f\" nil)
+  (al/bind-key \"C--\" \"–\" key-translation-map)
   (al/bind-key \"C-j\" newline lisp-mode-map)
   (al/bind-key [return] newline-and-indent lisp-mode-shared-map)
   (al/bind-key \"C-s-b\" ((backward-word) (backward-char)))"

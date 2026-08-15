@@ -202,8 +202,10 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 
 ;;; Global keys for inserting text
 
-(define-key key-translation-map [?\C--] [?–])
-(define-key key-translation-map [?\C-\M--] [?—])
+(al/bind-keys
+  :map key-translation-map
+  ("C--" . "–")
+  ("C-M--" . "—"))
 
 (al/bind-keys
  ("C->"     (insert "->"))
