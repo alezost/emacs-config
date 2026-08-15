@@ -73,18 +73,21 @@ Examples:
   (al/bind-key [return] newline-and-indent lisp-mode-shared-map)
   (al/bind-key \"C-s-b\" ((backward-word) (backward-char)))"
   (declare (indent 1))
-  (let ((command (al/key-command command))
-        (key-var (make-symbol "key"))
-        (map-var (make-symbol "map")))
-    `(let* ((,key-var ,key-name)
-            (,key-var (if (stringp ,key-var)
-                          (key-parse ,key-var)
-                        ,key-var))
-            (,map-var (or ,keymap global-map)))
-       ,(if command
-            `(define-key ,map-var ,key-var ,command)
-          `(when (lookup-key ,map-var ,key-var)
-             (define-key ,map-var ,key-var nil))))))
+  (let ((cmd (al/key-command command))
+        (key (if (stringp key-name)
+                 (key-parse key-name)
+               key-name))
+        (map (or keymap 'global-map)))
+    (if command
+        `(define-key ,map ,key ,cmd)
+      ;; Bind key to nil only if it already exists in MAP.  Otherwise,
+      ;; global keymap will be used skipping all the intermediate maps.
+      ;; For example, if "C-e" is bound in `icomplete-minibuffer-map'
+      ;; and we bind "C-e" to nil in `minibuffer-local-map', then "C-e"
+      ;; from the global keymap will be used, not from
+      ;; `icomplete-minibuffer-map'.
+      `(when (lookup-key ,map ,key)
+         (define-key ,map ,key nil)))))
 
 (defmacro al/bind-key* (key-name command)
   (declare (indent 1))
