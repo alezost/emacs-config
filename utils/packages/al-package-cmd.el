@@ -17,9 +17,10 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'al-list))
 (require 'seq)
 (require 'package)
-(require 'al-general)
 
 (defvar al/package-archives
   '(("elpa gnu"     . "https://elpa.gnu.org/packages/")
