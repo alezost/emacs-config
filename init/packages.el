@@ -23,8 +23,6 @@
 (require 'al-general)
 (require 'al-key)
 
-(declare-function al/display-buffer "al-buffer")
-
 
 ;;; Emacs packages
 
@@ -239,14 +237,10 @@
   ("H"   . guix-hash)
   ("p"   . guix-profiles)
   ("H-p" . guix-set-current-profile)
-  ("i"     (al/display-buffer (guix-package-info-buffer-name
-                               guix-current-profile)))
-  ("<ctrl-i>" (al/display-buffer (guix-generation-info-buffer-name
-                                  guix-current-profile)))
-  ("l"     (al/display-buffer (guix-package-list-buffer-name
-                               guix-current-profile)))
-  ("C-l"   (al/display-buffer (guix-generation-list-buffer-name
-                               guix-current-profile)))
+  ("i"   . al/guix-switch-to-package-info-buffer)
+  ("<ctrl-i>" . al/guix-switch-to-generation-info-buffer)
+  ("l"   . al/guix-switch-to-package-list-buffer)
+  ("C-l" . al/guix-switch-to-generation-list-buffer)
   ("u"   . al/guix-commit-url))
 
 

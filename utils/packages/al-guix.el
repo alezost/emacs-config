@@ -17,6 +17,15 @@
 
 ;;; Code:
 
+(require 'al-buffer)
+
+(declare-function guix-package-info-buffer-name "guix-ui-package")
+(declare-function guix-package-list-buffer-name "guix-ui-package")
+(declare-function guix-generation-info-buffer-name "guix-ui-generation")
+(declare-function guix-generation-list-buffer-name "guix-ui-generation")
+
+(defvar guix-current-profile)
+
 ;;;###autoload
 (defun al/guix-commit-url (commit)
   "Put to `kill-ring' and browse guix git repo URL for COMMIT."
@@ -25,6 +34,30 @@
                      commit)))
     (kill-new url)
     (browse-url url)))
+
+;;;###autoload
+(defun al/guix-switch-to-package-info-buffer ()
+  (interactive)
+  (al/display-buffer (guix-package-info-buffer-name
+                      guix-current-profile)))
+
+;;;###autoload
+(defun al/guix-switch-to-generation-info-buffer ()
+  (interactive)
+  (al/display-buffer (guix-generation-info-buffer-name
+                      guix-current-profile)))
+
+;;;###autoload
+(defun al/guix-switch-to-package-list-buffer ()
+  (interactive)
+  (al/display-buffer (guix-package-list-buffer-name
+                      guix-current-profile)))
+
+;;;###autoload
+(defun al/guix-switch-to-generation-list-buffer ()
+  (interactive)
+  (al/display-buffer (guix-generation-list-buffer-name
+                      guix-current-profile)))
 
 (provide 'al-guix)
 
