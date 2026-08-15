@@ -91,8 +91,8 @@ Examples:
       ;; and we bind "C-e" to nil in `minibuffer-local-map', then "C-e"
       ;; from the global keymap will be used, not from
       ;; `icomplete-minibuffer-map'.
-      `(when (lookup-key ,map ,key)
-         (define-key ,map ,key nil)))))
+      `(if (lookup-key ,map ,key)
+           (define-key ,map ,key nil)))))
 
 (defmacro al/bind-key* (key-name command)
   (declare (indent 1))

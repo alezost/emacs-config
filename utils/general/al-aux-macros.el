@@ -86,8 +86,8 @@ The following local variables are available inside REST:
 (defmacro al/eval-when-compile (&rest body)
   "Evaluate BODY at compile time and do nothing for interpreted code."
   (declare (indent 0) (debug t))
-  `(when (bound-and-true-p byte-compile-current-file)
-     ,@body))
+  `(if (bound-and-true-p byte-compile-current-file)
+       ,(macroexp-progn body)))
 
 
 ;;; Auxiliary macros
@@ -363,12 +363,12 @@ a non-graphical terminal."
                         'after-init-hook)
        :eval-hook t
        ,@%other-keys
-       (when ,(cond ((eq terminal 'graphical)
-                     '(display-graphic-p))
-                    ((eq terminal 'text)
-                     '(not (display-graphic-p)))
-                    (t t))
-         ,@%body))))
+       (if ,(cond ((eq terminal 'graphical)
+                   '(display-graphic-p))
+                  ((eq terminal 'text)
+                   '(not (display-graphic-p)))
+                  (t t))
+           ,(macroexp-progn %body)))))
 
 (defmacro al/eval-after-load (feature &rest body)
   "Execute BODY after FEATURE load.
@@ -393,8 +393,8 @@ BODY can start with the following optional keywords:
      ((null load)
       `(eval-after-load ',feature (lambda () ,@%body)))
      ((eq t load)
-      `(when (al/require ,feature)
-         ,@%body))
+      `(if (al/require ,feature)
+           ,(macroexp-progn body)))
      (t
       `(progn
          (eval-after-load ',feature (lambda () ,@%body))
