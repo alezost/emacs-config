@@ -1,6 +1,6 @@
 ;;; al-key.el --- Additional functionality for working with key bindings  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2025 Alex Kost
+;; Copyright © 2013–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'al-aux-macros))
 (require 'seq)
 (require 'al-general)
 (require 'al-list)
@@ -111,34 +113,32 @@ optional keywords are available:
 The rest ARGS are conses of key binding strings and functions.
 See `al/bind-key' for details."
   (declare (indent 0))
-  (let* ((map        (plist-get args :map))
-         (doc        (plist-get args :prefix-docstring))
-         (prefix-map (plist-get args :prefix-map))
-         (prefix     (plist-get args :prefix))
-         (bindings   (progn
-                       (while (keywordp (car args))
-                         (pop args)
-                         (pop args))
-                       args)))
-    (or (and prefix prefix-map)
-        (and (not prefix) (not prefix-map))
-        (error "Both :prefix-map and :prefix must be supplied"))
-    `(progn
-       ,(when prefix-map
-          `(progn
-             (defvar ,prefix-map)
-             ,(when doc
-                `(put ',prefix-map 'variable-documentation ,doc))
-             (define-prefix-command ',prefix-map)
-             (al/bind-key ,prefix ,prefix-map ,map)))
-       (if (not (boundp ',map))
-           (message "Keymap does not exist: %S" ',map)
-         ,@(mapcar (lambda (binding)
-                     (pcase (al/list-maybe binding)
-                       (`(,key . ,command)
-                        `(al/bind-key ,key ,command
-                                      ,(or prefix-map map)))))
-                   bindings)))))
+  (al/with-keywords args
+      (map prefix prefix-map prefix-docstring)
+    (if (or (and prefix (not prefix-map))
+            (and (not prefix) prefix-map))
+        (al/error-message
+         "Both, :prefix (%s) and :prefix-map (%s), must be specified"
+         prefix prefix-map)
+      (let ((body
+             `(,@(when prefix-map
+                   `((defvar ,prefix-map)
+                     ,(when prefix-docstring
+                        `(put ',prefix-map 'variable-documentation
+                              ,prefix-docstring))
+                     (define-prefix-command ',prefix-map)
+                     (al/bind-key ,prefix ,prefix-map ,map)))
+               ,@(mapcar (lambda (binding)
+                           (pcase (al/list-maybe binding)
+                             (`(,key . ,command)
+                              `(al/bind-key ,key ,command
+                                            ,(or prefix-map map)))))
+                         %body))))
+        (if map
+            `(al/with-check
+               :var ',map
+               ,@body)
+          (macroexp-progn body))))))
 
 (defmacro al/bind-keys* (&rest args)
   (declare (indent 0))
