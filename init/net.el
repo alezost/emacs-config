@@ -192,31 +192,11 @@
    ring
    stamp
    track
-   truncate)
- ;; Set `erc-autojoin-channels-alist' in the top level so that it can be
- ;; changed before loading ERC.
- erc-autojoin-channels-alist
- '(("libera"
-    "#emacs"
-    "#erc"
-    "#gnus"
-    "#scheme"
-    "#guile"
-    "#guix"
-    "#geiser"
-    "#dunst"
-    "#lisp"
-    "#nyxt"
-    "#stumpwm"
-    "#openmw"
-    "#yt-dlp"
-    "#mpv"
-    "##math"
-    "#ai"
-    "#org-mode"))
- erc-log-channels-directory (al/emacs-data-dir-file "erc-log"))
+   truncate))
 
-(declare-function erc-part-from-channel "erc")
+;; Set it here (originally defined at `erc-log') to use below.
+(defvar erc-log-channels-directory
+  (al/emacs-data-dir-file "erc-log"))
 
 (al/bind-keys*
  :prefix-map al/erc-map
@@ -227,7 +207,7 @@
  ("l"   . al/erc-channel-list)
  ("b"   . al/erc-switch-buffer)
  ("M-s" . al/erc-switch-to-server-buffer)
- ;; Interactive erc - compute everything without prompting:
+ ;; Non-interactive `erc' - compute everything without prompting:
  ("c"     (erc))
  ("R"   . al/erc-server-buffer-rename)
  ("d"   . al/erc-quit-server)
@@ -236,147 +216,20 @@
  ("u"   . al/erc-number-of-users)
  ("m"   . erc-track-mode)
  ("n"   . erc-notifications-mode)
- ("p"     (erc-part-from-channel ""))
  ("e"     (al/display-buffer "#emacs"))
  ("x"     (al/display-buffer "#guix"))
  ("s"     (al/display-buffer "#stumpwm"))
  ("M-z"   (al/display-buffer "*status")))
 
 (al/eval-after-load erc
-  (setq
-   erc-server "irc.libera.chat"
-   erc-port 6697
-   erc-nick "alezost"
-   erc-user-full-name user-full-name
-   erc-server-reconnect-timeout 60
-   erc-server-connect-function 'erc-open-tls-stream
-   ;; erc-join-buffer 'bury
-   erc-prompt-for-password nil
-   erc-hide-list '("JOIN" "QUIT")
-   erc-mode-line-format "%t"
-   erc-mode-line-away-status-format " (AWAY %a %H:%M)"
-   erc-header-line-format "%n%a on %S [%m,%l] %o"
-   erc-paranoid t)
+  (al/load-settings "erc"))
 
-  (defun al/erc-quit-part-reason (&rest _)
-    "I live in Emacs <https://www.gnu.org/software/emacs/>")
-  (setq
-   erc-quit-reason 'al/erc-quit-part-reason
-   erc-part-reason 'al/erc-quit-part-reason)
-
-  (defconst al/erc-keys
-    '("TAB"
-      ("M-." . erc-previous-command)
-      ("M-e" . erc-next-command)
-      ("C-a" . erc-bol)
-      ("C-c C-d" . al/erc-part-or-quit)
-      ("C-l" . al/erc-view-log-file)
-      ("<s-kanji>" . al/recenter-end-of-buffer-top)
-      ("C-H-3" . al/recenter-end-of-buffer-top)))
-
-  ;; Some modules (`erc-ring') add their key bindings to `erc-mode-map'.
-  (al/eval-at-hook erc-ring-mode-hook
-    (al/bind-keys-from-vars 'erc-mode-map 'al/erc-keys))
-
-  (al/call-at-hook erc-mode-hook
-    visual-line-mode
-    abbrev-mode)
-
-  ;; Do not consider "'" a part of a symbol, so that `symbol-at-point'
-  ;; (used by `elisp-slime-nav' functions) returns a proper symbol.
-  (al/modify-syntax erc-mode-syntax-table (?' "'   "))
-
-  (al/require al-erc))
-
-(al/eval-after-load al-erc
-  (when (al/znc-running-p)
-    (setq erc-server "localhost"
-          erc-port 32456))
-  (setq-default erc-enable-logging 'al/erc-log-all-but-some-buffers)
-  (setq
-   erc-insert-timestamp-function 'al/erc-insert-timestamp
-   erc-generate-log-file-name-function
-   'al/erc-log-file-name-network-channel)
-  (setq
-   erc-ctcp-query-FINGER-hook  '(al/erc-ctcp-query-FINGER)
-   erc-ctcp-query-ECHO-hook    '(al/erc-ctcp-query-ECHO)
-   erc-ctcp-query-TIME-hook    '(al/erc-ctcp-query-TIME)
-   erc-ctcp-query-VERSION-hook '(al/erc-ctcp-query-VERSION))
-  (setq
-   al/erc-log-excluded-regexps
-   '("\\`#archlinux\\'" "\\`#emacs\\'" "\\`#freenode\\'" "\\`#znc\\'")
-   al/erc-away-msg-list '("just away"))
-
-  (defvar erc-autojoin-channels-alist)
-  (setq
-   al/erc-channel-list
-   (append (cdar erc-autojoin-channels-alist)
-   '("#archlinux"
-     "##programming"
-     "##English"
-     "##latin"
-     "#lispgames"
-     "#git"
-     "#guix-offtopic"
-     "#wesnoth"
-     "#themanaworld")))
-
-  (defvar al/tab-functions)
-  (push 'al/erc-next-button-maybe al/tab-functions)
-
-  (al/call-at-hook erc-join-hook al/erc-channel-config)
-  (al/call-at-hook erc-after-connect al/erc-ghost-maybe)
-  (advice-add 'erc-notifications-notify :before #'al/play-erc-sound))
-
-(al/eval-after-load erc-track
-  (setq
-   erc-track-showcount t
-   erc-track-exclude-types
-   '("JOIN" "NICK" "PART" "QUIT" "MODE"
-     "305" "306"                ; away messages
-     "324"                      ; channel modes
-     "328"
-     "329"                      ; channel was created on
-     "332"                      ; welcome/topic messages
-     "333"                      ; set topic
-     "353" "477")))
-
-(al/eval-after-load erc-match
-  (setq erc-keywords '("theme" "color" "dvorak" "sql" "guix" "game")))
-
-(al/eval-after-load erc-stamp
-  (setq
-   erc-timestamp-format-left "\n[%d %B %Y, %A]\n"))
-
-(al/eval-after-load erc-log
-  (setq erc-log-file-coding-system 'utf-8))
-
-(al/eval-after-load erc-button
-  (defconst al/erc-button-keys
-    '("TAB"
-      ("u" . erc-button-press-button)
-      ("e" . erc-button-next)
-      ("." . erc-button-previous)
-      ("c"   (kill-new (car (get-text-property (point) 'erc-data))))
-      ("w"   (wget (car (get-text-property (point) 'erc-data))))))
-  (al/bind-keys-from-vars 'erc-button-keymap 'al/erc-button-keys))
-
-(al/eval-after-load erc-list
-  (al/bind-keys
-   :map erc-list-menu-mode-map
-   ("u"   . erc-list-join)
-   ("RET" . erc-list-join))
-  (define-key erc-list-menu-sort-button-map
-    [header-line mouse-2] 'erc-list-menu-sort-by-column))
-
-(al/autoload "erc-view-log" erc-view-log-mode)
-(al/with-check
-  :var 'erc-log-channels-directory
-  (push (cons (concat "\\`"
-                      (regexp-quote (expand-file-name
-                                     erc-log-channels-directory)))
-              'erc-view-log-mode)
-        auto-mode-alist))
+;; TODO use `al/add-to-auto-mode-alist'
+(push (cons (concat "\\`"
+                    (regexp-quote (expand-file-name
+                                   erc-log-channels-directory)))
+            'erc-view-log-mode)
+      auto-mode-alist)
 
 (al/eval-after-load erc-view-log
   (setq

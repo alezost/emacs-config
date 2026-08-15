@@ -30,7 +30,6 @@
 (require 'erc-track)
 (require 'al-buffer)
 (require 'al-file)
-(require 'al-key)
 
 (defvar al/erc-notification-sound
   (al/file-if-exists "/usr/share/sounds/freedesktop/stereo/message.oga")
@@ -244,23 +243,6 @@ Return non-nil if next button is reached, nil otherwise."
        (condition-case _
            (erc-button-next (or arg 1))
          (error (al/end-of-buffer) nil))))
-
-(defun al/erc-channel-config ()
-  "Define additional settings depending on a channel."
-  (pcase (buffer-name (current-buffer))
-    ((or "#scheme" "#guile")
-     ;; Some hacks to make it possible to use guile process in erc
-     ;; buffer.
-     (setq-local
-      geiser-impl--implementation 'guile
-      geiser-eval--get-module-function (lambda (_module) :f)
-      geiser-eval--geiser-procedure-function 'geiser-guile--geiser-procedure)
-     (al/bind-local-keys-from-vars 'al/geiser-keys))
-    ("#lisp"
-     (al/bind-local-keys-from-vars 'al/sly-keys))
-    ("#stumpwm"
-     (setq-local sly-buffer-package :stumpwm)
-     (al/bind-local-keys-from-vars 'al/sly-keys))))
 
 
 ;;; Away
