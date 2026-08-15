@@ -104,33 +104,33 @@ Examples:
 ARGS are keyword arguments and key specifications.  The following
 optional keywords are available:
 
-  - `:map' - a keymap into which the key bindings should be added.
+  `:map'        keymap into which the key bindings should be added.
 
-  - `:prefix-map' - name of a prefix map that should be created
-    for these bindings.
+  `:prefix-map' name of a prefix map that should be created for
+                these bindings.
 
-  - `:prefix' - prefix key for these bindings.
+  `:prefix-key' prefix key for these bindings.
 
-  - `:prefix-docstring' - docstring of the prefix map variable.
+  `:prefix-doc' docstring of the prefix map variable.
 
-The rest ARGS are conses of key binding strings and functions.
+The rest ARGS are conses of key binding and command specifications.
 See `al/bind-key' for details."
   (declare (indent 0))
   (al/with-keywords args
-      (map prefix prefix-map prefix-docstring)
-    (if (or (and prefix (not prefix-map))
-            (and (not prefix) prefix-map))
+      (map prefix-key prefix-map prefix-doc)
+    (if (or (and prefix-key (not prefix-map))
+            (and (not prefix-key) prefix-map))
         (al/error-message
-         "Both, :prefix (%s) and :prefix-map (%s), must be specified"
-         prefix prefix-map)
+         "Both, :prefix-key (%s) and :prefix-map (%s), must be specified"
+         prefix-key prefix-map)
       (let ((body
              `(,@(when prefix-map
                    `((defvar ,prefix-map)
-                     ,(when prefix-docstring
+                     ,(when prefix-doc
                         `(put ',prefix-map 'variable-documentation
-                              ,prefix-docstring))
+                              ,prefix-doc))
                      (define-prefix-command ',prefix-map)
-                     (al/bind-key ,prefix ,prefix-map ,map)))
+                     (al/bind-key ,prefix-key ,prefix-map ,map)))
                ,@(mapcar (lambda (binding)
                            (pcase (al/list-maybe binding)
                              (`(,key . ,command)

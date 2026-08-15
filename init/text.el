@@ -225,8 +225,8 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 
 (al/bind-keys
  :prefix-map al/insert-map
- :prefix-docstring "Map for inserting symbols and text."
- :prefix "M-i"
+ :prefix-doc "Map for inserting symbols and text."
+ :prefix-key "M-i"
  ("M-i" . al/insert-delimiter)
  ("M-a"   (insert ";;;###autoload\n"))
  ("t"     (insert "TODO"))
@@ -515,8 +515,8 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 
 (al/bind-keys
  :prefix-map al/point-pos-map
- :prefix-docstring "Map for point-pos."
- :prefix "M-Z"
+ :prefix-doc "Map for point-pos."
+ :prefix-key "M-Z"
  ("M-S" . point-pos-save)
  ("M-D" . point-pos-delete)
  ("M-G" . point-pos-goto)
@@ -623,8 +623,8 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("C-M-9"     . sp-backward-barf-sexp))
 (al/bind-keys
   :prefix-map al/parens-misc-map
-  :prefix-docstring "Map for misc parens commands."
-  :prefix "H-p"
+  :prefix-doc "Map for misc parens commands."
+  :prefix-key "H-p"
   ("C" . sp-cheat-sheet)
   ("." . sp-absorb-sexp)
   ("e" . sp-emit-sexp)

@@ -41,8 +41,8 @@
  ("M-d"   . elisp-slime-nav-find-elisp-thing-at-point))
 (al/bind-keys
  :prefix-map al/doc-map
- :prefix-docstring "Map for documentation/finding definitions."
- :prefix "C-M-d"
+ :prefix-doc "Map for documentation/finding definitions."
+ :prefix-key "C-M-d"
  ("f" . find-function)
  ("v" . find-variable)
  ("F" . find-face-definition)
@@ -473,8 +473,8 @@
 
 (al/bind-keys
  :prefix-map al/magit-map
- :prefix-docstring "Map for magit and git stuff."
- :prefix "M-m"
+ :prefix-doc "Map for magit and git stuff."
+ :prefix-key "M-m"
  ("M-m" . al/magit-switch-buffer)
  ("b"   (al/magit-switch-buffer 'all))
  ("B" . magit-blame)

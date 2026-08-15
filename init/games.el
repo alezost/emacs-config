@@ -29,8 +29,8 @@
 (al/bind-keys
  :map ctl-x-map
  :prefix-map al/games-map
- :prefix-docstring "Map for games."
- :prefix "g"
+ :prefix-doc "Map for games."
+ :prefix-key "g"
  ("T" . tetris)
  ("d" . ducpel)
  ("s" . snake))

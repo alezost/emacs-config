@@ -32,8 +32,8 @@
 
 (al/bind-keys
  :prefix-map al/net-map
- :prefix-docstring "Map for net utils."
- :prefix "C-w"
+ :prefix-doc "Map for net utils."
+ :prefix-key "C-w"
  ("p" . al/ping)
  ("t" . al/traceroute)
  ("w" . wget)
@@ -75,8 +75,8 @@
 
 (al/bind-keys
  :prefix-map al/gnus-map
- :prefix-docstring "Map for Gnus."
- :prefix "M-g"
+ :prefix-doc "Map for Gnus."
+ :prefix-key "M-g"
  ("M-g" . al/gnus-switch-win-config)
  ("g"   . al/gnus-switch-to-group-buffer)
  ("b"   . al/gnus-switch-buffer)
@@ -134,8 +134,8 @@
 
 (al/bind-keys*
  :prefix-map al/erc-map
- :prefix-docstring "Map for ERC."
- :prefix "M-c"
+ :prefix-doc "Map for ERC."
+ :prefix-key "M-c"
  ("M-c" . al/erc-track-switch-buffer)
  ("M-n" . al/erc-cycle)
  ("l"   . al/erc-channel-list)
@@ -177,8 +177,8 @@
 
 (al/bind-keys
  :prefix-map al/debbugs-map
- :prefix-docstring "Map for debbugs."
- :prefix "M-B"
+ :prefix-doc "Map for debbugs."
+ :prefix-key "M-B"
  ("M-B" . debbugs-gnu)
  ("n"   . debbugs-gnu-bugs)
  ("b"     (al/display-buffer "*Guix-Patches Bugs*"))
@@ -216,8 +216,8 @@
 
 (al/bind-keys
  :prefix-map al/debpaste-map
- :prefix-docstring "Map for debpaste."
- :prefix "C-H-p"
+ :prefix-doc "Map for debpaste."
+ :prefix-key "C-H-p"
  ("s" . debpaste-paste-region)
  ("r" . debpaste-display-paste)
  ("S" . debpaste-display-posted-info-in-buffer)

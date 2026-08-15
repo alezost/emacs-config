@@ -29,8 +29,8 @@
 (al/bind-key* "M-T" tui/notification)
 (al/bind-keys
  :prefix-map al/calendar-map
- :prefix-docstring "Map for calendar, diary, notifications, etc."
- :prefix "M-C"
+ :prefix-doc "Map for calendar, diary, notifications, etc."
+ :prefix-key "M-C"
  ("M-C" . calendar)
  ("c"   . calendar)
  ("d"   . diary)

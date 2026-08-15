@@ -28,8 +28,8 @@
 
 (al/bind-keys
  :prefix-map al/org-map
- :prefix-docstring "Map for org mode."
- :prefix "M-r"
+ :prefix-doc "Map for org mode."
+ :prefix-key "M-r"
  ("M-r" . org-insert-link)
  ("l"   . org-store-link)
  ("M-l" . org-store-link)

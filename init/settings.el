@@ -212,8 +212,8 @@
 
 (al/bind-keys*
  :prefix-map al/buffer-map
- :prefix-docstring "Map for managing/switching to buffers."
- :prefix "C-b"
+ :prefix-doc "Map for managing/switching to buffers."
+ :prefix-key "C-b"
  ("C-b" . switch-to-buffer)
  ("M-b" . ibuffer)
  ("r" . rename-buffer)
@@ -321,8 +321,8 @@
 (al/bind-key "s-s" al/shell)
 (al/bind-keys*
  :prefix-map al/repl-map
- :prefix-docstring "Map for various REPLs."
- :prefix "C-n"
+ :prefix-doc "Map for various REPLs."
+ :prefix-key "C-n"
  ("C-s" . al/switch-to-shell-buffer)
  ("t"   . visit-ansi-term)
  ("e"   . eshell)
@@ -546,8 +546,8 @@
   (al/bind-keys
    :map help-map
    :prefix-map al/info-map
-   :prefix-docstring "Map to display info manuals."
-   :prefix "i"
+   :prefix-doc "Map to display info manuals."
+   :prefix-key "i"
    ("i" (info "dir"))
    ("c" (info "cl"))
    ("e" (info "elisp"))
@@ -670,8 +670,8 @@
 
 (al/bind-keys
  :prefix-map al/spell-map
- :prefix-docstring "Map for flyspell and friends."
- :prefix "H-s"
+ :prefix-doc "Map for flyspell and friends."
+ :prefix-key "H-s"
  ("r" . flyspell-region)
  ("b" . flyspell-buffer)
  ("n" . flyspell-goto-next-error)
@@ -773,8 +773,8 @@
 
 (al/bind-keys
  :prefix-map al/darts-map
- :prefix-docstring "Map for darts and journal."
- :prefix "M-D"
+ :prefix-doc "Map for darts and journal."
+ :prefix-key "M-D"
  ("d" . darts-day-template)
  ("s" . darts-day-select)
  ("e" . darts-day-export)
@@ -862,8 +862,8 @@
 
 (al/bind-keys
   :prefix-map al/emms-map
-  :prefix-docstring "Map for EMMS."
-  :prefix [ctrl-m]
+  :prefix-doc "Map for EMMS."
+  :prefix-key [ctrl-m]
   ([ctrl-m] . al/emms-switch-to-playlist-buffer)
   ("SPC" . emms-pause)
   ("M-SPC" . emms-stop)
@@ -883,8 +883,8 @@
 (al/bind-keys
   :map al/emms-map
   :prefix-map al/emms-play-map
-  :prefix-docstring "Map for playing EMMS entries."
-  :prefix "p"
+  :prefix-doc "Map for playing EMMS entries."
+  :prefix-key "p"
   ("t" . emms-play-directory-tree)
   ("d" . emms-play-directory)
   ("f" . emms-play-file)
@@ -894,8 +894,8 @@
 (al/bind-keys
   :map al/emms-map
   :prefix-map al/emms-add-map
-  :prefix-docstring "Map for adding EMMS entries."
-  :prefix "a"
+  :prefix-doc "Map for adding EMMS entries."
+  :prefix-key "a"
   ("t" . emms-add-directory-tree)
   ("d" . emms-add-directory)
   ("f" . emms-add-file)

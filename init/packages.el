@@ -41,8 +41,8 @@
 (al/bind-key "H-x" guix)
 (al/bind-keys
   :prefix-map al/guix-map
-  :prefix-docstring "Map for guix."
-  :prefix "H-M-x"
+  :prefix-doc "Map for guix."
+  :prefix-key "H-M-x"
   ("H-x" . guix)
   ("f"   . build-farm)
   ("e"   . guix-edit)
@@ -76,8 +76,8 @@
 
 (al/bind-keys
  :prefix-map al/aurel-map
- :prefix-docstring "Map for aurel."
- :prefix "C-H-a"
+ :prefix-doc "Map for aurel."
+ :prefix-key "C-H-a"
  ("i"     . al/switch-to-aurel-info)
  ("l"     . al/switch-to-aurel-list)
  ("C-n"   . aurel-package-info)

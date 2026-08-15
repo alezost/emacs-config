@@ -164,8 +164,8 @@
 
 (al/bind-keys
  :prefix-map al/modes-map
- :prefix-docstring "Map for enabling/disabling modes."
- :prefix "M-M"
+ :prefix-doc "Map for enabling/disabling modes."
+ :prefix-key "M-M"
  ("M-M" . al/major-mode-to-kill-ring)
  ("a" . artist-mode)
  ("A" . auto-fill-mode)

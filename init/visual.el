@@ -50,8 +50,8 @@
 
 (al/bind-keys
  :prefix-map al/visual-map
- :prefix-docstring "Map for visual stuff."
- :prefix "M-V"
+ :prefix-doc "Map for visual stuff."
+ :prefix-key "M-V"
  ("T"   . tool-bar-mode)
  ("M"   . menu-bar-mode)
  ("S"   . scroll-bar-mode)

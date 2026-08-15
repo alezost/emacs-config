@@ -32,8 +32,8 @@
 
 (al/bind-keys*
   :prefix-map al/find-file-map
-  :prefix-docstring "Map for finding files."
-  :prefix "C-f"
+  :prefix-doc "Map for finding files."
+  :prefix-key "C-f"
   ("C-f"   . find-file)
   ("p"     . al/find-file-in-path)
   ("S"     . al/sudo-find-file)
@@ -56,8 +56,8 @@
 
 (al/bind-keys
  :prefix-map al/bookmark-map
- :prefix-docstring "Map for bookmarks and finding files."
- :prefix "M-f"
+ :prefix-doc "Map for bookmarks and finding files."
+ :prefix-key "M-f"
  ("M-f"   . bookmark-jump)
  ("n"     . bookmark-set)
  ("k"     . bookmark-delete)
@@ -83,8 +83,8 @@
 
 (al/bind-keys
  :prefix-map al/grep-find-map
- :prefix-docstring "Map for find/grep commands."
- :prefix "M-F"
+ :prefix-doc "Map for find/grep commands."
+ :prefix-key "M-F"
  ("g" . grep)
  ("n" . find-name-dired)
  ("a" . find-dired)
@@ -168,8 +168,8 @@
 
 (al/bind-keys
  :prefix-map al/recentf-map
- :prefix-docstring "Map for recent files."
- :prefix "C-x r"
+ :prefix-doc "Map for recent files."
+ :prefix-key "C-x r"
  ("m" . recentf-mode)
  ("f" . recentf-open)
  ("l" . recentf-edit-list)

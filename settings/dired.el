@@ -47,8 +47,8 @@
 (al/bind-keys
   :map dired-mode-map
   :prefix-map al/dired-isearch-map
-  :prefix-docstring "Map for isearch in dired."
-  :prefix "M-s"
+  :prefix-doc "Map for isearch in dired."
+  :prefix-key "M-s"
   ("s" . dired-do-isearch)
   ("r" . dired-do-isearch-regexp)
   ("f" . dired-isearch-filenames-regexp)
@@ -57,8 +57,8 @@
 (al/bind-keys
   :map dired-mode-map
   :prefix-map al/dired-open-file-map
-  :prefix-docstring "Map for opening files in external programs in dired."
-  :prefix "C-j"
+  :prefix-doc "Map for opening files in external programs in dired."
+  :prefix-key "C-j"
   ("M-j"   (al/dired-start-process "xdg-open"))
   ("C-j" . al/dired-open-file)
   ("v d"   (al/dired-start-process "baobab"))

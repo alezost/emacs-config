@@ -157,8 +157,8 @@
   (al/bind-keys
     :map gnus-summary-mode-map
     :prefix-map al/gnus-summary-search-map
-    :prefix-docstring "Search map for `gnus-summary-mode'."
-    :prefix "M-s"
+    :prefix-doc "Search map for `gnus-summary-mode'."
+    :prefix-key "M-s"
     ("M-s" . gnus-summary-search-article-forward)
     ("M-r" . gnus-summary-search-article-backward))
 
