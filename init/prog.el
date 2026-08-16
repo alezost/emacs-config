@@ -150,26 +150,7 @@
 ;;; Scheme, geiser
 
 (al/eval-after-load scheme
-  (put 'plist-new 'scheme-indent-function 1)
-  (al/modify-page-break-syntax scheme-mode-syntax-table)
-
-  (al/call-at-hook scheme-mode-hook guix-devel-mode)
-
-  (al/require al-scheme))
-
-(al/eval-after-load al-scheme
-  (al/scheme-add-font-lock-keywords)
-  (al/call-at-hook scheme-mode-hook
-    al/scheme-fix-docstring-font-lock
-    al/scheme-fix-fill)
-  (advice-add 'scheme-indent-function
-    :override 'al/scheme-indent-function))
-
-(al/eval-after-load xscheme
-  ;; I don't how this `xscheme' package is loaded from time to time but
-  ;; it pollutes `scheme-mode-map' (in particular, it breaks my "M-o"
-  ;; key binding).
-  (al/clean-map 'scheme-mode-map))
+  (al/load-settings "scheme"))
 
 (defconst al/geiser-keys
   '(("C-v"   . al/geiser-eval-dwim)

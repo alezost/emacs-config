@@ -133,7 +133,8 @@ This function is intended to be added to `scheme-mode-hook'."
      when-let+
      when-let
      when-let1
-     when-letn))
+     when-letn
+     plist-new))
 
 (defvar al/scheme-keywords
   '("push!"
