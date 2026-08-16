@@ -570,6 +570,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 (al/eval-after-load al-imenus
   (setq al/imenus-elisp-directories
         (append (list al/emacs-init-dir
+                      al/emacs-settings-dir
                       al/emacs-my-packages-dir)
                 (al/subdirs al/emacs-utils-dir))))
 
