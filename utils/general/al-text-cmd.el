@@ -396,11 +396,17 @@ Like `dabbrev-expand' but use word symbols only."
 ;;;###autoload
 (defun al/indent-maybe ()
   "Call `indent-for-tab-command' for `al/indent-modes' buffer.
-Return nil if current mode is not derived from `al/indent-modes'."
+Return nil if current mode is not derived from `al/indent-modes' or if
+no indentation has been performed."
   (interactive)
   (when (derived-mode-p al/indent-modes)
-    (al/with-check-point
-      (indent-for-tab-command))))
+    (cl-flet ((indent-level ()
+                (save-excursion
+                  (beginning-of-line)
+                  (skip-syntax-forward " " (pos-eol)))))
+      (let ((initial-indent (indent-level)))
+        (indent-for-tab-command)
+        (/= initial-indent (indent-level))))))
 
 
 ;;; Changing the case of previous word(s)
