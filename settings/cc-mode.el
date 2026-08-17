@@ -5,10 +5,9 @@
 
 (require 'cc-mode)
 
-(defconst al/c-base-keys
-  '(("<H-M-tab>" . c-indent-defun)))
-(al/bind-keys-from-vars 'c-mode-base-map
-  '(al/prog-keys al/c-base-keys))
+(al/bind-keys
+  :map c-mode-base-map
+  ("<H-M-tab>" . c-indent-defun))
 
 (setq
  c-default-style

@@ -441,10 +441,9 @@
   (al/load-settings "xref"))
 
 (al/eval-after-load prog-mode
-  (defconst al/prog-keys
-    '(("<C-M-tab>" . prog-indent-sexp))
-    "Alist of auxiliary keys for `prog-mode-map'.")
-  (al/bind-keys-from-vars 'prog-mode-map 'al/prog-keys)
+  (al/bind-keys
+    :map prog-mode-map
+    ("<C-M-tab>" . prog-indent-sexp))
 
   (al/call-at-hook prog-mode-hook
     hl-line-mode
