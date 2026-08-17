@@ -86,48 +86,23 @@
   (advice-add 'elisp--form-quoted-p :override #'al/elisp-form-quoted-p))
 
 (al/eval-after-load ielm
-  (setq ielm-prompt "EL> ")
-  (defconst al/ielm-keys
-    '("C-j"
-      ("RET" . ielm-send-input))
-    "Alist of auxiliary keys for `ielm-map'.")
-  (al/bind-keys-from-vars 'ielm-map
-    '(al/lisp-shared-keys al/comint-keys al/ielm-keys))
-
-  (al/call-at-hook ielm-mode-hook al/no-truncate-lines))
+  (al/load-settings "ielm"))
 
 (al/eval-after-load eldoc
   (setq eldoc-idle-delay 0.3))
 
 (al/eval-after-load edebug
-  (al/bind-keys
-   :map edebug-mode-map
-   ("v"   . edebug-eval-expression)
-   ("C-v" . edebug-eval-last-sexp)))
+  (al/load-settings "edebug"))
 
 (al/bind-key "C-c d" toggle-debug-on-error)
 (al/eval-after-load debug
-  (al/bind-keys-from-vars 'debugger-mode-map 'al/button-keys t)
-  (al/bind-keys
-   :map debugger-mode-map
-   ("v" . debugger-eval-expression)
-   ("l" . debugger-toggle-locals)
-   ("f" . debugger-list-functions)))
+  (al/load-settings "debug"))
 
 (al/eval-after-load ert
-  (defconst al/ert-results-keys
-    '(("RET" . ert-results-describe-test-at-point)
-      ("g" . ert-results-rerun-all-tests)
-      ("h" . ert-results-previous-test))
-    "Alist of auxiliary keys for `ert-results-mode-map'.")
-  (al/bind-keys-from-vars 'ert-results-mode-map
-    '(al/button-keys al/ert-results-keys)))
+  (al/load-settings "ert"))
 
 (al/eval-after-load pp
-  (al/require al-pp))
-
-(al/eval-after-load al-pp
-  (advice-add 'pp-display-expression :after #'al/pp-enable-undo))
+  (al/load-settings "pp"))
 
 
 ;;; SLY
@@ -174,90 +149,25 @@
 
 ;;; Haskell
 
-(defconst al/haskell-general-keys
-  '(("M-d" . haskell-mode-jump-to-def-or-tag))
-  "Alist of auxiliary keys for Haskell modes.")
-
 (al/eval-after-load haskell-mode
-  (defconst al/haskell-keys
-    '(("C-c C-z" . haskell-interactive-switch))
-    "Alist of auxiliary keys `haskell-mode-map'.")
-  (al/bind-keys-from-vars 'haskell-mode-map
-    '(al/haskell-general-keys al/haskell-keys)))
-
-(al/eval-after-load haskell-interactive-mode
-  (defconst al/haskell-interactive-keys
-    '(("M-." . haskell-interactive-mode-history-previous)
-      ("M-e" . haskell-interactive-mode-history-next)
-      ("M->" . haskell-interactive-mode-prompt-previous)
-      ("M-E" . haskell-interactive-mode-prompt-next)
-      ("C-a" . haskell-interactive-mode-beginning)
-      ("C-k" . haskell-interactive-mode-kill-whole-line)
-      ("C-c C-d" (haskell-session-kill 'leave-buffer)))
-    "Alist of auxiliary keys for `haskell-interactive-mode'.")
-  (al/bind-keys-from-vars 'haskell-interactive-mode-map
-    '(al/haskell-general-keys al/haskell-interactive-keys)))
+  (al/load-settings "haskell-mode"))
 
 
 ;;; GDB, GUD
 
-(al/setq-no-warnings gud-key-prefix (kbd "M-G"))
+(al/setq-no-warnings gud-key-prefix (key-parse "M-G"))
 
 (al/eval-after-load gud
-  ;; GUD binds its keys inside `gdb' and `gud-gdb' commands.
-  (al/call-at-hook (gdb-mode-hook
-                    gud-gdb-mode-hook)
-    (al/bind-keys-from-vars 'gud-mode-map 'al/comint-keys)))
+  (al/load-settings "gud"))
 
 
 ;;; Compilation, Makefile
 
 (al/eval-after-load make-mode
-  (defconst al/make-keys
-    '(("M->" . makefile-previous-dependency)
-      ("M-E" . makefile-next-dependency))
-    "Alist of auxiliary keys for `make-mode-map'.")
-  (al/bind-keys-from-vars 'makefile-mode-map 'al/make-keys))
+  (al/load-settings "make-mode"))
 
 (al/eval-after-load compile
-  (setq
-   ;; Don't ask, don't save.
-   compilation-ask-about-save nil
-   compilation-save-buffers-predicate 'ignore)
-
-  (defconst al/compilation-common-keys
-    '(("C-M-h" . compilation-previous-error)
-      ("C-M-n" . compilation-next-error)
-      ("C-M-." . compilation-previous-error)
-      ("C-M-e" . compilation-next-error))
-    "Alist of auxiliary keys that should be bound in any compilation mode.")
-  (defconst al/compilation-keys
-    '(("."   . compilation-previous-error)
-      ("e"   . compilation-next-error)
-      ("M-." . previous-error-no-select)
-      ("M-e" . next-error-no-select))
-    "Alist of auxiliary keys for compilation modes.")
-  (defconst al/compilation-button-keys
-    '(("u"   . compile-goto-error))
-    "Alist of auxiliary keys for `compilation-button-map'.")
-  (al/bind-keys-from-vars 'compilation-button-map
-    'al/compilation-button-keys)
-  (al/bind-keys-from-vars 'compilation-shell-minor-mode-map
-    'al/compilation-common-keys)
-  (al/bind-keys-from-vars
-      '(compilation-mode-map compilation-minor-mode-map)
-    '(al/compilation-common-keys al/compilation-keys))
-
-  (al/call-at-hook compilation-mode-hook al/hl-line-mode)
-
-  (al/require al-compilation))
-
-(al/eval-after-load al-compilation
-  (al/setq-file
-   al/compilation-sound-success (al/sound-dir-file "bell.oga")
-   al/compilation-sound-error   (al/sound-dir-file "splat.wav"))
-
-  (add-hook 'compilation-finish-functions 'al/compilation-notify))
+  (al/load-settings "compile"))
 
 
 ;;; Version control
@@ -528,15 +438,7 @@
 ;;; Misc settings and packages
 
 (al/eval-after-load xref
-  (setq xref-backend-functions '(elisp--xref-backend))
-  (defconst al/xref-buffer-keys
-    '(("." . xref-prev-line)
-      ("e" . xref-next-line)
-      ("u" . xref-goto-xref)
-      ("d" . xref-show-location-at-point))
-    "Alist of auxiliary keys for `xref--xref-buffer-mode-map'.")
-  (al/bind-keys-from-vars 'xref--xref-buffer-mode-map
-    'al/xref-buffer-keys))
+  (al/load-settings "xref"))
 
 (al/eval-after-load prog-mode
   (defconst al/prog-keys
@@ -552,38 +454,13 @@
     al/show-trailing-whitespace))
 
 (al/eval-after-load cc-mode
-  (setq
-   c-default-style
-   '((c-mode    . "stroustrup")
-     (java-mode . "java")
-     (awk-mode  . "awk")
-     (other     . "gnu")))
-  (defconst al/c-base-keys
-    '(("<H-M-tab>" . c-indent-defun))
-    "Alist of auxiliary keys for `c-mode-base-map'.")
-  (al/bind-keys-from-vars 'c-mode-base-map
-    '(al/prog-keys al/c-base-keys)))
+  (al/load-settings "cc-mode"))
 
 (al/eval-after-load js
-  (defconst al/js-keys
-    '(("M-d" . js-find-symbol)
-      ("C-c M-v" . js-eval)
-      ("C-M-v" . js-eval-defun))
-    "Alist of auxiliary keys for `js-mode-map'.")
-  (al/bind-keys-from-vars 'js-mode-map 'al/js-keys)
-
-  (al/eval-at-hook js-mode-hook
-    (setq-local al/delimiter
-                (concat (make-string 64 ?/) "\n///"))))
+  (al/load-settings "js"))
 
 (al/autoload "python" python-shell-switch-to-shell)
 (al/eval-after-load python
-  (setq python-shell-interpreter "ipython")
-  (defconst al/python-keys
-    '(("C-v" . python-shell-send-region)
-      ("C-M-v" . python-shell-send-defun)
-      ("M-s-v" . python-shell-send-buffer))
-    "Alist of auxiliary keys for `python-mode-map'.")
-  (al/bind-keys-from-vars 'python-mode-map 'al/python-keys))
+  (al/load-settings "python"))
 
 ;;; prog.el ends here
