@@ -138,9 +138,16 @@ See `al/bind-key' for details."
                                             ,(or prefix-map map)))))
                          %body))))
         (if map
-            `(al/with-check
-               :var ',map
-               ,@body)
+            ;; XXX Not using `al/with-check' because it expands to
+            ;; `al/bound?' from "al-general.el" which will give a
+            ;; warning if `al-key' is required at compile time.
+            ;;
+            ;; `(al/with-check
+            ;;    :var ',map
+            ;;    ,@body)
+            `(if (boundp ',map)
+                 ,(macroexp-progn body)
+               (message "WARNING Keymap `%s' does not exist" ',map))
           (macroexp-progn body))))))
 
 (defmacro al/bind-keys* (&rest args)
