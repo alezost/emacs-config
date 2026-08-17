@@ -23,7 +23,6 @@
 (require 'al-general)
 (require 'al-key)
 
-(declare-function al/subdirs "al-file")
 (declare-function al/replace "al-text-cmd")
 (declare-function al/set-input-method "al-input-method")
 
@@ -252,20 +251,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 
 (al/bind-key "C-H-y" browse-kill-ring)
 (al/eval-after-load browse-kill-ring
-  (setq
-   browse-kill-ring-separator (make-string 64 ?—)
-   browse-kill-ring-separator-face nil)
-  (defconst al/browse-kill-ring-keys
-    '(("."   . browse-kill-ring-previous)
-      ("e"   . browse-kill-ring-forward)
-      ("u"   . browse-kill-ring-insert-and-quit)
-      ("M-d" . browse-kill-ring-edit))
-    "Alist of auxiliary keys for `browse-kill-ring-mode-map'.")
-
-  (al/eval-at-hook browse-kill-ring-mode-hook
-    ;; Key bindings are defined inside `browse-kill-ring-mode'.
-    (al/bind-keys-from-vars 'browse-kill-ring-mode-map
-      'al/browse-kill-ring-keys t)))
+  (al/load-settings "browse-kill-ring"))
 
 (al/eval-after-load register
   (setq register-preview-delay 0.3)
@@ -273,9 +259,8 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   (defun al/insert-register-reverse-arg (fun register &optional arg)
     "Reverse the meaning of ARG for `insert-register'."
     (funcall fun register (not arg)))
-  (with-no-warnings
-    (advice-add 'insert-register
-      :around #'al/insert-register-reverse-arg)))
+  (advice-add 'insert-register
+    :around 'al/insert-register-reverse-arg))
 
 
 ;;; Misc settings and packages
@@ -312,18 +297,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
     al/show-trailing-whitespace))
 
 (al/eval-after-load mwim
-  (defun al/mwim-set-default (var fun)
-    (set var
-         (mapcar (lambda (assoc)
-                   (if (eq t (car assoc))
-                       (cons t fun)
-                     assoc))
-                 (symbol-value var))))
-  (with-no-warnings
-    (al/mwim-set-default 'mwim-beginning-of-line-function
-                         'beginning-of-visual-line)
-    (al/mwim-set-default 'mwim-end-of-line-function
-                         'end-of-visual-line)))
+  (al/load-settings "mwim"))
 
 
 ;;; Input methods, abbreviations, etc.
@@ -532,56 +506,22 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
  ("C-M-S-h" . point-pos-previous)
  ("C-M-S-n" . point-pos-next))
 
-(al/bind-key* "C-M-s-m" imenu)
+(al/bind-keys*
+  ("C-M-s-m" . imenu)
+  ("C-M-m" . imenus)
+  ("M-s-s" . al/imenus-search-elisp-directories))
+
 (al/eval-after-load imenu
-  (setq
-   ;; imenu-flatten t
-   imenu-space-replacement nil
-   imenu-level-separator " ⇨ ")
+  (al/load-settings "imenu"))
 
-  (al/require al-imenu))
-
-(al/bind-key* "C-M-m" imenus)
 (al/eval-after-load imenus
-  (setq imenus-delimiter imenu-level-separator)
-
-  (defconst al/imenus-keys
-    '(("C-r" . imenus-rescan)
-      ("C-s" . imenus-exit-to-isearch)
-      ("M-s" . imenus-exit-to-occur)))
-  (al/bind-keys-from-vars 'imenus-minibuffer-map 'al/imenus-keys))
-
-(al/eval-after-load al-imenu
-  (setq
-   al/imenu-mode-alist
-   '((lisp-data-mode  al/lisp-imenu-add-sections)
-     (emacs-lisp-mode al/elisp-imenu-add-defun
-                      al/elisp-imenu-add-use-package
-                      al/elisp-imenu-add-transient
-                      al/elisp-imenu-add-eval-after-load)
-     (lisp-mode       al/clisp-imenu-add-definitions)
-     (scheme-mode     al/lisp-imenu-add-sections
-                      al/scheme-imenu-add-define-values)
-     (js-mode         al/js-imenu-add-sections)))
-
-  (advice-add 'imenu--make-index-alist :before #'al/imenu-augment))
-
-(al/bind-key "M-s-s" al/imenus-search-elisp-directories)
-(al/eval-after-load al-imenus
-  (setq al/imenus-elisp-directories
-        (append (list al/emacs-init-dir
-                      al/emacs-settings-dir
-                      al/emacs-my-packages-dir)
-                (al/subdirs al/emacs-utils-dir))))
+  (al/load-settings "imenus"))
 
 
 ;;; TeX
 
 (al/eval-after-load tex-mode
-  (defconst al/tex-keys
-    '("C-j")
-    "Alist of auxiliary keys for `tex-mode-map'.")
-  (al/bind-keys-from-vars 'tex-mode-map 'al/tex-keys))
+  (al/load-settings "tex-mode"))
 
 
 ;;; Working with parentheses (paredit, smartparens)
