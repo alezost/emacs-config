@@ -380,6 +380,9 @@ FEATURE should be an unquoted symbol.
 
 BODY can start with the following optional keywords:
 
+  `:no-warning' if non-nil, do not show warning message when FEATURE is
+                not available;
+
   `:load'       can be `nil' (default) to do nothing additionally, `t'
                 to load FEATURE immediately, or anything else to load
                 FEATURE at `after-init-hook'."
