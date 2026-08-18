@@ -1,4 +1,4 @@
-;;; al-eshell.el --- Additional functionality for eshell  -*- lexical-binding: t -*-
+;;; al-eshell.el --- Additional functionality for `eshell' package  -*- lexical-binding: t -*-
 
 ;; Copyright © 2013–2026 Alex Kost
 
@@ -23,37 +23,9 @@
 (require 'em-alias)
 (require 'em-dirs)
 (require 'em-unix)
-(require 'em-prompt)
-(require 'al-general)
-(require 'al-places)
-(require 'al-buffer)
 (require 'al-shell)     ; for `al/shell-set-comment-variables'
 (require 'al-url)
 (require 'al-visual)
-
-(defun al/eshell-buffers (&optional no-sort)
-  "Return a list of all eshell buffers.
-If NO-SORT is non-nil, do not sort the list by buffer names."
-  (al/buffers-by-mode 'eshell-mode
-                      (unless no-sort #'al/buffer-name<)))
-
-;;;###autoload
-(defun al/eshell (&optional arg)
-  "Start eshell if needed or switch to the next \\[eshell] buffer.
-If ARG is non-nil, start a new eshell buffer."
-  (interactive "P")
-  (if arg
-      (eshell 'new)
-    (al/rotate-or-select-buffer (al/eshell-buffers) #'eshell)))
-
-;;;###autoload
-(defun al/eshell-cd (arg)
-  "Start eshell and change directory there to the current one.
-ARG has the same meaning as in `eshell'"
-  (interactive "P")
-  (let ((dir default-directory))
-    (eshell arg)
-    (eshell/cd dir)))
 
 (defun al/eshell-refresh-aliases ()
   "Refresh aliases for the current eshell buffer."

@@ -370,67 +370,8 @@
 (al/eval-after-load shell
   (al/load-settings "shell"))
 
-(al/eval-after-load eshell
-  (setq
-   eshell-modules-list
-   '(eshell-alias
-     eshell-basic
-     eshell-cmpl
-     eshell-dirs
-     eshell-glob
-     eshell-hist
-     eshell-ls
-     eshell-pred
-     eshell-prompt
-     eshell-script
-     eshell-term
-     eshell-unix
-     eshell-tramp))
-
-  (defconst al/eshell-keys
-    '(("C-c r" . al/eshell-refresh-aliases)
-      ("RET" . al/eshell-send-input-maybe)
-      ("C-k" . al/eshell-kill-whole-line)
-      ("M-." . eshell-previous-input)
-      ("M-e" . eshell-next-input)
-      ("M->" . eshell-previous-prompt)
-      ("M-E" . eshell-next-prompt))
-    "Alist of auxiliary keys for `eshell-mode-map'.")
-  (defconst al/eshell-hist-keys
-    '("<up>" "<down>"
-      ("M-r" . al/eshell-previous-matching-input-from-input)
-      ("M-s" . al/eshell-next-matching-input-from-input))
-    "Alist of auxiliary keys for `eshell-hist-mode-map'.")
-
-  (al/bind-keys-from-vars 'eshell-mode-map 'al/eshell-keys)
-  (al/bind-keys-from-vars 'eshell-hist-mode-map 'al/eshell-hist-keys)
-
-  ;; eshell does horrible thing with aliases: "alias foo" not only
-  ;; removes "foo" alias from the current eshell buffer (which is
-  ;; already bad enough), it also immediately overwrites (!)
-  ;; `eshell-aliases-file'.  How could anyone come up with this
-  ;; brilliant idea?
-  (advice-add 'eshell-write-aliases-list :override #'ignore)
-
-  (al/require sh-script al-eshell))
-
-(al/eval-after-load em-prompt
-   (setq eshell-highlight-prompt nil))
-
-(al/eval-after-load em-hist
-  (setq
-   eshell-hist-ignoredups t
-   eshell-history-size 9999))
-
-(al/eval-after-load em-cmpl
-  ;; This mode does nothing except for binding keys that I don't need.
-  (advice-add 'eshell-cmpl-mode :override #'ignore))
-
-(al/eval-after-load al-eshell
-  (setq eshell-prompt-function #'al/eshell-prompt)
-  (al/call-at-hook eshell-mode-hook
-    al/eshell-set-local-variables)
-  (advice-add 'eshell/info :override #'al/eshell/info))
+(al/eval-after-load esh-mode
+  (al/load-settings "eshell"))
 
 (al/eval-after-load agent-shell
   (setq
