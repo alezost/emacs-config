@@ -318,7 +318,11 @@
 
 (setq shell-file-name "bash")
 
-(al/bind-key "s-s" al/shell)
+(al/bind-keys
+  ("s-s"   . al/shell)
+  ("C-z"   . al/eshell)
+  ("C-M-z" . al/eshell-cd))
+
 (al/bind-keys*
  :prefix-map al/repl-map
  :prefix-doc "Map for various REPLs."
@@ -364,42 +368,7 @@
   (add-hook 'comint-output-filter-functions #'comint-truncate-buffer))
 
 (al/eval-after-load shell
-  (defconst al/shell-keys
-    '("TAB" "M-?"
-      ("M-O" . shell-backward-command)
-      ("M-U" . shell-forward-command))
-    "Alist of auxiliary keys for `shell-mode-map'.")
-  (al/bind-keys-from-vars 'shell-mode-map 'al/shell-keys)
-
-  (al/call-at-hook shell-mode-hook
-    abbrev-mode
-    al/no-truncate-lines)
-
-  (al/require sh-script al-shell))
-
-(defvar shell-mode-syntax-table nil)
-(defvar eshell-mode-syntax-table nil)
-(al/eval-after-load sh-script
-  (setq
-   ;; `sh-mode-syntax-table' has proper syntax for comments unlike
-   ;; `shell' and `eshell'.
-   shell-mode-syntax-table sh-mode-syntax-table
-   eshell-mode-syntax-table sh-mode-syntax-table))
-
-(al/eval-after-load al-shell
-  (setq al/shell-buffer-alist
-        `(("*shell*"    . ,al/download-dir)
-          ("*shell*<2>" . ,al/download-dir)
-          ("*shell*<3>" . ,al/download-dir)))
-
-  (al/call-at-hook shell-mode-hook
-    al/shell-set-local-variables))
-
-(al/bind-keys
- ("C-z"   . al/eshell)
- ("C-M-z" . al/eshell-cd))
-
-(al/setq-no-warnings eshell-directory-name (al/emacs-data-dir-file "eshell"))
+  (al/load-settings "shell"))
 
 (al/eval-after-load eshell
   (setq
