@@ -1,6 +1,6 @@
 ;;; al-google-translate.el --- Additional functionality for google-translate  -*- lexical-binding: t -*-
 
-;; Copyright © 2013–2025 Alex Kost
+;; Copyright © 2025–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -17,73 +17,13 @@
 
 ;;; Code:
 
-(eval-when-compile
-  (require 'cl-lib))
-(require 'google-translate-smooth-ui)
-(require 'al-list)
+(require 'google-translate-core)
 
 (defun al/google-translate-listen-translation (language text)
   "Replacement for `google-translate-listen-translation'."
   (apply #'call-process "mpv" nil nil nil
          (append '("--really-quiet" "--no-config")
                  (google-translate-format-listen-urls text language))))
-
-;;;###autoload
-(defun al/google-translate-smooth-translate (&optional languages direction)
-  "Translate a text using translation directions.
-Similar to `google-translate-smooth-translate', but prompt for
-languages (if needed) before text.
-
-LANGUAGES has a form of `google-translate-translation-directions-alist'.
-DIRECTION has a form of `google-translate-current-translation-direction'."
-  (interactive)
-  (setq google-translate-translation-direction-query
-        (when (use-region-p)
-          (google-translate--strip-string
-           (buffer-substring-no-properties
-            (region-beginning) (region-end)))))
-  (let ((google-translate-translation-directions-alist languages)
-        (google-translate-current-translation-direction (or direction 0)))
-    (unless languages
-      (let ((source (google-translate-read-source-language))
-            (target (google-translate-read-target-language)))
-        (setq google-translate-translation-directions-alist
-              (list (cons source target)
-                    (cons target source)))))
-    (let ((text (google-translate-query-translate-using-directions)))
-      ;; `google-translate-query-translate-using-directions' ↑ can
-      ;; modify source and target languages, so it should be called
-      ;; before the following source/target functions.
-      (google-translate-translate
-       (google-translate--current-direction-source-language)
-       (google-translate--current-direction-target-language)
-       text))))
-
-;;;###autoload
-(cl-defun al/google-translate-using-languages* (&key source target one-way)
-  "Translate a text using SOURCE and TARGET languages.
-Both, SOURCE and TARGET can be a string or a list of strings with
-language names.  If ONE-WAY is non-nil, use only source/target
-pairs for translation.  Otherwise, use the reverse
-pairs (target/source) as well."
-  (let ((languages
-         (mapcan
-          (lambda (source)
-            (mapcan (lambda (target)
-                      (if one-way
-                          (list (cons source target))
-                        (list (cons source target)
-                              (cons target source))))
-                    (al/list-maybe target)))
-          (al/list-maybe source))))
-    (al/google-translate-smooth-translate languages)))
-
-;;;###autoload
-(defun al/google-translate-using-languages (source &rest targets)
-  "Translate a text using SOURCE and TARGETS languages.
-See `al/google-translate-using-languages*' for details."
-  (al/google-translate-using-languages* :source source
-                                        :target targets))
 
 (provide 'al-google-translate)
 
