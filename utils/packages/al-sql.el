@@ -1,4 +1,4 @@
-;;; al-sql.el --- Additional functionality for sql stuff  -*- lexical-binding: t -*-
+;;; al-sql.el --- Additional functionality for `sql' package  -*- lexical-binding: t -*-
 
 ;; Copyright © 2013–2026 Alex Kost
 
@@ -20,40 +20,17 @@
 (eval-when-compile
   (require 'let-macros))
 (require 'sql)
-(require 'al-buffer)
-
-;;;###autoload
-(defun al/sql-switch-to-repl ()
-  "Switch to SQLi buffer."
-  (interactive)
-  (unless (and sql-buffer
-               (buffer-live-p (get-buffer sql-buffer)))
-    (sql-set-sqli-buffer))
-  (pop-to-buffer sql-buffer))
-
-;;;###autoload
-(defun al/sql-switch-or-connect (conn)
-  "Switch to SQLi buffer with connection CONN.
-Create it if it does not exist.
-Interactively, use the first connection from `sql-connection-alist'.
-With prefix, prompt for connection."
-  (interactive
-   (list (if current-prefix-arg
-             (sql-read-connection "Connection: ")
-           (caar sql-connection-alist))))
-  (if-let ((buffer (sql-find-sqli-buffer)))
-      (al/display-buffer buffer)
-    (sql-connect conn)))
 
 
 ;;; SQL passwords from .authinfo
 
-(require 'auth-source)
+(declare-function auth-source-search "auth-source")
 
 ;;;###autoload
 (defun al/sql-password-from-auth-source (host &optional user)
   "Return sql password from authinfo file by HOST and USER.
 Return nil if credentials not found."
+  (require 'auth-source)
   (when-let1 ((auth (car (auth-source-search :host host :user user)))
               (secret (plist-get auth :secret))
               (password (if (functionp secret)
@@ -74,6 +51,9 @@ Return nil if credentials not found."
 
 (defun al/sql-completion-setup ()
   "Setup `sql-completion' for the current sql interaction buffer."
+  ;; TODO (2026-08-18 I have not used sql for several years).
+  ;; `sql-completion' is very old (it requires `cl'), are there modern
+  ;; alternatives?
   (and (require 'sql-completion nil t)
        (eq major-mode 'sql-interactive-mode)
        (eq sql-product 'mysql)
