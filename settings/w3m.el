@@ -8,10 +8,6 @@
 (require 'al-key)
 (require 'al-w3m)
 
-(declare-function emms-add-url "emms-source-file")
-(declare-function emms-play-url "emms-source-file")
-(declare-function al/url-wget-mp3 "al-wget")
-
 (al/bind-keys
   :map w3m-mode-map
   "c" "u" "k" "M-s" [left]

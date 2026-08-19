@@ -143,12 +143,16 @@ See `al/bind-key' for details."
                               ,prefix-doc))
                      (define-prefix-command ',prefix-map)
                      (al/bind-key ,prefix-key ,prefix-map ,map)))
-               ,@(mapcar (lambda (binding)
-                           (pcase (al/list-maybe binding)
-                             (`(,key . ,command)
-                              `(al/bind-key ,key ,command
-                                            ,(or prefix-map map)))))
-                         %body))))
+               ;; Here, we just bind some keys to some commands.
+               ;; Warnings about undefined functions are the only
+               ;; compilation warnings that we can get here.
+               (with-no-warnings
+                 ,@(mapcar (lambda (binding)
+                             (pcase (al/list-maybe binding)
+                               (`(,key . ,command)
+                                `(al/bind-key ,key ,command
+                                              ,(or prefix-map map)))))
+                           %body)))))
         (if map
             `(al/with-check
                :var ',map
