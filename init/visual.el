@@ -347,17 +347,7 @@
  tooltip-delay 0.2)
 
 (al/eval-after-load whitespace
-  (setq
-   whitespace-line-column 78
-   whitespace-display-mappings
-   `((space-mark   ?\s  [?·])
-     (space-mark   ?    [?○])
-     ;; (newline-mark ?\n  [?↵ ?\n])
-     (newline-mark ?\^L ,(aref standard-display-table ?\^L))
-     (tab-mark     ?\t  [?⇉ ?\t]))
-   whitespace-style
-   '(face spaces tabs trailing lines space-before-tab newline
-          indentation space-after-tab tab-mark newline-mark)))
+  (al/load-settings "whitespace"))
 
 (al/eval-after-load ruler-mode
   (setq ruler-mode-show-tab-stops t))
