@@ -411,6 +411,28 @@ BODY can start with the following optional keywords:
          (eval-after-load ',feature (lambda () ,@%body))
          (al/eval-after-init (al/require ,feature)))))))
 
+(defmacro al/eval-settings-after-load (&rest args)
+  "Load settings for a package after it is loaded.
+
+ARGS is a list of (FEATURE NAME) or (FEATURE BODY ...) values, where
+
+  FEATURE       is a package feature symbol;
+
+  NAME          is a file name loaded with `al/load-settings' after
+                FEATURE is required;
+
+  BODY          is a list of lisp expressions to evaluate after
+                FEATURE is required."
+  (declare (indent 0))
+  (macroexp-progn
+   (mapcar (pcase-lambda (`(,feature . ,body))
+             (if (stringp (car body))
+                 `(al/eval-after-load ,feature
+                    (al/load-settings ,(car body)))
+               `(al/eval-after-load ,feature
+                  ,@body)))
+           args)))
+
 
 ;;; Command utils
 
