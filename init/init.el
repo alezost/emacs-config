@@ -51,17 +51,7 @@
 (al/title-message "Loading init files")
 
 (al/load-init
- "keys"
- "text"
- "packages"
  "settings"
- "files"
- "prog"
- "time"
- "file-modes"
- "net"
- "visual"
- "games"
  "custom")
 
 (al/title-message (concat "Loading \"autoloads\" files"))
