@@ -20,10 +20,11 @@
 (eval-when-compile
   (require 'cl-lib)
   (require 'fp-utils))
+
 (require 'seq)
 (require 'emms-mpv)
 (require 'count)
-(require 'al-general)
+(require 'al-list)
 (require 'al-window)
 
 (defun al/emms-mpv-playing-radio? ()
