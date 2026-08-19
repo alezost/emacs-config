@@ -17,7 +17,15 @@
 
 ;;; Commentary:
 
-;; This file is intended to be loaded inside `eval-when-compile' clause.
+;; This file contains auxiliary macros intended to be used at
+;; compilation time.  Some of these macros expand to functions from
+;; `al-general' package, so along with
+;;
+;;   (eval-when-compile (require 'al-aux-macros))
+;;
+;; you may also need to use
+;;
+;;   (require 'al-general)
 
 ;;; Code:
 
@@ -104,7 +112,7 @@ be missing.  Because of this, (concat ...) cannot be used for FORMAT in
   (let ((err (make-symbol "error")))
     `(condition-case ,err
          ,(macroexp-progn body)
-       (error (message (concat "ERROR: " ,format) ,err)
+       (error (al/error-message ,format ,err)
               nil))))
 
 (defmacro al/setq-no-warnings (&rest args)
@@ -243,8 +251,8 @@ Return nil and show warning messages otherwise."
    (mapcar (lambda (feature)
              `(or (require ',feature nil t)
                   (progn
-                    (message "WARNING `%s' feature is not available."
-                             ',feature)
+                    (al/warning-message "`%s' feature is not available"
+                                        ',feature)
                     nil)))
            features)))
 

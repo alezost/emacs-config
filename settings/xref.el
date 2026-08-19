@@ -4,6 +4,7 @@
   (require 'al-key))
 
 (require 'xref)
+(require 'al-general)
 
 (al/bind-keys
   :map xref--xref-buffer-mode-map

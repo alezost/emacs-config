@@ -4,6 +4,7 @@
   (require 'al-key))
 
 (require 'python)
+(require 'al-general)
 
 (al/bind-keys
   :map python-mode-map

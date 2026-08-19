@@ -15,10 +15,22 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+;;; Commentary:
+
+;; Some macros from this package expand to functions from `al-general'
+;; package, so if you use it at compilation time, along with
+;;
+;;   (eval-when-compile (require 'al-aux-macros))
+;;
+;; you may also need to use
+;;
+;;   (require 'al-general)
+
 ;;; Code:
 
 (eval-when-compile
   (require 'al-aux-macros))
+
 (require 'seq)
 (require 'al-general)
 (require 'al-list)
@@ -138,16 +150,9 @@ See `al/bind-key' for details."
                                             ,(or prefix-map map)))))
                          %body))))
         (if map
-            ;; XXX Not using `al/with-check' because it expands to
-            ;; `al/bound?' from "al-general.el" which will give a
-            ;; warning if `al-key' is required at compile time.
-            ;;
-            ;; `(al/with-check
-            ;;    :var ',map
-            ;;    ,@body)
-            `(if (boundp ',map)
-                 ,(macroexp-progn body)
-               (message "WARNING Keymap `%s' does not exist" ',map))
+            `(al/with-check
+               :var ',map
+               ,@body)
           (macroexp-progn body))))))
 
 (defmacro al/bind-keys* (&rest args)

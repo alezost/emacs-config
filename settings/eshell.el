@@ -8,6 +8,7 @@
 ;; other variables (e.g. `eshell-aliases-file').
 (setq eshell-directory-name (al/emacs-data-dir-file "eshell"))
 
+(require 'em-prompt)
 (require 'sh-script)
 (require 'al-places)
 (require 'al-key)

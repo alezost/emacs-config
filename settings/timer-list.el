@@ -4,6 +4,7 @@
   (require 'al-key))
 
 (require 'timer-list)
+(require 'al-general)
 
 (al/bind-keys
   :map timer-list-mode-map

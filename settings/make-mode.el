@@ -4,6 +4,7 @@
   (require 'al-key))
 
 (require 'make-mode)
+(require 'al-general)
 
 (al/bind-keys
   :map makefile-mode-map

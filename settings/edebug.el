@@ -4,6 +4,7 @@
   (require 'al-key))
 
 (require 'edebug)
+(require 'al-general)
 
 (al/bind-keys
   :map edebug-mode-map

@@ -4,6 +4,7 @@
   (require 'al-key))
 
 (require 'cc-mode)
+(require 'al-general)
 
 (al/bind-keys
   :map c-mode-base-map

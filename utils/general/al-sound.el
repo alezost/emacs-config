@@ -20,6 +20,8 @@
 (eval-when-compile
   (require 'al-aux-macros))
 
+(require 'al-general)
+
 
 ;;; Playing sound
 

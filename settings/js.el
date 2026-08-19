@@ -5,6 +5,7 @@
   (require 'al-key))
 
 (require 'js)
+(require 'al-general)
 
 (al/bind-keys
   :map js-mode-map
