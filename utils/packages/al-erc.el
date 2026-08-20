@@ -1,4 +1,4 @@
-;;; al-erc.el --- Additional functionality for ERC  -*- lexical-binding: t -*-
+;;; al-erc.el --- Additional functionality for `erc' package  -*- lexical-binding: t -*-
 
 ;; Copyright © 2013–2026 Alex Kost
 
@@ -21,9 +21,11 @@
   (require 'fp-utils)
   (require 'al-aux-macros)
   (require 'let-macros))
+
 (require 'seq)
 (require 'erc)
 (require 'erc-button)
+(require 'erc-list)
 (require 'erc-log)
 (require 'erc-networks)
 (require 'erc-stamp)
@@ -44,7 +46,6 @@ This function is intended to be used as `before' or `after' advice for
   (require 'al-sound)
   (al/play-sound al/erc-notification-sound))
 
-;;;###autoload
 (defun al/erc-number-of-users ()
   "Show a number of users on the current channel."
   (interactive)
@@ -133,26 +134,8 @@ buffers (where `erc-server-process' is set)."
 (defun al/erc-switch-to-server-buffer ()
   "Switch to ERC buffer with server."
   (interactive)
-  (switch-to-buffer (al/erc-server-buffer)))
+  (al/display-buffer (al/erc-server-buffer)))
 
-;;;###autoload
-(defun al/erc-switch-buffer ()
-  "Switch to ERC buffer, or start ERC if not already started."
-  (interactive)
-  (al/rotate-or-select-buffer #'al/erc-buffers #'erc "ERC buffer: ")
-  (recenter-top-bottom 2))
-
-;;;###autoload
-(defun al/erc-track-switch-buffer (arg)
-  "Same as `erc-track-switch-buffer', but start ERC if not already started."
-  (interactive "p")
-  (if (al/erc-server-buffer t)
-      (progn
-        (erc-track-switch-buffer arg)
-        (recenter-top-bottom 2))
-    (erc)))
-
-;;;###autoload
 (defun al/erc-cycle ()
   "Switch to ERC channel buffer, or run `erc-select'.
 When called repeatedly, cycle through the buffers."
@@ -283,7 +266,7 @@ Similar to `erc-away-time', but no need to be in ERC buffer."
     (let ((str (apply #'string
                       (reverse (string-to-list (match-string 1 msg))))))
       (unless erc-disable-ctcp-replies
-	(erc-send-ctcp-notice nick (format "ECHO Did you mean '%s'?" str)))))
+	(erc-send-ctcp-notice nick (format "ECHO Did you mean \"%s\"?" str)))))
   nil)
 
 (defun al/erc-ctcp-query-TIME (_proc nick _login _host _to _msg)
