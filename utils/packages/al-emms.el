@@ -1,4 +1,4 @@
-;;; al-emms.el --- Additional functionality for EMMS  -*- lexical-binding: t -*-
+;;; al-emms.el --- Additional functionality for `emms' package  -*- lexical-binding: t -*-
 
 ;; Copyright © 2013–2026 Alex Kost
 
@@ -22,6 +22,7 @@
   (require 'al-aux-macros)
   (require 'fp-utils)
   (require 'let-macros))
+
 (require 'seq)
 (require 'emms)
 (require 'emms-playlist-mode)
@@ -29,7 +30,6 @@
 (require 'count)
 (require 'al-text)
 (require 'al-format)
-(require 'al-buffer)
 (require 'al-visual)
 (require 'al-url)
 
@@ -78,7 +78,6 @@ With prefix, prompt for the number of seconds."
 (declare-function al/emms-mpv-show-radio-description "al-emms-mpv" ())
 (declare-function al/emms-mpv-show-metadata "al-emms-mpv" ())
 
-;;;###autoload
 (defun al/emms-show (&optional arg)
   "Describe the current EMMS track in the minibuffer.
 If ARG is specified, show metadata of the track."
@@ -357,6 +356,11 @@ Intended to be used for `emms-mode-line-mode-line-function'."
 
 ;;; Playlists
 
+;; Although this keymap is used by `al/emms-switch-to-playlist-buffer'
+;; from `al-emms-cmd', it is placed here because it is set by my config
+;; which requires `al-emms' but not `al-emms-cmd'.
+(defvar al/emms-switch-playlist-map (make-sparse-keymap))
+
 (defvar al/emms-playlist-alias-alist
   '(("m"  . "EMMS-main")
     ("b"  . "EMMS-background")
@@ -464,8 +468,6 @@ See `al/emms-get-playlist' for the meaning of NAME string."
   (al/emms-add-source-to-playlist
    name 'emms-source-file (substring-no-properties file)))
 
-(defvar al/emms-switch-playlist-map (make-sparse-keymap))
-
 (defun al/emms-playlist-buffers ()
   "Return a list of EMMS playlist buffers.
 This is similar to `emms-playlist-buffer-list' except it does not check
@@ -473,50 +475,6 @@ This is similar to `emms-playlist-buffer-list' except it does not check
   (setq emms-playlist-buffers
         (seq-filter #'buffer-live-p
 		    emms-playlist-buffers)))
-
-(declare-function al/emms-mpv-raise-frame "al-emms-mpv")
-
-;;;###autoload
-(defun al/emms-playlist-play (string)
-  "Switch to EMMS playlist buffer matching STRING and start/resume playing.
-Interactively, prompt for an existing playlist."
-  (interactive
-   (list (completing-read "Switch to buffer: " (al/emms-all-playlists))))
-  (al/display-buffer (al/emms-get-playlist string))
-  (when emms-player-playing-p
-    (al/emms-mpv-raise-frame))
-  (emms-start)
-  (when-let ((resume (emms-player-get emms-player-playing-p 'resume)))
-    (funcall resume)))
-
-;;;###autoload
-(defun al/emms-playlist-select (&optional arg)
-  "Prompt for EMMS playlist buffer and switch to it.
-If ARG is nil, prompt for a buffer that is already opened.
-Otherwise (interactively, with prefix), prompt for any existing
-playlist."
-  (interactive "P")
-  (let* ((names (if arg
-                    (al/emms-all-playlists)
-                  (mapcar #'buffer-name (al/emms-playlist-buffers))))
-         (name (completing-read "Switch to buffer: " names)))
-    (al/display-buffer (al/emms-get-playlist name))))
-
-;;;###autoload
-(defun al/emms-switch-to-playlist-buffer (&optional arg)
-  "Switch to the next EMMS playlist.
-If ARG is non-nil, prompt for the playlist."
-  (interactive "P")
-  (let ((buffers (al/emms-playlist-buffers)))
-    (if (or arg
-            emms-playlist-buffer-p
-            (null buffers))
-        (al/rotate-or-select-buffer
-         buffers
-         "There are no EMMS playlists."
-         (when arg "EMMS buffer: "))
-      (al/display-buffer emms-playlist-buffer)))
-  (set-transient-map al/emms-switch-playlist-map))
 
 (declare-function wget "wget" t)
 
@@ -548,7 +506,6 @@ If NO-CONFIRM is non-nil, delete the file without confirmation."
 
 (defvar emms-source-playlist-ask-before-overwrite)
 
-;;;###autoload
 (defun al/emms-save-playlist ()
   "Save the current EMMS playlist."
   (interactive)
@@ -562,7 +519,6 @@ If NO-CONFIRM is non-nil, delete the file without confirmation."
 
 (declare-function emms-mpv-save-current-progress-maybe "emms-mpv")
 
-;;;###autoload
 (defun al/emms-save-playlists ()
   "Save all EMMS playlists."
   (interactive)
@@ -572,7 +528,6 @@ If NO-CONFIRM is non-nil, delete the file without confirmation."
       (with-current-buffer buf
         (al/emms-save-playlist)))))
 
-;;;###autoload
 (defun al/emms-update-all-tracks ()
   "Update all tracks in the current playlist."
   (interactive)
