@@ -1,6 +1,6 @@
-;;; al-dired.el --- Additional functionality for dired  -*- lexical-binding: t -*-
+;;; al-dired.el --- Additional functionality for `dired' package  -*- lexical-binding: t -*-
 
-;; Copyright © 2012–2019 Alex Kost
+;; Copyright © 2012–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -23,21 +23,19 @@
 
 ;;; Processes
 
-;;;###autoload
-(defun al/dired-start-process (program &optional args)
-  "Open current file with a PROGRAM."
-  ;; Shell command looks like this: "program [ARGS]... FILE" (ARGS can
-  ;; be nil, so remove it).
-  (apply #'al/start-process
-         program
-         (remove nil (list args (dired-get-file-for-visit)))))
+(defun al/dired-open-files (program args files)
+  "Call PROGRAM with ARGS and FILES."
+  (apply #'al/start-process program (append args files)))
 
-;;;###autoload
-(defun al/dired-start-process-on-marked-files (program &optional args)
-  "Open marked files with a PROGRAM."
-  (apply #'al/start-process
-         program
-         (remove nil (append args (dired-get-marked-files)))))
+(defun al/dired-start-process (program &rest args)
+  "Open current file with PROGRAM."
+  (al/dired-open-files
+   program args (list (dired-get-file-for-visit))))
+
+(defun al/dired-start-process-on-marked-files (program &rest args)
+  "Open marked files with PROGRAM."
+  (al/dired-open-files
+   program args (dired-get-marked-files)))
 
 
 ;;; Mode line
