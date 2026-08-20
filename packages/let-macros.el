@@ -246,12 +246,16 @@ to something like this:
 ;; (defalias 'when-let 'when-let+)
 
 (defmacro if-let (&rest args)
-  "Alias for `if-let+'."
+  "Alias for `if-let+'.
+
+\(fn BINDINGS THEN &rest ELSE)"
   (declare (indent 2) (debug if-let-))
   `(if-let+ ,@args))
 
 (defmacro when-let (&rest args)
-  "Alias for `when-let+'."
+  "Alias for `when-let+'.
+
+\(fn BINDINGS &rest BODY)"
   (declare (indent 1) (debug if-let-))
   `(when-let+ ,@args))
 
