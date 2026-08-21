@@ -1,6 +1,6 @@
-;;; al-magit.el --- Additional functionality for magit  -*- lexical-binding: t -*-
+;;; al-magit.el --- Additional functionality for `magit' package  -*- lexical-binding: t -*-
 
-;; Copyright © 2015–2026 Alex Kost
+;; Copyright © 2016–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -35,30 +35,15 @@ If NO-SORT is non-nil, do not sort the list by buffer names."
     (al/buffers-by-mode mode
                         (unless no-sort #'al/buffer-name<))))
 
+;; Although this keymap is used by `al/magit-switch-buffer' from
+;; `al-magit-cmd', it is placed here because it is set by my config
+;; which requires `al-magit' but not `al-magit-cmd'.
 (defvar al/magit-switch-map (make-sparse-keymap))
 
-;;;###autoload
-(defun al/magit-switch-buffer (&optional all)
-  "Switch to the next magit status buffer.
-If ALL is non-nil, select from all magit buffers, not only statuses."
-  (interactive "P")
-  (al/rotate-or-select-buffer
-   (al/magit-buffers (if all 'all 'status))
-   #'magit-status
-   (when all "Magit buffer: "))
-  (set-transient-map al/magit-switch-map))
-
-;;;###autoload
 (defun al/git-commit-co-authored (name mail)
   "Insert a header acknowledging that you have co-authored the commit."
   (interactive (git-commit-self-ident))
   (git-commit--insert-ident-trailer "Co-authored-by" name mail))
-
-;;;###autoload
-(defun al/magit-show-commit (commit)
-  "Like `magit-show-commit' but always prompt for COMMIT."
-  (interactive (list (magit-read-branch-or-commit "Show commit")))
-  (magit-show-commit commit))
 
 (provide 'al-magit)
 

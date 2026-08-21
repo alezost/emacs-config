@@ -1073,7 +1073,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 (al/eval-settings-after-load
   (vc-hooks (setq vc-make-backup-files t
                   vc-handled-backends nil))
-  (magit-mode "magit")
+  (magit "magit")
   (magit-popup "magit-popup"))
 
 
