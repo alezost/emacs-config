@@ -389,7 +389,8 @@ FEATURE should be an unquoted symbol.
 BODY can start with the following optional keywords:
 
   `:no-warning' if non-nil, do not show warning message when FEATURE is
-                not available;
+                not available; actually, FEATURE is not loaded at
+                compile time at all;
 
   `:load'       can be `nil' (default) to do nothing additionally, `t'
                 to load FEATURE immediately, or anything else to load
@@ -397,9 +398,10 @@ BODY can start with the following optional keywords:
   (declare (indent 1) (debug (form def-body)))
   (al/with-keywords body
       (load no-warning)
-    (al/eval-when-compile
-      (unless (or no-warning (require feature nil t))
-        (message "WARNING: `%s' feature is not available." feature)))
+    (or no-warning
+        (al/eval-when-compile
+          (unless (require feature nil t)
+            (message "WARNING: `%s' feature is not available." feature))))
     (cond
      ((null load)
       `(eval-after-load ',feature (lambda () ,@%body)))
@@ -428,6 +430,7 @@ ARGS is a list of (FEATURE NAME) or (FEATURE BODY ...) values, where
    (mapcar (pcase-lambda (`(,feature . ,body))
              (if (stringp (car body))
                  `(al/eval-after-load ,feature
+                    :no-warning t
                     (al/load-settings ,(car body)))
                `(al/eval-after-load ,feature
                   ,@body)))
