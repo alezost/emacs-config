@@ -82,7 +82,7 @@ The following local variables are available inside REST:
                         keywords that are not in VARIABLES.
 
   `%body'               BODY with all keyword pairs removed."
-  (declare (indent 2))
+  (declare (indent 2) (debug (form (&rest symbolp) body)))
   (al/with-keywords-1 rest
       (allow-other-keys)
     nil
