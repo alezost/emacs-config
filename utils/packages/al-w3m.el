@@ -1,4 +1,4 @@
-;;; al-w3m.el --- Additional functionality for w3m  -*- lexical-binding: t -*-
+;;; al-w3m.el --- Additional functionality for `w3m' package  -*- lexical-binding: t -*-
 
 ;; Copyright © 2013–2026 Alex Kost
 
@@ -20,15 +20,9 @@
 (eval-when-compile
   (require 'cl-lib)
   (require 'let-macros))
+
 (require 'w3m)
 (require 'wget nil t)
-(require 'al-buffer)
-
-;;;###autoload
-(defun al/switch-to-w3m ()
-  "Switch to the `w3m' buffer."
-  (interactive)
-  (al/switch-to-buffer-or-funcall #'w3m-alive-p #'w3m))
 
 
 ;;; Go to the next/previous link
@@ -82,12 +76,8 @@ Defined function has a name `al/w3m-TYPE-url'."
 (al/w3m-define-goto-url "next")
 (al/w3m-define-goto-url "previous")
 
-;;;###autoload (autoload 'al/w3m-next-url "al/w3m" nil t)
-;;;###autoload (autoload 'al/w3m-previous-url "al/w3m" nil t)
-
 
 
-;;;###autoload
 (defun al/w3m-wget ()
   "Download anchor, image, or current page.
 Same as `w3m-wget' but works."
@@ -103,14 +93,12 @@ Buffers are enumerated from 1."
                        (w3m-list-buffers))))
     (funcall function buf)))
 
-;;;###autoload
 (defun al/w3m-switch-to-buffer (arg)
   "Switch to a w3m buffer number ARG.
 Buffers are enumerated from 1."
   (interactive "NSwitch to w3m buffer number: ")
   (al/w3m-buffer-number-action #'switch-to-buffer arg))
 
-;;;###autoload
 (defun al/w3m-kill-buffer (arg)
   "Kill a w3m buffer number ARG.
 Buffers are enumerated from 1."
