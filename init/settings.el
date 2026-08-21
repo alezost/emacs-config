@@ -20,7 +20,6 @@
 (eval-when-compile
   (require 'al-aux-macros))
 
-(require 'seq)
 (require 'al-places)
 (require 'al-general)
 (require 'al-key)
@@ -486,17 +485,10 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 
 ;; "M-i <N>" to insert superscript numbers.
 ;; "M-i M-<N>" to insert subscript numbers.
-(defun al/make-number-alist (numbers &optional modifier)
-  (seq-map-indexed
-   (lambda (char i)
-     (cons (key-parse (concat modifier (number-to-string i)))
-           (vector char)))
-   numbers))
-(iso-transl-define-keys
- (with-no-warnings
-   (append
-    (al/make-number-alist "⁰¹²³⁴⁵⁶⁷⁸⁹")
-    (al/make-number-alist "₀₁₂₃₄₅₆₇₈₉" "M-"))))
+(al/bind-digits
+  :map iso-transl-ctl-x-8-map
+  (""   "⁰¹²³⁴⁵⁶⁷⁸⁹")
+  ("M-" "₀₁₂₃₄₅₆₇₈₉"))
 
 (al/autoload "paredit"
   paredit-splice-sexp

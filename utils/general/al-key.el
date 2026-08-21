@@ -173,8 +173,52 @@ See `al/bind-key' for details."
   (declare (indent 0))
   `(al/bind-keys :map al/override-global-map ,@args))
 
+(defmacro al/bind-digits (&rest args)
+  "Bind digit keys (0, 1, 2, ...) to some commands.
+
+ARGS can start with the following optional keywords:
+
+  `:map'        keymap into which the key bindings should be added;
+
+  `:start-from' integer to start counting from (default is zero).
+
+The rest ARGS have (PREFIX STRING) or (PREFIX COMMANDS ...) form, where:
+
+  PREFIX        is a string prepended to digit, can be a key
+                modifier (e.g. \"M-\"), a prefix key (e.g., \"k\"), or
+                nil for no prefixes (only digit keys are bound);
+
+  STRING        characters that digits should be bound to;
+
+  COMMANDS      symbols (command names) or other command
+                specifications supported by `al/bind-key'.
+
+Example to make \"C-x 8 <N>\" insert superscript digits and
+to make \"C-x 8 C-<N>\" insert subscript digits:
+
+  (al/bind-digits
+    :map iso-transl-ctl-x-8-map
+    (nil \"⁰¹²³⁴⁵⁶⁷⁸⁹\")
+    (\"C-\" \"₀₁₂₃₄₅₆₇₈₉\"))"
+  (declare (indent 0))
+  (al/with-keywords args
+      (map start-from)
+    (let ((start (or start-from 0)))
+      `(al/bind-keys
+         :map ,map
+         ,@(mapcan (pcase-lambda (`(,prefix . ,rest))
+                     (seq-map-indexed
+                      (lambda (cmd n)
+                        (list (concat prefix
+                                      (number-to-string (+ start n)))
+                              cmd))
+                      (if (stringp (car rest))
+                          (car rest)
+                        rest)))
+                   %body)))))
+
 
-;;; Binding keys from maps
+;;; Binding keys from variables
 
 (defvar al/default-keys-variables nil
   "Default list of variables used by `al/bind-keys-from-vars'.")
