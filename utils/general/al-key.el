@@ -53,18 +53,19 @@
 
 (defun al/key-command (cmd-spec)
   "Return command value for `al/bind-key' macro."
-  (cond ((null cmd-spec) nil)
-        ((listp cmd-spec)
-         (if (eq (car cmd-spec) 'lambda)
-             cmd-spec
-           `(lambda () (interactive) ,@cmd-spec)))
-        ((stringp cmd-spec)
-         (key-parse cmd-spec))
-        ((and (symbolp cmd-spec)
-              (not (commandp cmd-spec))
-              (boundp cmd-spec))
-         cmd-spec)
-        (t `',cmd-spec)))
+  (and cmd-spec
+       (let ((spec (if (listp cmd-spec)
+                       (car cmd-spec)
+                     cmd-spec)))
+         (pcase spec
+           ((pred stringp) (key-parse spec))
+           ((pred characterp) (vector spec))
+           ((pred symbolp)
+            (if (and (boundp spec)
+                     (not (commandp spec)))
+                spec
+              `',spec))
+           (_ `(lambda () (interactive) ,@cmd-spec))))))
 
 (defmacro al/bind-key (key-name command &optional keymap)
   "Bind KEY-NAME to COMMAND in KEYMAP.
@@ -73,10 +74,12 @@ KEY-NAME should be a string or a vector taken by `define-key'.
 
 COMMAND may be either:
 
-  - nil (to unbind the key if it is already bound in KEYMAP),
+  - nil to unbind the key if it is already bound in KEYMAP;
+
+  - a character or a string;
 
   - an unquoted symbol, which is either a command or a variable with
-    keymap,
+    keymap;
 
   - or a list (it will be wrapped into interactive `lambda' form).
 
@@ -85,7 +88,7 @@ If KEYMAP is not specified, use `global-map'.
 Examples:
 
   (al/bind-key \"C-f\" nil)
-  (al/bind-key \"C--\" \"–\" key-translation-map)
+  (al/bind-key \"C--\" ?– key-translation-map)
   (al/bind-key \"C-j\" newline lisp-mode-map)
   (al/bind-key [return] newline-and-indent lisp-mode-shared-map)
   (al/bind-key \"C-s-b\" ((backward-word) (backward-char)))"
@@ -125,7 +128,14 @@ optional keywords are available:
 
   `:prefix-doc' docstring of the prefix map variable.
 
-The rest ARGS are conses of key binding and command specifications.
+The rest ARGS may have one of the following forms:
+
+  KEY-NAME      to unbind this key;
+
+  (KEY-NAME CMD-SPEC) or
+  (KEY-NAME CMD-SPEC ...)
+                to bind KEY-NAME to CMD-SPEC
+
 See `al/bind-key' for details."
   (declare (indent 0))
   (al/with-keywords args
