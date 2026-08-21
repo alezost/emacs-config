@@ -43,8 +43,8 @@
   ("C-c C-f"   . w3m-next-buffer)
   ("C-c C-b"   . w3m-previous-buffer))
 
-(al/w3m-bind-number-keys #'al/w3m-switch-to-buffer)
-(al/w3m-bind-number-keys #'al/w3m-kill-buffer "k")
+(al/w3m-bind-digits #'al/w3m-switch-to-buffer)
+(al/w3m-bind-digits #'al/w3m-kill-buffer "k")
 
 (setq
  w3m-add-user-agent nil

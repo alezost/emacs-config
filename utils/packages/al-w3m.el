@@ -105,22 +105,20 @@ Buffers are enumerated from 1."
   (interactive "NKill w3m buffer number: ")
   (al/w3m-buffer-number-action #'kill-buffer arg))
 
-(defmacro al/w3m-bind-number-keys (fun &optional kbd-prefix)
-  "Bind number keys (1-9) to a command that takes a numeric argument.
-For example to bind \"N\" keys for switching to w3m buffers (tabs)
+(defmacro al/w3m-bind-digits (fun &optional prefix)
+  "Bind digit keys (1-9) to a command that takes a numeric argument.
+
+For example, to bind \"N\" keys for switching to w3m buffers (tabs)
 and to bind \"k N\" keys for killing w3m buffers, use:
 
-  (al/w3m-bind-number-keys \\='al/w3m-switch-to-buffer)
-  (al/w3m-bind-number-keys \\='al/w3m-kill-buffer \"k\")"
-  (let ((numbers (number-sequence 1 9))
-        (prefix (and kbd-prefix (concat kbd-prefix " "))))
-    `(progn
-       ,@(mapcar (lambda (n)
-                   `(al/bind-key ,(concat prefix (number-to-string n))
-                      (lambda () (interactive)
-                        (funcall ,fun ,n))
-                      w3m-mode-map))
-                 numbers))))
+  (al/w3m-bind-digits \\='al/w3m-switch-to-buffer)
+  (al/w3m-bind-digits \\='al/w3m-kill-buffer \"k\")"
+  `(al/bind-digits
+     :map w3m-mode-map
+     :start-from 1
+     ,(cons prefix
+            (mapcar (lambda (n) `(funcall ,fun ,n))
+                    (number-sequence 1 9)))))
 
 (provide 'al-w3m)
 
