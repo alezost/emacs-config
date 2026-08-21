@@ -2230,6 +2230,14 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   (mwim "mwim")
   (imenu "imenu")
   (imenus "imenus")
+  (comp-run
+   (setq native-comp-async-warnings-errors-kind 'all
+         ;; Native compilation is useless for files with variable
+         ;; settings, key definitions, etc.  Moreover, almost all my
+         ;; settings files will not be compiled by JIT compiler anyway
+         ;; because they contain no functions or macros.
+         native-comp-jit-compilation-deny-list
+         (list (regexp-opt (list al/emacs-settings-dir)))))
   (tramp-sh
    (push 'tramp-own-remote-path tramp-remote-path)
    (push "LC_ALL=en_US.UTF-8" tramp-remote-process-environment)
