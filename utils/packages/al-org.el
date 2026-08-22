@@ -138,11 +138,11 @@ row."
 
 ;;; Links
 
-(declare-function al/browse-youtube-video "al-browse-url")
+(declare-function al/browse-youtube-video "al-browse-url-cmd")
 
 (defun al/org-browse-youtube (id)
   "Browse youtube video or playlist with ID from `org-mode'."
-  (require 'al-browse-url)
+  (require 'al-browse-url-cmd)
   (cl-multiple-value-bind (id time)
       (split-string id "::")
     (al/browse-youtube-video id time)))
