@@ -33,8 +33,8 @@
 
 (al/defun-lazy tui/translate-languages
   "Return list of available languages for minibuffer completion."
-  (let* ((name-fun  (lambda (assoc)
-                      (concat (cdr assoc) " (" (car assoc) ")")))
+  (let* ((name-fun  (pcase-lambda (`(,name . ,code))
+                      (concat code " (" name ")")))
          (top-langs nil)
          (langs     (seq-keep
                      (lambda (assoc)
