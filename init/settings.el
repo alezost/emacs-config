@@ -1175,11 +1175,15 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
         lisp-interaction-mode-map)
     'al/elisp-keys)
 
+  ;; `elisp--form-quoted-p' is used only by `elisp-completion-at-point'
+  ;; to define if all types of symbols should be completed or only
+  ;; variables.  I always want to complete all symbols!
+  (advice-add 'elisp--form-quoted-p :override #'always)
+
   (al/require al-elisp))
 
 (al/eval-after-load al-elisp
-  (al/elisp-add-font-lock-keywords)
-  (advice-add 'elisp--form-quoted-p :override #'al/elisp-form-quoted-p))
+  (al/elisp-add-font-lock-keywords))
 
 (al/eval-settings-after-load
   (ielm "ielm")

@@ -19,14 +19,8 @@
 
 (eval-when-compile
   (require 'al-aux-macros))
-(require 'al-visual)
 
-(defun al/elisp-form-quoted-p (&rest _)
-  "Replacement for `elisp--form-quoted-p'.
-That function is used only by `elisp-completion-at-point' to define if
-all types of symbols should be completed or only variables.
-I always want to complete all symbols!"
-  t)
+(require 'al-visual)
 
 
 ;;; Highlighting and indenting additional macros
