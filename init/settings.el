@@ -2113,7 +2113,14 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
  echo-keystrokes 0.2
  disabled-command-function nil
  inhibit-startup-screen t
- source-directory (al/src-dir-file "emacs")
+
+ ;; Set `find-function-C-source-directory' instead of
+ ;; `source-directory'.  Otherwise, "trampver.el" will run "git" (twice)
+ ;; on load to set `tramp-repository-branch' and
+ ;; `tramp-repository-version' v̶a̶r̶i̶a̶b̶l̶e̶s̶ constants (so
+ ;; setting them here won't help since `defconst' always reevaluates).
+ source-directory nil
+ find-function-C-source-directory (al/src-dir-file "emacs/src")
 
  enable-local-variables :safe
  enable-dir-local-variables nil
