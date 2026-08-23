@@ -21,6 +21,7 @@
   (require 'al-aux-macros)
   (require 'fp-utils)
   (require 'let-macros))
+
 (require 'seq)
 (require 'al-buffer)
 
@@ -82,6 +83,25 @@ If CHARSET is nil, use `unicode-bmp'.  With prefix, use `unicode-smp'."
   (interactive)
   (al/switch-to-buffer-or-funcall
    "*Faces*" #'list-faces-display))
+
+;;;###autoload
+(defun al/switch-to-scratch ()
+  "Switch to the scratch buffer."
+  (interactive)
+  ;; Not using `get-scratch-buffer-create' because I know better what I
+  ;; want from the scratch buffer.
+  (let ((buffer (get-buffer-create "*scratch*")))
+    (when (zerop (buffer-size buffer))
+      (with-current-buffer buffer
+        (insert (format (concat ";; Started: %s\n"
+                                ";; Init time: %s\n\n")
+                        (format-time-string "%d %B, %A %T"
+                                            before-init-time)
+                        (emacs-init-time)))
+        (save-excursion
+          (insert (make-string 5 ?\n)))
+        (funcall initial-major-mode)))
+    (al/display-buffer buffer)))
 
 
 ;;; Switching to previous buffers

@@ -810,7 +810,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("g" (al/display-buffer "*grep*"))
   ("o" (al/display-buffer "*Occur*"))
   ("h" (al/display-buffer "*Help*"))
-  ("s" (al/display-buffer "*scratch*"))
+  ("s" al/switch-to-scratch)
   ("P" list-processes)
   ("E" list-environment)
   ("e" emoji-list)
@@ -1419,12 +1419,12 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
  initial-buffer-choice #'messages-buffer
  message-log-max 5000)
 
-(defun al/set-scratch-message ()
-  (setq initial-scratch-message
-        (format (concat ";; Started: %s\n"
-                        ";; Init time: %s\n\n")
-                (format-time-string "%d %B, %A %T" before-init-time)
-                (emacs-init-time))))
+;; *scratch* buffer exists before `early-init-file' is loaded but it is
+;; set up after `after-init-hook' is run if it still exists (see
+;; `command-line').  Kill it, and set it up only when needed (on
+;; `al/switch-to-scratch' call).
+(when-let* ((buf (get-buffer "*scratch*")))
+  (kill-buffer buf))
 
 (defun al/reinit-messages-buffer ()
   "Initialize `messages-buffer-mode-hook' in a message buffer."
@@ -1436,7 +1436,6 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   (setq buffer-read-only nil))
 
 (al/call-after-init
-  al/set-scratch-message
   al/reinit-messages-buffer)
 
 
