@@ -21,6 +21,7 @@
   (require 'cl-lib)
   (require 'al-aux-macros)
   (require 'fp-utils))
+
 (require 'seq)
 (require 'al-places)
 
@@ -243,6 +244,18 @@ Push added `load-path' to `al/load-paths'."
   (if (symbolp string-or-symbol)
       string-or-symbol
     (intern string-or-symbol)))
+
+(defun al/init-time (&optional format)
+  "Return a string with duration of my config initialization.
+This is similar to `emacs-init-time' except it returns the time passed
+from `al/before-init-time' to `al/after-init-time'."
+  (let ((before (bound-and-true-p al/before-init-time))
+        (after  (bound-and-true-p al/after-init-time)))
+    (if (and before after)
+        (format (or format "%f seconds")
+                (float-time (time-subtract after before)))
+      (al/warning-message
+       "`al/before-init-time' and `al/after-init-time' should be set"))))
 
 (provide 'al-general)
 

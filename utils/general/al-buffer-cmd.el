@@ -23,6 +23,7 @@
   (require 'let-macros))
 
 (require 'seq)
+(require 'al-general)
 (require 'al-buffer)
 
 
@@ -94,10 +95,12 @@ If CHARSET is nil, use `unicode-bmp'.  With prefix, use `unicode-smp'."
     (when (zerop (buffer-size buffer))
       (with-current-buffer buffer
         (insert (format (concat ";; Started: %s\n"
-                                ";; Init time: %s\n\n")
+                                ";; Wrong init time: %s\n"
+                                ";;  Real init time: %s\n\n")
                         (format-time-string "%d %B, %A %T"
                                             before-init-time)
-                        (emacs-init-time)))
+                        (emacs-init-time)
+                        (al/init-time)))
         (save-excursion
           (insert (make-string 5 ?\n)))
         (funcall initial-major-mode)))

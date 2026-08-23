@@ -1430,17 +1430,20 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 (when-let* ((buf (get-buffer "*scratch*")))
   (kill-buffer buf))
 
-(defun al/reinit-messages-buffer ()
-  "Initialize `messages-buffer-mode-hook' in a message buffer."
+(defun al/finalize-messages-buffer ()
   (with-current-buffer (messages-buffer)
-    (messages-buffer-mode)))
+    (messages-buffer-mode)
+    (al/setq-no-warnings al/after-init-time (current-time))
+    (insert "Config init time: " (al/init-time) "\n\f\n")))
 
 (al/eval-at-hook messages-buffer-mode-hook
   (al/funcall 'hl-todo-mode)
   (setq buffer-read-only nil))
 
 (al/call-after-init
-  al/reinit-messages-buffer)
+  ;; This init hook should be the last one to set `al/after-init-time'.
+  :depth 100
+  al/finalize-messages-buffer)
 
 
 ;;; EMMS
