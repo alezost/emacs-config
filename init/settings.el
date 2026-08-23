@@ -1180,7 +1180,11 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ;; variables.  I always want to complete all symbols!
   (advice-add 'elisp--form-quoted-p :override #'always)
 
-  (al/require al-elisp))
+  ;; See comment for `lisp-mode-hook' above.
+  (al/eval-at-hook emacs-lisp-mode-hook
+    :once t
+    (al/require al-elisp)
+    (emacs-lisp-mode)))
 
 (al/eval-after-load al-elisp
   (al/elisp-add-font-lock-keywords))
