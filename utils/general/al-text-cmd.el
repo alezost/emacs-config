@@ -464,19 +464,19 @@ the word.  It should accept a number of modified words as argument."
 
 ;;;###autoload
 (defun al/beginning-of-line ()
-  "Move point to beginning of current line.
-If the point is in the beginning of line already,
-move to beginning of previous one."
+  "Move point to beginning of current line."
   (interactive)
-  (beginning-of-line (if (= (point) (pos-bol)) 0 1)))
+  (if (fboundp 'mwim-beginning)
+      (mwim-beginning)
+    (beginning-of-line)))
 
 ;;;###autoload
 (defun al/end-of-line ()
-  "Move point to end of current line.
-If the point is in the end of line already,
-move to end of next one."
+  "Move point to end of current line."
   (interactive)
-  (end-of-line (if (= (point) (pos-eol)) 2 1)))
+  (if (fboundp 'mwim-end)
+      (mwim-end)
+    (end-of-line)))
 
 ;;;###autoload
 (defun al/recenter-top ()

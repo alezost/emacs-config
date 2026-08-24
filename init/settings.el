@@ -277,13 +277,13 @@
   ("H-M-e" scroll-other-window)
   ("s-e"   al/next-link)
 
+  ("C-⇤"   al/beginning-of-line)
   ("C-M-⇤" beginning-of-defun)
-  ("M-S-⇤" al/beginning-of-line)
   ("H-a"   al/beginning-of-buffer)
   ("C-x a" beginning-of-buffer)
 
+  ("C-⇥"   al/end-of-line)
   ("C-M-⇥" end-of-defun)
-  ("M-S-⇥" al/end-of-line)
   ("H-i"   al/end-of-buffer)
   ("C-x i" end-of-buffer)
 
@@ -317,8 +317,8 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
       ("M-e" next-line)
       ("M-o" backward-char)
       ("M-u" forward-char)
-      ("M-a" beginning-of-line)
-      ("M-i" end-of-line)
+      ("M-a" al/beginning-of-line)
+      ("M-i" al/end-of-line)
       ("M->" scroll-down-command)
       ("M-E" scroll-up-command)
       ("C-M-e" parens-forward-down)
@@ -335,15 +335,6 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
       ;; bindings have a priority over the non-translated ones.
       ("M-i" al/insert-map))
     (setq al/last-frame-keys 'graphical)))
-
-(al/eval-after-init
-  (if (fboundp 'mwim-beginning)
-      (al/bind-keys
-        ("C-⇤" mwim-beginning)
-        ("C-⇥" mwim-end))
-    (al/bind-keys
-      ("C-⇤" beginning-of-line)
-      ("C-⇥" end-of-line))))
 
 (al/bind-keys
   :prefix-map al/point-pos-map
