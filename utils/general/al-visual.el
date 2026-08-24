@@ -130,6 +130,7 @@ This function is intended to be added to `ibuffer-mode-hook'."
           (ibuffer-sorting-mode (:eval (symbol-name ibuffer-sorting-mode)))
           (ibuffer-sorting-reversep "|r"))))
 
+;;;###autoload
 (defun al/mode-line-process-info ()
   "Return mode line construct for process of the current buffer."
   (al/with-face 'font-lock-constant-face
