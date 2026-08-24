@@ -14,23 +14,21 @@
 (require 'al-key)
 (require 'al-eshell)
 
-(defconst al/eshell-keys
-  '(("C-c r" . al/eshell-refresh-aliases)
-    ("RET" . al/eshell-send-input-maybe)
-    ("C-k" . al/eshell-kill-whole-line)
-    ("M-." . eshell-previous-input)
-    ("M-e" . eshell-next-input)
-    ("M->" . eshell-previous-prompt)
-    ("M-E" . eshell-next-prompt))
-  "Alist of auxiliary keys for `eshell-mode-map'.")
-(al/bind-keys-from-vars 'eshell-mode-map 'al/eshell-keys)
+(al/bind-keys
+  :map eshell-mode-map
+  ("RET"   al/eshell-send-input-maybe)
+  ("M-↑"   eshell-previous-input)
+  ("M-↓"   eshell-next-input)
+  ("M-S-↑" eshell-previous-prompt)
+  ("M-S-↓" eshell-next-prompt)
+  ("C-k"   al/eshell-kill-whole-line)
+  ("C-c r" al/eshell-refresh-aliases))
 
-(defconst al/eshell-hist-keys
-  '("<up>" "<down>"
-    ("M-r" . al/eshell-previous-matching-input-from-input)
-    ("M-s" . al/eshell-next-matching-input-from-input))
-  "Alist of auxiliary keys for `eshell-hist-mode-map'.")
-(al/bind-keys-from-vars 'eshell-hist-mode-map 'al/eshell-hist-keys)
+(al/bind-keys
+  :map eshell-hist-mode-map
+  "<up>" "<down>"
+  ("M-r" al/eshell-previous-matching-input-from-input)
+  ("M-s" al/eshell-next-matching-input-from-input))
 
 (setq
  eshell-modules-list

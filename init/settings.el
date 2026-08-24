@@ -116,10 +116,10 @@
   "List of miscellaneous keys that should be unbound.")
 
 (defconst al/lazy-moving-keys
-  '(("o" backward-char)
-    ("u" forward-char)
-    ("." previous-line)
-    ("e" next-line))
+  '(("←" backward-char)
+    ("→" forward-char)
+    ("↑" previous-line)
+    ("↓" next-line))
   "Alist of auxiliary keys for lazy moving.")
 
 (defconst al/lazy-scrolling-keys
@@ -128,15 +128,15 @@
   "Alist of auxiliary keys for lazy scrolling.")
 
 (defconst al/button-keys
-  '(("." backward-button)
-    ("e" forward-button)
-    ("u" push-button))
+  '(("↑" backward-button)
+    ("↓" forward-button)
+    ("→" push-button))
   "Alist of auxiliary keys for modes with buttons.")
 
 (defconst al/minibuffer-keys
   '("C-j" ; to insert newlines during evaluating expressions
-    ("M-." previous-history-element)
-    ("M-e" next-history-element))
+    ("M-↑" previous-history-element)
+    ("M-↓" next-history-element))
   "Alist of auxiliary keys for minibuffer modes.")
 
 (setq al/default-keys-variables
@@ -247,39 +247,43 @@
   backward-word)
 
 (al/bind-keys
-  ("C-o"   backward-char)
-  ("M-o"   al/skip-parens-or-backward-word)
-  ("C-M-o" parens-backward)
-  ("M-O"   backward-sentence)
+  ("C-←"   backward-char)
+  ("M-←"   al/skip-parens-or-backward-word)
+  ("C-M-←" parens-backward)
+  ("M-S-←" backward-sentence)
   ("C-H-M-o" (scroll-right 1))
 
-  ("C-u"   forward-char)
-  ("M-u"   al/skip-parens-or-forward-word)
-  ("C-M-u" parens-forward)
-  ("M-U"   forward-sentence)
+  ("C-→"   forward-char)
+  ("M-→"   al/skip-parens-or-forward-word)
+  ("C-M-→" parens-forward)
+  ("M-S-→" forward-sentence)
   ("C-H-M-u" (scroll-left 1))
 
-  ("C-."   previous-line)
-  ("C-M-." parens-backward-up)
+  ("C-↑"   previous-line)
+  ("M-↑"   backward-paragraph)
+  ("C-M-↑" parens-backward-up)
+  ("M-S-↑" backward-page)
   ("C-H-M-." (scroll-down 1))
   ("H-."   scroll-down-command)
   ("H-M-." scroll-other-window-down)
   ("s-."   al/previous-link)
 
-  ("C-e"   next-line)
-  ("C-M-e" parens-forward-down)
+  ("C-↓"   next-line)
+  ("M-↓"   forward-paragraph)
+  ("C-M-↓" parens-forward-down)
+  ("M-S-↓" forward-page)
   ("C-H-M-e" (scroll-up 1))
   ("H-e"   scroll-up-command)
   ("H-M-e" scroll-other-window)
   ("s-e"   al/next-link)
 
-  ("C-M-a" beginning-of-defun)
-  ("M-A"   al/beginning-of-line)
+  ("C-M-⇤" beginning-of-defun)
+  ("M-S-⇤" al/beginning-of-line)
   ("H-a"   al/beginning-of-buffer)
   ("C-x a" beginning-of-buffer)
 
-  ("C-M-i" end-of-defun)
-  ("M-I"   al/end-of-line)
+  ("C-M-⇥" end-of-defun)
+  ("M-S-⇥" al/end-of-line)
   ("H-i"   al/end-of-buffer)
   ("C-x i" end-of-buffer)
 
@@ -324,11 +328,11 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 (al/eval-after-init
   (if (fboundp 'mwim-beginning)
       (al/bind-keys
-        ("C-a" mwim-beginning)
-        ("C-i" mwim-end))
+        ("C-⇤" mwim-beginning)
+        ("C-⇥" mwim-end))
     (al/bind-keys
-      ("C-a" beginning-of-line)
-      ("C-i" end-of-line))))
+      ("C-⇤" beginning-of-line)
+      ("C-⇥" end-of-line))))
 
 (al/bind-keys
   :prefix-map al/point-pos-map
@@ -359,16 +363,16 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 ;;; Text editing: inserting, deleting, yanking, etc.
 
 (al/bind-keys
-  ("C-,"   delete-char)
-  ("M-,"   parens-kill-word-forward)
-  ("C-M-," parens-kill-sexp-forward)
-  ("M-<"   kill-line)
+  ("C-↷"   delete-char)
+  ("M-↷"   parens-kill-word-forward)
+  ("C-M-↷" parens-kill-sexp-forward)
+  ("M-S-↷" kill-line)
   ("H-M-," al/delete-blank-lines)
 
-  ("C-p"   delete-backward-char)
-  ("M-p"   parens-kill-word-backward)
-  ("C-M-p" parens-kill-sexp-backward)
-  ("M-P"   al/backward-kill-line)
+  ("C-↶"   delete-backward-char)
+  ("M-↶"   parens-kill-word-backward)
+  ("C-M-↶" parens-kill-sexp-backward)
+  ("M-S-↶" al/backward-kill-line)
   ("H-M-p" delete-trailing-whitespace)
 
   ("M-q"   al/fill-paragraph)
@@ -698,9 +702,9 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 
 (al/eval-after-load replace
   (defconst al/occur-keys
-    '(("." occur-prev)
-      ("e" occur-next)
-      ("u" occur-mode-goto-occurrence))
+    '(("↑" occur-prev)
+      ("↓" occur-next)
+      ("→" occur-mode-goto-occurrence))
     "Alist of auxiliary keys for `occur-mode-map'.")
   (al/bind-keys-from-vars 'occur-mode-map 'al/occur-keys)
 
@@ -753,8 +757,8 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 
 (al/bind-keys
   :map completion-list-mode-map
-  ("." previous-completion)
-  ("e" next-completion))
+  ("↑" previous-completion)
+  ("↓" next-completion))
 
 (al/eval-after-load al-complete
   :load after-init
@@ -1340,8 +1344,8 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 (al/eval-after-load help-mode
   (al/bind-keys
     :map help-mode-map
-    ("," help-go-back)
-    ("p" help-go-forward))
+    ("↷" help-go-back)
+    ("↶" help-go-forward))
 
   (al/call-at-hook help-mode-hook al/no-truncate-lines))
 
