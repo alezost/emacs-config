@@ -39,8 +39,21 @@
   :name al/graphical-frame-key-translations
   :terminal graphical
   :once t
+  ;; "C-m" and "RET" are the same key.  One way to distinguish them is
+  ;; to use "<return>" instead of "RET" but "RET" is usually bound to
+  ;; something sane in various modes (starting from `newline' in
+  ;; `global-map') while "<return>" is rarely bound.  Alternative
+  ;; approach is to rename "C-m" key as follows, so the default "RET"
+  ;; bindings stay untouched and "<ctrl-m>" is free to use.
   (key-translate "C-m" "<ctrl-m>")
-  (key-translate "C-i" "<ctrl-i>"))
+
+  ;; "C-i" and "TAB" are also the same key.  However, I do not do the
+  ;; same as above here because I almost always want "TAB" to be bound
+  ;; to my `al/tab' command.  So I bind it to "<tab>" and use "C-i" for
+  ;; other things.
+  ;;
+  ;; (key-translate "C-i" "<ctrl-i>")
+  )
 
 
 ;;; Keys for multiple maps
@@ -51,7 +64,7 @@
     "C-." "M-." "C-M-." "M->"
     "C-e" "M-e" "C-M-e" "M-E"
     "C-a" "M-a" "C-M-a" "M-A"
-    "<ctrl-i>" "M-i" "C-M-i" "M-I")
+    "C-i" "M-i" "C-M-i" "M-I")
   "List of moving keys that should be unbound.")
 
 (defconst al/free-editing-keys
@@ -285,10 +298,10 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   (if (fboundp 'mwim-beginning)
       (al/bind-keys
         ("C-a" mwim-beginning)
-        ("<ctrl-i>" mwim-end))
+        ("C-i" mwim-end))
     (al/bind-keys
       ("C-a" beginning-of-line)
-      ("<ctrl-i>" end-of-line))))
+      ("C-i" end-of-line))))
 
 (al/bind-keys
   :prefix-map al/point-pos-map
@@ -768,9 +781,9 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   company-complete)
 
 (al/bind-keys
-  ("TAB" al/tab)
-  ("<backtab>" completion-at-point)
-  ("<M-tab>" al/complete-elisp-symbol))
+  ([tab]     al/tab)
+  ([backtab] completion-at-point)
+  ([M-tab]   al/complete-elisp-symbol))
 
 (al/eval-settings-after-load
   (icomplete "icomplete")
@@ -1528,7 +1541,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("p"   guix-profiles)
   ("H-p" guix-set-current-profile)
   ("i"   al/guix-switch-to-package-info-buffer)
-  ("<ctrl-i>" al/guix-switch-to-generation-info-buffer)
+  ("C-i" al/guix-switch-to-generation-info-buffer)
   ("l"   al/guix-switch-to-package-list-buffer)
   ("C-l" al/guix-switch-to-generation-list-buffer)
   ("u"   al/guix-commit-url))
@@ -2089,7 +2102,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("b"   org-switchb)
   ("i"   org-toggle-inline-images)
   ("e"   org-export)
-  ("TAB" org-indent-mode))
+  ([tab] org-indent-mode))
 
 (al/autoload "pdf-view" pdf-view-mode)
 

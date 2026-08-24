@@ -27,9 +27,9 @@
 (al/bind-keys-from-vars 'sly-db-mode-map 'al/sly-db-keys)
 
 (defconst al/sly-db-frame-keys
-  '(("TAB" . sly-db-toggle-details)
-    ("d"   . sly-db-show-frame-source)
-    ("v"   . sly-db-eval-in-frame)))
+  '(([tab] sly-db-toggle-details)
+    ("d"   sly-db-show-frame-source)
+    ("v"   sly-db-eval-in-frame)))
 (al/bind-keys-from-vars 'sly-db-frame-map
   '(al/sly-db-frame-keys al/button-keys))
 
@@ -38,8 +38,7 @@
 (al/bind-keys-from-vars 'sly-doc-map 'al/sly-doc-keys)
 
 (defconst al/sly-repl-keys
-  '("TAB"
-    ("C-c C-d" . al/sly-repl-disconnect-or-quit)
+  '(("C-c C-d" . al/sly-repl-disconnect-or-quit)
     ("M-r" . comint-history-isearch-backward-regexp)
     ("M-." . sly-mrepl-previous-input-or-button)
     ("M-e" . sly-mrepl-next-input-or-button)

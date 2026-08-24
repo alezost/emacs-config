@@ -26,7 +26,7 @@
   ;; Use `minibuffer-local-completion-map' and
   ;; `minibuffer-local-must-match-map' above.
   '([remap minibuffer-complete-and-exit]
-    ("TAB" . icomplete-force-complete)
+    ([tab] . icomplete-force-complete)
     ("C-j" . exit-minibuffer)
     ("M-k" . al/minibuffer-copy-current-completion)
     ("C-." . icomplete-backward-completions)

@@ -3,11 +3,10 @@
 (require 'agent-shell)
 (require 'al-key)
 
-(defconst al/agent-shell-keys
-  '(("RET" . shell-maker-submit)
-    ("TAB" . al/agent-next-item-or-complete))
-  "Alist of auxiliary keys for `agent-shell-mode-map'.")
-(al/bind-keys-from-vars 'agent-shell-mode-map 'al/agent-shell-keys t)
+(al/bind-keys
+  :map agent-shell-mode-map
+  ("RET" shell-maker-submit)
+  ([tab] al/agent-next-item-or-complete))
 
 (setq
  agent-shell-preferred-agent-config 'qwen-code)

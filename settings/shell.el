@@ -11,7 +11,7 @@
 (require 'al-shell)
 
 (defconst al/shell-keys
-  '("TAB" "M-?"
+  '("M-?"
     ("M-O" . shell-backward-command)
     ("M-U" . shell-forward-command))
   "Alist of auxiliary keys for `shell-mode-map'.")

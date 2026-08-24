@@ -47,11 +47,11 @@
   (al/clean-map 'pdf-outline-minor-mode-map)
 
   (defconst al/pdf-outline-buffer-keys
-    '(("TAB" . outline-cycle)
-      ("i" . pdf-outline-select-pdf-window)
-      ("u" . pdf-outline-follow-link)
-      ("d" . pdf-outline-display-link)
-      ("q" . quit-window)))
+    '(([tab] outline-cycle)
+      ("i" pdf-outline-select-pdf-window)
+      ("u" pdf-outline-follow-link)
+      ("d" pdf-outline-display-link)
+      ("q" quit-window)))
   (al/bind-keys-from-vars 'pdf-outline-buffer-mode-map
     '(al/lazy-moving-keys
       al/lazy-scrolling-keys

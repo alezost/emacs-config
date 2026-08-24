@@ -26,7 +26,7 @@
     [remap forward-paragraph]
     [remap backward-paragraph]
     ("RET" . al/org-return)
-    ("TAB" . al/org-tab)
+    ("<tab>" . al/org-tab)
     ("M-<return>" . org-meta-return)
     ("M->" . outline-previous-visible-heading)
     ("M-E" . outline-next-visible-heading)
