@@ -6,6 +6,7 @@
 (require 'ibuffer)
 (require 'al-general)
 (require 'al-key)
+(require 'al-visual)
 
 (defconst al/ibuffer-keys
   '(("u"   . ibuffer-visit-buffer)
@@ -29,8 +30,11 @@
 
 (setq ibuffer-default-sorting-mode 'recency)
 
-(al/call-at-hook ibuffer-mode-hook
-  al/mode-ibuffer-info
-  hl-line-mode)
+(al/eval-at-hook ibuffer-mode-hook
+  (hl-line-mode)
+  (setq al/mode-info
+        '(""
+          (ibuffer-sorting-mode (:eval (symbol-name ibuffer-sorting-mode)))
+          (ibuffer-sorting-reversep "|r"))))
 
 ;;; ibuffer.el ends here

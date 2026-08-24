@@ -120,17 +120,6 @@ CHARACTERS in `set-fontset-font'."
 (put 'al/mode-info 'risky-local-variable t)
 
 ;;;###autoload
-(defun al/mode-ibuffer-info ()
-  ;; TODO This function should be moved to "al-ibuffer.el"… which does
-  ;; not exist.
-  "Set `al/mode-info' to the additional info for `ibuffer-mode'.
-This function is intended to be added to `ibuffer-mode-hook'."
-  (setq al/mode-info
-        '(""
-          (ibuffer-sorting-mode (:eval (symbol-name ibuffer-sorting-mode)))
-          (ibuffer-sorting-reversep "|r"))))
-
-;;;###autoload
 (defun al/mode-line-process-info ()
   "Return mode line construct for process of the current buffer."
   (al/with-face 'font-lock-constant-face
