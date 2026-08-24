@@ -2173,6 +2173,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   (when-let* ((name (al/server-name)))
     (setq al/server-running? t)
     (when (equal name "emms")
+      (setq initial-major-mode #'text-mode)
       (al/with-check
         :var '(al/mail-user-name   ; defined in "net.el"
                al/mail-user-name2) ; defined in "custom.el"
