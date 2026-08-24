@@ -295,7 +295,7 @@
   :map narrow-map
   ("r" narrow-to-region))
 
-(defvar al/last-frame-keys nil
+(defvar al/last-frame-keys 'graphical
   "Last frame type where some special keys were set.
 Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 
@@ -304,12 +304,26 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   :terminal text
   (unless (eq al/last-frame-keys 'text)
     (al/bind-keys
+      ;; Some of my main keybindings do not work in a text terminal (in
+      ;; virtual terminal), in particular, nothing happens when "C-." or
+      ;; "C-," is pressed.  As a workaround, bind "M-" keys to simple
+      ;; moving/editing in a text terminal.
+      ;;
+      ;; Arrow keys work only with "C-" modifier in a text terminal, so
+      ;; bind the original (non-translated) keys here.
+      ("M-," delete-char)
+      ("M-p" delete-backward-char)
       ("M-." previous-line)
       ("M-e" next-line)
+      ("M-o" backward-char)
+      ("M-u" forward-char)
       ("M-a" beginning-of-line)
       ("M-i" end-of-line)
       ("M->" scroll-down-command)
-      ("M-E" scroll-up-command))
+      ("M-E" scroll-up-command)
+      ("C-M-e" parens-forward-down)
+      ("C-M-o" parens-backward)
+      ("C-M-u" parens-forward))
     (setq al/last-frame-keys 'text)))
 
 (al/eval-after-frame-init
@@ -317,12 +331,9 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   :terminal graphical
   (unless (eq al/last-frame-keys 'graphical)
     (al/bind-keys
-      ("M-." backward-paragraph)
-      ("M-e" forward-paragraph)
-      ("M-a" backward-sentence)
-      ("M-i" al/insert-map)
-      ("M->" backward-page)
-      ("M-E" forward-page))
+      ;; No need to restore other "M-" keys because my arrow key
+      ;; bindings have a priority over the non-translated ones.
+      ("M-i" al/insert-map))
     (setq al/last-frame-keys 'graphical)))
 
 (al/eval-after-init
