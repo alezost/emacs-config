@@ -27,6 +27,33 @@
 
 ;;; Key translations
 
+(al/translate-keys ("" "C-" "M-" "C-M-")
+  (?. ?↑)
+  (?e ?↓)
+  (?o ?←)
+  (?u ?→)
+  (?a ?⇤)
+  (?i ?⇥)
+  (?, ?↷)
+  (?p ?↶))
+
+;; Adding Shift modifiers to the above `al/translate-keys' call does not
+;; work because when we press "M-S-e", Emacs thinks that "M-E" is
+;; pressed.  We could use `upcase' as a workaround but it will not work
+;; for non-letter keys i.e., there is no way to tell that ">" is the
+;; same as "S-." (in Dvorak layout).  So we need to treat Shift key
+;; translations specially.
+(al/translate-keys ((""   "S-")
+                    ("M-" "M-S-"))
+  (?> ?↑)
+  (?E ?↓)
+  (?O ?←)
+  (?U ?→)
+  (?A ?⇤)
+  (?I ?⇥)
+  (?< ?↷)
+  (?P ?↶))
+
 (al/eval-after-frame-init
   :name al/any-frame-key-translations
   ;; Key translation can be done only once for a graphical frame but
