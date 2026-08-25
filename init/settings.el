@@ -182,17 +182,17 @@
   ("<XF86New>"   kmacro-end-or-call-macro)
   ("H-m s"       kmacro-start-macro-or-insert-counter)
   ("H-m RET"     kmacro-start-macro-or-insert-counter)
-  ("<C-f4>"      kmacro-start-macro-or-insert-counter)
-  ("<C-XF86New>" kmacro-start-macro-or-insert-counter)
+  ("C-<f4>"      kmacro-start-macro-or-insert-counter)
+  ("C-<XF86New>" kmacro-start-macro-or-insert-counter)
   ("H-m e"       kmacro-edit-macro)
   ("H-m C-d"     kmacro-edit-macro)
-  ("<M-f4>"      kmacro-edit-macro)
-  ("<M-XF86New>" kmacro-edit-macro)
+  ("M-<f4>"      kmacro-edit-macro)
+  ("M-<XF86New>" kmacro-edit-macro)
   ("H-m A"       (kmacro-call-macro 0))
 
-  ("<C-kp-add>"      text-scale-increase)
-  ("<C-kp-subtract>" text-scale-decrease)
-  ("<C-kp-multiply>" (text-scale-set 0))
+  ("C-<kp-add>"      text-scale-increase)
+  ("C-<kp-subtract>" text-scale-decrease)
+  ("C-<kp-multiply>" (text-scale-set 0))
 
   ("<f5>"  compile)
   ("C-="   describe-char)
@@ -415,7 +415,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 
   ("C-j" newline-and-indent)
   ("M-J" (delete-indentation -1))
-  ("<S-backspace>" delete-region)
+  ("S-<backspace>" delete-region)
   ("H-M-a" align-regexp)
   ("C-H-M-a" (align-regexp (region-beginning) (region-end)
                            "\\(\\s-*\\)(("))
@@ -427,16 +427,16 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("C-M-/" hippie-expand)
   ("M-?"   al/dabbrev-expand-word)
 
-  ("<C-kanji>"   al/downcase-word-backward)
-  ("<S-kanji>"   al/capitalize-word-backward)
-  ("<H-kanji>"   al/upcase-word-backward)
-  ("<C-M-kanji>" al/downcase-dwim)
-  ("<M-S-kanji>" al/capitalize-dwim)
-  ("<H-M-kanji>" al/upcase-dwim)
+  ("C-<kanji>"   al/downcase-word-backward)
+  ("S-<kanji>"   al/capitalize-word-backward)
+  ("H-<kanji>"   al/upcase-word-backward)
+  ("C-M-<kanji>" al/downcase-dwim)
+  ("M-S-<kanji>" al/capitalize-dwim)
+  ("H-M-<kanji>" al/upcase-dwim)
 
-  ("<C-tab>" indent-relative)
-  ("<M-S-iso-lefttab>" tab-to-tab-stop)
-  ("<H-tab>" indent-region)
+  ("C-<tab>" indent-relative)
+  ("M-S-<iso-lefttab>" tab-to-tab-stop)
+  ("H-<tab>" indent-region)
   ("C-c u" al/decode-region))
 
 (al/bind-keys
@@ -562,7 +562,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
    sp-wrap-entire-symbol 'globally))
 
 (al/bind-keys
-  ("<H-M-tab>" sp-indent-defun)
+  ("H-M-<tab>" sp-indent-defun)
   ("H-E"   paredit-splice-sexp)
   ("H-P"   paredit-splice-sexp-killing-backward)
   ("H-<"   paredit-splice-sexp-killing-forward)
@@ -785,7 +785,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
     ("M-s" al/minibuffer-shell-buffers))
   (al/bind-keys
     :map al/minibuffer-file-map
-    ("M-h"   (al/minibuffer-set-directory "~"))
+    ("M-h" (al/minibuffer-set-directory "~"))
     ("M-m" al/minibuffer-enter-magit-status)
     ("RET" icomplete-fido-ret)
     ("DEL" icomplete-fido-backward-updir))
@@ -905,10 +905,10 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
           display-buffer-same-window))))
 
 (al/bind-keys
-  ("<H-XF86AudioRaiseVolume>"   (enlarge-window 1 t))
-  ("<H-XF86AudioLowerVolume>"   (enlarge-window -1 t))
-  ("<M-H-XF86AudioRaiseVolume>" (enlarge-window 1))
-  ("<M-H-XF86AudioLowerVolume>" (enlarge-window -1))
+  ("H-<XF86AudioRaiseVolume>"   (enlarge-window 1 t))
+  ("H-<XF86AudioLowerVolume>"   (enlarge-window -1 t))
+  ("M-H-<XF86AudioRaiseVolume>" (enlarge-window 1))
+  ("M-H-<XF86AudioLowerVolume>" (enlarge-window -1))
   ("H-o"   al/other-window)
   ("H-M-o" al/switch-or-next-window)
   ("H-M-q" (quit-window nil (previous-window)))
@@ -1577,16 +1577,16 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("u"   al/guix-commit-url))
 
 (al/bind-keys
- :prefix-map al/aurel-map
- :prefix-doc "Map for aurel."
- :prefix-key "C-H-a"
- ("i"     al/switch-to-aurel-info)
- ("l"     al/switch-to-aurel-list)
- ("C-n"   aurel-package-info)
- ("p"     aurel-package-search)
- ("n"     aurel-package-search)
- ("m"     aurel-maintainer-search)
- ("I"     aurel-installed-packages))
+  :prefix-map al/aurel-map
+  :prefix-doc "Map for aurel."
+  :prefix-key "C-H-a"
+  ("i"   al/switch-to-aurel-info)
+  ("l"   al/switch-to-aurel-list)
+  ("C-n" aurel-package-info)
+  ("p"   aurel-package-search)
+  ("n"   aurel-package-search)
+  ("m"   aurel-maintainer-search)
+  ("I"   aurel-installed-packages))
 
 (al/setq-no-warnings
  quelpa-upgrade-p t
