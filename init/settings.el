@@ -476,6 +476,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 ;; Expand "C-x 8" (now "M-i") map:
 (al/bind-keys
   :map iso-transl-ctl-x-8-map
+  :check-map t
   ("a"     ?α)
   ("b"     ?β)
   ("g"     ?γ)
@@ -532,6 +533,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 ;; "M-i M-<N>" to insert subscript numbers.
 (al/bind-digits
   :map iso-transl-ctl-x-8-map
+  :check-map t
   (""   "⁰¹²³⁴⁵⁶⁷⁸⁹")
   ("M-" "₀₁₂₃₄₅₆₇₈₉"))
 
@@ -2196,6 +2198,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 
 (al/bind-keys
   :map process-menu-mode-map
+  :check-map t
   ("C-k" process-menu-delete-process))
 
 (al/eval-after-load al-process
