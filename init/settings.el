@@ -1181,7 +1181,8 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 (al/eval-after-load prog-mode
   (al/bind-keys
     :map prog-mode-map
-    ("<C-M-tab>" prog-indent-sexp))
+    :clean-map t
+    ("C-M-<tab>" prog-indent-sexp))
 
   (al/call-at-hook prog-mode-hook
     hl-line-mode
@@ -1191,11 +1192,12 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
     al/show-trailing-whitespace))
 
 (al/eval-after-load lisp-mode
-  (defconst al/lisp-shared-keys
-    '(("<C-M-tab>" al/indent-sexp))
-    "Alist of auxiliary keys for `lisp-mode-shared-map'.")
-  (al/bind-keys-from-vars 'lisp-mode-shared-map 'al/lisp-shared-keys)
-  (al/bind-keys-from-vars 'lisp-mode-map)
+  (al/bind-keys
+    :map lisp-mode-shared-map
+    :clean-map t
+    ("C-M-<tab>" al/indent-sexp)
+    ("C-c C-z" al/ielm-other-window))
+  (al/clean-keymap lisp-mode-map)
 
   (al/modify-page-break-syntax lisp-mode-syntax-table)
 
@@ -1213,13 +1215,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   (al/clisp-add-font-lock-keywords))
 
 (al/eval-after-load elisp-mode
-  (defconst al/elisp-keys
-    '(("C-c C-z" al/ielm-other-window))
-    "Alist of auxiliary keys for `emacs-lisp-mode-map'.")
-  (al/bind-keys-from-vars
-      '(emacs-lisp-mode-map
-        lisp-interaction-mode-map)
-    'al/elisp-keys)
+  (al/clean-keymap emacs-lisp-mode-map)
 
   ;; `elisp--form-quoted-p' is used only by `elisp-completion-at-point'
   ;; to define if all types of symbols should be completed or only
