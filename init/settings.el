@@ -1712,13 +1712,6 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 (defvar erc-log-channels-directory
   (al/emacs-data-dir-file "erc-log"))
 
-;; TODO use `al/add-to-auto-mode-alist'
-(push (cons (concat "\\`"
-                    (regexp-quote (expand-file-name
-                                   erc-log-channels-directory)))
-            'erc-view-log-mode)
-      auto-mode-alist)
-
 ;; Set `web-search-user-engines' here because the engines will be
 ;; generated during `web-search' package autoloading.
 (al/setq-no-warnings
@@ -2274,6 +2267,9 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   (syslog-mode append "/var/log.*\\'"
                ;;"\\.log\\'" not this because of ~/config/emacs/data/emacs-wget.log
                )
+  (erc-view-log-mode (concat "\\`"
+                             (regexp-quote (expand-file-name
+                                            erc-log-channels-directory))))
   (zapret-nfqws-mode "zapret.*\\.conf\\'")
   (emacs-lisp-mode "/emms/.+\\.pl\\'") ; my playlists in `emms-directory'
   (pdf-view-mode "\\.[pP][dD][fF]\\'")
