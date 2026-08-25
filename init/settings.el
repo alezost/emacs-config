@@ -473,7 +473,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("C-M--" ?—)
   ("M-i"   iso-transl-ctl-x-8-map))
 
-;; Expand "C-x 8" (now "M-i) map:
+;; Expand "C-x 8" (now "M-i") map:
 (al/bind-keys
   :map iso-transl-ctl-x-8-map
   ("a"     ?α)
@@ -510,23 +510,23 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("/23"   ?⅔)
   ("/14"   ?¼)
   ("/34"   ?¾)
-  ("C-."   ?·)
   ("<"     ?≤)
   (">"     ?≥)
   ("."     ?…)
-  ("M-p"   ?§)
-  ("M-v"   ?✓)
-  ("M-x"   ?✗)
-  ("C-u"   ?↔)
-  ("C-o"   ?⇆)
+  ("C-."   ?·)
   ("M-."   ?↑)
   ("M-e"   ?↓)
   ("M-o"   ?←)
   ("M-u"   ?→)
+  ("C-a"   ?⇤)
+  ("C-i"   ?⇥)
+  ("M-,"   ?↷)
+  ("M-p"   ?↶)
   ("C-M-." ?⇑)
   ("C-M-e" ?⇓)
   ("C-M-o" ?⇐)
-  ("C-M-u" ?⇒))
+  ("C-M-u" ?⇒)
+  ("<tab>" ?⇉))
 
 ;; "M-i <N>" to insert superscript numbers.
 ;; "M-i M-<N>" to insert subscript numbers.
