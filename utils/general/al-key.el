@@ -183,9 +183,9 @@ See `al/bind-key' for details."
 
 ARGS can start with the following optional keywords:
 
-  `:map'        keymap into which the key bindings should be added;
+  `:start-from' integer to start counting from (default is zero);
 
-  `:start-from' integer to start counting from (default is zero).
+  any other keyword supported by `al/bind-keys'.
 
 The rest ARGS have (PREFIX STRING) or (PREFIX COMMANDS ...) form, where:
 
@@ -207,10 +207,11 @@ to make \"C-x 8 C-<N>\" insert subscript digits:
     (\"C-\" \"₀₁₂₃₄₅₆₇₈₉\"))"
   (declare (indent 0))
   (al/with-keywords args
-      (map start-from)
+      (start-from)
+    :allow-other-keys t
     (let ((start (or start-from 0)))
       `(al/bind-keys
-         :map ,map
+         ,@%other-keys
          ,@(mapcan (pcase-lambda (`(,prefix . ,rest))
                      (seq-map-indexed
                       (lambda (cmd n)
