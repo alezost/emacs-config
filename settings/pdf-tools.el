@@ -44,7 +44,7 @@
   :override 'al/pdf-view-deactivate-region)
 
 (al/eval-after-load pdf-outline
-  (al/clean-map 'pdf-outline-minor-mode-map)
+  (al/clean-keymap pdf-outline-minor-mode-map)
 
   (defconst al/pdf-outline-buffer-keys
     '(([tab] outline-cycle)
@@ -61,10 +61,10 @@
 
 (al/eval-after-load pdf-links
   (setq pdf-links-convert-pointsize-scale 0.02)
-  (al/clean-map 'pdf-links-minor-mode-map))
+  (al/clean-keymap pdf-links-minor-mode-map))
 
 (al/eval-after-load pdf-history
-  (al/clean-map 'pdf-history-minor-mode-map)
+  (al/clean-keymap pdf-history-minor-mode-map)
   (al/bind-keys
    :map pdf-history-minor-mode-map
    ("," . pdf-history-backward)

@@ -50,7 +50,7 @@
 ;; contrib modules add commands to its hook.  So making only `sly-mode'
 ;; work instead of `sly-editing-mode' would require too much
 ;; configuration.  At least, clean its keymap.
-(al/clean-map 'sly-editing-mode-map)
+(al/clean-keymap sly-editing-mode-map)
 
 (setq
  sly-contribs
@@ -78,7 +78,7 @@
 (al/bind-keys-from-vars 'sly-prefix-map 'al/sly-prefix-keys)
 (al/bind-keys-from-vars 'sly-mode-map 'al/sly-keys)
 
-(al/clean-map 'sly-autodoc-mode-map)
+(al/clean-keymap sly-autodoc-mode-map)
 
 (setq
  inferior-lisp-program "sbcl"

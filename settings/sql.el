@@ -18,8 +18,7 @@
 (al/bind-keys-from-vars 'sql-mode-map 'al/sql-keys)
 
 ;; I just can't stand the default key bindings.
-(al/clean-map 'sql-interactive-mode-map)
-(set-keymap-parent sql-interactive-mode-map comint-mode-map)
+(al/clean-keymap sql-interactive-mode-map)
 
 (setq
  sql-product 'postgres

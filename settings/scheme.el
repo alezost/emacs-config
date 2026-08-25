@@ -23,6 +23,6 @@
   ;; I don't how this `xscheme' package is loaded from time to time but
   ;; it pollutes `scheme-mode-map' (in particular, it breaks my "M-o"
   ;; key binding).
-  (al/clean-map 'scheme-mode-map))
+  (al/clean-keymap scheme-mode-map))
 
 ;;; scheme.el ends here

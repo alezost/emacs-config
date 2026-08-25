@@ -390,11 +390,14 @@ VARS are variables with bindings supported by
 
 ;;; Misc
 
-(defun al/clean-map (map-var)
-  "Remove all key bindings from MAP-VAR variable with keymap."
-  (al/with-check
-    :var map-var
-    (setcdr (symbol-value map-var) nil)))
+(defun al/clean-keymap (keymap &optional clean-parent)
+  "Remove all key bindings from KEYMAP.
+If CLEAN-PARENT is non-nil, also remove the parent keymap."
+  (if clean-parent
+      (setcdr keymap nil)
+    (let ((parent (keymap-parent keymap)))
+      (setcdr keymap nil)
+      (set-keymap-parent keymap parent))))
 
 (provide 'al-key)
 
