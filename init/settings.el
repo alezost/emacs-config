@@ -2259,33 +2259,30 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 ;; is loaded.
 (al/setq-no-warnings tramp-ssh-controlmaster-options "")
 
-(al/eval-after-load al-file
-  :load t
-  (al/add-to-auto-mode-alist
-   `((sh-mode "/etc/profile\\'"
-              "bashrc\\'")
-     (conf-xdefaults-mode ,(al/file-regexp "Xmodmap"))
-     (conf-space-mode ,(al/file-regexp "mailmap" "gitignore"))
-     (conf-unix-mode ,(al/file-regexp
-                        "rules" "hwdb" "cnf" "map" "inc" "service"
-                        "target" "socket" "timer" "mount"))
-     (conf-unix-mode (".*rc\\'"
-                      "/etc/.*\\'")
-                     t)
-     (js-mode "/etc/polkit-1/rules\\.d/.+\\.rules")
-     (syslog-mode ("/var/log.*\\'"
-                   ;;"\\.log\\'" not this because of ~/config/emacs/data/emacs-wget.log
-                   )
-                  t)
-     (zapret-nfqws-mode "zapret.*\\.conf\\'")
-     (emacs-lisp-mode "/emms/.+\\.pl\\'") ; my playlists in `emms-directory'
-     (pdf-view-mode "\\.[pP][dD][fF]\\'")
-     (markdown-mode ,(al/file-regexp "mdown"))
-     (pkgbuild-mode "PKGBUILD\\'")
-     (java-mode ".*tmwa-server-data/world/map/npc/.*txt\\'")
-     (gtypist-mode ,(al/file-regexp "typ"))
-     (gnuplot-mode ,(al/file-regexp "plot"))
-     (maxima-mode ,(al/file-regexp "max")))))
+(al/add-to-auto-mode-alist
+  (sh-mode "/etc/profile\\'"
+           "bashrc\\'")
+  (conf-xdefaults-mode (al/file-regexp "Xmodmap"))
+  (conf-space-mode (al/file-regexp "mailmap" "gitignore"))
+  (conf-unix-mode (al/file-regexp
+                    "rules" "hwdb" "cnf" "map" "inc" "service"
+                    "target" "socket" "timer" "mount"))
+  (conf-unix-mode append
+                  ".*rc\\'"
+                  "/etc/.*\\'")
+  (js-mode "/etc/polkit-1/rules\\.d/.+\\.rules")
+  (syslog-mode append "/var/log.*\\'"
+               ;;"\\.log\\'" not this because of ~/config/emacs/data/emacs-wget.log
+               )
+  (zapret-nfqws-mode "zapret.*\\.conf\\'")
+  (emacs-lisp-mode "/emms/.+\\.pl\\'") ; my playlists in `emms-directory'
+  (pdf-view-mode "\\.[pP][dD][fF]\\'")
+  (markdown-mode (al/file-regexp "mdown"))
+  (pkgbuild-mode "PKGBUILD\\'")
+  (java-mode ".*tmwa-server-data/world/map/npc/.*txt\\'")
+  (gtypist-mode (al/file-regexp "typ"))
+  (gnuplot-mode (al/file-regexp "plot"))
+  (maxima-mode (al/file-regexp "max")))
 
 (al/eval-settings-after-load
   (mwim "mwim")

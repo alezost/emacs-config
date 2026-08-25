@@ -45,26 +45,6 @@ absolute file names."
                 subdirs)
       subdirs)))
 
-;;TODO maybe replace this with a macro and put to al-general ?
-(defun al/add-to-auto-mode-alist (specs)
-  "Add SPECS to `auto-mode-alist'.
-Each specification from SPECS list may have one of the following forms:
-
-  (MODE-NAME . REGEXPS)
-  (MODE-NAME REGEXP-OR-LIST t)
-
-REGEXP-OR-LIST is either a regexp (string), or a list of regexps.
-For the first form, specifications are added at the beginning of
-`auto-mode-alist'; for the second form it is added at the end."
-  (dolist (spec specs)
-    (pcase spec
-      (`(,mode ,re-or-lst t)
-       (dolist (regexp (al/list-maybe re-or-lst))
-         (add-to-list 'auto-mode-alist (cons regexp mode) 'append)))
-      (`(,mode . ,regexps)
-       (dolist (regexp regexps)
-         (add-to-list 'auto-mode-alist (cons regexp mode)))))))
-
 (defun al/append-files (in-files out-file &optional insert-file-names)
   "Insert the contents of IN-FILES into OUT-FILE.
 IN-FILES is a list of file names.

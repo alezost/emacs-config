@@ -140,6 +140,30 @@ v2 will be set, while v1 will not."
                     (setq ,var ,file-var))))
              (seq-partition body 2)))))
 
+(defmacro al/add-to-auto-mode-alist (&rest specs)
+  "Add SPECS to `auto-mode-alist'.
+Each specification from SPECS list may have one of the following forms:
+
+  (MODE-NAME . REGEXPS)
+  (MODE-NAME append . REGEXPS)
+
+to add specifications at the beginning or end of `auto-mode-alist'."
+  (declare (indent 0))
+  (let ((prepend-list '())
+        (append-list '()))
+    (dolist (spec specs)
+      (pcase spec
+        (`(,mode append . ,regexps)
+         (dolist (regexp regexps)
+           (push `(cons ,regexp ',mode) append-list)))
+        (`(,mode . ,regexps)
+         (dolist (regexp regexps)
+           (push `(cons ,regexp ',mode) prepend-list)))))
+    `(setq auto-mode-alist
+           (append (list ,@(nreverse prepend-list))
+                   auto-mode-alist
+                   (list ,@(nreverse append-list))))))
+
 (defmacro al/lambda-lazy (&rest body)
   "Return an anonymous function ignoring its arguments.
 
