@@ -18,7 +18,8 @@
 ;;; Code:
 
 (eval-when-compile
-  (require 'al-aux-macros))
+  (require 'al-aux-macros)
+  (require 'fp-utils))
 
 (require 'al-places)
 (require 'al-general)
@@ -1469,8 +1470,8 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 ;; set up after `after-init-hook' is run if it still exists (see
 ;; `command-line').  Kill it, and set it up only when needed (on
 ;; `al/switch-to-scratch' call).
-(when-let* ((buf (get-buffer "*scratch*")))
-  (kill-buffer buf))
+(and=> (get-buffer "*scratch*")
+       #'kill-buffer)
 
 (defun al/finalize-messages-buffer ()
   (with-current-buffer (messages-buffer)
