@@ -213,21 +213,20 @@
   ("C-<kp-subtract>" text-scale-decrease)
   ("C-<kp-multiply>" (text-scale-set 0))
 
+  ("M-R" ctl-x-r-map)
+  ("C-M-g" goto-map)
+
   ("<f5>"  compile)
   ("C-="   describe-char)
   ("C-c x" exit-recursive-edit)
   ("C-c r" revert-buffer)
   ("C-c k" al/kill-process))
 
-(defalias 'ctl-x-r-prefix ctl-x-r-map)
-(al/bind-key "M-R" ctl-x-r-prefix)
 (al/bind-keys
   :map ctl-x-r-map
   ("a" append-to-register)
   ("p" prepend-to-register))
 
-(defalias 'goto-prefix goto-map)
-(al/bind-key "C-M-g" goto-prefix)
 (al/bind-keys
   :map goto-map
   ("C-M-g" goto-line)
