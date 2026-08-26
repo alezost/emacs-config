@@ -7,14 +7,14 @@
 (require 'al-geiser)
 (require 'al-key)
 
-(defvar al/geiser-doc-map (make-sparse-keymap))
 (al/bind-keys
   :map al/geiser-doc-map
-  ("d" . geiser-doc-symbol-at-point)
-  ("i" . geiser-doc-look-up-manual)
-  ("m" . geiser-doc-module)
-  ("s" . geiser-autodoc-show)
-  ("t" . geiser-autodoc-mode))
+  :create t
+  ("d" geiser-doc-symbol-at-point)
+  ("i" geiser-doc-look-up-manual)
+  ("m" geiser-doc-module)
+  ("s" geiser-autodoc-show)
+  ("t" geiser-autodoc-mode))
 (al/bind-keys-from-vars 'geiser-mode-map 'al/geiser-keys)
 
 ;; `geiser-mode' requires `geiser-repl', not vice versa.  So if keys

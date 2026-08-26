@@ -121,6 +121,8 @@ optional keywords are available:
 
   `:map'        keymap into which the key bindings should be added;
 
+  `:create'     if non-nil, create `:map' variable;
+
   `:check'      if non-nil, check if `:map' variable exists;
 
   `:clean'      if non-nil, remove all bindings from `:map' before
@@ -144,7 +146,7 @@ The rest ARGS may have one of the following forms:
 See `al/bind-key' for details."
   (declare (indent 0))
   (al/with-keywords args
-      ( map check clean
+      ( map check create clean
         prefix-key prefix-map prefix-doc )
     (if (or (and prefix-key (not prefix-map))
             (and (not prefix-key) prefix-map))
@@ -152,25 +154,28 @@ See `al/bind-key' for details."
          "Both, :prefix-key (%s) and :prefix-map (%s), must be specified"
          prefix-key prefix-map)
       (let ((body
-             `(,@(when prefix-map
+             `(,@(and map create
+                      `((defvar ,map (make-sparse-keymap))))
+               ,@(and map clean
+                      `((al/clean-keymap ,map)))
+               ,@(when prefix-map
                    `((defvar ,prefix-map)
                      ,(when prefix-doc
                         `(put ',prefix-map 'variable-documentation
                               ,prefix-doc))
                      (define-prefix-command ',prefix-map)
                      (al/bind-key ,prefix-key ,prefix-map ,map)))
-               ,@(and map clean
-                      `((al/clean-keymap ,map)))
-               ;; Here, we just bind some keys to some commands.
-               ;; Warnings about undefined functions are the only
-               ;; compilation warnings that we can get here.
-               (with-no-warnings
-                 ,@(mapcar (lambda (binding)
-                             (pcase (al/list-maybe binding)
-                               (`(,key . ,command)
-                                `(al/bind-key ,key ,command
-                                              ,(or prefix-map map)))))
-                           %body)))))
+               ,@(when %body
+                   ;; Here, we just bind some keys to some commands.
+                   ;; Warnings about undefined functions are the only
+                   ;; compilation warnings that we can get here.
+                   `((with-no-warnings
+                       ,@(mapcar (lambda (binding)
+                                   (pcase (al/list-maybe binding)
+                                     (`(,key . ,command)
+                                      `(al/bind-key ,key ,command
+                                                    ,(or prefix-map map)))))
+                                 %body)))))))
         (if (and map check)
             `(al/with-check
                :var ',map
