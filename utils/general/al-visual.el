@@ -20,6 +20,7 @@
 (eval-when-compile
   (require 'al-aux-macros)
   (require 'let-macros))
+
 (require 'seq)
 (require 'al-general)
 
@@ -82,16 +83,11 @@ If POS is nil, use current point position."
 
 ;; Idea from <http://www.emacswiki.org/emacs/SetFonts>.
 
-(defvar al/font-candidates
-  '("Liberation Mono-12" "DejaVu Sans Mono-11" "Terminus-12")
-  "List of font names used by `al/first-existing-font'.")
-
 (defun al/first-existing-font (&rest font-names)
-  "Return the first existing font from FONT-NAMES.
-If FONT-NAMES is nil, use `al/font-candidates'."
+  "Return the first existing font from FONT-NAMES."
   (seq-find (lambda (name)
               (find-font (font-spec :name name)))
-            (or font-names al/font-candidates)))
+            font-names))
 
 (defmacro al/set-fontset (&rest specs)
   "Modify fontset using SPECS.

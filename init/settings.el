@@ -2095,7 +2095,10 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
     ;; 🐼, 😻, ⚽, 💩, ∵, ⸪, 🃜, 🜒, 🝖, ←↑→↓ (symbola);
     ;; ࿌ (unifont).
     (setq use-default-font-for-symbols nil)
-    (let ((font (al/first-existing-font)))
+    (let ((font (al/first-existing-font
+                 "Liberation Mono-12"
+                 "DejaVu Sans Mono-11"
+                 "Terminus-12")))
       (set-frame-font font nil t)
       (al/set-fontset
         (font 'greek)
