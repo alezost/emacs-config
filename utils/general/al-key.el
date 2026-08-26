@@ -121,9 +121,9 @@ optional keywords are available:
 
   `:map'        keymap into which the key bindings should be added;
 
-  `:check-map'  if non-nil, check if `:map' variable exists;
+  `:check'      if non-nil, check if `:map' variable exists;
 
-  `:clean-map'  if non-nil, remove all bindings from `:map' before
+  `:clean'      if non-nil, remove all bindings from `:map' before
                 adding the new ones;
 
   `:prefix-map' name of a prefix map that should be created for
@@ -144,7 +144,8 @@ The rest ARGS may have one of the following forms:
 See `al/bind-key' for details."
   (declare (indent 0))
   (al/with-keywords args
-      (map check-map clean-map prefix-key prefix-map prefix-doc)
+      ( map check clean
+        prefix-key prefix-map prefix-doc )
     (if (or (and prefix-key (not prefix-map))
             (and (not prefix-key) prefix-map))
         (al/error-message
@@ -158,7 +159,7 @@ See `al/bind-key' for details."
                               ,prefix-doc))
                      (define-prefix-command ',prefix-map)
                      (al/bind-key ,prefix-key ,prefix-map ,map)))
-               ,@(and map clean-map
+               ,@(and map clean
                       `((al/clean-keymap ,map)))
                ;; Here, we just bind some keys to some commands.
                ;; Warnings about undefined functions are the only
@@ -170,7 +171,7 @@ See `al/bind-key' for details."
                                 `(al/bind-key ,key ,command
                                               ,(or prefix-map map)))))
                            %body)))))
-        (if (and map check-map)
+        (if (and map check)
             `(al/with-check
                :var ',map
                ,@body)

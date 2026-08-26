@@ -476,7 +476,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 ;; Expand "C-x 8" (now "M-i") map:
 (al/bind-keys
   :map iso-transl-ctl-x-8-map
-  :check-map t
+  :check t
   ("a"     ?α)
   ("b"     ?β)
   ("g"     ?γ)
@@ -533,7 +533,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 ;; "M-i M-<N>" to insert subscript numbers.
 (al/bind-digits
   :map iso-transl-ctl-x-8-map
-  :check-map t
+  :check t
   (""   "⁰¹²³⁴⁵⁶⁷⁸⁹")
   ("M-" "₀₁₂₃₄₅₆₇₈₉"))
 
@@ -1184,7 +1184,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 (al/eval-after-load prog-mode
   (al/bind-keys
     :map prog-mode-map
-    :clean-map t
+    :clean t
     ("C-M-<tab>" prog-indent-sexp))
 
   (al/call-at-hook prog-mode-hook
@@ -1197,7 +1197,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 (al/eval-after-load lisp-mode
   (al/bind-keys
     :map lisp-mode-shared-map
-    :clean-map t
+    :clean t
     ("C-M-<tab>" al/indent-sexp)
     ("C-c C-z" al/ielm-other-window))
   (al/clean-keymap lisp-mode-map)
@@ -2191,7 +2191,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 
 (al/bind-keys
   :map process-menu-mode-map
-  :check-map t
+  :check t
   ("C-k" process-menu-delete-process))
 
 (al/eval-after-load al-process
