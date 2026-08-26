@@ -98,16 +98,7 @@ Examples:
                  (key-parse key-name)
                key-name))
         (map (or keymap 'global-map)))
-    (if command
-        `(define-key ,map ,key ,cmd)
-      ;; Bind key to nil only if it already exists in MAP.  Otherwise,
-      ;; global keymap will be used skipping all the intermediate maps.
-      ;; For example, if "C-e" is bound in `icomplete-minibuffer-map'
-      ;; and we bind "C-e" to nil in `minibuffer-local-map', then "C-e"
-      ;; from the global keymap will be used, not from
-      ;; `icomplete-minibuffer-map'.
-      `(if (lookup-key ,map ,key)
-           (define-key ,map ,key nil)))))
+    `(define-key ,map ,key ,cmd ,(not command))))
 
 (defmacro al/bind-key* (key-name command)
   (declare (indent 1))
