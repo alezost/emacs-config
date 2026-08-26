@@ -139,6 +139,31 @@
         al/free-editing-keys
         al/free-important-keys))
 
+(al/bind-keys
+  :map al/lazy-vertical-moving-map
+  :create t
+  ("↑" previous-line)
+  ("↓" next-line))
+
+(al/bind-keys
+  :map al/lazy-moving-map
+  :create t
+  :parent al/lazy-vertical-moving-map
+  ("←" backward-char)
+  ("→" forward-char))
+
+(al/bind-keys
+  :map al/lazy-scrolling-map
+  :create t
+  ("SPC" scroll-up-command)
+  ("DEL" scroll-down-command))
+
+(al/bind-keys
+  :map al/lazy-map
+  :create t
+  :parent (al/lazy-moving-map
+           al/lazy-scrolling-map))
+
 
 ;;; General global keys
 
@@ -1297,12 +1322,14 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 (al/autoload "bui-button" bui-button-copy-label)
 
 (al/eval-after-load button
-  (defconst al/button-map-keys
-    '(("u" push-button)
-      ("c" bui-button-copy-label))
-    "Alist of auxiliary keys for `button-map'.")
-  (al/bind-keys-from-vars 'button-map 'al/button-map-keys t)
-  (al/bind-keys-from-vars 'button-buffer-map 'al/button-keys t))
+  (al/bind-keys
+    :map button-buffer-map
+    ("↑" backward-button)
+    ("↓" forward-button))
+  (al/bind-keys
+    :map button-map
+    ("→" push-button)
+    ("c" bui-button-copy-label)))
 
 (al/eval-settings-after-load
   (wid-edit "wid-edit")
