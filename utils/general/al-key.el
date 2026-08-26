@@ -119,6 +119,9 @@ optional keywords are available:
   `:clean'      if non-nil, remove all bindings from `:map' before
                 adding the new ones;
 
+  `:parent'     keymap or list of keymaps (unquoted list of symbols)
+                that will be set as parent for `:map';
+
   `:prefix-map' name of a prefix map that should be created for
                 these bindings;
 
@@ -137,7 +140,7 @@ The rest ARGS may have one of the following forms:
 See `al/bind-key' for details."
   (declare (indent 0))
   (al/with-keywords args
-      ( map check create clean
+      ( map check create clean parent
         prefix-key prefix-map prefix-doc )
     (if (or (and prefix-key (not prefix-map))
             (and (not prefix-key) prefix-map))
@@ -148,7 +151,13 @@ See `al/bind-key' for details."
              `(,@(and map create
                       `((defvar ,map (make-sparse-keymap))))
                ,@(and map clean
-                      `((al/clean-keymap ,map)))
+                      `((al/clean-keymap ,map ,(and parent t))))
+               ,@(and map parent
+                      (if (listp parent)
+                          `((set-keymap-parent
+                             ,map
+                             (make-composed-keymap (list ,@parent))))
+                        `((set-keymap-parent ,map ,parent))))
                ,@(when prefix-map
                    `((defvar ,prefix-map)
                      ,(when prefix-doc
