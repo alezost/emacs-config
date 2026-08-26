@@ -2324,9 +2324,6 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   (pdf-view "pdf-tools")
   (tar-mode "tar-mode")
   (nxml-mode "nxml-mode")
-  (sgml-mode
-   ;; Bind default keys to get rid of "M-o" key binding there.
-   (al/bind-keys-from-vars 'html-mode-map))
   (sql "sql")
   (bui "bui")
   (transient "transient")
