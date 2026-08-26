@@ -134,12 +134,6 @@
     ("→" push-button))
   "Alist of auxiliary keys for modes with buttons.")
 
-(defconst al/minibuffer-keys
-  '("C-j" ; to insert newlines during evaluating expressions
-    ("M-↑" previous-history-element)
-    ("M-↓" next-history-element))
-  "Alist of auxiliary keys for minibuffer modes.")
-
 (setq al/default-keys-variables
       '(al/free-moving-keys
         al/free-editing-keys
@@ -740,15 +734,24 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
  completion-ignore-case t
  enable-recursive-minibuffers t)
 
+(al/bind-keys
+  :map minibuffer-local-map
+  ([tab] completion-at-point)
+  ("M-↑" previous-history-element)
+  ("M-↓" next-history-element))
+
+(al/bind-keys
+  :map read--expression-map
+  :check t
+  ("C-j" newline))
+
 (al/call-at-hook minibuffer-setup-hook al/hbar-cursor-type)
-(al/bind-keys-from-vars 'minibuffer-local-map 'al/minibuffer-keys)
 
 ;; (al/call-after-init icomplete-vertical-mode)
-
+;;
 ;; Enabling `icomplete-vertical-mode' manually to avoid loading
 ;; `icomplete' on Emacs start and load it only when minibuffer is used
 ;; for the first time.
-
 (al/autoload "icomplete"
   icomplete-minibuffer-setup
   icomplete--vertical-minibuffer-setup)
