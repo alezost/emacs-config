@@ -65,7 +65,11 @@
                      (not (commandp spec)))
                 spec
               `',spec))
-           (_ `(lambda () (interactive) ,@cmd-spec))))))
+           ((pred listp)
+            (if (memq (car spec) '(quote function lambda))
+                spec
+              `(lambda () (interactive) ,@cmd-spec)))
+           (_ spec)))))
 
 (defmacro al/bind-key (key-name command &optional keymap)
   "Bind KEY-NAME to COMMAND in KEYMAP.
