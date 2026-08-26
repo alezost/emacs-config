@@ -55,7 +55,8 @@ alias tm al/eshell-tor-mpv $@*
 
 alias y al/eshell-ytdlp $@*
 alias yg y --format bv[height=720]+ba/best[height=720] --format-sort lang $@*
-alias yb y -f18/bv[height=360]+ba/best[height=360] $@*
+alias ym y --format bv[height=480]+ba/best[height=480] --format-sort lang $@*
+alias yb y --format bv[height=360]+ba/best[height=360]/18 $@*
 alias ya y -fba/251/140 $@*
 alias yf yt-dlp -F $@*
 
