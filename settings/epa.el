@@ -3,12 +3,10 @@
 (require 'epa)
 (require 'al-key)
 
-(al/bind-keys-from-vars 'epa-key-list-mode-map
-  'al/button-keys t)
-
 (al/bind-keys
   :map epa-key-list-mode-map
-  ("u" . epa-show-key)
-  ("z" . epa-unmark-key))
+  :parent button-buffer-map
+  ("→" 'epa-show-key)
+  ("z" 'epa-unmark-key))
 
 ;;; epa.el ends here

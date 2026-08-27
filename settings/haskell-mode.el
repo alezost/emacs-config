@@ -4,23 +4,25 @@
 (require 'haskell-interactive-mode)
 (require 'al-key)
 
-(defconst al/haskell-general-keys
-  '(("M-d" . haskell-mode-jump-to-def-or-tag)))
+(al/bind-keys
+  :map al/haskell-general-map
+  :create t
+  ("M-d" 'haskell-mode-jump-to-def-or-tag))
 
-(defconst al/haskell-keys
-  '(("C-c C-z" . haskell-interactive-switch)))
-(al/bind-keys-from-vars 'haskell-mode-map
-  '(al/haskell-general-keys al/haskell-keys))
+(al/bind-keys
+  :map haskell-mode-map
+  :parent al/haskell-general-map
+  ("C-c C-z" 'haskell-interactive-switch))
 
-(defconst al/haskell-interactive-keys
-  '(("M-." . haskell-interactive-mode-history-previous)
-    ("M-e" . haskell-interactive-mode-history-next)
-    ("M->" . haskell-interactive-mode-prompt-previous)
-    ("M-E" . haskell-interactive-mode-prompt-next)
-    ("C-a" . haskell-interactive-mode-beginning)
-    ("C-k" . haskell-interactive-mode-kill-whole-line)
-    ("C-c C-d" (haskell-session-kill 'leave-buffer))))
-(al/bind-keys-from-vars 'haskell-interactive-mode-map
-  '(al/haskell-general-keys al/haskell-interactive-keys))
+(al/bind-keys
+  :map haskell-interactive-mode-map
+  :parent al/haskell-general-map
+  ("M-↑" 'haskell-interactive-mode-history-previous)
+  ("M-↓" 'haskell-interactive-mode-history-next)
+  ("M-S-↑" 'haskell-interactive-mode-prompt-previous)
+  ("M-S-↓" 'haskell-interactive-mode-prompt-next)
+  ("C-⇤" 'haskell-interactive-mode-beginning)
+  ("C-k" 'haskell-interactive-mode-kill-whole-line)
+  ("C-c C-d" (haskell-session-kill 'leave-buffer)))
 
 ;;; haskell-mode.el ends here

@@ -9,38 +9,33 @@
 (require 'al-key)
 (require 'al-transient)
 
-(defconst al/transient-base-keys
-  '("C-v" "M-v"
-    ;; Don't bind "q" because transient will quit even for complex
-    ;; bindings such as "-q"!
-    ;;
-    ;; ("q" . transient-quit-all)
-    ("C-g" . transient-quit-all)
-    ("C-q" . transient-quit-one)
-    ("DEL" . transient-quit-one))
-  "Alist of auxiliary keys for `transient-base-map'.")
-(al/bind-keys-from-vars 'transient-base-map 'al/transient-base-keys)
+(al/bind-keys
+  :map transient-base-map
+  "C-v" "M-v"
+  ;; Don't bind "q" because transient will quit even for complex
+  ;; bindings such as "-q"!
+  ;;
+  ;; ("q" 'transient-quit-all)
+  ("C-g" 'transient-quit-all)
+  ("C-q" 'transient-quit-one)
+  ("DEL" 'transient-quit-one))
 
-(defconst al/transient-sticky-keys
-  '(("C-g" . transient-quit-all)
-    ("C-q" . transient-quit-seq))
-  "Alist of auxiliary keys for `transient-sticky-map'.")
-(al/bind-keys-from-vars 'transient-sticky-map 'al/transient-sticky-keys)
+(al/bind-keys
+  :map transient-sticky-map
+  ("C-g" 'transient-quit-all)
+  ("C-q" 'transient-quit-seq))
 
-(defconst al/transient-keys
-  '(("C-M-p" . transient-history-next)
-    ("C-M-," . transient-history-prev))
-  "Alist of auxiliary keys for `transient-map'.")
-(al/bind-keys-from-vars 'transient-map 'al/transient-keys t)
+(al/bind-keys
+  :map transient-map
+  ("C-M-↶" 'transient-history-next)
+  ("C-M-↷" 'transient-history-prev))
 
-(defconst al/transient-navigation-keys
-  '(("<tab>" . transient-forward-button)
-    ("<backtab>" . transient-backward-button)
-    ("C-."   . transient-backward-button)
-    ("C-e"   . transient-forward-button))
-  "Alist of auxiliary keys for `transient-popup-navigation-map'.")
-(al/bind-keys-from-vars 'transient-popup-navigation-map
-  'al/transient-navigation-keys)
+(al/bind-keys
+  :map transient-popup-navigation-map
+  ("<tab>" 'transient-forward-button)
+  ("<backtab>" 'transient-backward-button)
+  ("C-↑"   'transient-backward-button)
+  ("C-↓"   'transient-forward-button))
 
 (transient-suffix-put 'transient-common-commands
                       "C-g" :command 'transient-quit-all)

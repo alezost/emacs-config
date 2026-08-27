@@ -8,10 +8,10 @@
 
 (al/bind-keys
   :map xref--xref-buffer-mode-map
-  ("." . xref-prev-line)
-  ("e" . xref-next-line)
-  ("u" . xref-goto-xref)
-  ("d" . xref-show-location-at-point))
+  ("↑" 'xref-prev-line)
+  ("↓" 'xref-next-line)
+  ("→" 'xref-goto-xref)
+  ("d" 'xref-show-location-at-point))
 
 (setq xref-backend-functions '(elisp--xref-backend))
 

@@ -8,28 +8,34 @@
 (require 'al-places)
 (require 'al-key)
 
-(defconst al/compilation-common-keys
-  '(("C-M-h" . compilation-previous-error)
-    ("C-M-n" . compilation-next-error)
-    ("C-M-." . compilation-previous-error)
-    ("C-M-e" . compilation-next-error)))
+(al/bind-keys
+  :map al/compilation-common-map
+  :create t
+  ("C-M-h" 'compilation-previous-error)
+  ("C-M-n" 'compilation-next-error)
+  ("C-M-↑" 'compilation-previous-error)
+  ("C-M-↓" 'compilation-next-error))
 
-(defconst al/compilation-keys
-  '(("."   . compilation-previous-error)
-    ("e"   . compilation-next-error)
-    ("M-." . previous-error-no-select)
-    ("M-e" . next-error-no-select)))
+(al/bind-keys
+  :map compilation-button-map
+  ("→" 'compile-goto-error))
 
-(defconst al/compilation-button-keys
-  '(("u"   . compile-goto-error)))
+(al/bind-keys
+  :map compilation-shell-minor-mode-map
+  :parent al/compilation-common-map)
 
-(al/bind-keys-from-vars 'compilation-button-map
-  'al/compilation-button-keys)
-(al/bind-keys-from-vars 'compilation-shell-minor-mode-map
-  'al/compilation-common-keys)
-(al/bind-keys-from-vars
-    '(compilation-mode-map compilation-minor-mode-map)
-  '(al/compilation-common-keys al/compilation-keys))
+(al/bind-keys
+  :map compilation-minor-mode-map
+  :parent (al/compilation-common-map
+           special-mode-map)
+  ("↑"   'compilation-previous-error)
+  ("↓"   'compilation-next-error)
+  ("M-↑" 'previous-error-no-select)
+  ("M-↓" 'next-error-no-select))
+
+(al/bind-keys
+  :map compilation-mode-map
+  :parent compilation-minor-mode-map)
 
 (setq
  ;; Don't ask, don't save.

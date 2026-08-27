@@ -7,16 +7,14 @@
 (require 'al-file)
 (require 'al-visual)
 
-(defconst al/man-keys
-  '(("M->" . Man-previous-section)
-    ("M-E" . Man-next-section)
-    ("h" . Man-previous-section)
-    ("n" . Man-next-section)
-    ("m" . Man-goto-section)
-    ("g" . Man-update-manpage))
-  "Alist of auxiliary keys for `Man-mode'.")
-(al/bind-keys-from-vars 'Man-mode-map
-  '(al/button-keys al/man-keys))
+(al/bind-keys
+  :map Man-mode-map
+  ("M-S-↑" 'Man-previous-section)
+  ("M-S-↓" 'Man-next-section)
+  ("h" 'Man-previous-section)
+  ("n" 'Man-next-section)
+  ("m" 'Man-goto-section)
+  ("g" 'Man-update-manpage))
 
 (setq
  Man-notify-method 'pushy

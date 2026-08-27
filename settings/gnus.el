@@ -50,20 +50,22 @@
    mm-text-html-renderer 'gnus-w3m
    mm-discouraged-alternatives '("text/html" "text/richtext")))
 
+(defvar al/lazy-vertical-moving-map)
+
 (al/eval-after-load gnus-srvr
-  (defconst al/gnus-server-keys
-    '(("u"   . gnus-server-read-server)
-      ("M-d" . gnus-server-edit-server)))
-  (al/bind-keys-from-vars 'gnus-server-mode-map
-    '(al/lazy-moving-keys al/gnus-server-keys)
-    t)
+  (al/bind-keys
+    :map gnus-server-mode-map
+    :parent al/lazy-vertical-moving-map
+    ("→"   'gnus-server-read-server)
+    ("M-d" 'gnus-server-edit-server))
+
   (al/bind-keys
     :map gnus-browse-mode-map
-    ("." . gnus-browse-prev-group)
-    ("e" . gnus-browse-next-group)
-    ("u" . gnus-browse-select-group)
-    ("U" . gnus-browse-unsubscribe-current-group)
-    ("^" . gnus-browse-exit)))
+    ("↑" 'gnus-browse-prev-group)
+    ("↓" 'gnus-browse-next-group)
+    ("→" 'gnus-browse-select-group)
+    ("U" 'gnus-browse-unsubscribe-current-group)
+    ("^" 'gnus-browse-exit)))
 
 ;; `gnus-group-mode-map'/`gnus-summary-mode-map'/`gnus-article-mode-map'
 ;; are defined in "gnus.el" but are filled in
@@ -76,26 +78,25 @@
    gnus-group-mode-line-format "Gnus:"
    gnus-group-goto-unread nil)
 
-  (defconst al/gnus-group-keys
-    '(("." . gnus-group-prev-group)
-      ("e" . gnus-group-next-group)
-      (">" . al/gnus-group-prev-unread-group)
-      ("E" . al/gnus-group-next-unread-group)
-      ("u" . gnus-group-read-group)
-      ("U" . gnus-group-unsubscribe-current-group)
-      ("m" . gnus-group-mark-group)
-      ("z" . gnus-group-unmark-group)
-      ("Z" . gnus-group-unmark-all-groups)
-      ("M-U" . gnus-group-unsubscribe-group)
-      ("H i" . gnus-info-find-node)
-      ("C-k" . gnus-group-kill-group)
-      ("C-t" . gnus-group-kill-region)
-      ("H-u" . gnus-undo)
-      ("<backtab>" . gnus-topic-unindent)
-      ("M-." . gnus-topic-goto-previous-topic)
-      ("M-e" . gnus-topic-goto-next-topic))
-    "Alist of auxiliary keys for `gnus-group-mode-map'.")
-  (al/bind-keys-from-vars 'gnus-group-mode-map 'al/gnus-group-keys)
+  (al/bind-keys
+    :map gnus-group-mode-map
+    ("↑"   'gnus-group-prev-group)
+    ("↓"   'gnus-group-next-group)
+    ("S-↑" 'al/gnus-group-prev-unread-group)
+    ("S-↓" 'al/gnus-group-next-unread-group)
+    ("M-↑" 'gnus-topic-goto-previous-topic)
+    ("M-↓" 'gnus-topic-goto-next-topic)
+    ("→"   'gnus-group-read-group)
+    ("U"   'gnus-group-unsubscribe-current-group)
+    ("m"   'gnus-group-mark-group)
+    ("z"   'gnus-group-unmark-group)
+    ("Z"   'gnus-group-unmark-all-groups)
+    ("M-U" 'gnus-group-unsubscribe-group)
+    ("H i" 'gnus-info-find-node)
+    ("C-k" 'gnus-group-kill-group)
+    ("C-t" 'gnus-group-kill-region)
+    ("H-u" 'gnus-undo)
+    ("<backtab>" 'gnus-topic-unindent))
 
   (al/call-at-hook gnus-group-mode-hook
     gnus-topic-mode
@@ -127,53 +128,67 @@
    gnus-read-mark ?✓
    gnus-killed-mark ?✗)
 
-  (defconst al/gnus-summary-keys
-    '("x" "M-r"
-      ("."     . gnus-summary-prev-article)
-      ("e"     . gnus-summary-next-article)
-      (">"     . gnus-summary-prev-unread-article)
-      ("E"     . gnus-summary-next-unread-article)
-      ("D"     . gnus-summary-delete-article)
-      ("n"     . gnus-summary-reply)
-      ("m"     . gnus-summary-mark-as-read-forward)
-      ("r"     . gnus-summary-mark-as-read-forward)
-      ("z"     . gnus-summary-clear-mark-forward)
-      ("u"     . gnus-summary-scroll-up)
-      ("C-t"   . gnus-summary-mark-region-as-read)
-      ("h"     . gnus-summary-toggle-header)
-      ("b"     . al/gnus-summary-toggle-display-buttonized)
-      ("v"     . gnus-article-view-part)
-      ("V"     . gnus-mime-view-all-parts)
-      ("s"     . gnus-article-save-part)
-      ("i"     . gnus-article-show-images)
-      ("U"     . al/gnus-summary-browse-link-url)
-      ("a"     . al/gnus-summary-emms-add-url)
-      ("p"     . al/gnus-summary-emms-play-url)
-      ("<ctrl-m> a" . al/gnus-summary-emms-add-url)
-      ("<ctrl-m> p" . al/gnus-summary-emms-play-url)
-      ("w"       (wget (al/gnus-summary-find-mm-url)))))
-  (al/bind-keys-from-vars 'gnus-summary-mode-map 'al/gnus-summary-keys)
+  (al/bind-keys
+    :map gnus-summary-mode-map
+    "x" "M-r"
+    ("↑"     'gnus-summary-prev-article)
+    ("↓"     'gnus-summary-next-article)
+    ("S-↑"   'gnus-summary-prev-unread-article)
+    ("S-↓"   'gnus-summary-next-unread-article)
+    ("D"     'gnus-summary-delete-article)
+    ("n"     'gnus-summary-reply)
+    ("m"     'gnus-summary-mark-as-read-forward)
+    ("r"     'gnus-summary-mark-as-read-forward)
+    ("z"     'gnus-summary-clear-mark-forward)
+    ("→"     'gnus-summary-scroll-up)
+    ("C-t"   'gnus-summary-mark-region-as-read)
+    ("h"     'gnus-summary-toggle-header)
+    ("b"     'al/gnus-summary-toggle-display-buttonized)
+    ("v"     'gnus-article-view-part)
+    ("V"     'gnus-mime-view-all-parts)
+    ("s"     'gnus-article-save-part)
+    ("i"     'gnus-article-show-images)
+    ("S-→"   'al/gnus-summary-browse-link-url)
+    ("a"     'al/gnus-summary-emms-add-url)
+    ("p"     'al/gnus-summary-emms-play-url)
+    ("<ctrl-m> a" 'al/gnus-summary-emms-add-url)
+    ("<ctrl-m> p" 'al/gnus-summary-emms-play-url)
+    ("w"     (wget (al/gnus-summary-find-mm-url))))
 
   (al/bind-keys
     :map gnus-summary-mode-map
     :prefix-map al/gnus-summary-search-map
     :prefix-doc "Search map for `gnus-summary-mode'."
     :prefix-key "M-s"
-    ("M-s" . gnus-summary-search-article-forward)
-    ("M-r" . gnus-summary-search-article-backward))
+    ("M-s" 'gnus-summary-search-article-forward)
+    ("M-r" 'gnus-summary-search-article-backward))
 
   (al/call-at-hook gnus-summary-mode-hook
     al/hbar-cursor-type
     hl-line-mode))
 
 (al/eval-after-load gnus-draft
-  (defconst al/gnus-draft-keys
-    '(("M-d" . gnus-draft-edit-message)
-      "e")
-    "Alist of auxiliary keys for `gnus-draft-mode-map'.")
-  (al/bind-keys-from-vars 'gnus-draft-mode-map 'al/gnus-draft-keys))
+  (al/bind-keys
+    :map gnus-draft-mode-map
+    "e"
+    ("M-d" 'gnus-draft-edit-message)))
 
 (al/eval-after-load gnus-art
+  (al/bind-keys
+    :map gnus-article-mode-map
+    "C-d")
+  (al/bind-keys
+    :map gnus-url-button-map
+    :parent button-map
+    ("c" 'gnus-article-copy-string))
+  (al/bind-keys
+    :map gnus-mime-button-map
+    :parent button-map
+    ("→" 'gnus-mime-action-on-part)
+    ("s" 'gnus-mime-save-part)
+    ("v" 'gnus-mime-view-part-internally)
+    ("V" 'gnus-mime-view-part))
+
   (setq
    gnus-treat-display-smileys nil
    gnus-article-truncate-lines nil
@@ -184,37 +199,18 @@
    gnus-prompt-before-saving t
    gnus-default-article-saver 'gnus-summary-save-in-mail)
 
-  (defconst al/gnus-article-keys
-    '("C-d"))
-  (defconst al/gnus-url-button-keys
-    '(("c" . gnus-article-copy-string)))
-  (defconst al/gnus-mime-button-keys
-    '(("u" . gnus-mime-action-on-part)
-      ("s" . gnus-mime-save-part)
-      ("v" . gnus-mime-view-part-internally)
-      ("V" . gnus-mime-view-part)))
-
-  (al/bind-keys-from-vars 'gnus-article-mode-map
-    '(al/button-keys al/gnus-article-keys))
-  (al/bind-keys-from-vars 'gnus-url-button-map
-    '(al/button-keys al/gnus-url-button-keys))
-  (al/bind-keys-from-vars 'gnus-mime-button-map
-    '(al/button-keys al/gnus-mime-button-keys))
-
   ;; Wrap text in gnus-article buffers by words.
   (add-hook 'gnus-article-mode-hook #'visual-line-mode))
 
 (al/eval-after-load gnus-topic
   (setq
    gnus-topic-display-empty-topics nil
-   gnus-topic-line-format "%i%(%{%n%}%) – %A %v\n")
-  (al/bind-keys-from-vars 'gnus-topic-mode-map
-    'al/free-important-keys t))
+   gnus-topic-line-format "%i%(%{%n%}%) – %A %v\n"))
 
 (al/eval-after-load gnus-dired
   (al/bind-keys
     :map gnus-dired-mode-map
-    ("C-c a" . gnus-dired-attach)))
+    ("C-c a" 'gnus-dired-attach)))
 
 (al/eval-after-load message
   (setq
@@ -223,17 +219,16 @@
    message-send-mail-function 'smtpmail-send-it
    message-citation-line-function 'message-insert-formatted-citation-line
    message-citation-line-format "%N (%Y-%m-%d %H:%M %z) wrote:\n")
-  (al/bind-keys-from-vars 'message-mode-map)
   (al/modify-syntax message-mode-syntax-table
     (?' "'   ")
     (?\" "\"   ")))
 
 (al/eval-after-load mml
-  (defconst al/mml-keys
-    '(("C-c a" . mml-attach-file)
-      ("C-c f" . mml-attach-file)
-      ("C-c b" . mml-attach-buffer)
-      ("C-c P" . mml-preview)))
-  (al/bind-keys-from-vars 'mml-mode-map 'al/mml-keys))
+  (al/bind-keys
+    :map mml-mode-map
+    ("C-c a" 'mml-attach-file)
+    ("C-c f" 'mml-attach-file)
+    ("C-c b" 'mml-attach-buffer)
+    ("C-c P" 'mml-preview)))
 
 ;;; gnus.el ends here

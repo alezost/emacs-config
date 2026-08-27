@@ -8,7 +8,7 @@
 
 (al/bind-keys
   :map edebug-mode-map
-  ("v"   . edebug-eval-expression)
-  ("C-v" . edebug-eval-last-sexp))
+  ("v"   'edebug-eval-expression)
+  ("C-v" 'edebug-eval-last-sexp))
 
 ;;; edebug.el ends here

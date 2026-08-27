@@ -7,54 +7,53 @@
 (require 'al-key)
 (require 'al-magit)
 
-(defconst al/magit-common-keys
-  '(("v"   . magit-git-command)
-    "M-m")
-  "Alist of auxiliary keys that should be bound in any magit mode.")
-
-(defconst al/magit-history-keys
-  '((","   . magit-go-backward)
-    ("p"   . magit-go-forward))
-  "Alist of auxiliary keys for moving by magit history.")
-
-(defconst al/magit-scroll-diff-keys
-  '(("SPC" . magit-diff-show-or-scroll-up)
-    ("DEL" . magit-diff-show-or-scroll-down))
-  "Alist of auxiliary keys for scrolling magit diff in other window.")
-
-(defconst al/magit-moving-keys
-  '((">"   . magit-section-up)
-    ("."   . magit-section-backward)
-    ("e"   . magit-section-forward)
-    ("M-." . magit-section-backward-sibling)
-    ("M-e" . magit-section-forward-sibling))
-  "Alist of auxiliary keys for moving by magit sections.")
-
-(defconst al/magit-keys
-  '(("<backtab>" . magit-section-cycle-global)
-    ("H-SPC" . magit-diff-show-or-scroll-up)
-    ("M-k" . magit-copy-section-value)
-    ("u" . magit-show-commit)
-    ("U" . magit-unstage)
-    ("E" . magit-ediff-dwim)
-    ("C" . magit-cherry-pick)
-    ("R" . magit-remote)
-    ("1" . magit-section-show-level-1-all)
-    ("2" . magit-section-show-level-2-all)
-    ("3" . magit-section-show-level-3-all)
-    ("4" . magit-section-show-level-4-all)
-    "M-1" "M-2" "M-3" "M-4")
-  "Alist of auxiliary keys for `magit-mode-map'.")
-
 (al/bind-keys
   :map al/magit-switch-map
-  ("M-m" . al/magit-switch-buffer))
+  ("M-m" 'al/magit-switch-buffer))
 
-(al/bind-keys-from-vars 'magit-mode-map
-  '(al/lazy-scrolling-keys
-    al/magit-common-keys
-    al/magit-moving-keys
-    al/magit-keys))
+(al/bind-keys
+  :map al/magit-common-map
+  :create t
+  ("v" 'magit-git-command)
+  ;; XXXneeded?
+  ;; "M-m"
+  )
+
+(al/bind-keys
+  :map al/magit-history-map
+  :create t
+  ("↷" 'magit-go-backward)
+  ("↶" 'magit-go-forward))
+
+(al/bind-keys
+  :map magit-section-mode-map
+  ([tab] 'magit-section-toggle)
+  "M-1" "M-2" "M-3" "M-4"
+  ("1" 'magit-section-show-level-1-all)
+  ("2" 'magit-section-show-level-2-all)
+  ("3" 'magit-section-show-level-3-all)
+  ("4" 'magit-section-show-level-4-all))
+
+(defvar al/lazy-scrolling-map)
+
+(al/bind-keys
+  :map magit-mode-map
+  :parent (al/lazy-scrolling-map
+           al/magit-common-map
+           magit-section-mode-map)
+  ("S-↑" 'magit-section-up)
+  ("↑"   'magit-section-backward)
+  ("↓"   'magit-section-forward)
+  ("M-↑" 'magit-section-backward-sibling)
+  ("M-↓" 'magit-section-forward-sibling)
+  ("<backtab>" 'magit-section-cycle-global)
+  ("H-SPC" 'magit-diff-show-or-scroll-up)
+  ("M-k" 'magit-copy-section-value)
+  ("→"   'magit-show-commit)
+  ("U"   'magit-unstage)
+  ("E"   'magit-ediff-dwim)
+  ("C"   'magit-cherry-pick)
+  ("R"   'magit-remote))
 
 (setq
  magit-git-executable "git"
@@ -93,34 +92,41 @@
   (transient-suffix-put 'magit-log 'magit-log:-G :key "=p")     ; patch
   (transient-suffix-put 'magit-log 'magit:-- :key "=f")         ; file
 
-  (defconst al/magit-log-select-keys
-    '(("m" . magit-log-select-pick))
-    "Alist of auxiliary keys for `magit-log-select-mode-map'.")
-  (al/bind-keys-from-vars 'magit-log-mode-map
-    '(al/magit-history-keys al/magit-scroll-diff-keys)
-    t)
-  (al/bind-keys-from-vars 'magit-log-select-mode-map
-    '(al/magit-moving-keys al/magit-log-select-keys)
-    t)
-  (al/bind-keys-from-vars 'magit-commit-section-map
-    'al/magit-common-keys
-    t))
+  (al/bind-keys
+    :map magit-log-mode-map
+    :parent (al/magit-history-map magit-mode-map)
+    ;; XXX check: not needed (inherited from `magit-mode-map')
+    ;; ("SPC" 'magit-diff-show-or-scroll-up)
+    ;; ("DEL" 'magit-diff-show-or-scroll-down)
+    )
+  (al/bind-keys
+    :map magit-log-select-mode-map
+    ("m" 'magit-log-select-pick))
+  (al/bind-keys
+    :map magit-commit-section-map
+    :parent al/magit-common-map))
 
 (al/eval-after-load magit-diff
   (setq-default magit-diff-refine-hunk t)
-  (defconst al/magit-diff-visit-keys
-    '(("u" . magit-diff-visit-worktree-file)
-      ("RET" . magit-diff-visit-worktree-file)
-      ("<C-return>" . magit-diff-visit-file))
-    "Alist of auxiliary keys for visiting files in `magit-diff-mode'.")
-  (al/bind-keys-from-vars 'magit-diff-mode-map
-    'al/magit-history-keys
-    t)
-  (al/bind-keys-from-vars 'magit-diff-section-map
-    '(al/magit-common-keys al/magit-diff-visit-keys)
-    t)
-  (al/bind-keys-from-vars 'magit-staged-section-map 'al/magit-common-keys)
-  (al/bind-key "u" magit-section-toggle magit-file-section-map))
+
+  (al/bind-keys
+    :map magit-diff-mode-map
+    :parent (al/magit-history-map magit-mode-map))
+
+  (al/bind-keys
+    :map magit-diff-section-map
+    :parent al/magit-common-map
+    ("→" 'magit-diff-visit-worktree-file)
+    ("RET" 'magit-diff-visit-worktree-file)
+    ("<C-return>" 'magit-diff-visit-file))
+
+  (al/bind-keys
+    :map magit-staged-section-map
+    :parent al/magit-common-map)
+
+  (al/bind-keys
+    :map magit-file-section-map
+    ("→" 'magit-section-toggle)))
 
 (al/eval-after-load magit-sequence
   (transient-suffix-put 'magit-cherry-pick "A" :key "C") ; pick
@@ -145,42 +151,40 @@
 
 (al/eval-after-load magit-blame
   (setq magit-blame-time-format "%F")
-  (defconst al/magit-blame-keys
-    '(("."   . magit-blame-previous-chunk)
-      ("e"   . magit-blame-next-chunk)
-      ("M-." . magit-blame-previous-chunk-same-commit)
-      ("M-e" . magit-blame-next-chunk-same-commit)
-      ("M-k" . magit-blame-copy-hash))
-    "Alist of auxiliary keys for `magit-blame-mode-map'.")
-  (al/bind-keys-from-vars 'magit-blame-mode-map
-    '(al/lazy-scrolling-keys al/magit-blame-keys)))
+
+  (al/bind-keys
+    :map magit-blame-mode-map
+    :parent al/lazy-scrolling-map
+    ("↑"   'magit-blame-previous-chunk)
+    ("↓"   'magit-blame-next-chunk)
+    ("M-↑" 'magit-blame-previous-chunk-same-commit)
+    ("M-↓" 'magit-blame-next-chunk-same-commit)
+    ("M-k" 'magit-blame-copy-hash)))
 
 (al/eval-after-load git-commit
+  (al/bind-keys
+    :map git-commit-mode-map
+    ("M-S-↑" 'git-commit-prev-message)
+    ("M-S-↓" 'git-commit-next-message)
+    ("C-c C-a" 'al/git-commit-co-authored)
+    ("C-c C-r" 'git-commit-reported)
+    ("C-c S" 'git-commit-suggested))
+
   (al/eval-at-hook git-commit-setup-hook
     ;; Not `git-commit-turn-on-flyspell' because it calls `flyspell-buffer'.
     (flyspell-mode)
     ;; `git-commit-setup-font-lock' spoils my `text-mode' syntax stuff.
     (modify-syntax-entry ?\" "\"   ")
-    (al/no-syntactic-font-lock))
-
-  (defconst al/git-commit-keys
-    '(("M->" . git-commit-prev-message)
-      ("M-E" . git-commit-next-message)
-      ("C-c C-a" . al/git-commit-co-authored)
-      ("C-c C-r" . git-commit-reported)
-      ("C-c S" . git-commit-suggested))
-    "Alist of auxiliary keys for `git-commit-mode-map'.")
-  (al/bind-keys-from-vars 'git-commit-mode-map 'al/git-commit-keys))
+    (al/no-syntactic-font-lock)))
 
 (al/eval-after-load git-rebase
-  (defconst al/git-rebase-keys
-    '(("p"   . git-rebase-pick)
-      ("w"   . git-rebase-reword)
-      ("C-k" . git-rebase-kill-line)
-      ("M-." . git-rebase-move-line-up)
-      ("M-e" . git-rebase-move-line-down))
-    "Alist of auxiliary keys for `git-rebase-mode-map'.")
-  (al/bind-keys-from-vars 'git-rebase-mode-map 'al/git-rebase-keys)
+  (al/bind-keys
+    :map git-rebase-mode-map
+    ("p"   'git-rebase-pick)
+    ("w"   'git-rebase-reword)
+    ("C-k" 'git-rebase-kill-line)
+    ("M-↑" 'git-rebase-move-line-up)
+    ("M-↓" 'git-rebase-move-line-down))
 
   (add-hook 'git-rebase-mode-hook #'hl-line-mode))
 

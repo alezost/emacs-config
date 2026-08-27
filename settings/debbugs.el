@@ -5,10 +5,9 @@
 (require 'debbugs-gnu)
 (require 'al-key)
 
-(defconst al/debbugs-gnu-keys
-  '(("u" . debbugs-gnu-select-report))
-  "Alist of auxiliary keys for `debbugs-gnu-mode-map'.")
-(al/bind-keys-from-vars 'debbugs-gnu-mode-map 'al/debbugs-gnu-keys)
+(al/bind-keys
+  :map debbugs-gnu-mode-map
+  ("→" 'debbugs-gnu-select-report))
 
 (setq debbugs-gnu-default-packages '("guix-patches"))
 

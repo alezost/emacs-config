@@ -6,19 +6,19 @@
 
 (al/bind-keys
   :map Info-mode-map
-  ("." . Info-prev-reference)
-  ("e" . Info-next-reference)
-  ("c"   (Info-copy-current-node-name 0))
-  ("o"   (Info-up) (goto-char (point-min)))
-  ("O" . Info-top-node)
-  ("u" . Info-follow-nearest-node)
-  ("," . Info-history-back)
-  ("p" . Info-history-forward)
-  ("y" . Info-history)
-  ("k" . Info-index-next)
-  ("h" . Info-prev)
-  ("n" . Info-next)
-  ("H" . Info-help))
+  ("↑" 'Info-prev-reference)
+  ("↓" 'Info-next-reference)
+  ("c" (Info-copy-current-node-name 0))
+  ("←" (Info-up) (goto-char (point-min)))
+  ("S-←" 'Info-top-node)
+  ("→" 'Info-follow-nearest-node)
+  ("↷" 'Info-history-back)
+  ("↶" 'Info-history-forward)
+  ("y" 'Info-history)
+  ("k" 'Info-index-next)
+  ("h" 'Info-prev)
+  ("n" 'Info-next)
+  ("H" 'Info-help))
 
 ;; `Info-additional-directory-list' is USELESS as it is appended to
 ;; `Info-directory-list' (by `Info-find-file' or by `Info-insert-dir'),

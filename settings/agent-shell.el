@@ -5,8 +5,8 @@
 
 (al/bind-keys
   :map agent-shell-mode-map
-  ("RET" shell-maker-submit)
-  ([tab] al/agent-next-item-or-complete))
+  ("RET" 'shell-maker-submit)
+  ([tab] 'al/agent-next-item-or-complete))
 
 (setq
  agent-shell-preferred-agent-config 'qwen-code)

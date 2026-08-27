@@ -6,18 +6,17 @@
 (require 'bui-core)
 (require 'al-key)
 
-(defconst al/bui-keys
-  '(("," . bui-history-back)
-    ("p" . bui-history-forward))
-  "Alist of auxiliary keys for `bui-map'.")
-(al/bind-keys-from-vars 'bui-map 'al/bui-keys)
+(al/bind-keys
+  :map bui-map
+  ("↷" 'bui-history-back)
+  ("↶" 'bui-history-forward))
 
 (al/eval-after-load bui-list
-  (defconst al/bui-list-keys
-    '(("u" . bui-list-describe)
-      ("z" . bui-list-unmark)
-      ("Z" . bui-list-unmark-all))
-    "Alist of auxiliary keys for `bui-list-mode-map'.")
-  (al/bind-keys-from-vars 'bui-list-mode-map 'al/bui-list-keys))
+  (al/bind-keys
+    :map bui-list-mode-map
+    ("→" 'bui-list-describe)
+    ("i" 'bui-list-describe)
+    ("z" 'bui-list-unmark)
+    ("Z" 'bui-list-unmark-all)))
 
 ;;; bui.el ends here

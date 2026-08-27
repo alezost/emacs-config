@@ -29,33 +29,33 @@
 
 (al/bind-keys
   :map pdf-view-mode-map
-  ("u" . pdf-links-action-perform)
-  ("U" . pdf-links-isearch-link)
-  ("i" . pdf-outline)
-  ("f" . pdf-misc-display-metadata)
-  ("h" . al/pdf-view-previous-page)
-  ("n" . al/pdf-view-next-page)
-  ("c" . pdf-view-themed-minor-mode)
-  ([down-mouse-3] . pdf-misc-popup-context-menu)
-  ([down-mouse-1] . al/pdf-view-select-region)
-  ([double-mouse-1] . al/pdf-view-select-word))
+  ("→" 'pdf-links-action-perform)
+  ("S-→" 'pdf-links-isearch-link)
+  ("i" 'pdf-outline)
+  ("f" 'pdf-misc-display-metadata)
+  ("h" 'al/pdf-view-previous-page)
+  ("n" 'al/pdf-view-next-page)
+  ("c" 'pdf-view-themed-minor-mode)
+  ([down-mouse-3] 'pdf-misc-popup-context-menu)
+  ([down-mouse-1] 'al/pdf-view-select-region)
+  ([double-mouse-1] 'al/pdf-view-select-word))
 
 (advice-add 'pdf-view-deactivate-region
   :override 'al/pdf-view-deactivate-region)
 
+(defvar al/lazy-map)
+
 (al/eval-after-load pdf-outline
   (al/clean-keymap pdf-outline-minor-mode-map)
 
-  (defconst al/pdf-outline-buffer-keys
-    '(([tab] outline-cycle)
-      ("i" pdf-outline-select-pdf-window)
-      ("u" pdf-outline-follow-link)
-      ("d" pdf-outline-display-link)
-      ("q" quit-window)))
-  (al/bind-keys-from-vars 'pdf-outline-buffer-mode-map
-    '(al/lazy-moving-keys
-      al/lazy-scrolling-keys
-      al/pdf-outline-buffer-keys))
+  (al/bind-keys
+    :map pdf-outline-buffer-mode-map
+    :parent al/lazy-map
+    ([tab] 'outline-cycle)
+    ("i" 'pdf-outline-select-pdf-window)
+    ("→" 'pdf-outline-follow-link)
+    ("d" 'pdf-outline-display-link)
+    ("q" 'quit-window))
 
   (add-hook 'pdf-outline-buffer-mode-hook #'hl-line-mode))
 
@@ -67,7 +67,7 @@
   (al/clean-keymap pdf-history-minor-mode-map)
   (al/bind-keys
    :map pdf-history-minor-mode-map
-   ("," . pdf-history-backward)
-   ("p" . pdf-history-forward)))
+   ("↷" 'pdf-history-backward)
+   ("↶" 'pdf-history-forward)))
 
 ;;; pdf-tools.el ends here

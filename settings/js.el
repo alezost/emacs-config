@@ -9,9 +9,9 @@
 
 (al/bind-keys
   :map js-mode-map
-  ("M-d"     . js-find-symbol)
-  ("C-c M-v" . js-eval)
-  ("C-M-v"   . js-eval-defun))
+  ("M-d"     'js-find-symbol)
+  ("C-c M-v" 'js-eval)
+  ("C-M-v"   'js-eval-defun))
 
 (al/eval-at-hook js-mode-hook
   (setq-local al/delimiter

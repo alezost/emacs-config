@@ -10,12 +10,11 @@
 (require 'al-key)
 (require 'al-shell)
 
-(defconst al/shell-keys
-  '("M-?"
-    ("M-O" . shell-backward-command)
-    ("M-U" . shell-forward-command))
-  "Alist of auxiliary keys for `shell-mode-map'.")
-(al/bind-keys-from-vars 'shell-mode-map 'al/shell-keys)
+(al/bind-keys
+  :map shell-mode-map
+  "M-?"
+  ("M-S-←" 'shell-backward-command)
+  ("M-S-→" 'shell-forward-command))
 
 (setq
  ;; `sh-mode-syntax-table' has proper syntax for comments.

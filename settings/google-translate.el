@@ -29,7 +29,7 @@
   (google-translate--setup-minibuffer-keymap)
   (al/bind-keys
     :map google-translate-minibuffer-keymap
-    ("C-↑" google-translate-previous-translation-direction)
-    ("C-↓" google-translate-next-translation-direction)))
+    ("C-↑" 'google-translate-previous-translation-direction)
+    ("C-↓" 'google-translate-next-translation-direction)))
 
 ;;; google-translate.el ends here

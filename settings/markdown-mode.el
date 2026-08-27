@@ -3,10 +3,9 @@
 (require 'markdown-mode)
 (require 'al-key)
 
-(defconst al/markdown-keys
-  '(("M->" . markdown-previous-link)
-    ("M-E" . markdown-next-link)))
-
-(al/bind-keys-from-vars 'markdown-mode-map 'al/markdown-keys)
+(al/bind-keys
+  :map markdown-mode-map
+  ("M-S-↑" 'markdown-previous-link)
+  ("M-S-↓" 'markdown-next-link))
 
 ;;; markdown-mode.el ends here

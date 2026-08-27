@@ -8,25 +8,23 @@
 (require 'al-key)
 (require 'al-visual)
 
-(defconst al/ibuffer-keys
-  '(("u"   . ibuffer-visit-buffer)
-    ("."   . ibuffer-backward-line)
-    ("e"   . ibuffer-forward-line)
-    ("M-." . ibuffer-backward-filter-group)
-    ("M-e" . ibuffer-forward-filter-group)
+(al/bind-keys
+  :map ibuffer-mode-map
+  ("→"   'ibuffer-visit-buffer)
+  ("↑"   'ibuffer-backward-line)
+  ("↓"   'ibuffer-forward-line)
+  ("M-↑" 'ibuffer-backward-filter-group)
+  ("M-↓" 'ibuffer-forward-filter-group)
 
-    ("d"   . ibuffer-visit-buffer-other-window-noselect)
-    ("C-d" . ibuffer-visit-buffer-other-window)
-    ("C-l"   (ibuffer-update t))
+  ("d"   'ibuffer-visit-buffer-other-window-noselect)
+  ("C-d" 'ibuffer-visit-buffer-other-window)
+  ("C-l" (ibuffer-update t))
 
-    ("M"   . ibuffer-mark-unsaved-buffers)
-    ("z"   . ibuffer-unmark-forward)
-    ("Z"     (ibuffer-unmark-all ?\r))
-    ("s r" . ibuffer-do-sort-by-recency)
-    ("* o" . ibuffer-mark-old-buffers))
-  "Alist of auxiliary keys for `ibuffer-mode-map'.")
-
-(al/bind-keys-from-vars 'ibuffer-mode-map 'al/ibuffer-keys)
+  ("M"   'ibuffer-mark-unsaved-buffers)
+  ("z"   'ibuffer-unmark-forward)
+  ("Z"   (ibuffer-unmark-all ?\r))
+  ("s r" 'ibuffer-do-sort-by-recency)
+  ("* o" 'ibuffer-mark-old-buffers))
 
 (setq ibuffer-default-sorting-mode 'recency)
 

@@ -142,21 +142,21 @@
 (al/bind-keys
   :map al/lazy-vertical-moving-map
   :create t
-  ("↑" previous-line)
-  ("↓" next-line))
+  ("↑" 'previous-line)
+  ("↓" 'next-line))
 
 (al/bind-keys
   :map al/lazy-moving-map
   :create t
   :parent al/lazy-vertical-moving-map
-  ("←" backward-char)
-  ("→" forward-char))
+  ("←" 'backward-char)
+  ("→" 'forward-char))
 
 (al/bind-keys
   :map al/lazy-scrolling-map
   :create t
-  ("SPC" scroll-up-command)
-  ("DEL" scroll-down-command))
+  ("SPC" 'scroll-up-command)
+  ("DEL" 'scroll-down-command))
 
 (al/bind-keys
   :map al/lazy-map
@@ -169,90 +169,90 @@
 
 (al/bind-keys
   :map ctl-x-map
-  ("A"   al/generate-autoloads-from-presets)
-  ("C"   save-buffers-kill-emacs)
-  ("C-8" insert-char)
-  ("o"   al/other-window)
-  ("M-o" other-window)
-  ("w"   which-key-mode))
+  ("A"   'al/generate-autoloads-from-presets)
+  ("C"   'save-buffers-kill-emacs)
+  ("C-8" 'insert-char)
+  ("o"   'al/other-window)
+  ("M-o" 'other-window)
+  ("w"   'which-key-mode))
 
 (al/bind-keys
   :map ctl-x-map
   :prefix-map al/games-map
   :prefix-doc "Map for games."
   :prefix-key "g"
-  ("t" tetris)
-  ("d" ducpel)
-  ("s" snake))
+  ("t" 'tetris)
+  ("d" 'ducpel)
+  ("s" 'snake))
 
 (al/bind-keys
   :map universal-argument-map
   "C-u"
-  ("C-4" universal-argument-more))
+  ("C-4" 'universal-argument-more))
 
 (al/bind-keys
-  ("C-4"   universal-argument)
-  ("H-u"   undo)
-  ("H-M-u" undo-only)
-  ("C-M-c" calc)
+  ("C-4"   'universal-argument)
+  ("H-u"   'undo)
+  ("H-M-u" 'undo-only)
+  ("C-M-c" 'calc)
 
-  ("H-m H-m"     kmacro-end-or-call-macro)
-  ("<f4>"        kmacro-end-or-call-macro)
-  ("<XF86New>"   kmacro-end-or-call-macro)
-  ("H-m s"       kmacro-start-macro-or-insert-counter)
-  ("H-m RET"     kmacro-start-macro-or-insert-counter)
-  ("C-<f4>"      kmacro-start-macro-or-insert-counter)
-  ("C-<XF86New>" kmacro-start-macro-or-insert-counter)
-  ("H-m e"       kmacro-edit-macro)
-  ("H-m C-d"     kmacro-edit-macro)
-  ("M-<f4>"      kmacro-edit-macro)
-  ("M-<XF86New>" kmacro-edit-macro)
+  ("H-m H-m"     'kmacro-end-or-call-macro)
+  ("<f4>"        'kmacro-end-or-call-macro)
+  ("<XF86New>"   'kmacro-end-or-call-macro)
+  ("H-m s"       'kmacro-start-macro-or-insert-counter)
+  ("H-m RET"     'kmacro-start-macro-or-insert-counter)
+  ("C-<f4>"      'kmacro-start-macro-or-insert-counter)
+  ("C-<XF86New>" 'kmacro-start-macro-or-insert-counter)
+  ("H-m e"       'kmacro-edit-macro)
+  ("H-m C-d"     'kmacro-edit-macro)
+  ("M-<f4>"      'kmacro-edit-macro)
+  ("M-<XF86New>" 'kmacro-edit-macro)
   ("H-m A"       (kmacro-call-macro 0))
 
-  ("C-<kp-add>"      text-scale-increase)
-  ("C-<kp-subtract>" text-scale-decrease)
+  ("C-<kp-add>"      'text-scale-increase)
+  ("C-<kp-subtract>" 'text-scale-decrease)
   ("C-<kp-multiply>" (text-scale-set 0))
 
-  ("M-R" ctl-x-r-map)
+  ("M-R"   ctl-x-r-map)
   ("C-M-g" goto-map)
 
-  ("<f5>"  compile)
-  ("C-="   describe-char)
-  ("C-c x" exit-recursive-edit)
-  ("C-c r" revert-buffer)
-  ("C-c k" al/kill-process))
+  ("<f5>"  'compile)
+  ("C-="   'describe-char)
+  ("C-c x" 'exit-recursive-edit)
+  ("C-c r" 'revert-buffer)
+  ("C-c k" 'al/kill-process))
 
 (al/bind-keys
   :map ctl-x-r-map
-  ("a" append-to-register)
-  ("p" prepend-to-register))
+  ("a" 'append-to-register)
+  ("p" 'prepend-to-register))
 
 (al/bind-keys
   :map goto-map
-  ("C-M-g" goto-line)
-  ("c"     move-to-column)
-  ("p"     goto-char)
-  ("C-M-h" al/previous-error)
-  ("C-M-n" al/next-error))
+  ("C-M-g" 'goto-line)
+  ("c"     'move-to-column)
+  ("p"     'goto-char)
+  ("C-M-h" 'al/previous-error)
+  ("C-M-n" 'al/next-error))
 
 (al/bind-keys
   :prefix-map al/modes-map
   :prefix-doc "Map for enabling/disabling modes."
   :prefix-key "M-M"
-  ("M-M" al/major-mode-to-kill-ring)
-  ("a" artist-mode)
-  ("A" auto-fill-mode)
-  ("c" conf-unix-mode)
-  ("e" emacs-lisp-mode)
-  ("f" font-lock-mode)
-  ("o" org-mode)
-  ("p" python-mode)
-  ("r" rainbow-mode)
-  ("l" nlinum-mode)
-  ("s" sh-mode)
-  ("t" toggle-truncate-lines)
-  ("v" view-mode)
-  ("T" text-mode))
+  ("M-M" 'al/major-mode-to-kill-ring)
+  ("a" 'artist-mode)
+  ("A" 'auto-fill-mode)
+  ("c" 'conf-unix-mode)
+  ("e" 'emacs-lisp-mode)
+  ("f" 'font-lock-mode)
+  ("o" 'org-mode)
+  ("p" 'python-mode)
+  ("r" 'rainbow-mode)
+  ("l" 'nlinum-mode)
+  ("s" 'sh-mode)
+  ("t" 'toggle-truncate-lines)
+  ("v" 'view-mode)
+  ("T" 'text-mode))
 
 
 ;;; Text navigating
@@ -266,53 +266,53 @@
   backward-word)
 
 (al/bind-keys
-  ("C-←"   backward-char)
-  ("M-←"   al/skip-parens-or-backward-word)
-  ("C-M-←" parens-backward)
-  ("M-S-←" backward-sentence)
+  ("C-←"   'backward-char)
+  ("M-←"   'al/skip-parens-or-backward-word)
+  ("C-M-←" 'parens-backward)
+  ("M-S-←" 'backward-sentence)
   ("C-H-M-o" (scroll-right 1))
 
-  ("C-→"   forward-char)
-  ("M-→"   al/skip-parens-or-forward-word)
-  ("C-M-→" parens-forward)
-  ("M-S-→" forward-sentence)
+  ("C-→"   'forward-char)
+  ("M-→"   'al/skip-parens-or-forward-word)
+  ("C-M-→" 'parens-forward)
+  ("M-S-→" 'forward-sentence)
   ("C-H-M-u" (scroll-left 1))
 
-  ("C-↑"   previous-line)
-  ("M-↑"   backward-paragraph)
-  ("C-M-↑" parens-backward-up)
-  ("M-S-↑" backward-page)
+  ("C-↑"   'previous-line)
+  ("M-↑"   'backward-paragraph)
+  ("C-M-↑" 'parens-backward-up)
+  ("M-S-↑" 'backward-page)
   ("C-H-M-." (scroll-down 1))
-  ("H-."   scroll-down-command)
-  ("H-M-." scroll-other-window-down)
-  ("s-."   al/previous-link)
+  ("H-."   'scroll-down-command)
+  ("H-M-." 'scroll-other-window-down)
+  ("s-."   'al/previous-link)
 
-  ("C-↓"   next-line)
-  ("M-↓"   forward-paragraph)
-  ("C-M-↓" parens-forward-down)
-  ("M-S-↓" forward-page)
+  ("C-↓"   'next-line)
+  ("M-↓"   'forward-paragraph)
+  ("C-M-↓" 'parens-forward-down)
+  ("M-S-↓" 'forward-page)
   ("C-H-M-e" (scroll-up 1))
-  ("H-e"   scroll-up-command)
-  ("H-M-e" scroll-other-window)
-  ("s-e"   al/next-link)
+  ("H-e"   'scroll-up-command)
+  ("H-M-e" 'scroll-other-window)
+  ("s-e"   'al/next-link)
 
-  ("C-⇤"   al/beginning-of-line)
-  ("C-M-⇤" beginning-of-defun)
-  ("H-a"   al/beginning-of-buffer)
-  ("C-x a" beginning-of-buffer)
+  ("C-⇤"   'al/beginning-of-line)
+  ("C-M-⇤" 'beginning-of-defun)
+  ("H-a"   'al/beginning-of-buffer)
+  ("C-x a" 'beginning-of-buffer)
 
-  ("C-⇥"   al/end-of-line)
-  ("C-M-⇥" end-of-defun)
-  ("H-i"   al/end-of-buffer)
-  ("C-x i" end-of-buffer)
+  ("C-⇥"   'al/end-of-line)
+  ("C-M-⇥" 'end-of-defun)
+  ("H-i"   'al/end-of-buffer)
+  ("C-x i" 'end-of-buffer)
 
-  ("C-3"   recenter-top-bottom)
-  ("C-H-3" al/recenter-top)
-  ("C-2"   move-to-window-line-top-bottom))
+  ("C-3"   'recenter-top-bottom)
+  ("C-H-3" 'al/recenter-top)
+  ("C-2"   'move-to-window-line-top-bottom))
 
 (al/bind-keys
   :map narrow-map
-  ("r" narrow-to-region))
+  ("r" 'narrow-to-region))
 
 (defvar al/last-frame-keys 'graphical
   "Last frame type where some special keys were set.
@@ -330,19 +330,19 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
       ;;
       ;; Arrow keys work only with "C-" modifier in a text terminal, so
       ;; bind the original (non-translated) keys here.
-      ("M-," delete-char)
-      ("M-p" delete-backward-char)
-      ("M-." previous-line)
-      ("M-e" next-line)
-      ("M-o" backward-char)
-      ("M-u" forward-char)
-      ("M-a" al/beginning-of-line)
-      ("M-i" al/end-of-line)
-      ("M->" scroll-down-command)
-      ("M-E" scroll-up-command)
-      ("C-M-e" parens-forward-down)
-      ("C-M-o" parens-backward)
-      ("C-M-u" parens-forward))
+      ("M-," 'delete-char)
+      ("M-p" 'delete-backward-char)
+      ("M-." 'previous-line)
+      ("M-e" 'next-line)
+      ("M-o" 'backward-char)
+      ("M-u" 'forward-char)
+      ("M-a" 'al/beginning-of-line)
+      ("M-i" 'al/end-of-line)
+      ("M->" 'scroll-down-command)
+      ("M-E" 'scroll-up-command)
+      ("C-M-e" 'parens-forward-down)
+      ("C-M-o" 'parens-backward)
+      ("C-M-u" 'parens-forward))
     (setq al/last-frame-keys 'text)))
 
 (al/eval-after-frame-init
@@ -359,131 +359,131 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   :prefix-map al/point-pos-map
   :prefix-doc "Map for point-pos."
   :prefix-key "M-Z"
-  ("M-S" point-pos-save)
-  ("M-D" point-pos-delete)
-  ("M-G" point-pos-goto)
-  ("M-H" point-pos-previous)
-  ("M-N" point-pos-next)
-  ("s"   point-pos-save)
-  ("d"   point-pos-delete)
-  ("g"   point-pos-goto)
-  ("h"   point-pos-previous)
-  ("n"   point-pos-next))
+  ("M-S" 'point-pos-save)
+  ("M-D" 'point-pos-delete)
+  ("M-G" 'point-pos-goto)
+  ("M-H" 'point-pos-previous)
+  ("M-N" 'point-pos-next)
+  ("s"   'point-pos-save)
+  ("d"   'point-pos-delete)
+  ("g"   'point-pos-goto)
+  ("h"   'point-pos-previous)
+  ("n"   'point-pos-next))
 
 (al/bind-keys
-  ("C-M-S-g" point-pos-goto)
-  ("C-M-S-h" point-pos-previous)
-  ("C-M-S-n" point-pos-next))
+  ("C-M-S-g" 'point-pos-goto)
+  ("C-M-S-h" 'point-pos-previous)
+  ("C-M-S-n" 'point-pos-next))
 
 (al/bind-keys*
-  ("C-M-s-m" imenu)
-  ("C-M-m" imenus)
-  ("M-s-s" al/imenus-search-elisp-directories))
+  ("C-M-s-m" 'imenu)
+  ("C-M-m" 'imenus)
+  ("M-s-s" 'al/imenus-search-elisp-directories))
 
 
 ;;; Text editing: inserting, deleting, yanking, etc.
 
 (al/bind-keys
-  ("C-↷"   delete-char)
-  ("M-↷"   parens-kill-word-forward)
-  ("C-M-↷" parens-kill-sexp-forward)
-  ("M-S-↷" kill-line)
-  ("H-M-," al/delete-blank-lines)
+  ("C-↷"   'delete-char)
+  ("M-↷"   'parens-kill-word-forward)
+  ("C-M-↷" 'parens-kill-sexp-forward)
+  ("M-S-↷" 'kill-line)
+  ("H-M-," 'al/delete-blank-lines)
 
-  ("C-↶"   delete-backward-char)
-  ("M-↶"   parens-kill-word-backward)
-  ("C-M-↶" parens-kill-sexp-backward)
-  ("M-S-↶" al/backward-kill-line)
-  ("H-M-p" delete-trailing-whitespace)
+  ("C-↶"   'delete-backward-char)
+  ("M-↶"   'parens-kill-word-backward)
+  ("C-M-↶" 'parens-kill-sexp-backward)
+  ("M-S-↶" 'al/backward-kill-line)
+  ("H-M-p" 'delete-trailing-whitespace)
 
-  ("M-q"   al/fill-paragraph)
-  ("C-M-q" al/save-sexp)
-  ("M-Q"   al/save-line)
+  ("M-q"   'al/fill-paragraph)
+  ("C-M-q" 'al/save-sexp)
+  ("M-Q"   'al/save-line)
 
-  ("C-k"   kill-whole-line)
-  ("M-k"   al/save-whole-line)
-  ("C-M-k" al/backward-save-sexp)
-  ("M-K"   al/backward-save-line)
-  ("H-k"   al/duplicate-dwim)
+  ("C-k"   'kill-whole-line)
+  ("M-k"   'al/save-whole-line)
+  ("C-M-k" 'al/backward-save-sexp)
+  ("M-K"   'al/backward-save-line)
+  ("H-k"   'al/duplicate-dwim)
 
-  ("C-'"   transpose-chars)
+  ("C-'"   'transpose-chars)
   ("M-'"   (transpose-words -1))
-  ("C-M-'" parens-transpose-sexps)
-  ("M-\""  transpose-lines)
+  ("C-M-'" 'parens-transpose-sexps)
+  ("M-\""  'transpose-lines)
 
-  ("C-;"   open-line)
-  ("M-;"   al/comment-dwirm)
-  ("C-M-;" split-line)
+  ("C-;"   'open-line)
+  ("M-;"   'al/comment-dwirm)
+  ("C-M-;" 'split-line)
 
-  ("C-t"   al/kill-region)
-  ("M-x"   al/kill-ring-save)
-  ("C-M-x" append-next-kill)
+  ("C-t"   'al/kill-region)
+  ("M-x"   'al/kill-ring-save)
+  ("C-M-x" 'append-next-kill)
 
-  ("S-SPC"     just-one-space)
-  ("M-S-SPC"   al/delete-horizontal-space)
-  ("M-SPC"     mark-word)
-  ("M-s-SPC"   mark-paragraph)
-  ("C-M-s-SPC" mark-defun)
-  ("H-s-SPC"   mark-whole-buffer)
+  ("S-SPC"     'just-one-space)
+  ("M-S-SPC"   'al/delete-horizontal-space)
+  ("M-SPC"     'mark-word)
+  ("M-s-SPC"   'mark-paragraph)
+  ("C-M-s-SPC" 'mark-defun)
+  ("H-s-SPC"   'mark-whole-buffer)
 
-  ("C-y" al/yank-or-prev)
-  ("M-y" al/yank-or-next)
-  ("H-y" al/insert-clipboard)
-  ("C-H-y" browse-kill-ring)
+  ("C-y" 'al/yank-or-prev)
+  ("M-y" 'al/yank-or-next)
+  ("H-y" 'al/insert-clipboard)
+  ("C-H-y" 'browse-kill-ring)
 
-  ("C-j" newline-and-indent)
+  ("C-j" 'newline-and-indent)
   ("M-J" (delete-indentation -1))
-  ("S-<backspace>" delete-region)
-  ("H-M-a" align-regexp)
+  ("S-<backspace>" 'delete-region)
+  ("H-M-a" 'align-regexp)
   ("C-H-M-a" (align-regexp (region-beginning) (region-end)
                            "\\(\\s-*\\)(("))
-  ("M-%" ispell-complete-word)
-  ("M-_" shift-number-down)
-  ("M-+" shift-number-up)
+  ("M-%" 'ispell-complete-word)
+  ("M-_" 'shift-number-down)
+  ("M-+" 'shift-number-up)
 
-  ("M-/"   dabbrev-expand)
-  ("C-M-/" hippie-expand)
-  ("M-?"   al/dabbrev-expand-word)
+  ("M-/"   'dabbrev-expand)
+  ("C-M-/" 'hippie-expand)
+  ("M-?"   'al/dabbrev-expand-word)
 
-  ("C-<kanji>"   al/downcase-word-backward)
-  ("S-<kanji>"   al/capitalize-word-backward)
-  ("H-<kanji>"   al/upcase-word-backward)
-  ("C-M-<kanji>" al/downcase-dwim)
-  ("M-S-<kanji>" al/capitalize-dwim)
-  ("H-M-<kanji>" al/upcase-dwim)
+  ("C-<kanji>"   'al/downcase-word-backward)
+  ("S-<kanji>"   'al/capitalize-word-backward)
+  ("H-<kanji>"   'al/upcase-word-backward)
+  ("C-M-<kanji>" 'al/downcase-dwim)
+  ("M-S-<kanji>" 'al/capitalize-dwim)
+  ("H-M-<kanji>" 'al/upcase-dwim)
 
-  ("C-<tab>" indent-relative)
-  ("M-S-<iso-lefttab>" tab-to-tab-stop)
-  ("H-<tab>" indent-region)
-  ("C-c u" al/decode-region))
+  ("C-<tab>" 'indent-relative)
+  ("M-S-<iso-lefttab>" 'tab-to-tab-stop)
+  ("H-<tab>" 'indent-region)
+  ("C-c u" 'al/decode-region))
 
 (al/bind-keys
   ("C->"   (insert "->"))
-  ("H-4"   insert-parentheses)
-  ("H-M-4" insert-pair-dollars)
-  ("H-5"   insert-pair-square-brackets)
-  ("H-6"   insert-pair-curly-brackets)
-  ("H-,"   insert-pair-angle-brackets)
-  ("H-'"   insert-pair-single-quotations)
-  ("H-;"   insert-pair-double-quotations)
-  ("C-H-," insert-pair-angle-quotations)
-  ("C-H-'" insert-pair-left-right-single-quotations)
-  ("C-H-;" insert-pair-left-right-double-quotations)
-  ("C-H-M-'" insert-pair-japanese-quotations)
-  ("H-`"   insert-pair-grave-accent-quotation)
-  ("C-H-`" insert-pair-grave-accents))
+  ("H-4"   'insert-parentheses)
+  ("H-M-4" 'insert-pair-dollars)
+  ("H-5"   'insert-pair-square-brackets)
+  ("H-6"   'insert-pair-curly-brackets)
+  ("H-,"   'insert-pair-angle-brackets)
+  ("H-'"   'insert-pair-single-quotations)
+  ("H-;"   'insert-pair-double-quotations)
+  ("C-H-," 'insert-pair-angle-quotations)
+  ("C-H-'" 'insert-pair-left-right-single-quotations)
+  ("C-H-;" 'insert-pair-left-right-double-quotations)
+  ("C-H-M-'" 'insert-pair-japanese-quotations)
+  ("H-`"   'insert-pair-grave-accent-quotation)
+  ("C-H-`" 'insert-pair-grave-accents))
 
 (al/bind-keys
   :prefix-map al/insert-map
   :prefix-doc "Map for inserting symbols and text."
   :prefix-key "M-i"
-  ("M-i" al/insert-delimiter)
+  ("M-i" 'al/insert-delimiter)
   ("M-a" (insert ";;;###autoload\n"))
   ("t"   (insert "TODO"))
   ("f"   (insert "FIXME"))
-  ("d"   al/insert-date)
-  ("M-'" insert-pair-top-corners)
-  ("M-;" insert-pair-bottom-corners))
+  ("d"   'al/insert-date)
+  ("M-'" 'insert-pair-top-corners)
+  ("M-;" 'insert-pair-bottom-corners))
 
 (al/bind-keys
   :map key-translation-map
@@ -582,26 +582,26 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
    sp-wrap-entire-symbol 'globally))
 
 (al/bind-keys
-  ("H-M-<tab>" sp-indent-defun)
-  ("H-E"   paredit-splice-sexp)
-  ("H-P"   paredit-splice-sexp-killing-backward)
-  ("H-<"   paredit-splice-sexp-killing-forward)
-  ("H->"   paredit-raise-sexp)
-  ("C-)"   sp-forward-slurp-sexp)
-  ("C-M-0" sp-forward-barf-sexp)
-  ("C-("   sp-backward-slurp-sexp)
-  ("C-M-9" sp-backward-barf-sexp))
+  ("H-M-<tab>" 'sp-indent-defun)
+  ("H-E"   'paredit-splice-sexp)
+  ("H-P"   'paredit-splice-sexp-killing-backward)
+  ("H-<"   'paredit-splice-sexp-killing-forward)
+  ("H->"   'paredit-raise-sexp)
+  ("C-)"   'sp-forward-slurp-sexp)
+  ("C-M-0" 'sp-forward-barf-sexp)
+  ("C-("   'sp-backward-slurp-sexp)
+  ("C-M-9" 'sp-backward-barf-sexp))
 
 (al/bind-keys
   :prefix-map al/parens-misc-map
   :prefix-doc "Map for miscellaneous parentheses commands."
   :prefix-key "H-p"
-  ("C" sp-cheat-sheet)
-  ("." sp-absorb-sexp)
-  ("e" sp-emit-sexp)
-  ("c" sp-convolute-sexp)
-  ("j" sp-join-sexp)
-  ("s" sp-split-sexp))
+  ("C" 'sp-cheat-sheet)
+  ("↑" 'sp-absorb-sexp)
+  ("↓" 'sp-emit-sexp)
+  ("c" 'sp-convolute-sexp)
+  ("j" 'sp-join-sexp)
+  ("s" 'sp-split-sexp))
 
 (setq
  parens-require-spaces nil
@@ -653,9 +653,9 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 (al/bind-keys
   :map al/input-method-map
   :create t
-  ("<kanji>" al/set-input-method)
-  ("RET"     al/set-input-method)
-  ("C-d"     describe-input-method)
+  ("<kanji>" 'al/set-input-method)
+  ("RET"     'al/set-input-method)
+  ("C-d"     'describe-input-method)
   ("SPC" (al/set-input-method nil))
   ("e"   (al/set-input-method "emoji"))
   ("6"   (al/set-input-method "al/utf"))
@@ -675,18 +675,16 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("9"   (al/set-input-method "dvorak-qwerty"))
   ("q"   (al/set-input-method "dvorak-qwerty")))
 
-(defconst al/input-method-keys
-  '(("<kanji>" al/input-method-map)
-    ("C-\\"  al/set-input-method)
-    ("s-6"   (al/set-input-method "al/utf"))
-    ("s-7"   (al/set-input-method nil))
-    ("s-8"   (al/set-input-method "dvorak-russian-computer"))
-    ("s-9"   (al/set-input-method "dvorak-qwerty"))
-    ("s-0"   (al/set-input-method "greek"))
-    ("s-M-7" (ispell-change-dictionary "en"))
-    ("s-M-8" (ispell-change-dictionary "ru-yeyo")))
-  "Alist of auxiliary keys for input methods.")
-(al/bind-keys-from-vars nil 'al/input-method-keys)
+(al/bind-keys
+  ("<kanji>" al/input-method-map)
+  ("C-\\"  'al/set-input-method)
+  ("s-6"   (al/set-input-method "al/utf"))
+  ("s-7"   (al/set-input-method nil))
+  ("s-8"   (al/set-input-method "dvorak-russian-computer"))
+  ("s-9"   (al/set-input-method "dvorak-qwerty"))
+  ("s-0"   (al/set-input-method "greek"))
+  ("s-M-7" (ispell-change-dictionary "en"))
+  ("s-M-8" (ispell-change-dictionary "ru-yeyo")))
 
 (al/eval-after-load hangul
   :no-warning t
@@ -701,35 +699,33 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 
 (al/bind-keys
   :map search-map
-  ("s"   query-replace)
-  ("M-s" query-replace)
+  ("s"   'query-replace)
+  ("M-s" 'query-replace)
   ("SPC" (al/replace " " "_"))
   ("_"   (al/replace "_" " "))
-  ("r"   query-replace-regexp)
-  ("R"   replace-regexp))
+  ("r"   'query-replace-regexp)
+  ("R"   'replace-regexp))
 
 (al/eval-after-load isearch
+  (al/bind-keys
+    :map isearch-mode-map
+    :parent al/input-method-map
+    ("M-s" 'isearch-query-replace)
+    ("M-d" 'isearch-edit-string)
+    ("M-o" 'isearch-occur))
+
   (setq
    isearch-allow-scroll t
    isearch-lax-whitespace nil
    ;; "a" searches for "ä", "à", etc.
-   search-default-mode 'char-fold-to-regexp)
-
-  (defconst al/isearch-keys
-    '(("M-s" isearch-query-replace)
-      ("M-d" isearch-edit-string)
-      ("M-o" isearch-occur))
-    "Alist of auxiliary keys for `isearch-mode-map'.")
-  (al/bind-keys-from-vars 'isearch-mode-map
-    '(al/isearch-keys al/input-method-keys)))
+   search-default-mode 'char-fold-to-regexp))
 
 (al/eval-after-load replace
-  (defconst al/occur-keys
-    '(("↑" occur-prev)
-      ("↓" occur-next)
-      ("→" occur-mode-goto-occurrence))
-    "Alist of auxiliary keys for `occur-mode-map'.")
-  (al/bind-keys-from-vars 'occur-mode-map 'al/occur-keys)
+  (al/bind-keys
+    :map occur-mode-map
+    ("↑" 'occur-prev)
+    ("↓" 'occur-next)
+    ("→" 'occur-mode-goto-occurrence))
 
   (al/eval-at-hook occur-mode-hook
     ;; Start paragraph from any non-space symbol.
@@ -760,14 +756,14 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 
 (al/bind-keys
   :map minibuffer-local-map
-  ([tab] completion-at-point)
-  ("M-↑" previous-history-element)
-  ("M-↓" next-history-element))
+  ([tab] 'completion-at-point)
+  ("M-↑" 'previous-history-element)
+  ("M-↓" 'next-history-element))
 
 (al/bind-keys
   :map read--expression-map
   :check t
-  ("C-j" newline))
+  ("C-j" 'newline))
 
 (al/call-at-hook minibuffer-setup-hook al/hbar-cursor-type)
 
@@ -789,8 +785,8 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 
 (al/bind-keys
   :map completion-list-mode-map
-  ("↑" previous-completion)
-  ("↓" next-completion))
+  ("↑" 'previous-completion)
+  ("↓" 'next-completion))
 
 (al/eval-after-load al-complete
   :load after-init
@@ -810,18 +806,18 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   :load after-init
   (al/bind-keys
     :map al/minibuffer-buffer-map
-    ("M-m" al/minibuffer-magit-buffers)
-    ("M-s" al/minibuffer-shell-buffers))
+    ("M-m" 'al/minibuffer-magit-buffers)
+    ("M-s" 'al/minibuffer-shell-buffers))
   (al/bind-keys
     :map al/minibuffer-file-map
     ("M-h" (al/minibuffer-set-directory "~"))
-    ("M-m" al/minibuffer-enter-magit-status)
-    ("RET" icomplete-fido-ret)
-    ("DEL" icomplete-fido-backward-updir))
+    ("M-m" 'al/minibuffer-enter-magit-status)
+    ("RET" 'icomplete-fido-ret)
+    ("DEL" 'icomplete-fido-backward-updir))
   (al/bind-keys
     :map al/minibuffer-symbol-map
-    ("C-d" al/minibuffer-describe-symbol)
-    ("M-d" al/minibuffer-find-symbol))
+    ("C-d" 'al/minibuffer-describe-symbol)
+    ("M-d" 'al/minibuffer-find-symbol))
 
   (advice-add 'read-file-name             :around #'al/read-file-add-keymap)
   (advice-add 'read-buffer                :around #'al/read-buffer-add-keymap)
@@ -844,9 +840,9 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   company-complete)
 
 (al/bind-keys
-  ([tab]     al/tab)
-  ([backtab] completion-at-point)
-  ([M-tab]   al/complete-elisp-symbol))
+  ([tab]     'al/tab)
+  ([backtab] 'completion-at-point)
+  ([M-tab]   'al/complete-elisp-symbol))
 
 (al/eval-settings-after-load
   (icomplete "icomplete")
@@ -864,38 +860,38 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 (al/eval-after-load al-buffer-cmd
   (al/bind-keys
     :map al/switch-buffer-map
-    ("M-b" al/switch-to-other-buffer)
-    ("M-N" al/switch-to-next-buffer)
-    ("M-B" al/switch-to-prev-buffer)))
+    ("M-b" 'al/switch-to-other-buffer)
+    ("M-N" 'al/switch-to-next-buffer)
+    ("M-B" 'al/switch-to-prev-buffer)))
 
 (al/bind-keys*
-  ("M-b" al/switch-to-previous-buffer)
+  ("M-b" 'al/switch-to-previous-buffer)
   ("C-M-b" (al/find-file (al/notes-dir-file "bookmarks.org"))))
 
 (al/bind-keys*
   :prefix-map al/buffer-map
   :prefix-doc "Map for managing/switching to buffers."
   :prefix-key "C-b"
-  ("C-b" switch-to-buffer)
-  ("M-b" ibuffer)
-  ("r" rename-buffer)
-  ("c" clone-buffer)
-  ("n" info)
-  ("b" al/buffer-name-to-kill-ring)
-  ("f" al/file-name-to-kill-ring)
+  ("C-b" 'switch-to-buffer)
+  ("M-b" 'ibuffer)
+  ("r" 'rename-buffer)
+  ("c" 'clone-buffer)
+  ("n" 'info)
+  ("b" 'al/buffer-name-to-kill-ring)
+  ("f" 'al/file-name-to-kill-ring)
   ("g" (al/display-buffer "*grep*"))
   ("o" (al/display-buffer "*Occur*"))
   ("h" (al/display-buffer "*Help*"))
-  ("s" al/switch-to-scratch)
-  ("P" list-processes)
-  ("E" list-environment)
-  ("e" emoji-list)
-  ("F" al/switch-to-faces)
-  ("w" al/switch-to-w3m)
-  ("m" man)
-  ("M" woman)
+  ("s" 'al/switch-to-scratch)
+  ("P" 'list-processes)
+  ("E" 'list-environment)
+  ("e" 'emoji-list)
+  ("F" 'al/switch-to-faces)
+  ("w" 'al/switch-to-w3m)
+  ("m" 'man)
+  ("M" 'woman)
   ("k" (kill-buffer nil))
-  ("8" al/switch-to-characters))
+  ("8" 'al/switch-to-characters))
 
 (al/eval-settings-after-load
   (uniquify (setq uniquify-buffer-name-style 'post-forward))
@@ -938,13 +934,13 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("H-<XF86AudioLowerVolume>"   (enlarge-window -1 t))
   ("M-H-<XF86AudioRaiseVolume>" (enlarge-window 1))
   ("M-H-<XF86AudioLowerVolume>" (enlarge-window -1))
-  ("H-o"   al/other-window)
-  ("H-M-o" al/switch-or-next-window)
+  ("H-o"   'al/other-window)
+  ("H-M-o" 'al/switch-or-next-window)
   ("H-M-q" (quit-window nil (previous-window)))
-  ("H-O"   al/switch-to-minibuffer)
-  ("H-1"   delete-other-windows)
-  ("H-2"   al/make-vertical-windows)
-  ("H-3"   al/make-horizontal-windows))
+  ("H-O"   'al/switch-to-minibuffer)
+  ("H-1"   'delete-other-windows)
+  ("H-2"   'al/make-vertical-windows)
+  ("H-3"   'al/make-horizontal-windows))
 
 
 ;;; Working with files: backup, autosave, dired, etc.
@@ -956,15 +952,15 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   :prefix-map al/find-file-map
   :prefix-doc "Map for finding files."
   :prefix-key "C-f"
-  ("C-f"   find-file)
-  ("p"     al/find-file-in-path)
-  ("S"     al/sudo-find-file)
-  ("h"     al/ssh-find-file)
-  ("z"     al/router-get-log)
-  ("u"     al/browse-url)
-  ("y"     al/browse-youtube-video)
-  ("l"     find-library)
-  ("r"     recentf-open)
+  ("C-f"   'find-file)
+  ("p"     'al/find-file-in-path)
+  ("S"     'al/sudo-find-file)
+  ("h"     'al/ssh-find-file)
+  ("z"     'al/router-get-log)
+  ("u"     'al/browse-url)
+  ("y"     'al/browse-youtube-video)
+  ("l"     'find-library)
+  ("r"     'recentf-open)
   ("e"     (al/find-file al/emacs-dir))
   ("C-c"   (al/find-file al/emacs-settings-dir))
   ("i"     (al/find-file (al/emacs-init-dir-file "init.el")))
@@ -977,10 +973,10 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   :prefix-map al/bookmark-map
   :prefix-doc "Map for bookmarks and finding files."
   :prefix-key "M-f"
-  ("M-f"   bookmark-jump)
-  ("n"     bookmark-set)
-  ("k"     bookmark-delete)
-  ("l"     bookmark-bmenu-list)
+  ("M-f"   'bookmark-jump)
+  ("n"     'bookmark-set)
+  ("k"     'bookmark-delete)
+  ("l"     'bookmark-bmenu-list)
   ("q"     (al/find-file (al/src-dir-file "emacs/melpa/recipes")))
   ("h"     (al/find-file "~"))
   ("d"     (al/find-file al/journal-dir))
@@ -1002,20 +998,20 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   :prefix-map al/grep-find-map
   :prefix-doc "Map for find/grep commands."
   :prefix-key "M-F"
-  ("g" grep)
-  ("n" find-name-dired)
-  ("a" find-dired)
-  ("f" grep-find))
+  ("g" 'grep)
+  ("n" 'find-name-dired)
+  ("a" 'find-dired)
+  ("f" 'grep-find))
 
 (al/bind-keys
   :map ctl-x-map
   :prefix-map al/recentf-map
   :prefix-doc "Map for recent files."
   :prefix-key "r"
-  ("m" recentf-mode)
-  ("f" recentf-open)
-  ("l" recentf-edit-list)
-  ("c" recentf-cleanup))
+  ("m" 'recentf-mode)
+  ("f" 'recentf-open)
+  ("l" 'recentf-edit-list)
+  ("c" 'recentf-cleanup))
 
 (let ((dir (al/emacs-data-dir-file "auto-save")))
   ;; Emacs does not create a directory of an autosave file and just
@@ -1107,15 +1103,15 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   :prefix-map al/magit-map
   :prefix-doc "Map for magit and git stuff."
   :prefix-key "M-m"
-  ("M-m" al/magit-switch-buffer)
+  ("M-m" 'al/magit-switch-buffer)
   ("b" (al/magit-switch-buffer 'all))
-  ("B" magit-blame)
-  ("c" al/magit-show-commit)
-  ("d" magit-dispatch)
-  ("s" magit-status)
-  ("l" magit-log-current)
-  ("k" al/browse-at-remote-kill)
-  ("u" browse-at-remote))
+  ("B" 'magit-blame)
+  ("c" 'al/magit-show-commit)
+  ("d" 'magit-dispatch)
+  ("s" 'magit-status)
+  ("l" 'magit-log-current)
+  ("k" 'al/browse-at-remote-kill)
+  ("u" 'browse-at-remote))
 
 ;; I don't load "magit-autoloads.el", so autoload some commands.
 (al/autoload "magit"
@@ -1157,22 +1153,22 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 (al/bind-key* "M-v" al/pp-eval-expression)
 
 (al/bind-keys
-  ("C-v"   al/eval-dwim)
-  ("C-s-v" al/pp-eval-dwim)
-  ("C-S-v" al/pp-macroexpand-last-sexp)
-  ("C-M-v" eval-defun)
-  ("M-s-v" eval-buffer)
-  ("C-d"   elisp-slime-nav-describe-elisp-thing-at-point)
-  ("M-d"   elisp-slime-nav-find-elisp-thing-at-point))
+  ("C-v"   'al/eval-dwim)
+  ("C-s-v" 'al/pp-eval-dwim)
+  ("C-S-v" 'al/pp-macroexpand-last-sexp)
+  ("C-M-v" 'eval-defun)
+  ("M-s-v" 'eval-buffer)
+  ("C-d"   'elisp-slime-nav-describe-elisp-thing-at-point)
+  ("M-d"   'elisp-slime-nav-find-elisp-thing-at-point))
 
 (al/bind-keys
   :prefix-map al/doc-map
   :prefix-doc "Map for documentation/finding definitions."
   :prefix-key "C-M-d"
-  ("f" find-function)
-  ("v" find-variable)
-  ("F" find-face-definition)
-  ("b" describe-personal-keybindings))
+  ("f" 'find-function)
+  ("v" 'find-variable)
+  ("F" 'find-face-definition)
+  ("b" 'describe-personal-keybindings))
 
 (al/autoload "python" python-shell-switch-to-shell)
 
@@ -1184,7 +1180,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   (al/bind-keys
     :map prog-mode-map
     :clean t
-    ("C-M-<tab>" prog-indent-sexp))
+    ("C-M-<tab>" 'prog-indent-sexp))
 
   (al/call-at-hook prog-mode-hook
     hl-line-mode
@@ -1197,8 +1193,8 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   (al/bind-keys
     :map lisp-mode-shared-map
     :clean t
-    ("C-M-<tab>" al/indent-sexp)
-    ("C-c C-z" al/ielm-other-window))
+    ("C-M-<tab>" 'al/indent-sexp)
+    ("C-c C-z" 'al/ielm-other-window))
   (al/clean-keymap lisp-mode-map)
 
   (al/modify-page-break-syntax lisp-mode-syntax-table)
@@ -1257,29 +1253,29 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 (setq shell-file-name "bash")
 
 (al/bind-keys
-  ("s-s"   al/shell)
-  ("C-z"   al/eshell)
-  ("C-M-z" al/eshell-cd))
+  ("s-s"   'al/shell)
+  ("C-z"   'al/eshell)
+  ("C-M-z" 'al/eshell-cd))
 
 (al/bind-keys*
  :prefix-map al/repl-map
  :prefix-doc "Map for various REPLs."
  :prefix-key "C-n"
- ("C-s" al/switch-to-shell-buffer)
- ("t"   visit-ansi-term)
- ("e"   eshell)
- ("i"   ielm)
- ("a"   al/agent-shell)
- ("s"   al/sql-switch-or-connect)
- ("l"   al/sly)
- ("L"   al/sly-connect)
- ("g"   al/geiser-guile-switch-current-window)
- ("G"   al/geiser-socket-connect)
- ("h"   al/haskell-interactive-switch-or-start)
- ("P"   run-python)
- ("p"   python-shell-switch-to-shell)
- ("m"   maxima)
- ("x"   guix-switch-to-repl))
+ ("C-s" 'al/switch-to-shell-buffer)
+ ("t"   'visit-ansi-term)
+ ("e"   'eshell)
+ ("i"   'ielm)
+ ("a"   'al/agent-shell)
+ ("s"   'al/sql-switch-or-connect)
+ ("l"   'al/sly)
+ ("L"   'al/sly-connect)
+ ("g"   'al/geiser-guile-switch-current-window)
+ ("G"   'al/geiser-socket-connect)
+ ("h"   'al/haskell-interactive-switch-or-start)
+ ("P"   'run-python)
+ ("p"   'python-shell-switch-to-shell)
+ ("m"   'maxima)
+ ("x"   'guix-switch-to-repl))
 
 (al/eval-settings-after-load
   (comint "comint")
@@ -1295,12 +1291,12 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 (al/eval-after-load button
   (al/bind-keys
     :map button-buffer-map
-    ("↑" backward-button)
-    ("↓" forward-button))
+    ("↑" 'backward-button)
+    ("↓" 'forward-button))
   (al/bind-keys
     :map button-map
-    ("→" push-button)
-    ("c" bui-button-copy-label)))
+    ("→" 'push-button)
+    ("c" 'bui-button-copy-label)))
 
 (al/eval-settings-after-load
   (wid-edit "wid-edit")
@@ -1313,12 +1309,12 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 
 (al/bind-keys
   :map help-map
-  ("v" al/describe-variable)
-  ("s" al/describe-symbol)
-  ("x" describe-syntax)
-  ("F" describe-face)
-  ("K" describe-keymap)
-  ("A" apropos))
+  ("v" 'al/describe-variable)
+  ("s" 'al/describe-symbol)
+  ("x" 'describe-syntax)
+  ("F" 'describe-face)
+  ("K" 'describe-keymap)
+  ("A" 'apropos))
 
 (al/bind-keys
   :map help-map
@@ -1346,8 +1342,8 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 (al/eval-after-load help-mode
   (al/bind-keys
     :map help-mode-map
-    ("↷" help-go-back)
-    ("↶" help-go-forward))
+    ("↷" 'help-go-back)
+    ("↶" 'help-go-forward))
 
   (al/call-at-hook help-mode-hook al/no-truncate-lines))
 
@@ -1378,10 +1374,10 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
  :prefix-map al/spell-map
  :prefix-doc "Map for flyspell and friends."
  :prefix-key "H-s"
- ("r" flyspell-region)
- ("b" flyspell-buffer)
- ("n" flyspell-goto-next-error)
- ("H-n" flyspell-goto-next-error))
+ ("r" 'flyspell-region)
+ ("b" 'flyspell-buffer)
+ ("n" 'flyspell-goto-next-error)
+ ("H-n" 'flyspell-goto-next-error))
 
 (al/setq-no-warnings flyspell-use-meta-tab nil)
 
@@ -1399,13 +1395,13 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
  :prefix-map al/calendar-map
  :prefix-doc "Map for calendar, diary, notifications, etc."
  :prefix-key "M-C"
- ("M-C" calendar)
- ("c"   calendar)
- ("d"   diary)
- ("D"   al/diary-file)
- ("A"   appt-activate)
- ("a n" appt-add)
- ("a k" appt-delete))
+ ("M-C" 'calendar)
+ ("c"   'calendar)
+ ("d"   'diary)
+ ("D"   'al/diary-file)
+ ("A"   'appt-activate)
+ ("a n" 'appt-add)
+ ("a k" 'appt-delete))
 
 ;; `calendar-date-style' is used for other variables.
 (al/setq-no-warnings calendar-date-style 'iso)
@@ -1428,19 +1424,19 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
  :prefix-map al/darts-map
  :prefix-doc "Map for darts and journal."
  :prefix-key "M-D"
- ("d" darts-day-template)
- ("s" darts-day-select)
- ("e" darts-day-export)
- ("M-S M-D" journal-search-by-date)
- ("M-S M-S" journal-grep)
- ("j" journal-create-entry)
- ("w" journal-position-windows)
- ("c" journal-change-created-property)
- ("v" journal-change-converted-property)
- ("b" journal-change-described-property)
- ("h" journal-insert-subheading)
- ("H" journal-back-to-entry-heading)
- ("i" journal-insert-block)
+ ("d" 'darts-day-template)
+ ("s" 'darts-day-select)
+ ("e" 'darts-day-export)
+ ("M-S M-D" 'journal-search-by-date)
+ ("M-S M-S" 'journal-grep)
+ ("j" 'journal-create-entry)
+ ("w" 'journal-position-windows)
+ ("c" 'journal-change-created-property)
+ ("v" 'journal-change-converted-property)
+ ("b" 'journal-change-described-property)
+ ("h" 'journal-insert-subheading)
+ ("H" 'journal-back-to-entry-heading)
+ ("i" 'journal-insert-block)
  ("t" (al/find-file (al/journal-dir-file "tags"))))
 
 (al/eval-after-load journal
@@ -1498,20 +1494,20 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   :prefix-map al/emms-map
   :prefix-doc "Map for EMMS."
   :prefix-key [ctrl-m]
-  ([ctrl-m] al/emms-switch-to-playlist-buffer)
-  ("SPC" emms-pause)
-  ("M-SPC" emms-stop)
-  ("s"   al/emms-show)
-  ("m"   emms-state-toggle-mode-line)
-  ("n"   al/emms-notification-mode)
-  ("B"   emms-browser)
+  ([ctrl-m] 'al/emms-switch-to-playlist-buffer)
+  ("SPC" 'emms-pause)
+  ("M-SPC" 'emms-stop)
+  ("s"   'al/emms-show)
+  ("m"   'emms-state-toggle-mode-line)
+  ("n"   'al/emms-notification-mode)
+  ("B"   'emms-browser)
   ("l"   (al/emms-playlist-select t))
-  ("b"   al/emms-playlist-select)
-  ("C-b" al/emms-playlist-select)
-  ("r"   emms-streams)
-  ("g"   al/emms-seek-to)
-  ("y"   al/emms-mpv-sync-playing-time)
-  ("S"   al/emms-save-playlists)
+  ("b"   'al/emms-playlist-select)
+  ("C-b" 'al/emms-playlist-select)
+  ("r"   'emms-streams)
+  ("g"   'al/emms-seek-to)
+  ("y"   'al/emms-mpv-sync-playing-time)
+  ("S"   'al/emms-save-playlists)
   ("u"   (emms-playlist-simple-uniq)))
 
 (al/bind-keys
@@ -1519,22 +1515,22 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   :prefix-map al/emms-play-map
   :prefix-doc "Map for playing EMMS entries."
   :prefix-key "p"
-  ("t" emms-play-directory-tree)
-  ("d" emms-play-directory)
-  ("f" emms-play-file)
-  ("l" emms-play-playlist)
-  ("u" emms-play-url))
+  ("t" 'emms-play-directory-tree)
+  ("d" 'emms-play-directory)
+  ("f" 'emms-play-file)
+  ("l" 'emms-play-playlist)
+  ("u" 'emms-play-url))
 
 (al/bind-keys
   :map al/emms-map
   :prefix-map al/emms-add-map
   :prefix-doc "Map for adding EMMS entries."
   :prefix-key "a"
-  ("t" emms-add-directory-tree)
-  ("d" emms-add-directory)
-  ("f" emms-add-file)
-  ("l" emms-add-playlist)
-  ("u" emms-add-url))
+  ("t" 'emms-add-directory-tree)
+  ("d" 'emms-add-directory)
+  ("f" 'emms-add-file)
+  ("l" 'emms-add-playlist)
+  ("u" 'emms-add-url))
 
 (al/setq-no-warnings
  emms-directory (al/emacs-data-dir-file "emms")
@@ -1547,49 +1543,49 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 ;;; Internal (Emacs) and external (user or system) package managers
 
 (al/bind-keys
-  ("H-q" tui/package)
-  ("H-x" guix))
+  ("H-q" 'tui/package)
+  ("H-x" 'guix))
 
 (al/bind-keys
   :prefix-map al/guix-map
   :prefix-doc "Map for guix."
   :prefix-key "H-M-x"
-  ("H-x" guix)
-  ("f"   build-farm)
-  ("e"   guix-edit)
-  ("b"   guix-switch-to-buffer)
-  ("P"   guix-prettify-mode)
-  ("z"   guix-switch-to-repl)
-  ("C-n" guix-packages-by-name)
-  ("n"   guix-search-by-name)
-  ("r"   guix-search-by-regexp)
-  ("A"   guix-all-packages)
-  ("N"   guix-newest-packages)
-  ("I"   guix-installed-packages)
-  ("O"   guix-obsolete-packages)
-  ("G"   guix-generations)
-  ("a"   guix-about)
-  ("h"   guix-help)
-  ("H"   guix-hash)
-  ("p"   guix-profiles)
-  ("H-p" guix-set-current-profile)
-  ("i"   al/guix-switch-to-package-info-buffer)
-  ("C-i" al/guix-switch-to-generation-info-buffer)
-  ("l"   al/guix-switch-to-package-list-buffer)
-  ("C-l" al/guix-switch-to-generation-list-buffer)
-  ("u"   al/guix-commit-url))
+  ("H-x" 'guix)
+  ("f"   'build-farm)
+  ("e"   'guix-edit)
+  ("b"   'guix-switch-to-buffer)
+  ("P"   'guix-prettify-mode)
+  ("z"   'guix-switch-to-repl)
+  ("C-n" 'guix-packages-by-name)
+  ("n"   'guix-search-by-name)
+  ("r"   'guix-search-by-regexp)
+  ("A"   'guix-all-packages)
+  ("N"   'guix-newest-packages)
+  ("I"   'guix-installed-packages)
+  ("O"   'guix-obsolete-packages)
+  ("G"   'guix-generations)
+  ("a"   'guix-about)
+  ("h"   'guix-help)
+  ("H"   'guix-hash)
+  ("p"   'guix-profiles)
+  ("H-p" 'guix-set-current-profile)
+  ("i"   'al/guix-switch-to-package-info-buffer)
+  ("C-i" 'al/guix-switch-to-generation-info-buffer)
+  ("l"   'al/guix-switch-to-package-list-buffer)
+  ("C-l" 'al/guix-switch-to-generation-list-buffer)
+  ("u"   'al/guix-commit-url))
 
 (al/bind-keys
   :prefix-map al/aurel-map
   :prefix-doc "Map for aurel."
   :prefix-key "C-H-a"
-  ("i"   al/switch-to-aurel-info)
-  ("l"   al/switch-to-aurel-list)
-  ("C-n" aurel-package-info)
-  ("p"   aurel-package-search)
-  ("n"   aurel-package-search)
-  ("m"   aurel-maintainer-search)
-  ("I"   aurel-installed-packages))
+  ("i"   'al/switch-to-aurel-info)
+  ("l"   'al/switch-to-aurel-list)
+  ("C-n" 'aurel-package-info)
+  ("p"   'aurel-package-search)
+  ("n"   'aurel-package-search)
+  ("m"   'aurel-maintainer-search)
+  ("I"   'aurel-installed-packages))
 
 (al/setq-no-warnings
  quelpa-upgrade-p t
@@ -1609,39 +1605,39 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   :prefix-map al/net-map
   :prefix-doc "Map for net utils."
   :prefix-key "C-w"
-  ("p" al/ping)
-  ("t" al/traceroute)
-  ("w" wget)
-  ("m" al/url-wget-mp3))
+  ("p" 'al/ping)
+  ("t" 'al/traceroute)
+  ("w" 'wget)
+  ("m" 'al/url-wget-mp3))
 
 (al/bind-keys
   :prefix-map al/gnus-map
   :prefix-doc "Map for Gnus."
   :prefix-key "M-g"
-  ("M-g" al/gnus-switch-win-config)
-  ("g"   al/gnus-switch-to-group-buffer)
-  ("b"   al/gnus-switch-buffer)
-  ("m"   gnus-msg-mail)
-  ("n"   gnus-msg-mail))
+  ("M-g" 'al/gnus-switch-win-config)
+  ("g"   'al/gnus-switch-to-group-buffer)
+  ("b"   'al/gnus-switch-buffer)
+  ("m"   'gnus-msg-mail)
+  ("n"   'gnus-msg-mail))
 
 (al/bind-keys*
   :prefix-map al/erc-map
   :prefix-doc "Map for ERC."
   :prefix-key "M-c"
-  ("M-c" al/erc-track-switch-buffer)
-  ("M-n" al/erc-cycle)
-  ("l"   al/erc-channel-list)
-  ("b"   al/erc-switch-buffer)
-  ("M-s" al/erc-switch-to-server-buffer)
+  ("M-c" 'al/erc-track-switch-buffer)
+  ("M-n" 'al/erc-cycle)
+  ("l"   'al/erc-channel-list)
+  ("b"   'al/erc-switch-buffer)
+  ("M-s" 'al/erc-switch-to-server-buffer)
   ;; Non-interactive `erc' - compute everything without prompting:
   ("c"   (erc))
-  ("R"   al/erc-server-buffer-rename)
-  ("d"   al/erc-quit-server)
-  ("j"   al/erc-join-channel)
-  ("a"   al/erc-away)
-  ("u"   al/erc-number-of-users)
-  ("m"   erc-track-mode)
-  ("n"   erc-notifications-mode)
+  ("R"   'al/erc-server-buffer-rename)
+  ("d"   'al/erc-quit-server)
+  ("j"   'al/erc-join-channel)
+  ("a"   'al/erc-away)
+  ("u"   'al/erc-number-of-users)
+  ("m"   'erc-track-mode)
+  ("n"   'erc-notifications-mode)
   ("e"   (al/display-buffer "#emacs"))
   ("x"   (al/display-buffer "#guix"))
   ("s"   (al/display-buffer "#stumpwm"))
@@ -1651,22 +1647,22 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   :prefix-map al/debbugs-map
   :prefix-doc "Map for debbugs."
   :prefix-key "M-B"
-  ("M-B" debbugs-gnu)
-  ("n"   debbugs-gnu-bugs)
+  ("M-B" 'debbugs-gnu)
+  ("n"   'debbugs-gnu-bugs)
   ("b"   (al/display-buffer "*Guix-Patches Bugs*"))
-  ("s"   debbugs-gnu-search))
+  ("s"   'debbugs-gnu-search))
 
 (al/bind-keys
   :prefix-map al/debpaste-map
   :prefix-doc "Map for debpaste."
   :prefix-key "C-H-p"
-  ("s" debpaste-paste-region)
-  ("r" debpaste-display-paste)
-  ("S" debpaste-display-posted-info-in-buffer)
-  ("R" debpaste-display-received-info-in-buffer)
-  ("d" debpaste-delete-paste)
-  ("q" debpaste-quit-buffers)
-  ("K" debpaste-kill-all-buffers))
+  ("s" 'debpaste-paste-region)
+  ("r" 'debpaste-display-paste)
+  ("S" 'debpaste-display-posted-info-in-buffer)
+  ("R" 'debpaste-display-received-info-in-buffer)
+  ("d" 'debpaste-delete-paste)
+  ("q" 'debpaste-quit-buffers)
+  ("K" 'debpaste-kill-all-buffers))
 
 (setq
  mail-user-agent 'gnus-user-agent
@@ -1793,30 +1789,30 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   :prefix-map al/visual-map
   :prefix-doc "Map for visual stuff."
   :prefix-key "M-V"
-  ("T"   tool-bar-mode)
-  ("M"   menu-bar-mode)
-  ("S"   scroll-bar-mode)
-  ("I"   tooltip-mode)
-  ("r"   rainbow-mode)
-  ("t"   al/load-theme)
-  ("C"   make-color)
-  ("c"   make-color-switch-to-buffer)
+  ("T"   'tool-bar-mode)
+  ("M"   'menu-bar-mode)
+  ("S"   'scroll-bar-mode)
+  ("I"   'tooltip-mode)
+  ("r"   'rainbow-mode)
+  ("t"   'al/load-theme)
+  ("C"   'make-color)
+  ("c"   'make-color-switch-to-buffer)
   ("l"   (al/load-theme 'alect-light))
   ("M-l" (al/load-theme 'alect-light-alt))
   ("d"   (al/load-theme 'alect-dark))
   ("M-d" (al/load-theme 'alect-dark-alt))
   ("b"   (al/load-theme 'alect-black))
   ("M-b" (al/load-theme 'alect-black-alt))
-  ("h"   hl-line-mode)
-  ("w"   whitespace-mode)
-  ("W"   global-whitespace-mode)
+  ("h"   'hl-line-mode)
+  ("w"   'whitespace-mode)
+  ("W"   'global-whitespace-mode)
   ("M-W" (setq show-trailing-whitespace
                (not show-trailing-whitespace)))
-  ("f"   al/face-to-kill-ring)
-  ("F"   facemenu-set-foreground)
-  ("B"   facemenu-set-background)
-  ("M-F" make-color-foreground-color-to-kill-ring)
-  ("M-B" make-color-background-color-to-kill-ring))
+  ("f"   'al/face-to-kill-ring)
+  ("F"   'facemenu-set-foreground)
+  ("B"   'facemenu-set-background)
+  ("M-F" 'make-color-foreground-color-to-kill-ring)
+  ("M-B" 'make-color-background-color-to-kill-ring))
 
 (setq
  frame-title-format '(al/server-running? server-name invocation-name)
@@ -2116,22 +2112,24 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("d" (revert-buffer-with-coding-system 'cp855))
   ("w" (revert-buffer-with-coding-system 'cp1251)))
 
-(al/bind-keys-from-vars 'special-mode-map 'al/lazy-moving-keys t)
+(al/bind-keys
+  :map special-mode-map
+  :parent al/lazy-map)
 
 (al/bind-keys
   :prefix-map al/org-map
   :prefix-doc "Map for org mode."
   :prefix-key "M-r"
-  ("M-r" org-insert-link)
-  ("l"   org-store-link)
-  ("M-l" org-store-link)
-  ("M-b" org-mark-ring-goto)
-  ("c"   org-capture)
-  ("a"   org-agenda)
-  ("b"   org-switchb)
-  ("i"   org-toggle-inline-images)
-  ("e"   org-export)
-  ([tab] org-indent-mode))
+  ("M-r" 'org-insert-link)
+  ("l"   'org-store-link)
+  ("M-l" 'org-store-link)
+  ("M-b" 'org-mark-ring-goto)
+  ("c"   'org-capture)
+  ("a"   'org-agenda)
+  ("b"   'org-switchb)
+  ("i"   'org-toggle-inline-images)
+  ("e"   'org-export)
+  ([tab] 'org-indent-mode))
 
 (al/autoload "pdf-view" pdf-view-mode)
 
@@ -2196,7 +2194,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 (al/bind-keys
   :map process-menu-mode-map
   :check t
-  ("C-k" process-menu-delete-process))
+  ("C-k" 'process-menu-delete-process))
 
 (al/eval-after-load al-process
   :load after-init
@@ -2243,12 +2241,10 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ;; (featurep 'tabulated-list) evaluates to t
   ;; even in "early-init.el"
 
-  (defconst al/tabulated-list-keys
-    '(("s" tabulated-list-sort))
-    "Alist of auxiliary keys for `tabulated-list-mode-map'.")
-  (al/bind-keys-from-vars 'tabulated-list-mode-map
-    '(al/lazy-moving-keys al/tabulated-list-keys)
-    t)
+  (al/bind-keys
+    :map tabulated-list-mode-map
+    :parent al/lazy-vertical-moving-map
+    ("s" 'tabulated-list-sort))
 
   (add-hook 'tabulated-list-mode-hook #'hl-line-mode))
 

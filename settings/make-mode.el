@@ -8,7 +8,7 @@
 
 (al/bind-keys
   :map makefile-mode-map
-  ("M->" . makefile-previous-dependency)
-  ("M-E" . makefile-next-dependency))
+  ("M-S-↑" 'makefile-previous-dependency)
+  ("M-S-↓" 'makefile-next-dependency))
 
 ;;; make-mode.el ends here

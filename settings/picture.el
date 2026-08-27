@@ -3,16 +3,15 @@
 (require 'picture)
 (require 'al-key)
 
-(defconst al/picture-keys
-  '(("M-O" . picture-movement-left)
-    ("M-U" . picture-movement-right)
-    ("M->" . picture-movement-up)
-    ("M-E" . picture-movement-down)
-    ("M-<" . picture-movement-nw)
-    ("M-P" . picture-movement-ne)
-    ("M-Q" . picture-movement-sw)
-    ("M-K" . picture-movement-se))
-  "Alist of auxiliary keys for `picture-mode-map'.")
-(al/bind-keys-from-vars 'picture-mode-map 'al/picture-keys)
+(al/bind-keys
+  :map picture-mode-map
+  ("M-S-←" 'picture-movement-left)
+  ("M-S-→" 'picture-movement-right)
+  ("M-S-↑" 'picture-movement-up)
+  ("M-S-↓" 'picture-movement-down)
+  ("M-S-↷" 'picture-movement-nw)
+  ("M-S-↶" 'picture-movement-ne)
+  ("M-Q" 'picture-movement-sw)
+  ("M-K" 'picture-movement-se))
 
 ;;; picture.el ends here

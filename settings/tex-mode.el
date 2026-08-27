@@ -3,9 +3,10 @@
 (require 'tex-mode)
 (require 'al-key)
 
-(defconst al/tex-keys
-  '("C-j")
-  "Alist of auxiliary keys for `tex-mode-map'.")
-(al/bind-keys-from-vars 'tex-mode-map 'al/tex-keys)
+;; XXX Do I need this?
+;;
+;; (al/bind-keys
+;;   :map tex-mode-map
+;;   "C-j")
 
 ;;; tex-mode.el ends here

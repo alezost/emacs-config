@@ -11,12 +11,12 @@
 
 (al/bind-keys
   :map tetris-mode-map
-  ("o"   . tetris-move-left)
-  ("u"   . tetris-move-right)
-  ("."   . tetris-rotate-prev)
-  ("e"   . tetris-rotate-next)
-  ("d"   . tetris-move-bottom)
-  ("RET" . tetris-move-bottom)
-  ("SPC" . tetris-pause-game))
+  ("←"   'tetris-move-left)
+  ("→"   'tetris-move-right)
+  ("↑"   'tetris-rotate-prev)
+  ("↓"   'tetris-rotate-next)
+  ("d"   'tetris-move-bottom)
+  ("RET" 'tetris-move-bottom)
+  ("SPC" 'tetris-pause-game))
 
 ;;; tetris.el ends here

@@ -3,10 +3,9 @@
 (require 'woman)
 (require 'al-key)
 
-(defconst al/woman-keys
-  '(("M-h" . WoMan-previous-manpage))
-  "Alist of auxiliary keys for `woman-mode'.")
-(al/bind-keys-from-vars 'woman-mode-map 'al/woman-keys)
+(al/bind-keys
+  :map woman-mode-map
+  ("M-h" 'WoMan-previous-manpage))
 
 (setq
  woman-fill-column (default-value 'fill-column)

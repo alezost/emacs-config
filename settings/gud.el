@@ -9,6 +9,8 @@
 ;; GUD binds its keys inside `gdb' and `gud-gdb' commands.
 (al/call-at-hook (gdb-mode-hook
                   gud-gdb-mode-hook)
-  (al/bind-keys-from-vars 'gud-mode-map 'al/comint-keys))
+  (al/bind-keys
+    :map gud-mode-map
+    :parent comint-mode-map))
 
 ;;; gud.el ends here

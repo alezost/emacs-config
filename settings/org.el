@@ -20,29 +20,26 @@
 (require 'al-key)
 (require 'al-list)
 
-(defconst al/org-keys
-  '([remap delete-char]
-    [remap delete-backward-char]
-    [remap forward-paragraph]
-    [remap backward-paragraph]
-    ("RET" . al/org-return)
-    ("<tab>" . al/org-tab)
-    ("M-<return>" . org-meta-return)
-    ("M->" . outline-previous-visible-heading)
-    ("M-E" . outline-next-visible-heading)
-    ("M-O" . org-backward-sentence)
-    ("M-U" . org-forward-sentence)
-    ("<C-kp-enter>" . al/org-table-next-column)
-    ("<M-kp-enter>" . al/org-table-kill-rows-recalculate)
-    ("<C-M-kp-enter>" . al/org-table-next-table)
-    ("C-j" . al/org-return-indent)
-    ("C-c e" . org-export-dispatch)
-    ("C-c C-b" . org-insert-structure-template)
-    ("C-c M-x" . org-copy-special)
-    ("C-c C-t" . org-cut-special)
-    ("C-c C-y" . org-paste-special)))
-
-(al/bind-keys-from-vars 'org-mode-map 'al/org-keys)
+(al/bind-keys
+  :map org-mode-map
+  [remap delete-char]
+  [remap delete-backward-char]
+  [remap forward-paragraph]
+  [remap backward-paragraph]
+  ("RET" 'al/org-return)
+  ("<tab>" 'al/org-tab)
+  ("M-<return>" 'org-meta-return)
+  ("M-S-↑" 'org-previous-visible-heading)
+  ("M-S-↓" 'org-next-visible-heading)
+  ("C-<kp-enter>" 'al/org-table-next-column)
+  ("M-<kp-enter>" 'al/org-table-kill-rows-recalculate)
+  ("C-M-<kp-enter>" 'al/org-table-next-table)
+  ("C-j" 'al/org-return-indent)
+  ("C-c e" 'org-export-dispatch)
+  ("C-c C-b" 'org-insert-structure-template)
+  ("C-c M-x" 'org-copy-special)
+  ("C-c C-t" 'org-cut-special)
+  ("C-c C-y" 'org-paste-special))
 
 ;; "/" and "_" are common for file names, so don't fontify them:
 (setq org-emphasis-alist
@@ -112,7 +109,7 @@
   (setq org-edit-src-content-indentation 0)
   (al/bind-keys
     :map org-src-mode-map
-    ("C-c C-c" . org-edit-src-exit))
+    ("C-c C-c" 'org-edit-src-exit))
   (push '("shell" . shell-script) org-src-lang-modes))
 
 (al/eval-after-load org-capture
@@ -123,7 +120,7 @@
 (al/eval-after-load org-agenda
   (al/bind-keys
     :map org-agenda-mode-map
-    ("." . org-agenda-previous-line)
-    ("e" . org-agenda-next-line)))
+    ("↑" 'org-agenda-previous-line)
+    ("↓" 'org-agenda-next-line)))
 
 ;;; org.el ends here

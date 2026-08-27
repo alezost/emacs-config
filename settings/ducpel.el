@@ -17,15 +17,13 @@
   :map al/games-map
   ("D" (princ ducpel-moves-history (current-buffer))))
 
+(defvar al/lazy-moving-map)
 (al/bind-keys
   :map ducpel-mode-map
-  ("o" . ducpel-move-left)
-  ("u" . ducpel-move-right)
-  ("." . ducpel-move-up)
-  ("e" . ducpel-move-down)
-  ("h" . ducpel-previous-man)
-  ("n" . ducpel-next-man)
-  ("," . ducpel-previous-level)
-  ("p" . ducpel-next-level))
+  :parent al/lazy-moving-map
+  ("h" 'ducpel-previous-man)
+  ("n" 'ducpel-next-man)
+  ("↷" 'ducpel-previous-level)
+  ("↶" 'ducpel-next-level))
 
 ;;; ducpel.el ends here

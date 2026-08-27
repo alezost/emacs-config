@@ -5,10 +5,12 @@
 
 (al/bind-keys
   :map snake-mode-map
-  ("o"   . snake-move-left)
-  ("u"   . snake-move-right)
-  ("."   . snake-move-up)
-  ("e"   . snake-move-down)
-  ("SPC" . snake-pause-game))
+  ("←"   'snake-move-left)
+  ("→"   'snake-move-right)
+  ("↑"   'snake-move-up)
+  ("↓"   'snake-move-down)
+  ("SPC" 'snake-pause-game))
+
+(setq snake-tick-period 0.1)  ; speed
 
 ;;; snake.el ends here

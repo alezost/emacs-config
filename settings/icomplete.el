@@ -14,11 +14,11 @@
 (al/bind-keys
   :map minibuffer-local-completion-map
   "SPC" "?"
-  ("RET" icomplete-force-complete-and-exit))
+  ("RET" 'icomplete-force-complete-and-exit))
 
 (al/bind-keys
   :map minibuffer-local-must-match-map
-  ("RET" icomplete-force-complete-and-exit))
+  ("RET" 'icomplete-force-complete-and-exit))
 
 (al/bind-keys
   :map icomplete-minibuffer-map
@@ -27,15 +27,15 @@
   ;; Use `minibuffer-local-completion-map' and
   ;; `minibuffer-local-must-match-map' above.
   [remap minibuffer-complete-and-exit]
-  ([tab] icomplete-force-complete)
-  ("C-j" exit-minibuffer)
-  ("M-k" al/minibuffer-copy-current-completion)
-  ("C-↑" icomplete-backward-completions)
-  ("C-↓" icomplete-forward-completions))
+  ([tab] 'icomplete-force-complete)
+  ("C-j" 'exit-minibuffer)
+  ("M-k" 'al/minibuffer-copy-current-completion)
+  ("C-↑" 'icomplete-backward-completions)
+  ("C-↓" 'icomplete-forward-completions))
 
 (al/bind-keys
   :map icomplete-vertical-mode-minibuffer-map
-  ("H-a" icomplete-vertical-goto-first)
-  ("H-i" icomplete-vertical-goto-last))
+  ("H-a" 'icomplete-vertical-goto-first)
+  ("H-i" 'icomplete-vertical-goto-last))
 
 ;;; icomplete.el ends here

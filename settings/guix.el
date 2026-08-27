@@ -7,16 +7,6 @@
 (require 'al-guix)
 (require 'al-key)
 
-(defconst al/guix-list-keys
-  '(("i" . bui-list-describe)
-    ("S" . guix-package-list-size)))
-
-(defconst al/guix-list-key-vars
-  '(al/lazy-moving-keys
-    al/tabulated-list-keys
-    al/bui-list-keys
-    al/guix-list-keys))
-
 (al/eval-after-load guix-profiles
   (setq guix-current-profile al/guix-user-profile-dir))
 
@@ -43,39 +33,34 @@
      guix-operation-option-true-string  "☑")))
 
 (al/eval-after-load guix-ui
-  (defconst al/guix-ui-keys
-    '(("M-P" (message "%s" (guix-ui-current-profile)))))
-  (al/bind-keys-from-vars 'guix-ui-map 'al/guix-ui-keys t))
+  (al/bind-keys
+    :map guix-ui-map
+    ("M-P" (message "%s" (guix-ui-current-profile)))))
 
 (al/eval-after-load guix-ui-package
   (setq
    guix-package-list-type 'package)
 
-  (defconst al/guix-package-info-keys
-    '(("M-d" . guix-package-info-edit)
-      ("I"   . guix-package-info-install)
-      ("D"   . guix-package-info-delete)
-      ("U"   . guix-package-info-upgrade)
-      ("S"   . guix-package-info-size)))
-  (defconst al/guix-package-list-keys
-    '(("M-d" . guix-package-list-edit)
-      ("I"   . guix-package-list-mark-install)
-      ("D"   . guix-package-list-mark-delete)
-      ("U"   . guix-package-list-mark-upgrade)))
-  (defconst al/guix-output-list-keys
-    '(("M-d" . guix-output-list-edit)
-      ("I"   . guix-output-list-mark-install)
-      ("D"   . guix-output-list-mark-delete)
-      ("U"   . guix-output-list-mark-upgrade)))
-  (al/bind-keys-from-vars 'guix-package-info-mode-map
-    '(al/button-keys al/guix-package-info-keys)
-    t)
-  (al/bind-keys-from-vars 'guix-package-list-mode-map
-    (append al/guix-list-key-vars '(al/guix-package-list-keys))
-    t)
-  (al/bind-keys-from-vars 'guix-output-list-mode-map
-    (append al/guix-list-key-vars '(al/guix-output-list-keys))
-    t))
+  (al/bind-keys
+    :map guix-package-info-mode-map
+    ("M-d" 'guix-package-info-edit)
+    ("I"   'guix-package-info-install)
+    ("D"   'guix-package-info-delete)
+    ("U"   'guix-package-info-upgrade)
+    ("S"   'guix-package-info-size))
+  (al/bind-keys
+    :map guix-package-list-mode-map
+    ("M-d" 'guix-package-list-edit)
+    ("I"   'guix-package-list-mark-install)
+    ("D"   'guix-package-list-mark-delete)
+    ("U"   'guix-package-list-mark-upgrade)
+    ("S"   'guix-package-list-size))
+  (al/bind-keys
+    :map guix-output-list-mode-map
+    ("M-d" 'guix-output-list-edit)
+    ("I"   'guix-output-list-mark-install)
+    ("D"   'guix-output-list-mark-delete)
+    ("U"   'guix-output-list-mark-upgrade)))
 
 (al/eval-after-load guix-ui-generation
   (setq
@@ -83,56 +68,42 @@
    guix-generation-packages-update-buffer nil
    guix-generation-output-name-width 40)
 
-  (defconst al/guix-generation-list-keys
-    '(("E" . guix-generation-list-ediff)
-      ("D" . guix-generation-list-mark-delete)))
-  (al/bind-keys-from-vars 'guix-generation-list-mode-map
-    (append al/guix-list-key-vars '(al/guix-generation-list-keys))
-    t))
+  (al/bind-keys
+    :map guix-generation-list-mode-map
+    ("E" 'guix-generation-list-ediff)
+    ("D" 'guix-generation-list-mark-delete)))
 
 (al/eval-after-load guix-ui-service
-  (defconst al/guix-service-info-keys
-    '(("M-d" . guix-service-info-edit)))
-  (defconst al/guix-service-list-keys
-    '(("M-d" . guix-service-list-edit)))
-  (al/bind-keys-from-vars 'guix-service-info-mode-map
-    '(al/button-keys al/guix-service-info-keys)
-    t)
-  (al/bind-keys-from-vars 'guix-service-list-mode-map
-    (append al/guix-list-key-vars '(al/guix-service-list-keys))
-    t))
+  (al/bind-keys
+    :map guix-service-info-mode-map
+    ("M-d" 'guix-service-info-edit))
+  (al/bind-keys
+    :map guix-service-list-mode-map
+    ("M-d" 'guix-service-list-edit)))
 
 (al/eval-after-load guix-ui-package-location
-  (defconst al/guix-package-location-list-keys
-    '(("M-d" . guix-package-location-list-edit)))
-  (al/bind-keys-from-vars 'guix-package-location-list-mode-map
-    (append al/guix-list-key-vars '(al/guix-package-location-list-keys))
-    t))
+  (al/bind-keys
+    :map guix-package-location-list-mode-map
+    ("M-d" 'guix-package-location-list-edit)))
 
 (al/eval-after-load guix-ui-service-location
-  (defconst al/guix-service-location-list-keys
-    '(("M-d" . guix-service-location-list-edit)))
-  (al/bind-keys-from-vars 'guix-service-location-list-mode-map
-    (append al/guix-list-key-vars '(al/guix-service-location-list-keys))
-    t))
+  (al/bind-keys
+    :map guix-service-location-list-mode-map
+    ("M-d" 'guix-service-location-list-edit)))
 
 (al/eval-after-load guix-ui-license
-  (defconst al/guix-license-list-keys
-    '(("M-d" . guix-license-list-edit)))
-  (al/bind-keys-from-vars 'guix-license-list-mode-map
-    (append al/guix-list-key-vars '(al/guix-license-list-keys))
-    t))
+  (al/bind-keys
+    :map guix-license-list-mode-map
+    ("M-d" 'guix-license-list-edit)))
 
 (al/eval-after-load guix-ui-store-item
-  (defconst al/guix-store-item-list-keys
-    '("R"
-      ("M-d" . guix-store-item-list-edit)
-      ("r" . guix-store-item-list-requisites)
-      ("d" . guix-store-item-list-derivers)
-      ("D" . guix-store-item-list-mark-delete)))
-  (al/bind-keys-from-vars 'guix-store-item-list-mode-map
-    (append al/guix-list-key-vars '(al/guix-store-item-list-keys))
-    t))
+  (al/bind-keys
+    :map guix-store-item-list-mode-map
+    "R"
+    ("M-d" 'guix-store-item-list-edit)
+    ("r" 'guix-store-item-list-requisites)
+    ("d" 'guix-store-item-list-derivers)
+    ("D" 'guix-store-item-list-mark-delete)))
 
 (al/eval-after-load guix-ui-profile
   (setq guix-profiles
@@ -144,15 +115,13 @@
    guix-find-file-function #'org-open-file))
 
 (al/eval-after-load guix-build-log
-  (defconst al/guix-build-log-common-keys
-    '(("M-." . guix-build-log-previous-phase)
-      ("M-e" . guix-build-log-next-phase)))
-  (defconst al/guix-build-log-keys
-    '(("C-c c" . compilation-shell-minor-mode)))
-  (al/bind-keys-from-vars 'guix-build-log-common-map
-    'al/guix-build-log-common-keys)
-  (al/bind-keys-from-vars 'guix-build-log-mode-map
-    'al/guix-build-log-keys t))
+  (al/bind-keys
+    :map guix-build-log-common-map
+    ("M-↑" 'guix-build-log-previous-phase)
+    ("M-↓" 'guix-build-log-next-phase))
+  (al/bind-keys
+    :map guix-build-log-mode-map
+    ("C-c c" 'compilation-shell-minor-mode) t))
 
 ;; TODO `guix-popup' uses `transient' nowadays.
 ;;

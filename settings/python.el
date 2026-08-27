@@ -8,9 +8,9 @@
 
 (al/bind-keys
   :map python-mode-map
-  ("C-v" . python-shell-send-region)
-  ("C-M-v" . python-shell-send-defun)
-  ("M-s-v" . python-shell-send-buffer))
+  ("C-v" 'python-shell-send-region)
+  ("C-M-v" 'python-shell-send-defun)
+  ("M-s-v" 'python-shell-send-buffer))
 
 (setq python-shell-interpreter "ipython")
 

@@ -8,7 +8,7 @@
 
 (al/bind-keys
   :map c-mode-base-map
-  ("<H-M-tab>" . c-indent-defun))
+  ("H-M-<tab>" 'c-indent-defun))
 
 (setq
  c-default-style

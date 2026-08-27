@@ -9,13 +9,12 @@
 (require 'al-key)
 (require 'al-sql)
 
-(defconst al/sql-keys
-  '(("C-v"   . sql-send-region)
-    ("C-M-v" . sql-send-paragraph)
-    ("M-s-v" . sql-send-buffer)
-    ("C-c C-z" . al/sql-switch-to-repl))
-  "Alist of auxiliary keys for `sql-mode'.")
-(al/bind-keys-from-vars 'sql-mode-map 'al/sql-keys)
+(al/bind-keys
+  :map sql-mode-map
+  ("C-v"   'sql-send-region)
+  ("C-M-v" 'sql-send-paragraph)
+  ("M-s-v" 'sql-send-buffer)
+  ("C-c C-z" 'al/sql-switch-to-repl))
 
 ;; I just can't stand the default key bindings.
 (al/clean-keymap sql-interactive-mode-map)

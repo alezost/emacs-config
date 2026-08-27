@@ -22,10 +22,9 @@
    (version . "Ver.")
    (installed-version . "Inst.")))
 
-(defconst al/aurel-filter-keys
+(al/bind-keys
+  :map aurel-filter-map
   ;; Default `aurel-enable-filter' was left for backward compatibility.
-  '(("f" . bui-enable-filter)))
-
-(al/bind-keys-from-vars 'aurel-filter-map 'al/aurel-filter-keys)
+  ("f" 'bui-enable-filter))
 
 ;;; aurel.el ends here

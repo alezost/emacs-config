@@ -3,12 +3,11 @@
 (require 'artist)
 (require 'al-key)
 
-(defconst al/artist-keys
-  '(("C-o" . artist-backward-char)
-    ("C-u" . artist-forward-char)
-    ("C-." . artist-previous-line)
-    ("C-e" . artist-next-line))
-  "Alist of auxiliary keys for `artist-mode-map'.")
-(al/bind-keys-from-vars 'artist-mode-map 'al/artist-keys)
+(al/bind-keys
+  :map artist-mode-map
+  ("C-←" 'artist-backward-char)
+  ("C-→" 'artist-forward-char)
+  ("C-↑" 'artist-previous-line)
+  ("C-↓" 'artist-next-line))
 
 ;;; artist.el ends here

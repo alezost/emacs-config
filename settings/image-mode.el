@@ -3,13 +3,12 @@
 (require 'image-mode)
 (require 'al-key)
 
-(defconst al/image-keys
-  '(("C-a" . image-bol)
-    ("<ctrl-i>" . image-eol)
-    ("h"   . image-previous-file)
-    ("H"   . image-previous-frame)
-    ("N"   . image-next-frame)))
-
-(al/bind-keys-from-vars 'image-mode-map 'al/image-keys)
+(al/bind-keys
+  :map image-mode-map
+  ("C-⇤" 'image-bol)
+  ("C-⇥" 'image-eol)
+  ("h"   'image-previous-file)
+  ("H"   'image-previous-frame)
+  ("N"   'image-next-frame))
 
 ;;; image-mode.el ends here

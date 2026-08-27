@@ -6,12 +6,11 @@
 (require 'ielm)
 (require 'al-key)
 
-(defconst al/ielm-keys
-  '("C-j"
-    ("RET" . ielm-send-input)))
-
-(al/bind-keys-from-vars 'ielm-map
-  '(al/lisp-shared-keys al/comint-keys al/ielm-keys))
+(al/bind-keys
+  :map ielm-map
+  :parent (lisp-mode-shared-map comint-mode-map)
+  "C-j"
+  ("RET" 'ielm-send-input))
 
 (setq ielm-prompt "EL> ")
 

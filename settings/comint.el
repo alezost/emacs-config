@@ -17,15 +17,15 @@
 (al/bind-keys
   :map comint-mode-map
   "C-d"
-  ("RET"     al/comint-send-input-maybe)
-  ("M-↑"     comint-previous-input)
-  ("M-↓"     comint-next-input)
-  ("M-S-↑"   comint-previous-prompt)
-  ("M-S-↓"   comint-next-prompt)
-  ("C-c c"   compilation-shell-minor-mode)
-  ("C-c o"   al/comint-toggle-move-point)
+  ("RET"     'al/comint-send-input-maybe)
+  ("M-↑"     'comint-previous-input)
+  ("M-↓"     'comint-next-input)
+  ("M-S-↑"   'comint-previous-prompt)
+  ("M-S-↓"   'comint-next-prompt)
+  ("C-c c"   'compilation-shell-minor-mode)
+  ("C-c o"   'al/comint-toggle-move-point)
   ("C-c C-d" (process-send-eof))
-  ("C-c C-k" comint-kill-subjob))
+  ("C-c C-k" 'comint-kill-subjob))
 
 (al/call-at-hook comint-mode-hook hl-todo-mode)
 (add-hook 'comint-output-filter-functions #'comint-truncate-buffer)

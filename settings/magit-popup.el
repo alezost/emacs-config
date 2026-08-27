@@ -15,10 +15,10 @@
 
 (al/bind-keys
   :map magit-popup-mode-map
-  ("DEL" . al/magit-popup-previous-or-quit)
-  ("M-." . backward-button)
-  ("M-e" . forward-button)
-  ("M-h" . magit-popup-toggle-show-common-commands))
+  ("DEL" 'al/magit-popup-previous-or-quit)
+  ("M-↑" 'backward-button)
+  ("M-↓" 'forward-button)
+  ("M-h" 'magit-popup-toggle-show-common-commands))
 
 (al/call-at-hook magit-popup-mode-hook al/bar-cursor-type)
 

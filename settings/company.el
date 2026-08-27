@@ -9,10 +9,10 @@
 
 (al/bind-keys
   :map company-active-map
-  ("C-↑" company-select-previous)
-  ("C-↓" company-select-next)
-  ("M-↑" company-select-previous)
-  ("M-↓" company-select-next))
+  ("C-↑" 'company-select-previous)
+  ("C-↓" 'company-select-next)
+  ("M-↑" 'company-select-previous)
+  ("M-↓" 'company-select-next))
 
 (global-company-mode)
 

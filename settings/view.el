@@ -3,11 +3,11 @@
 (require 'view)
 (require 'al-key)
 
-(defconst al/view-keys
-  '(("v" . View-exit))
-  "Alist of auxiliary keys for `view-mode-map'.")
-(al/bind-keys-from-vars 'view-mode-map
-  '(al/lazy-moving-keys al/view-keys)
-  t)
+(defvar al/lazy-moving-map)
+
+(al/bind-keys
+  :map view-mode-map
+  :parent al/lazy-moving-map
+  ("v" 'View-exit))
 
 ;;; view.el ends here

@@ -8,7 +8,7 @@
 
 (al/bind-keys
   :map shr-map
-  ("u" . shr-browse-url)
-  ("c" . shr-copy-url))
+  ("→" 'shr-browse-url)
+  ("c" 'shr-copy-url))
 
 ;;; shr.el ends here

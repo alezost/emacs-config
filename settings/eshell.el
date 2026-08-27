@@ -16,19 +16,19 @@
 
 (al/bind-keys
   :map eshell-mode-map
-  ("RET"   al/eshell-send-input-maybe)
-  ("M-↑"   eshell-previous-input)
-  ("M-↓"   eshell-next-input)
-  ("M-S-↑" eshell-previous-prompt)
-  ("M-S-↓" eshell-next-prompt)
-  ("C-k"   al/eshell-kill-whole-line)
-  ("C-c r" al/eshell-refresh-aliases))
+  ("RET"   'al/eshell-send-input-maybe)
+  ("M-↑"   'eshell-previous-input)
+  ("M-↓"   'eshell-next-input)
+  ("M-S-↑" 'eshell-previous-prompt)
+  ("M-S-↓" 'eshell-next-prompt)
+  ("C-k"   'al/eshell-kill-whole-line)
+  ("C-c r" 'al/eshell-refresh-aliases))
 
 (al/bind-keys
   :map eshell-hist-mode-map
   "<up>" "<down>"
-  ("M-r" al/eshell-previous-matching-input-from-input)
-  ("M-s" al/eshell-next-matching-input-from-input))
+  ("M-r" 'al/eshell-previous-matching-input-from-input)
+  ("M-s" 'al/eshell-next-matching-input-from-input))
 
 (setq
  eshell-modules-list

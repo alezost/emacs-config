@@ -8,7 +8,7 @@
 
 (al/bind-keys
   :map timer-list-mode-map
-  ("k"   . timer-list-cancel)
-  ("C-k" . timer-list-cancel))
+  ("k"   'timer-list-cancel)
+  ("C-k" 'timer-list-cancel))
 
 ;;; timer-list.el ends here

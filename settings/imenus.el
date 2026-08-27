@@ -6,12 +6,11 @@
 (require 'al-file)
 (require 'al-imenus)
 
-(defconst al/imenus-keys
-  '(("C-r" . imenus-rescan)
-    ("C-s" . imenus-exit-to-isearch)
-    ("M-s" . imenus-exit-to-occur)))
-
-(al/bind-keys-from-vars 'imenus-minibuffer-map 'al/imenus-keys)
+(al/bind-keys
+  :map imenus-minibuffer-map
+  ("C-r" 'imenus-rescan)
+  ("C-s" 'imenus-exit-to-isearch)
+  ("M-s" 'imenus-exit-to-occur))
 
 (setq
  imenus-delimiter imenu-level-separator

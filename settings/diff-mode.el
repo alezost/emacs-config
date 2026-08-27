@@ -3,21 +3,19 @@
 (require 'diff-mode)
 (require 'al-key)
 
-(defconst al/diff-shared-keys
-  '(("." . diff-hunk-prev)
-    (">" . diff-file-prev)
-    ("e" . diff-hunk-next)
-    ("E" . diff-file-next))
-  "Alist of auxiliary keys for `diff-mode-shared-map'.")
-(al/bind-keys-from-vars 'diff-mode-shared-map 'al/diff-shared-keys t)
+(al/bind-keys
+  :map diff-mode-shared-map
+  ("↑"   'diff-hunk-prev)
+  ("S-↑" 'diff-file-prev)
+  ("↓"   'diff-hunk-next)
+  ("S-↓" 'diff-file-next))
 
-(defconst al/diff-keys
-  '(("H-u" . diff-undo)
-    ("M-." . diff-hunk-prev)
-    ("M->" . diff-file-prev)
-    ("M-e" . diff-hunk-next)
-    ("M-E" . diff-file-next))
-  "Alist of auxiliary keys for `diff-mode-map'.")
-(al/bind-keys-from-vars 'diff-mode-map 'al/diff-keys)
+(al/bind-keys
+  :map diff-mode-map
+  ("H-u"   'diff-undo)
+  ("M-↑"   'diff-hunk-prev)
+  ("M-S-↑" 'diff-file-prev)
+  ("M-↓"   'diff-hunk-next)
+  ("M-S-↓" 'diff-file-next))
 
 ;;; diff-mode.el ends here
