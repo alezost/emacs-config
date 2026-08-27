@@ -329,67 +329,6 @@ maps \"<\" to \"S-↤\" and \">\" to \"S-↦\"."
            bindings)))
 
 
-;;; Binding keys from variables
-
-(defvar al/default-keys-variables nil
-  "Default list of variables used by `al/bind-keys-from-vars'.")
-
-(defun al/bind-keys-to-map (key-specs &optional map-var)
-  "Bind all keys from KEY-SPECS in MAP-VAR.
-KEY-SPECS is an alist of keybinding strings and functions (the
-same as the rest of arguments taken by `al/bind-keys').
-MAP-VAR is a variable with keymap. If it is nil, use `global-map'."
-  (al/with-check
-    :var map-var
-    (dolist (spec key-specs)
-      (let ((key (car spec))
-            (cmd (cdr spec)))
-        (eval `(al/bind-key ,key ,cmd ,map-var))))))
-
-(defun al/keys-from-vars (vars)
-  "Return list of key binding specifications from variables VARS.
-For the meaning of values of VARS, see `al/bind-keys-from-vars'.
-Returning value is an alist of keys and functions with removed
-key duplicates (rightmost values retain)."
-  (let* ((vars (seq-filter #'al/bound? vars))
-         ;; Reverse vars to make `seq-uniq' remove duplicates from the
-         ;; first vars, not from the last ones.
-         (vars (nreverse vars))
-         (keys-raw (apply #'append
-                          (mapcar #'symbol-value vars)))
-         (keys (mapcar #'al/list-maybe keys-raw)))
-    (seq-uniq
-     keys
-     (lambda (obj1 obj2)
-       (equal (car obj1) (car obj2))))))
-
-(defun al/bind-keys-from-vars (map-vars &optional key-vars no-default)
-  "Bind all keys from KEY-VARS in all maps from MAP-VARS.
-
-MAP-VARS is a variable or a list of variables with keymaps.
-If MAP-VARS is nil, use `global-map' and set NO-DEFAULT to t.
-
-KEY-VARS is a variable or a list of variables with bindings.
-Each variable should contain a list of key bindings specifications.
-Each spec should have either (KEY-NAME . COMMAND) or KEY-NAME form.
-See `al/bind-key' for the meaning of KEY-NAME and COMMAND.
-
-Variables from `al/default-keys-variables' are also used for
-binding, unless NO-DEFAULT is non-nil.  The bindings from
-KEY-VARS have a priority over the bindings from these variables."
-  (declare (indent 1))
-  (let* ((key-vars (append (and map-vars
-                                (null no-default)
-                                al/default-keys-variables)
-                           (al/list-maybe key-vars)))
-         (specs (al/keys-from-vars key-vars)))
-    (if map-vars
-        (al/funcall-or-dolist map-vars
-          (lambda (map-var)
-            (al/bind-keys-to-map specs map-var)))
-      (al/bind-keys-to-map specs))))
-
-
 ;;; Misc
 
 (defun al/clean-keymap (keymap &optional clean-parent)

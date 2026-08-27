@@ -84,60 +84,7 @@
   )
 
 
-;;; Keys for multiple maps
-
-(defconst al/free-moving-keys
-  '("C-o" "M-o" "C-M-o" "M-O"
-    "C-u" "M-u" "C-M-u" "M-U"
-    "C-." "M-." "C-M-." "M->"
-    "C-e" "M-e" "C-M-e" "M-E"
-    "C-a" "M-a" "C-M-a" "M-A"
-    "C-i" "M-i" "C-M-i" "M-I")
-  "List of moving keys that should be unbound.")
-
-(defconst al/free-editing-keys
-  '("C-," "M-," "C-M-," "M-<"
-    "C-p" "M-p" "C-M-p" "M-P"
-    "M-q" "C-M-q" "M-Q"
-    "C-k" "M-k" "C-M-k" "M-K"
-    "C-'" "M-'" "C-M-'" "M-\""
-    "C-;" "M-;" "C-M-;"
-    "C-t" "M-x" "C-M-x")
-  "List of editing keys that should be unbound.")
-
-(defconst al/free-important-keys
-  '("M-g")
-  "List of important keys that should be unbound.")
-
-(defconst al/free-misc-keys
-  '("M-_" "M-+"
-    "M-/" "C-M-/" "M-?"
-    "C-w"
-    "<C-tab>" "<M-tab>" "<C-M-tab>")
-  "List of miscellaneous keys that should be unbound.")
-
-(defconst al/lazy-moving-keys
-  '(("←" backward-char)
-    ("→" forward-char)
-    ("↑" previous-line)
-    ("↓" next-line))
-  "Alist of auxiliary keys for lazy moving.")
-
-(defconst al/lazy-scrolling-keys
-  '(("SPC" scroll-up-command)
-    ("DEL" scroll-down-command))
-  "Alist of auxiliary keys for lazy scrolling.")
-
-(defconst al/button-keys
-  '(("↑" backward-button)
-    ("↓" forward-button)
-    ("→" push-button))
-  "Alist of auxiliary keys for modes with buttons.")
-
-(setq al/default-keys-variables
-      '(al/free-moving-keys
-        al/free-editing-keys
-        al/free-important-keys))
+;;; Auxiliary keymaps
 
 (al/bind-keys
   :map al/lazy-vertical-moving-map
