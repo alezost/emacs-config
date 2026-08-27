@@ -54,49 +54,47 @@
 (defun al/key-command (cmd-spec)
   "Return command value for `al/bind-key' macro."
   (and cmd-spec
-       (let ((spec (if (listp cmd-spec)
-                       (car cmd-spec)
-                     cmd-spec)))
+       (let ((spec (car cmd-spec)))
          (pcase spec
            ((pred stringp) (key-parse spec))
            ((pred characterp) (vector spec))
-           ((pred symbolp)
-            (if (and (boundp spec)
-                     (not (commandp spec)))
-                spec
-              `',spec))
            ((pred listp)
             (if (memq (car spec) '(quote function lambda))
                 spec
               `(lambda () (interactive) ,@cmd-spec)))
            (_ spec)))))
 
-(defmacro al/bind-key (key-name command &optional keymap)
+(defmacro al/bind-key (keymap key-name &rest command)
   "Bind KEY-NAME to COMMAND in KEYMAP.
 
 KEY-NAME should be a string or a vector taken by `define-key'.
 
-COMMAND may be either:
+COMMAND list may be either:
 
-  - nil to unbind the key if it is already bound in KEYMAP;
+  nil to unbind the key if it is already bound in KEYMAP;
 
-  - a character or a string;
+  a single-element list with the following element:
 
-  - an unquoted symbol, which is either a command or a variable with
-    keymap;
+    - a character or a string;
 
-  - or a list (it will be wrapped into interactive `lambda' form).
+    - an unquoted symbol, which is a variable with keymap;
+
+    - a quoted symbol, which is a command name;
+
+  or a list of arbitrary expressions (they will be wrapped into
+  interactive `lambda' form).
 
 If KEYMAP is not specified, use `global-map'.
 
 Examples:
 
-  (al/bind-key \"C-f\" nil)
-  (al/bind-key \"C--\" ?– key-translation-map)
-  (al/bind-key \"C-j\" newline lisp-mode-map)
-  (al/bind-key [return] newline-and-indent lisp-mode-shared-map)
-  (al/bind-key \"C-s-b\" ((backward-word) (backward-char)))"
-  (declare (indent 1))
+  (al/bind-key nil \"C-f\")
+  (al/bind-key key-translation-map \"C--\" ?–)
+  (al/bind-key nil \"M-R\" ctl-x-r-map)
+  (al/bind-key lisp-mode-map \"C-j\" \\='newline)
+  (al/bind-key lisp-mode-shared-map [return] \\='newline-and-indent)
+  (al/bind-key nil \"C-s-b\" (backward-word) (backward-char))"
+  (declare (indent 2))
   (let ((cmd (al/key-command command))
         (key (if (stringp key-name)
                  (key-parse key-name)
@@ -104,9 +102,9 @@ Examples:
         (map (or keymap 'global-map)))
     `(define-key ,map ,key ,cmd ,(not command))))
 
-(defmacro al/bind-key* (key-name command)
+(defmacro al/bind-key* (key-name &rest command)
   (declare (indent 1))
-  `(al/bind-key ,key-name ,command al/override-global-map))
+  `(al/bind-key al/override-global-map ,key-name ,@command))
 
 (defmacro al/bind-keys (&rest args)
   "Bind multiple keys.
@@ -168,7 +166,7 @@ See `al/bind-key' for details."
                         `(put ',prefix-map 'variable-documentation
                               ,prefix-doc))
                      (define-prefix-command ',prefix-map)
-                     (al/bind-key ,prefix-key ,prefix-map ,map)))
+                     (al/bind-key ,map ,prefix-key ,prefix-map)))
                ,@(when %body
                    ;; Here, we just bind some keys to some commands.
                    ;; Warnings about undefined functions are the only
@@ -177,8 +175,10 @@ See `al/bind-key' for details."
                        ,@(mapcar (lambda (binding)
                                    (pcase (al/list-maybe binding)
                                      (`(,key . ,command)
-                                      `(al/bind-key ,key ,command
-                                                    ,(or prefix-map map)))))
+                                      `(al/bind-key
+                                           ,(or prefix-map map)
+                                           ,key
+                                         ,@command))))
                                  %body)))))))
         (if (and map check)
             `(al/with-check

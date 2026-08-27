@@ -686,7 +686,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 
 ;;; Minibuffer and completions
 
-(al/bind-key* "M-t" execute-extended-command)
+(al/bind-key* "M-t" 'execute-extended-command)
 
 (setq
  completion-show-help nil
@@ -892,8 +892,8 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 
 ;;; Working with files: backup, autosave, dired, etc.
 
-(al/bind-key* "M-C-f" find-file-at-point)
-(al/bind-key "H-j" dired-jump)
+(al/bind-key* "M-C-f" 'find-file-at-point)
+(al/bind-key nil "H-j" 'dired-jump)
 
 (al/bind-keys*
   :prefix-map al/find-file-map
@@ -1095,9 +1095,8 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 
 ;;; Programming modes
 
-(al/bind-key "C-c d" toggle-debug-on-error)
-
-(al/bind-key* "M-v" al/pp-eval-expression)
+(al/bind-key* "M-v" 'al/pp-eval-expression)
+(al/bind-key nil "C-c d" 'toggle-debug-on-error)
 
 (al/bind-keys
   ("C-v"   'al/eval-dwim)
@@ -1315,7 +1314,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 
 ;;; Spelling, translating
 
-(al/bind-key "<XF86Spell>" tui/translate)
+(al/bind-key nil "<XF86Spell>" 'tui/translate)
 
 (al/bind-keys
  :prefix-map al/spell-map
@@ -1336,7 +1335,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 
 ;;; Time, calendar, diary, appointments, notifications, etc.
 
-(al/bind-key* "M-T" tui/notification)
+(al/bind-key* "M-T" 'tui/notification)
 
 (al/bind-keys
  :prefix-map al/calendar-map
@@ -1546,7 +1545,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 
 ;;; Net settings: browsing, mail, chat, etc.
 
-(al/bind-key* "M-S" tui/web-search)
+(al/bind-key* "M-S" 'tui/web-search)
 
 (al/bind-keys
   :prefix-map al/net-map
