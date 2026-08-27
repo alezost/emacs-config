@@ -1174,34 +1174,6 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("F" find-face-definition)
   ("b" describe-personal-keybindings))
 
-;; `al/sly-keys' and `al/geiser-keys' are used by
-;; `al/erc-channel-config'.
-(defconst al/sly-keys
-  '(("C-c"   sly-prefix-map)
-    ("C-v"   al/sly-eval-dwim)
-    ("C-M-v" sly-eval-defun)
-    ("M-s-v" sly-eval-buffer)
-    ("C-S-v" sly-macroexpand-all)
-    ("C-d"   sly-describe-symbol)
-    ("M-d"   sly-edit-definition)
-    ("C-M-d" sly-doc-map)))
-
-(defconst al/geiser-keys
-  '(("C-v"   al/geiser-eval-dwim)
-    ("C-S-v" geiser-expand-last-sexp)
-    ("C-M-v" geiser-eval-definition)
-    ("M-s-v" geiser-eval-buffer)
-    ("C-d"   geiser-doc-symbol-at-point)
-    ("M-d"   geiser-edit-symbol-at-point)
-    ("C-M-d" al/geiser-doc-map)
-    ("C-c l" al/geiser-add-to-load-path)
-    ("C-c a" geiser-autodoc-mode)
-    ("C-c j" switch-to-geiser-module)
-    ;; Although this "C-c C-z" exists in `geiser-mode-map',
-    ;; `al/geiser-keys' is also used in ERC buffers.
-    ("C-c C-z" geiser-mode-switch-to-repl)
-    ("C-c C-j" geiser-mode-switch-to-repl-and-enter)))
-
 (al/autoload "python" python-shell-switch-to-shell)
 
 (setq eval-expression-print-length nil)

@@ -9,20 +9,13 @@
 (require 'al-key)
 (require 'al-erc)
 
-(defconst al/erc-keys
-  '("TAB"
-    ("M-." . erc-previous-command)
-    ("M-e" . erc-next-command)
-    ("C-a" . erc-bol)
-    ("C-c C-d" . al/erc-part-or-quit)
-    ("C-l" . al/erc-view-log-file)
-    ("<s-kanji>" . al/recenter-end-of-buffer-top)
-    ("C-H-3" . al/recenter-end-of-buffer-top)))
-
-;; Not binding at the top level because some modules (`erc-ring') add
-;; their key bindings to `erc-mode-map'.
-(al/eval-at-hook erc-ring-mode-hook
-  (al/bind-keys-from-vars 'erc-mode-map 'al/erc-keys))
+(al/bind-keys
+  :map erc-mode-map
+  ("M-↑" 'erc-previous-command)
+  ("M-↓" 'erc-next-command)
+  ("C-⇤" 'erc-bol)
+  ("C-l" 'al/erc-view-log-file)
+  ("C-c C-d" 'al/erc-part-or-quit))
 
 (setq
  erc-autojoin-channels-alist
@@ -101,27 +94,60 @@
 (defvar al/tab-functions)
 (push 'al/erc-next-button-maybe al/tab-functions)
 
+
+;;; Configuring SLY and Geiser for ERC channel buffers
+
+(defvar al/erc-geiser-mode-map (make-sparse-keymap))
+
+(define-minor-mode al/erc-geiser-mode
+  "Make `al/geiser-map' keys available (after `geiser' is loaded)."
+  :lighter ""
+  (if al/erc-geiser-mode
+      (setq-local
+       geiser-impl--implementation 'guile
+       geiser-eval--get-module-function (lambda (_module) :f)
+       geiser-eval--geiser-procedure-function
+       'geiser-guile--geiser-procedure)
+    (kill-local-variable 'geiser-impl--implementation)
+    (kill-local-variable 'geiser-eval--get-module-function)
+    (kill-local-variable 'geiser-eval--geiser-procedure-function)))
+
+(defvar al/geiser-map)
+(al/eval-after-load geiser-mode
+  (al/bind-keys
+    :map al/erc-geiser-mode-map
+    :parent al/geiser-map))
+
+(defvar al/erc-sly-mode-map (make-sparse-keymap))
+
+(define-minor-mode al/erc-sly-mode
+  "Make `al/sly-map' keys available (after `sly' is loaded)."
+  :lighter "")
+
+(defvar al/sly-map)
+(al/eval-after-load sly
+  (al/bind-keys
+    :map al/erc-sly-mode-map
+    :parent al/sly-map))
+
 (defun al/erc-channel-config ()
   "Define additional settings depending on a channel."
   (pcase (buffer-name (current-buffer))
     ((or "#scheme" "#guile")
-     ;; Some hacks to make it possible to use guile process in erc
-     ;; buffer.
-     (setq-local
-      geiser-impl--implementation 'guile
-      geiser-eval--get-module-function (lambda (_module) :f)
-      geiser-eval--geiser-procedure-function 'geiser-guile--geiser-procedure)
-     (al/bind-local-keys-from-vars 'al/geiser-keys))
+     (al/erc-geiser-mode))
     ("#lisp"
-     (al/bind-local-keys-from-vars 'al/sly-keys))
+     (al/erc-sly-mode))
     ("#stumpwm"
      (setq-local sly-buffer-package :stumpwm)
-     (al/bind-local-keys-from-vars 'al/sly-keys))))
+     (al/erc-sly-mode))))
+
+(add-hook 'erc-join-hook #'al/erc-channel-config)
+
+
 
 (al/call-at-hook erc-mode-hook
   visual-line-mode
   abbrev-mode)
-(add-hook 'erc-join-hook #'al/erc-channel-config)
 (add-hook 'erc-after-connect #'al/erc-ghost-maybe)
 
 (advice-add 'erc-notifications-notify :before #'al/play-erc-sound)
@@ -143,21 +169,22 @@
   (setq erc-keywords '("theme" "color" "dvorak" "sql" "guix" "game")))
 
 (al/eval-after-load erc-button
-  (defconst al/erc-button-keys
-    '("TAB"
-      ("u" . erc-button-press-button)
-      ("e" . erc-button-next)
-      ("." . erc-button-previous)
-      ("c"   (kill-new (car (get-text-property (point) 'erc-data))))
-      ("w"   (wget (car (get-text-property (point) 'erc-data))))))
-  (al/bind-keys-from-vars 'erc-button-keymap 'al/erc-button-keys))
+  (al/bind-keys
+    :map erc-button-keymap
+    ("→" 'erc-button-press-button)
+    ("↓" 'erc-button-next)
+    ("↑" 'erc-button-previous)
+    ("c" (kill-new (car (get-text-property (point) 'erc-data))))
+    ("w" (wget (car (get-text-property (point) 'erc-data))))))
 
 (al/eval-after-load erc-list
   (al/bind-keys
-   :map erc-list-menu-mode-map
-   ("u"   . erc-list-join)
-   ("RET" . erc-list-join))
-  (define-key erc-list-menu-sort-button-map
-    [header-line mouse-2] 'erc-list-menu-sort-by-column))
+    :map erc-list-menu-mode-map
+    ("→" 'erc-list-join)
+    ("RET" 'erc-list-join))
+
+  (al/bind-keys
+    :map erc-list-menu-sort-button-map
+    ([header-line mouse-2] 'erc-list-menu-sort-by-column)))
 
 ;;; erc.el ends here

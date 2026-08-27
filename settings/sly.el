@@ -5,52 +5,63 @@
 (require 'al-clisp)
 (require 'al-sly)
 
-(defconst al/sly-prefix-keys
-  '("C-d"
-    ("C-z"   (al/sly 'other-window))
-    ("C-j" . al/sly-switch-to-repl-and-enter)))
+(al/bind-keys
+  :map sly-xref-mode-map
+  ("↑" 'sly-xref-prev-line)
+  ("↓" 'sly-xref-next-line)
+  ("→" 'sly-xref-goto)
+  ("d" 'sly-xref-show))
 
-(defconst al/sly-xref-keys
-  '(("." . sly-xref-prev-line)
-    ("e" . sly-xref-next-line)
-    ("u" . sly-xref-goto)
-    ("d" . sly-xref-show)))
-(al/bind-keys-from-vars 'sly-xref-mode-map 'al/sly-xref-keys)
+(al/bind-keys
+  :map sly-db-mode-map
+  ("↑"   'sly-db-up)
+  ("↓"   'sly-db-down)
+  ("S-↑" 'sly-db-details-up)
+  ("S-↓" 'sly-db-details-down)
+  ("M-↑" 'sly-db-beginning-of-backtrace)
+  ("M-↓" 'sly-db-end-of-backtrace))
 
-(defconst al/sly-db-keys
-  '(("."   . sly-db-up)
-    ("e"   . sly-db-down)
-    (">"   . sly-db-details-up)
-    ("E"   . sly-db-details-down)
-    ("M-." . sly-db-beginning-of-backtrace)
-    ("M-e" . sly-db-end-of-backtrace)))
-(al/bind-keys-from-vars 'sly-db-mode-map 'al/sly-db-keys)
+(al/bind-keys
+  :map sly-db-frame-map
+  ([tab] 'sly-db-toggle-details)
+  ("d"   'sly-db-show-frame-source)
+  ("v"   'sly-db-eval-in-frame))
 
-(defconst al/sly-db-frame-keys
-  '(([tab] sly-db-toggle-details)
-    ("d"   sly-db-show-frame-source)
-    ("v"   sly-db-eval-in-frame)))
-(al/bind-keys-from-vars 'sly-db-frame-map
-  '(al/sly-db-frame-keys al/button-keys))
+(al/bind-keys
+  :map sly-doc-map
+  ("C-d" 'sly-documentation-lookup))
 
-(defconst al/sly-doc-keys
-  '(("C-d" . sly-documentation-lookup)))
-(al/bind-keys-from-vars 'sly-doc-map 'al/sly-doc-keys)
-
-(defconst al/sly-repl-keys
-  '(("C-c C-d" . al/sly-repl-disconnect-or-quit)
-    ("M-r" . comint-history-isearch-backward-regexp)
-    ("M-." . sly-mrepl-previous-input-or-button)
-    ("M-e" . sly-mrepl-next-input-or-button)
-    ("M->" . sly-mrepl-previous-prompt)
-    ("M-E" . sly-mrepl-next-prompt)))
-(al/bind-keys-from-vars 'sly-mrepl-mode-map 'al/sly-repl-keys)
+(al/bind-keys
+  :map sly-mrepl-mode-map
+  ("C-c C-d" 'al/sly-repl-disconnect-or-quit)
+  ("M-r"   'comint-history-isearch-backward-regexp)
+  ("M-↑"   'sly-mrepl-previous-input-or-button)
+  ("M-↓"   'sly-mrepl-next-input-or-button)
+  ("M-S-↑" 'sly-mrepl-previous-prompt)
+  ("M-S-↓" 'sly-mrepl-next-prompt))
 
 ;; `sly-editing-mode' is a useless wrapper for `sly-mode' but some
 ;; contrib modules add commands to its hook.  So making only `sly-mode'
 ;; work instead of `sly-editing-mode' would require too much
 ;; configuration.  At least, clean its keymap.
 (al/clean-keymap sly-editing-mode-map)
+
+(al/bind-keys
+  ;; Do not remove this map (used by ERC settings).
+  :map al/sly-map
+  :create t
+  ("C-c"   sly-prefix-map)
+  ("C-v"   'al/sly-eval-dwim)
+  ("C-M-v" 'sly-eval-defun)
+  ("M-s-v" 'sly-eval-buffer)
+  ("C-S-v" 'sly-macroexpand-all)
+  ("C-d"   'sly-describe-symbol)
+  ("M-d"   'sly-edit-definition)
+  ("C-M-d" sly-doc-map))
+
+(al/bind-keys
+  :map sly-mode-map
+  :parent al/sly-map)
 
 (setq
  sly-contribs
@@ -73,10 +84,13 @@
 (sly--setup-contribs)
 (advice-add 'sly--setup-contribs :override #'ignore)
 
-;; Bind `sly-mode' keys after loading contribs because `sly-mrepl'
+;; Bind `sly-prefix-map' keys after loading contribs because `sly-mrepl'
 ;; binds "C-c C-z".
-(al/bind-keys-from-vars 'sly-prefix-map 'al/sly-prefix-keys)
-(al/bind-keys-from-vars 'sly-mode-map 'al/sly-keys)
+(al/bind-keys
+  :map sly-prefix-map
+  "C-d"
+  ("C-z" (al/sly 'other-window))
+  ("C-j" 'al/sly-switch-to-repl-and-enter))
 
 (al/clean-keymap sly-autodoc-mode-map)
 

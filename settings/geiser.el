@@ -10,34 +10,53 @@
 (al/bind-keys
   :map al/geiser-doc-map
   :create t
-  ("d" geiser-doc-symbol-at-point)
-  ("i" geiser-doc-look-up-manual)
-  ("m" geiser-doc-module)
-  ("s" geiser-autodoc-show)
-  ("t" geiser-autodoc-mode))
-(al/bind-keys-from-vars 'geiser-mode-map 'al/geiser-keys)
+  ("d" 'geiser-doc-symbol-at-point)
+  ("i" 'geiser-doc-look-up-manual)
+  ("m" 'geiser-doc-module)
+  ("s" 'geiser-autodoc-show)
+  ("t" 'geiser-autodoc-mode))
 
-;; `geiser-mode' requires `geiser-repl', not vice versa.  So if keys
-;; are bound after loading `geiser-repl', "C-M-d" in REPL is bound to
-;; a non-existing `al/geiser-doc-map' command (because
-;; `al/geiser-doc-map' variable with keymap does not exist yet).
-(defconst al/geiser-repl-keys
-  '("TAB" "C-c k"
-    ("RET" . al/geiser-repl-enter-dwim)
-    ("C-k" . al/geiser-repl-kill-whole-line)
-    ("C-a" . geiser-repl--bol)
-    ("C-c C-d" . geiser-repl-exit)))
-(al/bind-keys-from-vars 'geiser-repl-mode-map
-  '(al/comint-keys al/geiser-keys al/geiser-repl-keys))
+(al/bind-keys
+  ;; Do not remove this map (used by ERC settings).
+  :map al/geiser-map
+  :create t
+  ("C-v"   'al/geiser-eval-dwim)
+  ("C-S-v" 'geiser-expand-last-sexp)
+  ("C-M-v" 'geiser-eval-definition)
+  ("M-s-v" 'geiser-eval-buffer)
+  ("C-d"   'geiser-doc-symbol-at-point)
+  ("M-d"   'geiser-edit-symbol-at-point)
+  ("C-M-d" al/geiser-doc-map)
+  ("C-c l" 'al/geiser-add-to-load-path)
+  ("C-c a" 'geiser-autodoc-mode)
+  ("C-c j" 'switch-to-geiser-module)
+  ;; Although this "C-c C-z" exists in `geiser-mode-map',
+  ;; it is bound here for ERC channel buffers.
+  ("C-c C-z" 'geiser-mode-switch-to-repl)
+  ("C-c C-j" 'geiser-mode-switch-to-repl-and-enter))
 
-(defconst al/geiser-doc-keys
-  '((","   . geiser-doc-previous)
-    ("p"   . geiser-doc-next)
-    ("C-d" . al/geiser-doc-doc-symbol-at-point)
-    ("M-d" . geiser-doc-edit-symbol-at-point))
-  "Alist of auxiliary keys for `geiser-doc-mode'.")
-(al/bind-keys-from-vars 'geiser-doc-mode-map
-  '(al/button-keys al/geiser-keys al/geiser-doc-keys))
+(al/bind-keys
+  :map geiser-mode-map
+  :parent al/geiser-map)
+
+(al/bind-keys
+  :map geiser-repl-mode-map
+  :parent (al/geiser-map
+           comint-mode-map)
+  "C-c k"
+  ("RET" 'al/geiser-repl-enter-dwim)
+  ("C-k" 'al/geiser-repl-kill-whole-line)
+  ("C-⇤" 'geiser-repl--bol)
+  ("C-c C-d" 'geiser-repl-exit))
+
+(al/bind-keys
+  :map geiser-doc-mode-map
+  :parent (al/geiser-map
+           button-buffer-map)
+  ("↷" 'geiser-doc-previous)
+  ("↶" 'geiser-doc-next)
+  ("C-d" 'al/geiser-doc-doc-symbol-at-point)
+  ("M-d" 'geiser-doc-edit-symbol-at-point))
 
 (setq
  geiser-repl-skip-version-check-p t
