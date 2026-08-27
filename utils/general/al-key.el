@@ -390,22 +390,6 @@ KEY-VARS have a priority over the bindings from these variables."
       (al/bind-keys-to-map specs))))
 
 
-;;; Binding buffer local keys
-
-;; Idea from <http://www.emacswiki.org/emacs/BufferLocalKeys>.
-
-(defvar-local al/local-map nil
-  "Local keymap used by `al/bind-local-keys-from-vars'.")
-
-(defun al/bind-local-keys-from-vars (&rest vars)
-  "Bind all keys from variables VARS locally in the current buffer.
-VARS are variables with bindings supported by
-`al/bind-keys-from-vars'."
-  (setq al/local-map (copy-keymap (current-local-map)))
-  (use-local-map al/local-map)
-  (al/bind-keys-from-vars 'al/local-map vars t))
-
-
 ;;; Misc
 
 (defun al/clean-keymap (keymap &optional clean-parent)
