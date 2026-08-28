@@ -1,7 +1,9 @@
 ;;; company.el --- Settings for `company' package  -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'al-key-macros))
+
 (require 'company)
-(require 'al-key)
 
 (setq
  company-idle-delay nil

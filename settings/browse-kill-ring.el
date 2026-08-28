@@ -1,10 +1,10 @@
 ;;; browse-kill-ring.el --- Settings for `browse-kill-ring' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
+  (require 'al-key-macros)
   (require 'al-aux-macros))
 
 (require 'browse-kill-ring)
-(require 'al-key)
 
 (setq
  browse-kill-ring-separator (make-string 64 ?—)

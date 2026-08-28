@@ -1,7 +1,9 @@
 ;;; debug.el --- Settings for `debug' package  -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'al-key-macros))
+
 (require 'debug)
-(require 'al-key)
 
 (al/bind-keys
   :map debugger-mode-map

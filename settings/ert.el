@@ -1,7 +1,9 @@
 ;;; ert.el --- Settings for `ert' package  -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'al-key-macros))
+
 (require 'ert)
-(require 'al-key)
 
 (al/bind-keys
   :map ert-results-mode-map

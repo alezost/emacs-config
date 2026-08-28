@@ -18,12 +18,12 @@
 ;;; Code:
 
 (eval-when-compile
+  (require 'al-key-macros)
   (require 'al-aux-macros)
   (require 'fp-utils))
 
 (require 'al-places)
 (require 'al-general)
-(require 'al-key)
 
 
 ;;; Key translations

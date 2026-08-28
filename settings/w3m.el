@@ -1,11 +1,11 @@
 ;;; w3m.el --- Settings for `w3m' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
+  (require 'al-key-macros)
   (require 'al-aux-macros))
 
 (require 'w3m)
 (require 'al-places)
-(require 'al-key)
 (require 'al-w3m)
 
 (al/bind-keys

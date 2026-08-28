@@ -1,7 +1,9 @@
 ;;; diff-mode.el --- Settings for `diff-mode' package  -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'al-key-macros))
+
 (require 'diff-mode)
-(require 'al-key)
 
 (al/bind-keys
   :map diff-mode-shared-map

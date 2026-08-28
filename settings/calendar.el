@@ -1,8 +1,8 @@
 ;;; calendar.el --- Settings for `calendar' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
-  (require 'al-aux-macros)
-  (require 'al-key))
+  (require 'al-key-macros)
+  (require 'al-aux-macros))
 
 (require 'calendar)
 (require 'diary-lib)

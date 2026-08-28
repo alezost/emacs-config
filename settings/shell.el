@@ -1,13 +1,13 @@
 ;;; shell.el --- Settings for `shell' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
+  (require 'al-key-macros)
   (require 'al-aux-macros))
 
 (require 'shell)
 (require 'sh-script)
 (require 'al-places)
 (require 'al-general)
-(require 'al-key)
 (require 'al-shell)
 
 (al/bind-keys

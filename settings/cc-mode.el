@@ -1,10 +1,9 @@
 ;;; cc-mode.el --- Settings for `cc-mode' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
-  (require 'al-key))
+  (require 'al-key-macros))
 
 (require 'cc-mode)
-(require 'al-general)
 
 (al/bind-keys
   :map c-mode-base-map

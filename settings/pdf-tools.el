@@ -1,11 +1,12 @@
 ;;; pdf-tools.el --- Settings for `pdf-tools' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
+  (require 'al-key-macros)
   (require 'al-aux-macros))
 
 (require 'pdf-view)
 (require 'al-pdf)
-(require 'al-key)
+(require 'al-general)
 
 (al/autoload "pdf-links"
   pdf-links-isearch-link)

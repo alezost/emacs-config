@@ -1,6 +1,7 @@
 ;;; org.el --- Settings for `org' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
+  (require 'al-key-macros)
   (require 'al-aux-macros))
 
 (require 'org)
@@ -14,11 +15,10 @@
 ;; imenu is required here to be sure it is loaded before enabling
 ;; `org-mode'.
 (require 'imenu)
-(require 'al-org)
 (require 'al-places)
 (require 'al-general)
-(require 'al-key)
 (require 'al-list)
+(require 'al-org)
 
 (al/bind-keys
   :map org-mode-map

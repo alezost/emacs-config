@@ -1,7 +1,9 @@
 ;;; tex-mode.el --- Settings for `tex-mode' package  -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'al-key-macros))
+
 (require 'tex-mode)
-(require 'al-key)
 
 ;; XXX Do I need this?
 ;;

@@ -1,7 +1,10 @@
 ;;; sly.el --- Settings for `sly' package  -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'al-key-macros))
+
 (require 'sly)
-(require 'al-key)
+(require 'al-general)
 (require 'al-clisp)
 (require 'al-sly)
 

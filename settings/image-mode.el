@@ -1,7 +1,9 @@
 ;;; image-mode.el --- Settings for `image-mode' package  -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'al-key-macros))
+
 (require 'image-mode)
-(require 'al-key)
 
 (al/bind-keys
   :map image-mode-map

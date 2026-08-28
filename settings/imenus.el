@@ -1,8 +1,10 @@
 ;;; imenus.el --- Settings for `imenus' package  -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'al-key-macros))
+
 (require 'imenus)
 (require 'al-places)
-(require 'al-key)
 (require 'al-file)
 (require 'al-imenus)
 

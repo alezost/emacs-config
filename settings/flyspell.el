@@ -1,7 +1,9 @@
 ;;; flyspell.el --- Settings for `flyspell' package  -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'al-key-macros))
+
 (require 'flyspell)
-(require 'al-key)
 
 (al/bind-keys
   :map flyspell-mode-map

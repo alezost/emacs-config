@@ -1,7 +1,10 @@
 ;;; info.el --- Settings for `info' package  -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'al-key-macros))
+
 (require 'info)
-(require 'al-key)
+(require 'al-places)
 (require 'al-file)
 
 (al/bind-keys

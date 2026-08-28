@@ -1,8 +1,10 @@
 ;;; bookmark.el --- Settings for `bookmark' package  -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'al-key-macros))
+
 (require 'bookmark)
 (require 'al-places)
-(require 'al-key)
 
 (setq
  bookmark-save-flag 1

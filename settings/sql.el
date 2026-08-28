@@ -1,12 +1,12 @@
 ;;; sql.el --- Settings for `sql' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
+  (require 'al-key-macros)
   (require 'al-aux-macros))
 
 (require 'sql)
 (require 'al-places)
 (require 'al-general)
-(require 'al-key)
 (require 'al-sql)
 
 (al/bind-keys

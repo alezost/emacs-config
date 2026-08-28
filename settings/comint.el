@@ -1,11 +1,11 @@
 ;;; comint.el --- Settings for `comint' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
+  (require 'al-key-macros)
   (require 'al-aux-macros))
 
 (require 'comint)
 (require 'al-general)
-(require 'al-key)
 
 (setq
  comint-move-point-for-output nil

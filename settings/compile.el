@@ -1,12 +1,13 @@
 ;;; compile.el --- Settings for `compile' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
+  (require 'al-key-macros)
   (require 'al-aux-macros))
 
 (require 'compile)
-(require 'al-compilation)
 (require 'al-places)
-(require 'al-key)
+(require 'al-general)
+(require 'al-compilation)
 
 (al/bind-keys
   :map al/compilation-common-map

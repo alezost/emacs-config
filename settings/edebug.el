@@ -1,10 +1,9 @@
 ;;; edebug.el --- Settings for `edebug' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
-  (require 'al-key))
+  (require 'al-key-macros))
 
 (require 'edebug)
-(require 'al-general)
 
 (al/bind-keys
   :map edebug-mode-map

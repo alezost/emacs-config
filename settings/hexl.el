@@ -1,7 +1,9 @@
 ;;; hexl.el --- Settings for `hexl' package  -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'al-key-macros))
+
 (require 'hexl)
-(require 'al-key)
 
 (al/bind-keys
   :map hexl-mode-map

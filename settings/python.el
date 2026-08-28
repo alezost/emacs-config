@@ -1,10 +1,9 @@
 ;;; python.el --- Settings for `python' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
-  (require 'al-key))
+  (require 'al-key-macros))
 
 (require 'python)
-(require 'al-general)
 
 (al/bind-keys
   :map python-mode-map

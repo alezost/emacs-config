@@ -1,8 +1,10 @@
 ;;; package.el --- Settings for `package' package  -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'al-key-macros))
+
 (require 'package)
 (require 'al-places)
-(require 'al-key)
 (require 'al-package)
 (require 'al-quelpa)
 

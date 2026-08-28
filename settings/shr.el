@@ -1,10 +1,9 @@
 ;;; shr.el --- Settings for `shr' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
-  (require 'al-key))
+  (require 'al-key-macros))
 
 (require 'shr)
-(require 'al-general)
 
 (al/bind-keys
   :map shr-map

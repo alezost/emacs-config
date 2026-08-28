@@ -1,7 +1,9 @@
 ;;; artist.el --- Settings for `artist' package  -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'al-key-macros))
+
 (require 'artist)
-(require 'al-key)
 
 (al/bind-keys
   :map artist-mode-map

@@ -1,8 +1,10 @@
 ;;; eshell.el --- Settings for `eshell' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
+  (require 'al-key-macros)
   (require 'al-aux-macros))
 
+(require 'al-places)
 (require 'esh-mode)
 ;; Set `eshell-directory-name' early because other modules use it to set
 ;; other variables (e.g. `eshell-aliases-file').
@@ -10,8 +12,6 @@
 
 (require 'em-prompt)
 (require 'sh-script)
-(require 'al-places)
-(require 'al-key)
 (require 'al-eshell)
 
 (al/bind-keys

@@ -1,11 +1,12 @@
 ;;; gnus.el --- Settings for `gnus' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
+  (require 'al-key-macros)
   (require 'al-aux-macros))
 
 (require 'gnus)
 (require 'al-places)
-(require 'al-key)
+(require 'al-general)
 (require 'al-gnus)
 
 (declare-function al/gnus-dir-file "net")

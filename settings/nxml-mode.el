@@ -1,10 +1,10 @@
 ;;; nxml-mode.el --- Settings for `nxml-mode' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
+  (require 'al-key-macros)
   (require 'al-aux-macros))
 
 (require 'nxml-mode)
-(require 'al-key)
 
 (al/bind-keys
   :map nxml-mode-map

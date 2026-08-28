@@ -1,9 +1,11 @@
 ;;; man.el --- Settings for `man' package  -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'al-key-macros))
+
 (require 'seq)
 (require 'man)
 (require 'al-places)
-(require 'al-key)
 (require 'al-file)
 (require 'al-visual)
 

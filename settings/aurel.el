@@ -1,7 +1,10 @@
 ;;; aurel.el --- Settings for `aurel' package  -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'al-key-macros))
+
 (require 'aurel)
-(require 'al-key)
+(require 'al-places)
 
 (setq
  aurel-download-directory (al/src-dir-file "abs")

@@ -1,10 +1,9 @@
 ;;; xref.el --- Settings for `xref' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
-  (require 'al-key))
+  (require 'al-key-macros))
 
 (require 'xref)
-(require 'al-general)
 
 (al/bind-keys
   :map xref--xref-buffer-mode-map

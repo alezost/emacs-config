@@ -1,10 +1,11 @@
 ;;; gud.el --- Settings for `gud' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
+  (require 'al-key-macros)
   (require 'al-aux-macros))
 
 (require 'gud)
-(require 'al-key)
+(require 'al-general)
 
 ;; GUD binds its keys inside `gdb' and `gud-gdb' commands.
 (al/call-at-hook (gdb-mode-hook

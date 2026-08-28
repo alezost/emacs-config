@@ -1,11 +1,10 @@
 ;;; ibuffer.el --- Settings for `ibuffer' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
+  (require 'al-key-macros)
   (require 'al-aux-macros))
 
 (require 'ibuffer)
-(require 'al-general)
-(require 'al-key)
 (require 'al-visual)
 
 (al/bind-keys

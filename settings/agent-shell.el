@@ -1,7 +1,9 @@
 ;;; agent-shell.el --- Settings for `agent-shell' package  -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'al-key-macros))
+
 (require 'agent-shell)
-(require 'al-key)
 
 (al/bind-keys
   :map agent-shell-mode-map

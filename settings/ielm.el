@@ -1,10 +1,11 @@
 ;;; ielm.el --- Settings for `ielm' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
+  (require 'al-key-macros)
   (require 'al-aux-macros))
 
 (require 'ielm)
-(require 'al-key)
+(require 'al-general)
 
 (al/bind-keys
   :map ielm-map

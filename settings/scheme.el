@@ -1,11 +1,12 @@
 ;;; scheme.el --- Settings for `scheme' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
+  (require 'al-key-macros)
   (require 'al-aux-macros))
 
 (require 'scheme)
+(require 'al-general)
 (require 'al-scheme)
-(require 'al-key)
 
 (al/modify-page-break-syntax scheme-mode-syntax-table)
 

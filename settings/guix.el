@@ -1,11 +1,13 @@
 ;;; guix.el --- Settings for `guix' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
+  (require 'al-key-macros)
   (require 'al-aux-macros))
 
 (require 'guix)
+(require 'al-places)
+(require 'al-general)
 (require 'al-guix)
-(require 'al-key)
 
 (al/eval-after-load guix-profiles
   (setq guix-current-profile al/guix-user-profile-dir))

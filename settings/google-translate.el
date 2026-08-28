@@ -1,11 +1,11 @@
 ;;; google-translate.el --- Settings for `google-translate' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
+  (require 'al-key-macros)
   (require 'al-aux-macros))
 
 (require 'google-translate-core-ui)
 (require 'al-general)
-(require 'al-key)
 (require 'al-google-translate)
 
 (setq

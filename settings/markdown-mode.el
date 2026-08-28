@@ -1,7 +1,9 @@
 ;;; markdown-mode.el --- Settings for `markdown-mode' package  -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'al-key-macros))
+
 (require 'markdown-mode)
-(require 'al-key)
 
 (al/bind-keys
   :map markdown-mode-map

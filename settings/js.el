@@ -1,11 +1,10 @@
 ;;; js.el --- Settings for `js' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
-  (require 'al-aux-macros)
-  (require 'al-key))
+  (require 'al-key-macros)
+  (require 'al-aux-macros))
 
 (require 'js)
-(require 'al-general)
 
 (al/bind-keys
   :map js-mode-map

@@ -1,10 +1,11 @@
 ;;; ediff.el --- Settings for `ediff' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
+  (require 'al-key-macros)
   (require 'al-aux-macros))
 
 (require 'ediff)
-(require 'al-key)
+(require 'al-general)
 (require 'al-ediff)
 
 (setq

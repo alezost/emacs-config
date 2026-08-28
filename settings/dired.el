@@ -1,12 +1,13 @@
 ;;; dired.el --- Settings for `dired' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
+  (require 'al-key-macros)
   (require 'al-aux-macros))
 
 (require 'dired)
 (require 'dired-x)
+(require 'al-general)
 (require 'al-dired)
-(require 'al-key)
 (require 'al-complete)
 (require 'al-visual)
 

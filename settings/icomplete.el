@@ -1,10 +1,10 @@
 ;;; icomplete.el --- Settings for `icomplete' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
+  (require 'al-key-macros)
   (require 'al-aux-macros))
 
 (require 'icomplete)
-(require 'al-key)
 
 (setq
  icomplete-scroll t

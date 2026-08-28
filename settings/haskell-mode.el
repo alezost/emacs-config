@@ -1,8 +1,10 @@
 ;;; haskell-mode.el --- Settings for `haskell-mode' package  -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'al-key-macros))
+
 (require 'haskell-mode)
 (require 'haskell-interactive-mode)
-(require 'al-key)
 
 (al/bind-keys
   :map al/haskell-general-map

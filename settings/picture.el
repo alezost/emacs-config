@@ -1,7 +1,9 @@
 ;;; picture.el --- Settings for `picture' package  -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'al-key-macros))
+
 (require 'picture)
-(require 'al-key)
 
 (al/bind-keys
   :map picture-mode-map

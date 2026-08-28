@@ -1,7 +1,9 @@
 ;;; tetris.el --- Settings for `tetris' package  -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'al-key-macros))
+
 (require 'tetris)
-(require 'al-key)
 
 (setq
  tetris-width 10

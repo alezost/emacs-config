@@ -1,7 +1,9 @@
 ;;; view.el --- Settings for `view' package  -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'al-key-macros))
+
 (require 'view)
-(require 'al-key)
 
 (defvar al/lazy-moving-map)
 

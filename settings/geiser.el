@@ -1,11 +1,13 @@
 ;;; geiser.el --- Settings for `geiser' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
+  (require 'al-key-macros)
   (require 'al-aux-macros))
 
 (require 'geiser-mode)
+(require 'al-places)
+(require 'al-general)
 (require 'al-geiser)
-(require 'al-key)
 
 (al/bind-keys
   :map al/geiser-doc-map

@@ -1,7 +1,9 @@
 ;;; woman.el --- Settings for `woman' package  -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'al-key-macros))
+
 (require 'woman)
-(require 'al-key)
 
 (al/bind-keys
   :map woman-mode-map

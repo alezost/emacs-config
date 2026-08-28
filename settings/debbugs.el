@@ -2,8 +2,10 @@
 
 ;; XXX `debbugs' package now contains `debbugs-guix'.
 
+(eval-when-compile
+  (require 'al-key-macros))
+
 (require 'debbugs-gnu)
-(require 'al-key)
 
 (al/bind-keys
   :map debbugs-gnu-mode-map

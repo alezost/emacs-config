@@ -1,10 +1,11 @@
 ;;; magit.el --- Settings for `magit' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
+  (require 'al-key-macros)
   (require 'al-aux-macros))
 
 (require 'magit)
-(require 'al-key)
+(require 'al-general)
 (require 'al-magit)
 
 (al/bind-keys

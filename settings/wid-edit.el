@@ -1,7 +1,9 @@
 ;;; wid-edit.el --- Settings for `wid-edit' package  -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'al-key-macros))
+
 (require 'wid-edit)
-(require 'al-key)
 
 (al/bind-keys
   :map widget-keymap

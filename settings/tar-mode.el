@@ -1,7 +1,9 @@
 ;;; tar-mode.el --- Settings for `tar-mode' package  -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'al-key-macros))
+
 (require 'tar-mode)
-(require 'al-key)
 
 (al/bind-keys
   :map tar-mode-map

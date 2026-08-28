@@ -1,10 +1,10 @@
 ;;; bui.el --- Settings for `bui' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
+  (require 'al-key-macros)
   (require 'al-aux-macros))
 
 (require 'bui-core)
-(require 'al-key)
 
 (al/bind-keys
   :map bui-map

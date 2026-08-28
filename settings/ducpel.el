@@ -1,8 +1,10 @@
 ;;; ducpel.el --- Settings for `ducpel' package  -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'al-key-macros))
+
 (require 'ducpel)
 (require 'al-places)
-(require 'al-key)
 
 (setq ducpel-replay-pause 0.3)
 (let ((ducpel-dir (al/emacs-my-packages-dir-file "ducpel")))

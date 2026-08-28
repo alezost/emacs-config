@@ -1,7 +1,9 @@
 ;;; snake.el --- Settings for `snake' package  -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'al-key-macros))
+
 (require 'snake)
-(require 'al-key)
 
 (al/bind-keys
   :map snake-mode-map

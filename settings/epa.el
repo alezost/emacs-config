@@ -1,7 +1,9 @@
 ;;; epa.el --- Settings for `epa' package  -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'al-key-macros))
+
 (require 'epa)
-(require 'al-key)
 
 (al/bind-keys
   :map epa-key-list-mode-map

@@ -1,7 +1,9 @@
 ;;; cus-edit.el --- Settings for `cus-edit' package  -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'al-key-macros))
+
 (require 'cus-edit)
-(require 'al-key)
 
 (al/bind-keys
   :map custom-mode-map

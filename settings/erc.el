@@ -1,12 +1,13 @@
 ;;; erc.el --- Settings for `erc' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
+  (require 'al-key-macros)
   (require 'al-aux-macros))
 
 (require 'erc)
 (require 'erc-join)
 (require 'erc-log)
-(require 'al-key)
+(require 'al-general)
 (require 'al-erc)
 
 (al/bind-keys

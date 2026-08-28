@@ -1,7 +1,11 @@
 ;;; emms.el --- Settings for `emms' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
+  (require 'al-key-macros)
   (require 'al-aux-macros))
+
+(require 'al-places)
+(require 'al-general)
 
 (eval-and-compile
   (al/require
@@ -20,10 +24,7 @@
     emms-mpv
     emms-state
     al-emms
-    al-emms-mpv
-    al-places
-    al-general
-    al-key))
+    al-emms-mpv))
 
 (al/autoload "emms-cue" emms-info-cueinfo)
 (al/autoload "emms-info-native" emms-info-native)

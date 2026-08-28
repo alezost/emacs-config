@@ -1,10 +1,9 @@
 ;;; make-mode.el --- Settings for `make-mode' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
-  (require 'al-key))
+  (require 'al-key-macros))
 
 (require 'make-mode)
-(require 'al-general)
 
 (al/bind-keys
   :map makefile-mode-map

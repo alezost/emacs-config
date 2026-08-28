@@ -1,12 +1,12 @@
 ;;; transient.el --- Settings for `transient' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
+  (require 'al-key-macros)
   (require 'al-aux-macros))
 
 (require 'transient)
 (require 'al-places)
 (require 'al-general)
-(require 'al-key)
 (require 'al-transient)
 
 (al/bind-keys

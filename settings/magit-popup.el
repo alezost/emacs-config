@@ -1,8 +1,8 @@
 ;;; magit-popup.el --- Settings for `magit-popup' package  -*- lexical-binding: t -*-
 
 (eval-when-compile
-  (require 'al-aux-macros)
-  (require 'al-key))
+  (require 'al-key-macros)
+  (require 'al-aux-macros))
 
 (require 'magit-popup)
 (require 'al-general)

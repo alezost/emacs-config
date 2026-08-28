@@ -1,7 +1,9 @@
 ;;; texinfo.el --- Settings for `texinfo' package  -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'al-key-macros))
+
 (require 'texinfo)
-(require 'al-key)
 (require 'al-texinfo)
 
 (al/bind-keys
