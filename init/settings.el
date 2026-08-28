@@ -767,7 +767,8 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
     ("M-d" 'al/minibuffer-find-symbol))
 
   (advice-add 'read-file-name             :around #'al/read-file-add-keymap)
-  (advice-add 'read-buffer                :around #'al/read-buffer-add-keymap)
+  ;; Advising `read-buffer-to-switch' because `read-buffer' is a C function.
+  (advice-add 'read-buffer-to-switch      :around #'al/read-buffer-add-keymap)
   (advice-add 'read-extended-command      :around #'al/read-symbol-add-keymap)
   (advice-add 'read-face-name             :around #'al/read-symbol-add-keymap)
   (advice-add 'help-fns--describe-function-or-command-prompt ; used by `describe-function'
@@ -2142,9 +2143,10 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   :check t
   ("C-k" 'process-menu-delete-process))
 
-(al/eval-after-load al-process
-  :load after-init
-  (al/process-hook-mode))
+;; Do not enable `al/process-hook-mode' on start because it advises C
+;; functions.
+;;
+;; (al/call-after-init al/process-hook-mode)
 
 (al/eval-after-load server
   (setq
