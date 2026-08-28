@@ -987,7 +987,6 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 (al/setq-no-warnings dired-guess-shell-gnutar "tar")
 
 (al/eval-after-load al-backup
-  :load after-init
   (setq
    al/backup-ignored-regexps
    '("gnus/mail/archive/sent"
@@ -995,6 +994,10 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
    backup-enable-predicate #'al/backup-enable-predicate)
   (advice-add 'make-backup-file-name-1
     :override #'al/make-backup-file-name-1))
+
+(al/eval-at-hook find-file-hook
+  :once t
+  (al/require al-backup))
 
 (al/eval-after-load recentf
   (setq
