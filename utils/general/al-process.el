@@ -34,15 +34,17 @@
 
 (defun al/call-with-locale (fun &rest args)
   "Call FUN with ARGS using `al/process-locale'.
-This function can be used as an `around' advice.
-For example, `insert-directory' (used by `dired') calls
-`insert-directory-program' (\"ls -l\" more or less) and searches
-for \"total\" in its output to insert occupied and free disk
-space.  But \"total\" is obviously not available for non-English
-locales.  The following line should fix this problem.
 
-  (advice-add \\='insert-directory :around #\\='al/call-with-locale)
-"
+This function can be used as an `around' advice.
+
+For example, `insert-directory' (used by `dired') calls
+`insert-directory-program' (\"ls -l\" more or less), then
+`dired--insert-disk-space' searches for \"total\" in its output to
+insert occupied and free disk space.  But \"total\" is obviously not
+available for non-English locales.  The following line should fix this
+problem.
+
+  (advice-add \\='insert-directory :around #\\='al/call-with-locale)"
   (let ((process-environment
          (cons (concat "LC_ALL=" al/process-locale)
                process-environment)))
@@ -50,8 +52,7 @@ locales.  The following line should fix this problem.
 
 (defun al/call-process (program &optional infile destination display
                                 &rest args)
-  "Same as `call-process', but using `al/process-locale' instead
-of the current locale."
+  "Run `call-process' with `al/process-locale'."
   (apply #'al/call-with-locale
          #'call-process program infile destination display args))
 
