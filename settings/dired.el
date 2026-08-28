@@ -71,6 +71,7 @@
 
 (setq
  dired-auto-revert-buffer 'dired-directory-changed-p
+ dired-free-space 'separate
  dired-dwim-target t
  dired-listing-switches  "-alvDh --group-directories-first"
  ;; Do not ask about copying/deleting directories.
