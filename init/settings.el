@@ -2144,7 +2144,6 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 
 (al/eval-after-load al-process
   :load after-init
-  (advice-add 'insert-directory :around #'al/call-with-locale)
   (al/process-hook-mode))
 
 (al/eval-after-load server

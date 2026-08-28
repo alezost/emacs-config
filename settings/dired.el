@@ -104,6 +104,9 @@
 
 (al/mode-line-default-buffer-identification 'dired-mode)
 
+(when (al/require al-process)
+  (advice-add 'insert-directory :around #'al/call-with-locale))
+
 (al/eval-after-load wdired
   (when (al/require dim)
     ;; "Dired" `mode-name' is hard-coded in
