@@ -1303,7 +1303,6 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
    which-key-idle-secondary-delay 0.1
    which-key-add-column-padding 2
    which-key-max-display-columns 5))
-(al/call-after-init which-key-mode)
 
 (al/eval-settings-after-load
   (apropos (setq apropos-do-all t))
