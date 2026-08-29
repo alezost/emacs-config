@@ -1,4 +1,4 @@
-;;; al-window.el --- Additional functionality for working with windows and frames  -*- lexical-binding: t -*-
+;;; al-window-cmd.el --- Additional commands for windows and frames  -*- lexical-binding: t -*-
 
 ;; Copyright © 2013–2026 Alex Kost
 
@@ -19,6 +19,7 @@
 
 (eval-when-compile
   (require 'let-macros))
+
 (require 'count)
 
 
@@ -98,6 +99,6 @@ otherwise select the next window."
       (select-window mb)
     (error "Minibuffer is not active")))
 
-(provide 'al-window)
+(provide 'al-window-cmd)
 
-;;; al-window.el ends here
+;;; al-window-cmd.el ends here
