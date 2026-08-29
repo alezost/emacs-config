@@ -736,7 +736,6 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("↓" 'next-completion))
 
 (al/eval-after-load al-complete
-  :load after-init
   (setq
    completion-styles '(al/split)
    completion-ignored-extensions
@@ -748,6 +747,12 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ;; (advice-add 'completion--styles :override #'al/completion-styles)
 
   (advice-add 'completion-all-completions :around #'al/completion-all-completions))
+
+(al/eval-at-hook minibuffer-setup-hook
+  :once t
+  ;; Evaluate before `icomplete' (added to `minibuffer-setup-hook' above):
+  :depth -90
+  (al/require al-complete))
 
 (al/eval-after-load al-minibuffer
   :load after-init
