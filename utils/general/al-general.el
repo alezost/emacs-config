@@ -20,6 +20,7 @@
 (eval-when-compile
   (require 'cl-lib)
   (require 'al-aux-macros)
+  (require 'let-macros)
   (require 'fp-utils))
 
 (require 'seq)
@@ -290,6 +291,17 @@ Push added `load-path' to `al/load-paths'."
         (al/load autoloads-file)
         (push (seq-subseq load-path 0 (- count))
               al/load-paths)))))
+
+(defun al/simple-eval-after-load (feature function)
+  "Simplified version of `eval-after-load'.
+If FEATURE is already loaded, call FUNCTION.
+Otherwise, add FUNCTION to `after-load-alist'."
+  (if (featurep feature)
+      (funcall function)
+    (if-let ((elt (assoc feature after-load-alist)))
+        (nconc elt (list function))
+      (push (list feature function)
+            after-load-alist))))
 
 
 ;;; Miscellaneous utils

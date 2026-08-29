@@ -428,13 +428,13 @@ BODY can start with the following optional keywords:
             (message "WARNING: `%s' feature is not available." feature))))
     (cond
      ((null load)
-      `(eval-after-load ',feature (lambda () ,@%body)))
+      `(al/simple-eval-after-load ',feature (lambda () ,@%body)))
      ((eq t load)
       `(if (al/require ,feature)
            ,(macroexp-progn body)))
      (t
       `(progn
-         (eval-after-load ',feature (lambda () ,@%body))
+         (al/simple-eval-after-load ',feature (lambda () ,@%body))
          (al/eval-after-init (al/require ,feature)))))))
 
 (defmacro al/eval-settings-after-load (&rest args)
