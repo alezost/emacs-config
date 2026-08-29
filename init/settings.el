@@ -1768,6 +1768,21 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("M-F" 'make-color-foreground-color-to-kill-ring)
   ("M-B" 'make-color-background-color-to-kill-ring))
 
+(defvar al/default-font "Liberation Mono-12")
+
+;; Setting `default-frame-alist' on Emacs start is much faster than
+;; calling `set-frame-font'.  This should not be put at
+;; `after-init-hook' or `server-after-make-frame-hook' because it's
+;; already too late for `default-frame-alist'.
+(push (cons 'font al/default-font)
+      default-frame-alist)
+
+;; Keep this comment here to check some fonts:
+;;
+;; (set-frame-font "Droid Sans Mono-12" nil t t)
+;; (set-frame-font "DejaVu Sans Mono-12" nil t t)
+;; (set-frame-font "Terminus-14" nil t t)
+
 (setq
  frame-title-format '(al/server-running? server-name invocation-name)
  jit-lock-defer-time 0.1
@@ -2046,17 +2061,12 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
     ;; 🐼, 😻, ⚽, 💩, ∵, ⸪, 🃜, 🜒, 🝖, ←↑→↓ (symbola);
     ;; ࿌ (unifont).
     (setq use-default-font-for-symbols nil)
-    (let ((font (al/first-existing-font
-                 "Liberation Mono-12"
-                 "DejaVu Sans Mono-11"
-                 "Terminus-12")))
-      (set-frame-font font nil t)
-      (al/set-fontset
-        (font 'greek)
-        ("Droid Sans Mono" 'han 'hangul 'kana 'cjk-misc)
-        ;; Setting nil is needed to display unknown symbols (like ￰)
-        ;; properly i.e., without using Droid fallback.
-        ("Symbola" 'mathematical 'symbol nil)))))
+    (al/set-fontset
+      (al/default-font 'greek)
+      ("Droid Sans Mono" 'han 'hangul 'kana 'cjk-misc)
+      ;; Setting nil is needed to display unknown symbols (like ￰)
+      ;; properly i.e., without using Droid fallback.
+      ("Symbola" 'mathematical 'symbol nil))))
 
 
 ;;; Misc settings and packages
