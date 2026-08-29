@@ -853,10 +853,20 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 
 ;;; Working with windows and frames
 
-(setq split-width-threshold 120)
+(al/bind-keys
+  ("H-<XF86AudioRaiseVolume>"   (enlarge-window 1 t))
+  ("H-<XF86AudioLowerVolume>"   (enlarge-window -1 t))
+  ("M-H-<XF86AudioRaiseVolume>" (enlarge-window 1))
+  ("M-H-<XF86AudioLowerVolume>" (enlarge-window -1))
+  ("H-o"   'al/other-window)
+  ("H-M-o" 'al/switch-or-next-window)
+  ("H-M-q" (quit-window nil (previous-window)))
+  ("H-O"   'al/switch-to-minibuffer)
+  ("H-1"   'delete-other-windows)
+  ("H-2"   'al/make-vertical-windows)
+  ("H-3"   'al/make-horizontal-windows))
 
-(al/call-at-hook window-configuration-change-hook
-  al/set-windows-num-property)
+(setq split-width-threshold 120)
 
 (defvar al/display-buffer-regexp
   (rx (or "*Apropos"
@@ -882,18 +892,23 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
          (display-buffer-reuse-window
           display-buffer-same-window))))
 
-(al/bind-keys
-  ("H-<XF86AudioRaiseVolume>"   (enlarge-window 1 t))
-  ("H-<XF86AudioLowerVolume>"   (enlarge-window -1 t))
-  ("M-H-<XF86AudioRaiseVolume>" (enlarge-window 1))
-  ("M-H-<XF86AudioLowerVolume>" (enlarge-window -1))
-  ("H-o"   'al/other-window)
-  ("H-M-o" 'al/switch-or-next-window)
-  ("H-M-q" (quit-window nil (previous-window)))
-  ("H-O"   'al/switch-to-minibuffer)
-  ("H-1"   'delete-other-windows)
-  ("H-2"   'al/make-vertical-windows)
-  ("H-3"   'al/make-horizontal-windows))
+;; Update WINDOWS_NUM property for a stumpwm command, see
+;; <https://github.com/alezost/stumpwm-config/blob/master/utils.lisp>.
+
+(defvar al/last-window-count 0
+  "Internal variable for `al/set-windows-num-property'.")
+
+(defun al/set-windows-num-property ()
+  "Set X window property WINDOWS_NUM to the current number of windows."
+  (when (eq 'x (terminal-live-p nil))
+    (let ((num (length (window-list))))
+      (unless (= num al/last-window-count)
+        (x-change-window-property "WINDOWS_NUM" (string num)
+                                  nil nil nil t)
+        (setq al/last-window-count num)))))
+
+(add-hook 'window-configuration-change-hook
+          #'al/set-windows-num-property)
 
 
 ;;; Working with files: backup, autosave, dired, etc.
