@@ -18,11 +18,9 @@
 ;;; Code:
 
 (eval-when-compile
-  (require 'al-aux-macros)
-  (require 'let-macros))
+  (require 'al-aux-macros))
 
 (require 'seq)
-(require 'al-general)
 
 
 ;;; Themes
@@ -114,14 +112,6 @@ CHARACTERS in `set-fontset-font'."
 (defvar-local al/mode-info nil
   "Part of mode line with additional info for the current major mode.")
 (put 'al/mode-info 'risky-local-variable t)
-
-;;;###autoload
-(defun al/mode-line-process-info ()
-  "Return mode line construct for process of the current buffer."
-  (al/with-face 'font-lock-constant-face
-    (if-let ((proc (get-buffer-process (current-buffer))))
-        (symbol-name (process-status proc))
-      "–")))
 
 (defun al/mode-line-default-buffer-identification (mode)
   "Set `mode-line-buffer-identification' to the default value for MODE.

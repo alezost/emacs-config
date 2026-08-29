@@ -20,7 +20,9 @@
 (eval-when-compile
   (require 'al-key-macros)
   (require 'al-aux-macros)
-  (require 'fp-utils))
+  (require 'let-macros)
+  (require 'fp-utils)
+  (require 'al-visual))
 
 (require 'al-places)
 (require 'al-general)
@@ -1823,6 +1825,13 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   "Mode line construct for displaying `server-name' if server is running.")
 (put 'al/mode-server 'risky-local-variable t)
 
+(defun al/mode-line-process-info ()
+  "Return mode line construct for process of the current buffer."
+  (al/with-face 'font-lock-constant-face
+    (if-let ((proc (get-buffer-process (current-buffer))))
+        (symbol-name (process-status proc))
+      "–")))
+
 (setq-default
  indicate-buffer-boundaries 'left
  visual-line-fringe-indicators '(nil vertical-bar)
@@ -2190,7 +2199,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 (al/eval-after-load al-server
   :load after-init
   (advice-add 'server-visit-files :around #'al/autoload-org-protocol)
-  (when-let* ((name (al/server-name)))
+  (when-let ((name (al/server-name)))
     (setq al/server-running? t)
     (when (equal name "emms")
       (setq initial-major-mode
