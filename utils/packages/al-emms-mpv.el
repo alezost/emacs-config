@@ -25,7 +25,6 @@
 (require 'emms-mpv)
 (require 'count)
 (require 'al-list)
-(require 'al-window)
 
 (defun al/emms-mpv-playing-radio? ()
   "Return non-nil, if current player is `mpv' and current track
@@ -186,6 +185,8 @@ If prefix argument is numerical, use it for VALUE."
        (message "Old playing time: %d; new time: %d"
                 emms-playing-time sec)
        (setq emms-playing-time sec)))))
+
+(declare-function al/run-stumpwm-command "al-misc-cmd")
 
 (defun al/emms-mpv-raise-frame ()
   "Raise mpv X window frame of the current playlist."

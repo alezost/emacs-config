@@ -19,6 +19,7 @@
 
 (eval-when-compile
   (require 'let-macros))
+
 (require 'al-buffer)
 
 (defvar org-link-plain-re)
@@ -120,6 +121,16 @@ With prefix, prompt for directory as well."
     (and (featurep 'recentf)
          (memq 'recentf-track-opened-file find-file-hook)
          (recentf-save-list))))
+
+;;;###autoload
+(defun al/run-stumpwm-command (string)
+  "Run StumpWM command from STRING."
+  (interactive "sStumpWM command: ")
+  ;; xprop command is taken from
+  ;; "<stumpwm-contrib>/util/stumpish/stumpish" script.
+  (let ((prop "STUMPWM_COMMAND"))
+    (call-process "xprop" nil nil nil
+                  "-root" "-f" prop "8u" "-set" prop string)))
 
 
 ;;; Highlighting of the current line

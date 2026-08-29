@@ -119,16 +119,6 @@ otherwise select the next window."
                                   nil nil nil t)
         (setq al/last-window-count num)))))
 
-;;;###autoload
-(defun al/run-stumpwm-command (string)
-  "Run StumpWM command from STRING."
-  (interactive "sStumpWM command: ")
-  ;; xprop command is taken from
-  ;; "<stumpwm-contrib>/util/stumpish/stumpish" script.
-  (let ((prop "STUMPWM_COMMAND"))
-    (call-process "xprop" nil nil nil
-                  "-root" "-f" prop "8u" "-set" prop string)))
-
 (provide 'al-window)
 
 ;;; al-window.el ends here
