@@ -2076,21 +2076,19 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   :name al/graphical-frame-visual-settings
   :terminal graphical
   :once t
-  (al/eval-after-load al-visual
-    :load t
-    (when (al/require alect-themes)
-      (al/load-theme 'alect-light))
-    ;; Should be "solved":
-    ;; 한글, ひらがな, 漢字, ＃＊ (droid);
-    ;; 🐼, 😻, ⚽, 💩, ∵, ⸪, 🃜, 🜒, 🝖, ←↑→↓ (symbola);
-    ;; ࿌ (unifont).
-    (setq use-default-font-for-symbols nil)
-    (al/set-fontset
-      (al/default-font 'greek)
-      ("Droid Sans Mono" 'han 'hangul 'kana 'cjk-misc)
-      ;; Setting nil is needed to display unknown symbols (like ￰)
-      ;; properly i.e., without using Droid fallback.
-      ("Symbola" 'mathematical 'symbol nil))))
+  (when (al/require alect-themes)
+    (load-theme 'alect-light))
+  ;; Should be "solved":
+  ;; 한글, ひらがな, 漢字, ＃＊ (droid);
+  ;; 🐼, 😻, ⚽, 💩, ∵, ⸪, 🃜, 🜒, 🝖, ←↑→↓ (symbola);
+  ;; ࿌ (unifont).
+  (setq use-default-font-for-symbols nil)
+  (al/set-fontset
+    (al/default-font 'greek)
+    ("Droid Sans Mono" 'han 'hangul 'kana 'cjk-misc)
+    ;; Setting nil is needed to display unknown symbols (like ￰)
+    ;; properly i.e., without using Droid fallback.
+    ("Symbola" 'mathematical 'symbol nil)))
 
 
 ;;; Misc settings and packages
