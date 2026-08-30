@@ -19,6 +19,7 @@
 
 (eval-when-compile
   (require 'fp-utils))
+
 (require 'al-minibuffer)
 
 (defun al/minibuffer-current-completion ()
@@ -54,6 +55,28 @@ See also `al/describe-variable'."
   (interactive)
   (al/minibuffer-with-keymap al/minibuffer-symbol-map
     (call-interactively #'describe-symbol)))
+
+;; Do not make the following wrappers autoloaded `defalias'-es.  They
+;; should be loaded from this file (not from "-autoloads.el") to make
+;; sure `al-minibuffer' is required.
+
+;;;###autoload
+(defun al/describe-function ()
+  "Call `describe-function' interactively."
+  (interactive)
+  (call-interactively #'describe-function))
+
+;;;###autoload
+(defun al/execute-extended-command ()
+  "Call `execute-extended-command' interactively."
+  (interactive)
+  (call-interactively #'execute-extended-command))
+
+;;;###autoload
+(defun al/switch-to-buffer ()
+  "Call `switch-to-buffer' interactively."
+  (interactive)
+  (call-interactively #'switch-to-buffer))
 
 
 ;;; Commands that use `al/minibuffer-fallback'

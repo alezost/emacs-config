@@ -688,7 +688,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 
 ;;; Minibuffer and completions
 
-(al/bind-key* "M-t" 'execute-extended-command)
+(al/bind-key* "M-t" 'al/execute-extended-command)
 
 (setq
  completion-show-help nil
@@ -757,7 +757,6 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   (al/require al-complete))
 
 (al/eval-after-load al-minibuffer
-  :load after-init
   (al/bind-keys
     :map al/minibuffer-buffer-map
     ("M-m" 'al/minibuffer-magit-buffers)
@@ -827,7 +826,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   :prefix-map al/buffer-map
   :prefix-doc "Map for managing/switching to buffers."
   :prefix-key "C-b"
-  ("C-b" 'switch-to-buffer)
+  ("C-b" 'al/switch-to-buffer)
   ("M-b" 'ibuffer)
   ("r" 'rename-buffer)
   ("c" 'clone-buffer)
@@ -922,7 +921,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   :prefix-map al/find-file-map
   :prefix-doc "Map for finding files."
   :prefix-key "C-f"
-  ("C-f"   'find-file)
+  ("C-f"   'al/find-file)
   ("p"     'al/find-file-in-path)
   ("S"     'al/sudo-find-file)
   ("h"     'al/ssh-find-file)
@@ -1282,6 +1281,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 (al/bind-keys
   :map help-map
   ("v" 'al/describe-variable)
+  ("f" 'al/describe-function)
   ("s" 'al/describe-symbol)
   ("x" 'describe-syntax)
   ("F" 'describe-face)

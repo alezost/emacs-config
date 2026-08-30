@@ -20,9 +20,13 @@
 (eval-when-compile
   (require 'al-aux-macros)
   (require 'let-macros))
+
 (require 'al-general)
 (require 'al-list)
 (require 'al-read)
+;; Require `al-minibuffer' to make `al/minibuffer-file-map' available
+;; for `al/find-file'.
+(require 'al-minibuffer)
 
 ;;;###autoload
 (defun al/find-file (&optional filename)
