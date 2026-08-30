@@ -2192,12 +2192,34 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
    server-kill-new-buffers nil
    server-temp-file-regexp
    (concat server-temp-file-regexp
-           "\\|COMMIT_EDITMSG\\|git-rebase-todo")))
+           "\\|COMMIT_EDITMSG\\|git-rebase-todo"))
 
-(al/eval-after-load al-server
-  :load after-init
-  (advice-add 'server-visit-files :around #'al/autoload-org-protocol)
-  (when-let ((name (al/server-name)))
+  (advice-add 'server-visit-files :around 'al/autoload-org-protocol))
+
+(defun al/autoload-org-protocol (fun files &rest args)
+  "Load `org-protocol' if needed.
+`org' is huge and loading it at emacs start is wasteful.  Making this
+function an `around' advice for `server-visit-files' makes it possible
+to avoid requiring `org-protocol' (thus, the whole `org') in the emacs
+config file."
+  (if (and (null (featurep 'org-protocol))
+           (seq-find (lambda (spec)
+                       ;; SPEC is (FILENAME . FILEPOS).
+                       (string-match "org-protocol:/" (car spec)))
+                     files))
+      (when (al/require org-protocol)
+        ;; `server-visit-files' can't be called as is here, because
+        ;; `org-protocol' has just been loaded and the protocol advice
+        ;; is not active yet, so call `server-visit-files' outside
+        ;; this body.
+        (apply #'run-with-idle-timer .1 nil
+               #'server-visit-files files args))
+    (apply fun files args)))
+
+(defvar al/server-running?)
+
+(al/eval-after-init
+  (when-let ((name (daemonp)))
     (setq al/server-running? t)
     (when (equal name "emms")
       (setq initial-major-mode

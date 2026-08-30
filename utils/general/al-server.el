@@ -19,8 +19,8 @@
 
 (eval-when-compile
   (require 'let-macros))
+
 (require 'server)
-(require 'seq)
 
 (defvar al/server-running? nil
   "The state of the current server.
@@ -59,27 +59,6 @@ If servers with all NAMES are running, do not start the server."
         (setq server-name name)
         (al/server-start))
     (setq server-name "server-unused")))
-
-(defun al/autoload-org-protocol (fun files &rest args)
-  "Load `org-protocol' if needed.
-`org' is huge and loading it at emacs start is wasteful.  Making this
-function an `around' advice for `server-visit-files' makes it possible
-to avoid requiring `org-protocol' (thus, the whole `org') in the emacs
-config file."
-  (if (and (null (featurep 'org-protocol))
-           (seq-find (lambda (spec)
-                       ;; SPEC is (FILENAME . FILEPOS).
-                       (string-match "org-protocol:/" (car spec)))
-                     files))
-      (if (require 'org-protocol nil t)
-          ;; `server-visit-files' can't be called as is here, because
-          ;; `org-protocol' has just been loaded and the protocol advice
-          ;; is not active yet, so call `server-visit-files' outside
-          ;; this body.
-          (apply #'run-with-idle-timer .1 nil
-                 #'server-visit-files files args)
-        (message "`org-protocol' has not been loaded!"))
-    (apply fun files args)))
 
 (provide 'al-server)
 
