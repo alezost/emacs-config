@@ -1377,12 +1377,22 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 ;; `calendar-date-style' is used for other variables.
 (al/setq-no-warnings calendar-date-style 'iso)
 
+(al/eval-at-hook calendar-mode-hook
+  :once t
+  ;; calendar settings are loaded after `diary-lib', not after
+  ;; `calendar' (see the commentary below) so if calendar is opened when
+  ;; `diary-lib' is not loaded, my settings (in particular, key
+  ;; bindings) are not active yet.
+  (al/require diary-lib))
+
 (al/eval-settings-after-load
   (time (setq
          display-time-interval 5
          display-time-format " %H:%M:%S"))
   (timer-list "timer-list")
-  (calendar "calendar")
+  ;; Load "calendar" settings after `diary-lib' because `calendar'
+  ;; provides its feature at the top.
+  (diary-lib "calendar")
   (appt "appt")
   (al-notification
    (al/setq-file
