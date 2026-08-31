@@ -1383,6 +1383,16 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ;; provides its feature at the top.
   (diary-lib "calendar")
   (appt "appt")
+  (solar (setq
+          calendar-latitude 50.6
+          calendar-longitude 36.6
+          calendar-location-name "home"
+          calendar-time-display-form
+          '(24-hours ":" minutes
+                     (if time-zone " (") time-zone (if time-zone ")"))))
+  (al-calendar (setq
+                al/calendar-date-display-form
+                '((format "%s %.3s %2s" year monthname day))))
   (al-notification
    (al/setq-file
     al/notification-sound (al/sound-dir-file "alarm.wav"))))

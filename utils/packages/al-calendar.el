@@ -1,6 +1,6 @@
 ;;; al-calendar.el --- Additional functionality for calendar, diary, etc.  -*- lexical-binding: t -*-
 
-;; Copyright © 2014–2016, 2018, 2020 Alex Kost
+;; Copyright © 2014–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -19,8 +19,6 @@
 
 (require 'calendar)
 (require 'diary-lib)
-(require 'solar)
-(require 'al-general)
 
 (defvar al/calendar-date-display-form calendar-date-display-form
   "Variable used in `al/diary-insert-entry'.")
@@ -69,27 +67,6 @@ one day, etc."
                     dd
                   (+ dd (calendar-last-day-of-month m y)))))
        (cons mark entry)))))
-
-
-;;; Sunrise, sunset
-
-(defun al/solar-time-string (&optional type)
-  "Return time string of today's sunrise or sunset.
-TYPE should be a symbol `sunrise' (default) or `sunset'."
-  (if (and calendar-latitude
-           calendar-longitude)
-      (let* ((solar-data (solar-sunrise-sunset (calendar-current-date)))
-             (solar-time (funcall (if (eq type 'sunset) #'cadr #'car)
-                                  solar-data)))
-        (concat (format-time-string "%F ")
-                (apply #'solar-time-string solar-time)))
-    (al/warning-message "\
-Set `calendar-latitude' and `calendar-longitude' at first!")))
-
-(defun al/solar-time (&optional type)
-  "Return time value of today's sunrise or sunset.
-See `al/solar-time-string' for the meaning of TYPE."
-  (date-to-time (al/solar-time-string type)))
 
 (provide 'al-calendar)
 

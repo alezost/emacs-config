@@ -6,10 +6,8 @@
 
 (require 'calendar)
 (require 'diary-lib)
-(require 'solar)
 (require 'al-places)
 (require 'al-general)
-(require 'al-calendar)
 
 (al/bind-keys
   :map calendar-mode-map
@@ -41,18 +39,8 @@
  ;; Do not ruin the mode-line.
  calendar-mode-line-format nil
 
- calendar-latitude 50.6
- calendar-longitude 36.6
- calendar-location-name "home"
- calendar-time-display-form
- '(24-hours ":" minutes
-            (if time-zone " (") time-zone (if time-zone ")"))
-
  diary-number-of-entries 3
- diary-comment-start "#"
-
- al/calendar-date-display-form
- '((format "%s %.3s %2s" year monthname day)))
+ diary-comment-start "#")
 
 (al/call-at-hook calendar-mode-hook al/bar-cursor-type)
 (add-hook 'calendar-today-visible-hook #'calendar-mark-today)
