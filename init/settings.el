@@ -2324,6 +2324,7 @@ config file."
   (hexl "hexl")
   (diff-mode "diff-mode")
   (ediff "ediff")
+  (smerge-mode "smerge-mode")
   (view "view")
   (conf-mode (add-hook 'conf-mode-hook #'hl-line-mode))
   (image-mode "image-mode")
