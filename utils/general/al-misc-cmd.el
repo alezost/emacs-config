@@ -113,11 +113,8 @@ With prefix, prompt for directory as well."
   (with-no-warnings
     (and (featurep 'emms)
          (al/emms-save-playlists))
-    (and (featurep 'saveplace)
-         save-place-loaded
-         (progn
-           (save-places-to-alist)
-           (save-place-alist-to-file)))
+    (and (featurep 'save-place)
+         (save-place-save-everything))
     (and (featurep 'recentf)
          (memq 'recentf-track-opened-file find-file-hook)
          (recentf-save-list))))

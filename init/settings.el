@@ -1030,26 +1030,15 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
    recentf-max-saved-items 300
    recentf-save-file (al/emacs-data-dir-file "recentf")))
 
-(al/eval-after-load saveplace
+(al/eval-after-load save-place
   (setq
-   ;; For some reason, `save-place-loaded' is t after `saveplace' load.
-   ;; This bug(?) appeared somewhere between Emacs 29.4 and Emacs 30.1.
-   ;; Set this variable back to nil.  Otherwise, `save-place-alist' is
-   ;; empty because `save-place-file' is never loaded.
-   save-place-loaded nil
    save-place-ignore-files-regexp
    (rx-to-string `(or (and string-start "/gnu")
+                      (regexp ,(al/file-regexp "gz"))
                       (regexp ,save-place-ignore-files-regexp))
                  'no-group)
-   save-place-forget-unreadable-files nil
    save-place-file (al/emacs-data-dir-file "save-places")
-   save-place-limit 999)
-
-  (al/require al-saveplace))
-
-(al/eval-after-load al-saveplace
-  (advice-add 'save-places-to-alist
-    :override #'al/save-places-to-alist))
+   save-place-limit 999))
 
 (al/eval-settings-after-load
   (dired "dired")
@@ -2240,7 +2229,10 @@ config file."
         (with-no-warnings
           (setq al/mail-user-name
                 al/mail-user-name2)))
-      (al/funcall 'al/save-place-mode)
+      (al/call-at-hook find-file-hook
+        :once t
+        save-place-mode
+        save-place-restore-position)
       (al/funcall 'al/recentf-mode)
       (al/funcall 'appt-activate))))
 
