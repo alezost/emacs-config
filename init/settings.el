@@ -2242,8 +2242,9 @@ config file."
       (al/call-at-hook find-file-hook
         :once t
         save-place-mode
-        save-place-restore-position)
-      (al/funcall 'al/recentf-mode)
+        save-place-restore-position
+        al/recentf-mode
+        recentf-track-opened-file)
       (al/funcall 'appt-activate))))
 
 (al/eval-after-load text-mode
