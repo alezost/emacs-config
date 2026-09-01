@@ -13,6 +13,7 @@
 (al/eval-at-hook browse-kill-ring-mode-hook
   ;; Key bindings are defined inside `browse-kill-ring-mode'.
   (al/bind-keys
+    :map browse-kill-ring-mode-map
     ("↑"   'browse-kill-ring-previous)
     ("↓"   'browse-kill-ring-forward)
     ("→"   'browse-kill-ring-insert-and-quit)
