@@ -239,6 +239,11 @@ to something like this:
   (declare (indent 1) (debug if-let-))
   (list 'if-letn bindings (macroexp-progn body)))
 
+;; The original `if-let' and `when-let' are marked as obsolete since
+;; Emacs 31.1.  Get rid of the compilation warnings.
+(put 'if-let 'byte-obsolete-info nil)
+(put 'when-let 'byte-obsolete-info nil)
+
 ;; Not using simple aliases because `debug' declare form needs to be
 ;; adjusted as well.
 ;;
