@@ -20,6 +20,7 @@
 (eval-when-compile
   (require 'al-aux-macros))
 
+(require 'al-general)
 (require 'al-visual)
 
 
