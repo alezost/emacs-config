@@ -19,6 +19,7 @@
 
 (eval-when-compile
   (require 'let-macros))
+
 (require 'al-format)
 (require 'al-text)
 
@@ -27,7 +28,7 @@
   "Regexp matching the beginning of an URL.")
 
 (defvar al/url-mp3-regexp
-  (rx "http" (? ?s) "://" (1+ any) ".mp3")
+  (rx "http" (? ?s) "://" (1+ not-newline) ".mp3")
   "Regexp for mp3 file.")
 
 (defun al/check-url (value)

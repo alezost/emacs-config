@@ -96,9 +96,9 @@ If ARG is specified, show metadata of the track."
 ;;; Track description
 
 (defvar al/emms-split-track-regexp
-  (rx (group (+? any))
+  (rx (group (+? not-newline))
       " - "
-      (group (+ any)))
+      (group (+ not-newline)))
   "Regexp used by `al/emms-split-track-name'.")
 
 (defun al/emms-split-track-name (name)
