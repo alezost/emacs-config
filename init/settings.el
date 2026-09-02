@@ -1819,7 +1819,8 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 (defface al/mode-name
   '((((background light)) :foreground "#028902")
     (((background dark))  :foreground "yellow"))
-  "Face for `mode-name' displayed in the mode line.")
+  "Face for `mode-name' displayed in the mode line."
+  :group 'faces)
 
 ;; To have a server name of the running server in the mode-line, I use
 ;; an auxiliary variable `al/server-running?', because calling of
