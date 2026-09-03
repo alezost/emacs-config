@@ -30,7 +30,7 @@
   :doc "Additional keys to read symbol from minibuffer.")
 
 (defmacro al/minibuffer-with-keymap (keymap &rest body)
-  "Use KEYMAP to the next minibuffer call and run BODY."
+  "Use KEYMAP for the next minibuffer call and run BODY."
   (declare (indent 1) (debug t))
   `(minibuffer-with-setup-hook
        (lambda ()
@@ -72,7 +72,7 @@ from minibuffer and continue execution.")
 This function is intendend to be used as an `around' advice for commands
 that read from minibuffer in the interactive clause.  When a minibuffer
 command sets `al/minibuffer-fallback' and exits from minibuffer, this
-advice call `al/minibuffer-fallback' instead executing FUN body."
+advice calls `al/minibuffer-fallback' instead of executing FUN."
   (if al/minibuffer-fallback
       (let ((fallback al/minibuffer-fallback))
         (setq al/minibuffer-fallback nil)
