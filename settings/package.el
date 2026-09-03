@@ -34,6 +34,7 @@
    paredit
    smartparens
    elisp-slime-nav
+   cond-let  ; `magit' and `transient' requirement
    transient
    company
    which-key
