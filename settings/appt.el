@@ -5,7 +5,6 @@
 
 (require 'appt)
 (require 'al-places)
-(require 'al-appt)
 
 (setq
  appt-audible nil
@@ -13,11 +12,18 @@
  appt-message-warning-time 5
  appt-display-interval 1)
 
+(defvar al/appt-notify-normal-sound)
+(defvar al/appt-notify-urgent-sound)
 (al/setq-file
  al/appt-notify-normal-sound (al/sound-dir-file "drums.wav")
  al/appt-notify-urgent-sound (al/sound-dir-file "bell.oga"))
 
-(advice-add 'appt-display-message :override #'al/appt-display-message)
-(advice-add 'appt-mode-line :override #'al/appt-mode-line)
+;; To load `al-appt' only when needed, not immediately after `appt'.
+(al/autoload "al-appt"
+  al/appt-display-message
+  al/appt-mode-line)
+
+(advice-add 'appt-display-message :override 'al/appt-display-message)
+(advice-add 'appt-mode-line :override 'al/appt-mode-line)
 
 ;;; appt.el ends here
