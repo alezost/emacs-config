@@ -50,7 +50,7 @@
  ;; transient-detect-key-conflicts t
  ;; transient--debug t
  transient-highlight-mismatched-keys nil
- transient-enable-popup-navigation nil
+ transient-enable-menu-navigation nil
  transient-read-with-initial-input nil
  transient-mode-line-format mode-line-format)
 
