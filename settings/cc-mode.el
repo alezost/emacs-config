@@ -16,4 +16,7 @@
    (awk-mode  . "awk")
    (other     . "gnu")))
 
+;; Make "one-two-three" a symbol (useful for Emacs C source files).
+(modify-syntax-entry ?- "_   " c-mode-syntax-table)
+
 ;;; cc-mode.el ends here
