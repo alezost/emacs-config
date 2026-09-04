@@ -26,15 +26,10 @@
 
 (eval-when-compile
   (require 'al-aux-macros))
+
 (require 'transient)
 (require 'browse-url)
 (require 'al-browse-url)
-
-(defun tui/choose-browser-read-url (prompt _initial-input history)
-  ;; Transient does not put the current value to INITIAL-INPUT ?!!
-  ;; OK, than use the first value of history as the initial input.
-  (let ((history (symbol-value history)))
-    (completing-read prompt (cdr history) nil nil (car history))))
 
 (defun tui/choose-browser-args (&optional new-window-arg)
   "Return arguments for the current `tui/choose-browser' transient."
@@ -48,7 +43,6 @@
   :class 'transient-option
   :key "U"
   :argument "url="
-  :reader #'tui/choose-browser-read-url
   :always-read t)
 
 (transient-define-argument tui/choose-browser:new-window ()

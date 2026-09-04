@@ -18,6 +18,7 @@
 ;;; Code:
 
 (require 'transient)
+(require 'al-read)
 
 ;; `transient' has an interesting bug with some input methods (in
 ;;  particular, with "Hangul"):
@@ -68,6 +69,20 @@ This function is intended to be used like so:
         (set-input-method al/transient-old-input-method)))
     (setq al/transient-old-input-method nil
           al/transient-old-buffer nil)))
+
+
+;;; Readers for transient buffers
+
+(defun al/transient-read-number (prompt initial-input history)
+  "Read number and return it as a string."
+  (number-to-string
+   (read-number prompt
+                (string-to-number initial-input)
+                history)))
+
+(defun al/transient-read-string (prompt initial-input history)
+  "Read string using INITIAL-INPUT as default value."
+  (al/read-string prompt nil history initial-input))
 
 (provide 'al-transient)
 

@@ -19,6 +19,7 @@
 
 (require 'seq)
 (require 'transient)
+(require 'al-transient)
 (require 'al-notification)
 (require 'al-visual)
 
@@ -119,17 +120,15 @@ Pass ARGS to `notifications-notify'."
   :key "m"
   :always-read t
   :prompt "Notification message: "
+  :reader 'al/transient-read-string
   :argument "message=")
-
-(defun tui/notification-read-number (prompt initial-input history)
-  (number-to-string (read-number prompt initial-input history)))
 
 (transient-define-argument tui/notification:timeout ()
   :description "timeout (seconds)"
   :class 'transient-option
   :key "-t"
   :prompt "Notification timeout (seconds): "
-  :reader 'tui/notification-read-number
+  :reader 'al/transient-read-number
   :argument "timeout=")
 
 (transient-define-argument tui/notification:time ()
@@ -138,7 +137,7 @@ Pass ARGS to `notifications-notify'."
   :key "t"
   :always-read t
   :prompt "Time (minutes): "
-  :reader 'tui/notification-read-number
+  :reader 'al/transient-read-number
   :argument "time=")
 
 (defun tui/notification-default-value ()

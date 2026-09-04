@@ -20,6 +20,7 @@
 (eval-when-compile
   (require 'al-aux-macros)
   (require 'let-macros))
+
 (require 'seq)
 (require 'transient)
 (require 'google-translate-core-ui)
@@ -75,7 +76,7 @@
 (defun tui/translate-read-language (prompt initial-input history)
   (let ((choice (al/completing-read-no-sort
                  prompt (tui/translate-languages)
-                 nil nil initial-input history)))
+                 nil nil nil history initial-input)))
     (and (string-match " (" choice)
          (substring choice 0 (match-beginning 0)))))
 
