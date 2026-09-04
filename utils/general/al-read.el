@@ -35,7 +35,10 @@
      initial-input history default-value inherit-input-method)))
 
 (defun al/completing-read-no-sort (&rest args)
-  "Similar to `completing-read' but without additional sorting."
+  "Similar to `completing-read' but without additional sorting.
+
+\(fn PROMPT COLLECTION &optional PREDICATE REQUIRE-MATCH INITIAL-INPUT \
+HISTORY DEFAULT-VALUE INHERIT-INPUT-METHOD)"
   ;; `icomplete-mode' uses some rubbish sort of COLLECTION.  This can be
   ;; avoided by setting `:cycle-sort-function' completion property.
   ;;
