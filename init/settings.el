@@ -839,7 +839,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("s" 'al/switch-to-scratch)
   ("P" 'list-processes)
   ("E" 'list-environment)
-  ("e" 'emoji-list)
+  ("e" 'eww-switch-to-buffer)
   ("F" 'al/switch-to-faces)
   ("w" 'al/switch-to-w3m)
   ("m" 'man)
@@ -1738,6 +1738,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
         url-debug t
         url-configuration-directory (al/emacs-data-dir-file "url")))
   (browse-url "browse-url")
+  (eww "eww")
   (w3m "w3m")
   (wget (setq
          wget-debug-buffer "*wget-log*"
