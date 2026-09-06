@@ -21,6 +21,7 @@
   (require 'cl-lib)
   (require 'al-aux-macros)
   (require 'let-macros))
+
 (require 'al-list)
 
 
@@ -162,8 +163,8 @@ See `al/yank-or-pop' for details."
 ;;;###autoload
 (defun al/delete-blank-lines ()
   "Delete blank lines.
-If region is active, call `al/flush-blank-lines',
-otherwise call `delete-blank-lines'."
+If region is active, call `al/flush-blank-lines'.
+Otherwise, call `delete-blank-lines'."
   (interactive)
   (if (region-active-p)
       (al/flush-blank-lines (region-beginning) (region-end))
@@ -325,29 +326,18 @@ Use message MSG in a prompt."
     (capitalize-word arg)))
 
 ;;;###autoload
-(defun al/delete-horizontal-space (&optional direction)
-  ;; Originates from `delete-horizontal-space'.
-  "Delete all spaces and tabs around point.
-If DIRECTION is positive, delete them after point,
-if it's negative - delete before point."
-  (interactive "*P")
-  (setq direction
-        (cond
-         ((listp direction) 0)
-         ((or (and (equal '- direction))
-              (and (numberp direction) (< direction 0)))
-          -1)
-         (t 1)))
-  (let* ((cur (point))
-         (beg (if (> direction 0)
-                  cur
-                (skip-chars-backward " \t")
-                (constrain-to-field nil cur)))
-         (end (if (< direction 0)
-                  cur
-                (skip-chars-forward " \t")
-                (constrain-to-field nil cur t))))
-    (delete-region beg end)))
+(defun al/delete-spacing-forward ()
+  "Delete all spaces and tabs after point."
+  (interactive)
+  (let ((cycle-spacing-actions '(delete-space-after)))
+    (cycle-spacing 0)))
+
+;;;###autoload
+(defun al/delete-spacing-backward ()
+  "Delete all spaces and tabs before point."
+  (interactive)
+  (let ((cycle-spacing-actions '(delete-space-before)))
+    (cycle-spacing 0)))
 
 ;;;###autoload
 (defun al/fill-paragraph (&optional arg)
