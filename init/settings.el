@@ -338,12 +338,14 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("C-M-↷" 'parens-kill-sexp-forward)
   ("M-S-↷" 'kill-line)
   ("H-M-," 'al/delete-blank-lines)
+  ("H-C-," (al/delete-horizontal-space +1))
 
   ("C-↶"   'delete-backward-char)
   ("M-↶"   'parens-kill-word-backward)
   ("C-M-↶" 'parens-kill-sexp-backward)
   ("M-S-↶" 'al/backward-kill-line)
   ("H-M-p" 'delete-trailing-whitespace)
+  ("H-C-p" (al/delete-horizontal-space -1))
 
   ("M-q"   'al/fill-paragraph)
   ("C-M-q" 'al/save-sexp)
@@ -368,8 +370,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("M-x"   'al/kill-ring-save)
   ("C-M-x" 'append-next-kill)
 
-  ("S-SPC"     'just-one-space)
-  ("M-S-SPC"   'al/delete-horizontal-space)
+  ("S-SPC"     'cycle-spacing)
   ("M-SPC"     'mark-word)
   ("M-s-SPC"   'mark-paragraph)
   ("C-M-s-SPC" 'mark-defun)
@@ -415,7 +416,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("H-,"   'insert-pair-angle-brackets)
   ("H-'"   'insert-pair-single-quotations)
   ("H-;"   'insert-pair-double-quotations)
-  ("C-H-," 'insert-pair-angle-quotations)
+  ("H-M-;" 'insert-pair-angle-quotations)
   ("C-H-'" 'insert-pair-left-right-single-quotations)
   ("C-H-;" 'insert-pair-left-right-double-quotations)
   ("C-H-M-'" 'insert-pair-japanese-quotations)
@@ -1632,18 +1633,6 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("n"   'debbugs-gnu-bugs)
   ("b"   (al/display-buffer "*Guix-Patches Bugs*"))
   ("s"   'debbugs-gnu-search))
-
-(al/bind-keys
-  :prefix-map al/debpaste-map
-  :prefix-doc "Map for debpaste."
-  :prefix-key "C-H-p"
-  ("s" 'debpaste-paste-region)
-  ("r" 'debpaste-display-paste)
-  ("S" 'debpaste-display-posted-info-in-buffer)
-  ("R" 'debpaste-display-received-info-in-buffer)
-  ("d" 'debpaste-delete-paste)
-  ("q" 'debpaste-quit-buffers)
-  ("K" 'debpaste-kill-all-buffers))
 
 (setq
  mail-user-agent 'gnus-user-agent

@@ -378,6 +378,18 @@
     (advice-add 'org-emms-make-link :before #'al/org-emms-sync-time)))
 
 (al/bind-keys
+  :prefix-map al/debpaste-map
+  :prefix-doc "Map for debpaste."
+  :prefix-key "C-H-p"
+  ("s" 'debpaste-paste-region)
+  ("r" 'debpaste-display-paste)
+  ("S" 'debpaste-display-posted-info-in-buffer)
+  ("R" 'debpaste-display-received-info-in-buffer)
+  ("d" 'debpaste-delete-paste)
+  ("q" 'debpaste-quit-buffers)
+  ("K" 'debpaste-kill-all-buffers))
+
+(al/bind-keys
  :prefix-map al/echo-msk-map
  :prefix-docstring "Map for echo-msk."
  :prefix "C-M-s-e"
