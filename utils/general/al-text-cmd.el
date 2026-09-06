@@ -398,6 +398,15 @@ no indentation has been performed."
         (indent-for-tab-command)
         (/= initial-indent (indent-level))))))
 
+;;;###autoload
+(defun al/indent-relative-forward ()
+  "Call `indent-relative' but leave point untouched."
+  (interactive)
+  ;; `save-excursion' does not work reliably here for some reason.
+  (al/save-excursion
+    (skip-chars-forward " \t")
+    (indent-relative)))
+
 
 ;;; Changing the case of previous word(s)
 

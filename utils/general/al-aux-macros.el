@@ -219,6 +219,15 @@ Return nil otherwise."
      ,@body
      (/= pos (point))))
 
+(defmacro al/save-excursion (&rest body)
+  "Simplified version of `save-excursion'.
+Evaluate BODY and restore point position."
+  (declare (indent 0) (debug t))
+  (let ((pos-var (make-symbol "pos")))
+    `(let ((,pos-var (point)))
+       ,@body
+       (goto-char ,pos-var))))
+
 (defmacro al/eval-to-kill-ring (&rest body)
   "Evaluate BODY and return its result.
 If the result is string or symbol, put it into `kill-ring' and display

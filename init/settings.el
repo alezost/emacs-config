@@ -403,6 +403,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("H-M-<kanji>" 'al/upcase-dwim)
 
   ("C-<tab>" 'indent-relative)
+  ("C-H-<tab>" 'al/indent-relative-forward)
   ("M-S-<iso-lefttab>" 'tab-to-tab-stop)
   ("H-<tab>" 'indent-region)
   ("C-c u" 'al/decode-region))
