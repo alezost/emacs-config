@@ -340,6 +340,35 @@ Use message MSG in a prompt."
     (cycle-spacing 0)))
 
 ;;;###autoload
+(defun al/insert-space-forward ()
+  "Insert space after point."
+  (interactive)
+  (save-excursion
+    (insert " ")))
+
+;;;###autoload
+(defun al/insert-space-backward ()
+  "Insert space before point."
+  (interactive)
+  (insert " "))
+
+;;;###autoload
+(defun al/insert-newline-below (&optional n)
+  "Insert newline after the current line.
+If N is specified, insert newline after Nth line, counting from the
+current line."
+  (interactive)
+  (save-excursion
+    (forward-line (or n 1))
+    (insert "\n")))
+
+;;;###autoload
+(defun al/insert-newline-above ()
+  "Insert newline before the current line."
+  (interactive)
+  (al/insert-newline-below 0))
+
+;;;###autoload
 (defun al/fill-paragraph (&optional arg)
   "Call `fill-paragraph'.
 Interactively with ARG, ignore buffer-local settings."

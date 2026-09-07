@@ -347,6 +347,11 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("H-C-p" 'al/delete-spacing-backward)
   ("H-M-p" 'delete-trailing-whitespace)
 
+  ("C-H-o" 'al/insert-space-backward)
+  ("C-H-u" 'al/insert-space-forward)
+  ("C-H-." 'al/insert-newline-above)
+  ("C-H-e" 'al/insert-newline-below)
+
   ("M-q"   'al/fill-paragraph)
   ("C-M-q" 'al/save-sexp)
   ("M-Q"   'al/save-line)
