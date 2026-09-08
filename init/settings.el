@@ -35,25 +35,30 @@
   (?e ?↓)
   (?o ?←)
   (?u ?→)
-  (?a ?⇤)
-  (?i ?⇥)
   (?, ?↷)
   (?p ?↶))
 
-;; Adding Shift modifiers to the above `al/translate-keys' call does not
-;; work because when we press "M-S-e", Emacs thinks that "M-E" is
-;; pressed.  We could use `upcase' as a workaround but it will not work
-;; for non-letter keys i.e., there is no way to tell that ">" is the
-;; same as "S-." (in Dvorak layout).  So we need to treat Shift key
-;; translations specially.
+(al/translate-keys ("C-" "C-M-")
+  ;; Not binding "M-" modifier because "M-i" is reserved for
+  ;; `iso-transl-ctl-x-8-map' (see below); "M-a" is currently unused.
+  (?a ?⇤)
+  (?i ?⇥))
+
+;; Modifiers including "S-" (Shift) should be handled separately because
+;; when we press "M-S-e", Emacs thinks that "M-E" is pressed.  We could
+;; use `upcase' as a workaround but it will not work for non-letter keys
+;; i.e., there is no way to tell that ">" is the same as "S-." (in
+;; Dvorak layout).  So we need to treat Shift key translations
+;; specially.
 (al/translate-keys ((""   "S-")
                     ("M-" "M-S-"))
   (?> ?↑)
   (?E ?↓)
   (?O ?←)
   (?U ?→)
-  (?A ?⇤)
-  (?I ?⇥)
+  ;; Currently not used.
+  ;; (?A ?⇤)
+  ;; (?I ?⇥)
   (?< ?↷)
   (?P ?↶))
 
@@ -80,7 +85,7 @@
   ;; "C-i" and "TAB" are also the same key.  However, I do not do the
   ;; same as above here because I almost always want "TAB" to be bound
   ;; to my `al/tab' command.  So I bind it to "<tab>" and use "C-i" for
-  ;; other things.
+  ;; "C-⇥" translation (see above).
   ;;
   ;; (key-translate "C-i" "<ctrl-i>")
   )
