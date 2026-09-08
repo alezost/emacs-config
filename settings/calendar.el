@@ -9,23 +9,26 @@
 (require 'al-places)
 (require 'al-general)
 
+(defvar al/lazy-moving-map)
+
 (al/bind-keys
   :map calendar-mode-map
+  :parent al/lazy-moving-map
   ("t"   'calendar-goto-today)
-  ("←"   'calendar-backward-day)
-  ("→"   'calendar-forward-day)
-  ("↑"   'calendar-backward-week)
-  ("↓"   'calendar-forward-week)
   ("z"   'calendar-unmark)
   ("l"   'holidays)
+  ([remap backward-char]  'calendar-backward-day)
+  ([remap forward-char]   'calendar-forward-day)
+  ([remap previous-line]  'calendar-backward-week)
+  ([remap next-line]      'calendar-forward-week)
   ("C-⇤" 'calendar-beginning-of-week)
   ("C-⇥" 'calendar-end-of-week)
   ("M-←" 'calendar-backward-month)
   ("M-→" 'calendar-forward-month)
   ("M-↑" 'calendar-scroll-right-three-months)
   ("M-↓" 'calendar-scroll-left-three-months)
-  ("M-S-⇤" 'calendar-beginning-of-month)
-  ("M-S-⇥" 'calendar-end-of-month)
+  ("H-a" 'calendar-beginning-of-month)
+  ("H-i" 'calendar-end-of-month)
   ("H-." 'calendar-backward-year)
   ("H-e" 'calendar-forward-year)
   ("n"   'al/diary-insert-entry)
