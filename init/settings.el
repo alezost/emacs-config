@@ -432,11 +432,11 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 
 (al/bind-keys
   ("C->"   (insert "->"))
-  ("H-4"   'insert-parentheses)
+  ("H-,"   'insert-pair-square-brackets)
+  ("H-p"   'insert-parentheses)
   ("H-M-4" 'insert-pair-dollars)
-  ("H-5"   'insert-pair-square-brackets)
-  ("H-6"   'insert-pair-curly-brackets)
-  ("H-,"   'insert-pair-angle-brackets)
+  ("H-4"   'insert-pair-angle-brackets)
+  ("H-5"   'insert-pair-curly-brackets)
   ("H-'"   'insert-pair-single-quotations)
   ("H-;"   'insert-pair-double-quotations)
   ("H-M-;" 'insert-pair-angle-quotations)
@@ -564,17 +564,6 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("C-M-0" 'sp-forward-barf-sexp)
   ("C-("   'sp-backward-slurp-sexp)
   ("C-M-9" 'sp-backward-barf-sexp))
-
-(al/bind-keys
-  :prefix-map al/parens-misc-map
-  :prefix-doc "Map for miscellaneous parentheses commands."
-  :prefix-key "H-p"
-  ("C" 'sp-cheat-sheet)
-  ("↑" 'sp-absorb-sexp)
-  ("↓" 'sp-emit-sexp)
-  ("c" 'sp-convolute-sexp)
-  ("j" 'sp-join-sexp)
-  ("s" 'sp-split-sexp))
 
 (setq
  parens-require-spaces nil
