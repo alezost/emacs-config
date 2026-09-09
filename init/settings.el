@@ -419,6 +419,18 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("C-c u" 'al/decode-region))
 
 (al/bind-keys
+  :prefix-map al/aux-editing-map
+  :prefix-key "M-w"
+  ("M-↑" 'al/move-line-up)
+  ("M-↓" 'al/move-line-down))
+
+(al/eval-after-load al-text-cmd
+  (al/bind-keys
+    :map al/move-line-map
+    ("M-↑" 'al/move-line-up-continue)
+    ("M-↓" 'al/move-line-down-continue)))
+
+(al/bind-keys
   ("C->"   (insert "->"))
   ("H-4"   'insert-parentheses)
   ("H-M-4" 'insert-pair-dollars)

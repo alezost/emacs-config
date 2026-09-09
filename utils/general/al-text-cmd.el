@@ -437,6 +437,50 @@ no indentation has been performed."
     (indent-relative)))
 
 
+;;; Moving lines up/down
+
+(defvar al/move-line-map (make-sparse-keymap))
+(defvar al/move-line-count nil)
+
+(defun al/move-line (direction &optional n)
+  "Move N lines starting from the current one in DIRECTION."
+  (when n (setq al/move-line-count n))
+  (let* ((column (current-column))
+         (start  (progn (forward-line 0) (point)))
+         (end    (progn (forward-line al/move-line-count) (point)))
+         (text   (delete-and-extract-region start end)))
+    (if (eq direction 'up)
+        (forward-line -1)
+      (forward-line))
+    (setq start (point))
+    (insert text)
+    (goto-char start)
+    (move-to-column column))
+  (set-transient-map al/move-line-map))
+
+(defun al/move-line-up-continue ()
+  "Continue moving lines up."
+  (interactive)
+  (al/move-line 'up))
+
+(defun al/move-line-down-continue ()
+  "Continue moving lines down."
+  (interactive)
+  (al/move-line 'down))
+
+;;;###autoload
+(defun al/move-line-up (n)
+  "Move up N lines starting from the current one."
+  (interactive "p")
+  (al/move-line 'up n))
+
+;;;###autoload
+(defun al/move-line-down (n)
+  "Move down N lines starting from the current one."
+  (interactive "p")
+  (al/move-line 'down n))
+
+
 ;;; Changing the case of previous word(s)
 
 ;; Idea from <http://www.emacswiki.org/emacs/sequential-command.el>.
