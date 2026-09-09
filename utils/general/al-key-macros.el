@@ -32,6 +32,7 @@
   (require 'al-aux-macros))
 
 (require 'seq)
+(require 'count)
 (require 'al-general)
 (require 'al-list)
 
@@ -232,11 +233,16 @@ to make \"C-x 8 C-<N>\" insert subscript digits:
   "Helper for `al/translate-keys'."
   (let ((from-key (key-parse (concat from-mod (string from-char))))
         (to-key   (key-parse (concat to-mod   (string to-char)))))
-    (let ((fun-name (intern (format "al/translate-character-%s%d"
-                                    from-mod from-char))))
-      `((defun ,fun-name (&rest _)
-          (al/key-if-bound ,to-key ,from-key))
-        (define-key key-translation-map ,from-key ',fun-name)))))
+    ;; Keys with non-empty modificator are translated directly.  For
+    ;; keys without modificators, make an auxiliary function to check if
+    ;; we should use the original key or the translated one.
+    (if (=0 from-mod)
+        (let ((fun-name (intern (format "al/translate-character-%d"
+                                        from-char))))
+          `((defun ,fun-name (&rest _)
+              (al/key-if-bound ,to-key ,from-key))
+            (define-key key-translation-map ,from-key ',fun-name)))
+      `((define-key key-translation-map ,from-key ,to-key)))))
 
 (defmacro al/translate-keys (modifiers &rest bindings)
   "Bind characters at `key-translation-map'.
