@@ -260,8 +260,10 @@ Each modifier from MODIFIERS list is either:
 A modifier can be an empty string which means a key should be bound
 without any modifier.
 
-BINDINGS is a list of (FROM-CHAR TO-CHAR) lists, where FROM-CHAR is a
-character to bind and TO-CHAR is the respecting translated character.
+BINDINGS is a list of (FROM-CHAR TO-CHAR . MODIFIERS) lists, where
+FROM-CHAR is a character to bind, TO-CHAR is the respecting translated
+character, and MODIFIERS is a list of additional modifiers for this
+character.
 
 Examples:
 
@@ -279,7 +281,7 @@ maps \"C-p\" to \"C-↑\" and \"M-p\" to \"M-↑\", so that when you press
 maps \"<\" to \"S-↤\" and \">\" to \"S-↦\"."
   (declare (indent 1))
   (macroexp-progn
-   (mapcan (pcase-lambda (`(,from-char ,to-char))
+   (mapcan (pcase-lambda (`(,from-char ,to-char . ,mods))
              (mapcan (lambda (mod)
                        (pcase mod
                          (`(,from-mod ,to-mod)
@@ -288,7 +290,7 @@ maps \"<\" to \"S-↤\" and \">\" to \"S-↦\"."
                          (_
                           (al/translate-keys-1 mod mod
                                                from-char to-char))))
-                     modifiers))
+                     (append modifiers mods)))
            bindings)))
 
 (provide 'al-key-macros)
