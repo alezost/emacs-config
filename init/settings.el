@@ -469,10 +469,10 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("H-5"   'insert-pair-curly-brackets)
   ("H-'"   'insert-pair-single-quotations)
   ("H-;"   'insert-pair-double-quotations)
+  ("H-M-'" 'insert-pair-japanese-quotations)
   ("H-M-;" 'insert-pair-angle-quotations)
   ("C-H-'" 'insert-pair-left-right-single-quotations)
   ("C-H-;" 'insert-pair-left-right-double-quotations)
-  ("C-H-M-'" 'insert-pair-japanese-quotations)
   ("H-`"   'insert-pair-grave-accent-quotation)
   ("C-H-`" 'insert-pair-grave-accents))
 
@@ -485,8 +485,8 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("t"   (insert "TODO"))
   ("f"   (insert "FIXME"))
   ("d"   'al/insert-date)
-  ("M-'" 'insert-pair-top-corners)
-  ("M-;" 'insert-pair-bottom-corners))
+  ("H-'" 'insert-pair-top-corners)
+  ("H-;" 'insert-pair-bottom-corners))
 
 (al/bind-keys
   :map key-translation-map
