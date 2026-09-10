@@ -279,6 +279,17 @@
   ("C-2"   'move-to-window-line-top-bottom))
 
 (al/bind-keys
+  :map ctl-x-map
+  ("H-↑" 'al/backward-page)
+  ("H-↓" 'al/forward-page))
+
+(al/eval-after-load al-text-cmd
+  (al/bind-keys
+    :map al/page-navigating-map
+    ("H-↑" 'al/backward-page)
+    ("H-↓" 'al/forward-page)))
+
+(al/bind-keys
   :map narrow-map
   ("r" 'narrow-to-region))
 

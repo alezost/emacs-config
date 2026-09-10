@@ -580,6 +580,22 @@ This is a simplified version of `end-of-buffer'."
   (interactive (progn (push-mark) nil))
   (goto-char (point-max)))
 
+(defvar al/page-navigating-map (make-sparse-keymap))
+
+;;;###autoload
+(defun al/backward-page ()
+  "Move backward to page boundary."
+  (interactive)
+  (backward-page)
+  (set-transient-map al/page-navigating-map))
+
+;;;###autoload
+(defun al/forward-page ()
+  "Move forward to page boundary."
+  (interactive)
+  (forward-page)
+  (set-transient-map al/page-navigating-map))
+
 
 ;;; Misc
 
