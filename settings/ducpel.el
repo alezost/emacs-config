@@ -25,7 +25,7 @@
   :parent al/lazy-moving-map
   ("h" 'ducpel-previous-man)
   ("n" 'ducpel-next-man)
-  ("↷" 'ducpel-previous-level)
-  ("↶" 'ducpel-next-level))
+  ("↶" 'ducpel-previous-level)
+  ("↷" 'ducpel-next-level))
 
 ;;; ducpel.el ends here

@@ -68,7 +68,7 @@
   (al/clean-keymap pdf-history-minor-mode-map)
   (al/bind-keys
    :map pdf-history-minor-mode-map
-   ("↷" 'pdf-history-backward)
-   ("↶" 'pdf-history-forward)))
+   ("↶" 'pdf-history-backward)
+   ("↷" 'pdf-history-forward)))
 
 ;;; pdf-tools.el ends here

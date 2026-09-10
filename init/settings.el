@@ -35,8 +35,8 @@
   (?e ?↓ "s-" "H-" "M-H-")
   (?o ?←)
   (?u ?→)
-  (?, ?↷ "M-H-")
-  (?p ?↶ "M-H-"))
+  (?, ?↶ "M-H-")
+  (?p ?↷ "M-H-"))
 
 (al/translate-keys ("" "C-" "C-M-" "H-")
   ;; Not binding "M-" modifier because "M-i" is reserved for
@@ -59,8 +59,8 @@
   ;; Currently not used.
   ;; (?A ?⇤)
   ;; (?I ?⇥)
-  (?< ?↷)
-  (?P ?↶))
+  (?< ?↶)
+  (?P ?↷))
 
 (al/eval-after-frame-init
   :name al/any-frame-key-translations
@@ -512,8 +512,8 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("M-u"   ?→)
   ("C-a"   ?⇤)
   ("C-i"   ?⇥)
-  ("M-,"   ?↷)
-  ("M-p"   ?↶)
+  ("M-,"   ?↶)
+  ("M-p"   ?↷)
   ("C-M-." ?⇑)
   ("C-M-e" ?⇓)
   ("C-M-o" ?⇐)
@@ -1317,8 +1317,8 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 (al/eval-after-load help-mode
   (al/bind-keys
     :map help-mode-map
-    ("↷" 'help-go-back)
-    ("↶" 'help-go-forward))
+    ("↶" 'help-go-back)
+    ("↷" 'help-go-forward))
 
   (al/call-at-hook help-mode-hook al/no-truncate-lines))
 

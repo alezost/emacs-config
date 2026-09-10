@@ -55,8 +55,8 @@
   :map geiser-doc-mode-map
   :parent (al/geiser-map
            button-buffer-map)
-  ("↷" 'geiser-doc-previous)
-  ("↶" 'geiser-doc-next)
+  ("↶" 'geiser-doc-previous)
+  ("↷" 'geiser-doc-next)
   ("C-d" 'al/geiser-doc-doc-symbol-at-point)
   ("M-d" 'geiser-doc-edit-symbol-at-point))
 

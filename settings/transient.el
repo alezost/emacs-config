@@ -27,8 +27,8 @@
 
 (al/bind-keys
   :map transient-map
-  ("C-M-↶" 'transient-history-next)
-  ("C-M-↷" 'transient-history-prev))
+  ("C-M-↷" 'transient-history-next)
+  ("C-M-↶" 'transient-history-prev))
 
 (al/bind-keys
   :map transient-popup-navigation-map

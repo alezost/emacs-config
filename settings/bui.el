@@ -8,8 +8,8 @@
 
 (al/bind-keys
   :map bui-map
-  ("↷" 'bui-history-back)
-  ("↶" 'bui-history-forward))
+  ("↶" 'bui-history-back)
+  ("↷" 'bui-history-forward))
 
 (al/eval-after-load bui-list
   (al/bind-keys

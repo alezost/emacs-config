@@ -23,8 +23,8 @@
 (al/bind-keys
   :map al/magit-history-map
   :create t
-  ("↷" 'magit-go-backward)
-  ("↶" 'magit-go-forward))
+  ("↶" 'magit-go-backward)
+  ("↷" 'magit-go-forward))
 
 (al/bind-keys
   :map magit-section-mode-map
