@@ -50,7 +50,6 @@
   ("j"          'emms-playlist-mode-goto-dired-at-point)
   ("H-j"        (dired emms-directory))
   ("w"          'al/emms-playlist-wget)
-  ("C-j"        'emms-playlist-mode-insert-newline)
   ("C-k"        (beginning-of-line) (emms-playlist-mode-kill-entire-track))
   ("C-H-M-k"    'al/emms-playlist-kill-track-and-file)
   ("C-t"        'emms-playlist-mode-kill)

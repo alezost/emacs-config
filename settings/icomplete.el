@@ -28,7 +28,7 @@
   ;; `minibuffer-local-must-match-map' above.
   [remap minibuffer-complete-and-exit]
   ([tab] 'icomplete-force-complete)
-  ("C-j" 'exit-minibuffer)
+  ("C-↲" 'exit-minibuffer)
   ("M-k" 'al/minibuffer-copy-current-completion)
   ("C-↑" 'icomplete-backward-completions)
   ("C-↓" 'icomplete-forward-completions))

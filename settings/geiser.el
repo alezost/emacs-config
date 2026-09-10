@@ -35,7 +35,7 @@
   ;; Although this "C-c C-z" exists in `geiser-mode-map',
   ;; it is bound here for ERC channel buffers.
   ("C-c C-z" 'geiser-mode-switch-to-repl)
-  ("C-c C-j" 'geiser-mode-switch-to-repl-and-enter))
+  ("C-c C-↲" 'geiser-mode-switch-to-repl-and-enter))
 
 (al/bind-keys
   :map geiser-mode-map

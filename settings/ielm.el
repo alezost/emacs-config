@@ -10,7 +10,6 @@
 (al/bind-keys
   :map ielm-map
   :parent (lisp-mode-shared-map comint-mode-map)
-  "C-j"
   ("RET" 'ielm-send-input))
 
 (setq ielm-prompt "EL> ")

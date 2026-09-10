@@ -59,9 +59,9 @@
   :map dired-mode-map
   :prefix-map al/dired-open-file-map
   :prefix-doc "Map for opening files in external programs in dired."
-  :prefix-key "C-j"
-  ("M-j" (al/dired-start-process "xdg-open"))
-  ("C-j" 'al/dired-open-file)
+  :prefix-key "C-↲"
+  ("M-↲" (al/dired-start-process "xdg-open"))
+  ("C-↲" 'al/dired-open-file)
   ("v d" (al/dired-start-process "baobab"))
   ("v f" (al/dired-start-process "gdmap" "-f"))
   ("m"   (al/dired-start-process "mupdf"))

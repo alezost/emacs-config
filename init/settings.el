@@ -62,11 +62,17 @@
   (?< ?↶)
   (?P ?↷))
 
+(al/translate-keys ("C-" "C-M-")
+  (?j ?↲ "M-")
+  (?\; ?↰))
+
 (al/translate-keys ("C-M-")
   (?q ?↤)
   (?k ?↦))
 
 (al/translate-keys (("M-" "M-S-"))
+  (?J ?↲)
+  (?: ?↰)
   (?Q ?↤)
   (?K ?↦))
 
@@ -379,10 +385,6 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("C-M-'" 'parens-transpose-sexps)
   ("M-\""  'transpose-lines)
 
-  ("C-;"   'open-line)
-  ("M-;"   'al/comment-dwirm)
-  ("C-M-;" 'split-line)
-
   ("C-t"   'al/kill-region)
   ("M-x"   'al/kill-ring-save)
   ("C-M-x" 'append-next-kill)
@@ -398,8 +400,12 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("H-y" 'al/insert-clipboard)
   ("C-H-y" 'browse-kill-ring)
 
-  ("C-j" 'newline-and-indent)
-  ("M-J" (delete-indentation -1))
+  ("C-↰"   'open-line)
+  ("C-M-↰" 'split-line)
+  ("C-↲"   'newline-and-indent)
+  ("M-↲"   'default-indent-new-line)
+  ("M-S-↲" (delete-indentation -1))
+
   ("S-<backspace>" 'delete-region)
   ("H-M-a" 'align-regexp)
   ("C-H-M-a" (align-regexp (region-beginning) (region-end)
@@ -413,6 +419,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("M-?"   'al/dabbrev-expand-word)
 
   ("M-q"   'al/fill-paragraph)
+  ("M-;"   'al/comment-dwirm)
 
   ("C-<kanji>"   'al/downcase-word-backward)
   ("S-<kanji>"   'al/capitalize-word-backward)
@@ -530,7 +537,8 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("<tab>" ?⇉)
   ("M-q"   ?↤)
   ("M-k"   ?↦)
-  )
+  ("M-;"   ?↰)
+  ("M-j"   ?↲))
 
 ;; "M-i <N>" to insert superscript numbers.
 ;; "M-i M-<N>" to insert subscript numbers.
@@ -733,11 +741,6 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ([tab] 'completion-at-point)
   ("M-↑" 'previous-history-element)
   ("M-↓" 'next-history-element))
-
-(al/bind-keys
-  :map read--expression-map
-  :check t
-  ("C-j" 'newline))
 
 (al/call-at-hook minibuffer-setup-hook al/hbar-cursor-type)
 

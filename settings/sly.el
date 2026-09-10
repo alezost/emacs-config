@@ -93,7 +93,7 @@
   :map sly-prefix-map
   "C-d"
   ("C-z" (al/sly 'other-window))
-  ("C-j" 'al/sly-switch-to-repl-and-enter))
+  ("C-↲" 'al/sly-switch-to-repl-and-enter))
 
 (al/clean-keymap sly-autodoc-mode-map)
 

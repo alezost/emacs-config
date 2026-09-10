@@ -27,6 +27,7 @@
   [remap forward-paragraph]
   [remap backward-paragraph]
   ("RET" 'al/org-return)
+  ("C-↲" 'al/org-return-indent)
   ("<tab>" 'al/org-tab)
   ("M-<return>" 'org-meta-return)
   ("M-S-↑" 'org-previous-visible-heading)
@@ -34,7 +35,6 @@
   ("C-<kp-enter>" 'al/org-table-next-column)
   ("M-<kp-enter>" 'al/org-table-kill-rows-recalculate)
   ("C-M-<kp-enter>" 'al/org-table-next-table)
-  ("C-j" 'al/org-return-indent)
   ("C-c e" 'org-export-dispatch)
   ("C-c C-b" 'org-insert-structure-template)
   ("C-c M-x" 'org-copy-special)
