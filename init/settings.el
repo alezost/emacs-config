@@ -62,6 +62,14 @@
   (?< ?↶)
   (?P ?↷))
 
+(al/translate-keys ("C-M-")
+  (?q ?↤)
+  (?k ?↦))
+
+(al/translate-keys (("M-" "M-S-"))
+  (?Q ?↤)
+  (?K ?↦))
+
 (al/eval-after-frame-init
   :name al/any-frame-key-translations
   ;; Key translation can be done only once for a graphical frame but
@@ -357,14 +365,13 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("C-H-↑" 'al/insert-newline-above)
   ("C-H-↓" 'al/insert-newline-below)
 
-  ("M-q"   'al/fill-paragraph)
-  ("C-M-q" 'al/save-sexp)
-  ("M-Q"   'al/save-line)
+  ("C-M-↦" 'al/save-sexp)
+  ("M-S-↦" 'al/save-line)
+  ("C-M-↤" 'al/backward-save-sexp)
+  ("M-S-↤" 'al/backward-save-line)
 
   ("C-k"   'kill-whole-line)
   ("M-k"   'al/save-whole-line)
-  ("C-M-k" 'al/backward-save-sexp)
-  ("M-K"   'al/backward-save-line)
   ("H-k"   'al/duplicate-dwim)
 
   ("C-'"   'transpose-chars)
@@ -404,6 +411,8 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("M-/"   'dabbrev-expand)
   ("C-M-/" 'hippie-expand)
   ("M-?"   'al/dabbrev-expand-word)
+
+  ("M-q"   'al/fill-paragraph)
 
   ("C-<kanji>"   'al/downcase-word-backward)
   ("S-<kanji>"   'al/capitalize-word-backward)
@@ -518,7 +527,10 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("C-M-e" ?⇓)
   ("C-M-o" ?⇐)
   ("C-M-u" ?⇒)
-  ("<tab>" ?⇉))
+  ("<tab>" ?⇉)
+  ("M-q"   ?↤)
+  ("M-k"   ?↦)
+  )
 
 ;; "M-i <N>" to insert superscript numbers.
 ;; "M-i M-<N>" to insert subscript numbers.
