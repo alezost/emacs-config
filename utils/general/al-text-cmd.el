@@ -88,6 +88,26 @@ no marked region, then the whole buffer is used."
   (interactive)
   (insert al/delimiter))
 
+;;;###autoload
+(defun al/newline ()
+  "Insert a newline at point.
+This command exists because `newline' does too much."
+  (interactive)
+  (insert "\n"))
+
+;;;###autoload
+(defun al/newline-and-indent (&optional arg)
+  "Insert a newline, then indent according to major mode.
+This is similar to `newline-and-indent' except it indents only the last
+line instead of indenting every inserted empty line, so calling this
+command 3 times has the same result as calling it once with numerical
+prefix 3.  Also it uses `al/newline' instead of `newline'."
+  (interactive "*p")
+  (delete-horizontal-space t)
+  (dotimes (_ (or arg 1))
+    (al/newline))
+  (indent-according-to-mode))
+
 (declare-function org-read-date "org" t)
 
 ;;;###autoload
@@ -360,13 +380,15 @@ current line."
   (interactive)
   (save-excursion
     (forward-line (or n 1))
-    (insert "\n")))
+    (al/newline)))
 
 ;;;###autoload
 (defun al/insert-newline-above ()
   "Insert newline before the current line."
   (interactive)
-  (al/insert-newline-below 0))
+  (if (bolp)
+      (al/newline)
+    (al/insert-newline-below 0)))
 
 ;;;###autoload
 (defun al/fill-paragraph (&optional arg)
