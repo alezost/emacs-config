@@ -413,9 +413,10 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("M-S-↓" (join-line t))
 
   ("C-↰"   'open-line)
-  ("C-M-↰" 'split-line)
+  ("C-M-↰" 'paredit-join-sexps)
   ("C-↲"   'newline-and-indent)
   ("M-↲"   'default-indent-new-line)
+  ("C-M-↲" 'paredit-split-sexp)
 
   ("S-<backspace>" 'delete-region)
   ("H-M-a" 'align-regexp)
@@ -560,6 +561,8 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("M-" "₀₁₂₃₄₅₆₇₈₉"))
 
 (al/autoload "paredit"
+  paredit-split-sexp
+  paredit-join-sexps
   paredit-splice-sexp
   paredit-splice-sexp-killing-backward
   paredit-splice-sexp-killing-forward
