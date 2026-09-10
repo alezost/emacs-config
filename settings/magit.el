@@ -48,7 +48,6 @@
   ("M-↑" 'magit-section-backward-sibling)
   ("M-↓" 'magit-section-forward-sibling)
   ("<backtab>" 'magit-section-cycle-global)
-  ("H-SPC" 'magit-diff-show-or-scroll-up)
   ("M-k" 'magit-copy-section-value)
   ("→"   'magit-show-commit)
   ("U"   'magit-unstage)

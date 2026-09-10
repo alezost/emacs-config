@@ -398,6 +398,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("M-x"   'al/kill-ring-save)
   ("C-M-x" 'append-next-kill)
 
+  ("H-SPC"     'al/skip-spacing-forward)
   ("S-SPC"     'cycle-spacing)
   ("M-SPC"     'mark-word)
   ("M-s-SPC"   'mark-paragraph)

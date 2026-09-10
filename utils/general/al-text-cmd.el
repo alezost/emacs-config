@@ -557,6 +557,12 @@ the word.  It should accept a number of modified words as argument."
 ;;; Moving
 
 ;;;###autoload
+(defun al/skip-spacing-forward ()
+  "Skip all spaces and tabs after point."
+  (interactive)
+  (skip-chars-forward " \t"))
+
+;;;###autoload
 (defun al/beginning-of-line ()
   "Move point to beginning of current line."
   (interactive)
