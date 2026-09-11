@@ -223,7 +223,7 @@
   ("T" 'text-mode))
 
 
-;;; Text navigating
+;;; Text navigating and editing
 
 (al/define-multi-command al/skip-parens-or-forward-word
   parens-skip-forward
@@ -238,50 +238,170 @@
   ("M-←"   'al/skip-parens-or-backward-word)
   ("C-M-←" 'parens-backward)
   ("M-S-←" 'backward-sentence)
+  ("C-H-←" 'al/insert-space-backward)
   ("C-H-M-←" (scroll-right 1))
 
   ("C-→"   'forward-char)
   ("M-→"   'al/skip-parens-or-forward-word)
   ("C-M-→" 'parens-forward)
   ("M-S-→" 'forward-sentence)
+  ("C-H-→" 'al/insert-space-forward)
   ("C-H-M-→" (scroll-left 1))
 
   ("C-↑"   'previous-line)
   ("M-↑"   'backward-paragraph)
   ("C-M-↑" 'parens-backward-up)
+  ("H-M-↑" 'scroll-other-window-down)
+  ("M-S-↑" 'join-line)
+  ("C-H-↑" 'al/insert-newline-above)
   ("C-H-M-↑" (scroll-down 1))
   ("H-↑"   'scroll-down-command)
-  ("H-M-↑" 'scroll-other-window-down)
   ("s-↑"   'al/previous-link)
 
   ("C-↓"   'next-line)
   ("M-↓"   'forward-paragraph)
   ("C-M-↓" 'parens-forward-down)
+  ("H-M-↓" 'scroll-other-window)
+  ("M-S-↓" (join-line t))
+  ("C-H-↓" 'al/insert-newline-below)
   ("C-H-M-↓" (scroll-up 1))
   ("H-↓"   'scroll-up-command)
-  ("H-M-↓" 'scroll-other-window)
   ("s-↓"   'al/next-link)
+
+  ("C-↶"   'delete-backward-char)
+  ("M-↶"   'parens-kill-word-backward)
+  ("C-M-↶" 'parens-kill-sexp-backward)
+  ("H-M-↶" 'delete-trailing-whitespace)
+  ("M-S-↶" 'al/backward-kill-line)
+  ("H-C-↶" 'al/delete-spacing-backward)
+
+  ("C-↷"   'delete-char)
+  ("M-↷"   'parens-kill-word-forward)
+  ("C-M-↷" 'parens-kill-sexp-forward)
+  ("H-M-↷" 'al/delete-blank-lines)
+  ("M-S-↷" 'kill-line)
+  ("H-C-↷" 'al/delete-spacing-forward)
 
   ("C-⇤"   'al/beginning-of-line)
   ("C-M-⇤" 'beginning-of-defun)
   ("H-⇤"   'al/beginning-of-buffer)
-  ("C-x ⇤" 'beginning-of-buffer)
-
   ("C-⇥"   'al/end-of-line)
   ("C-M-⇥" 'end-of-defun)
   ("H-⇥"   'al/end-of-buffer)
-  ("C-x ⇥" 'end-of-buffer)
+
+  ("C-M-↤" 'al/backward-save-sexp)
+  ("M-S-↤" 'al/backward-save-line)
+  ("C-M-↦" 'al/save-sexp)
+  ("M-S-↦" 'al/save-line)
+
+  ("H-E"   'paredit-splice-sexp)
+  ("H-P"   'paredit-splice-sexp-killing-backward)
+  ("H-<"   'paredit-splice-sexp-killing-forward)
+  ("H->"   'paredit-raise-sexp)
+  ("C-)"   'sp-forward-slurp-sexp)
+  ("C-M-0" 'sp-forward-barf-sexp)
+  ("C-("   'sp-backward-slurp-sexp)
+  ("C-M-9" 'sp-backward-barf-sexp)
+
+  ("C->"   (insert "->"))
+  ("H-,"   'insert-pair-square-brackets)
+  ("H-p"   'insert-parentheses)
+  ("H-M-4" 'insert-pair-dollars)
+  ("H-4"   'insert-pair-angle-brackets)
+  ("H-5"   'insert-pair-curly-brackets)
+  ("H-'"   'insert-pair-single-quotations)
+  ("H-;"   'insert-pair-double-quotations)
+  ("H-M-'" 'insert-pair-japanese-quotations)
+  ("H-M-;" 'insert-pair-angle-quotations)
+  ("C-H-'" 'insert-pair-left-right-single-quotations)
+  ("C-H-;" 'insert-pair-left-right-double-quotations)
+  ("H-`"   'insert-pair-grave-accent-quotation)
+  ("C-H-`" 'insert-pair-grave-accents)
+
+  ("C-k"   'kill-whole-line)
+  ("M-k"   'al/save-whole-line)
+  ("H-k"   'al/duplicate-dwim)
+
+  ("C-'"   'transpose-chars)
+  ("M-'"   (transpose-words -1))
+  ("C-M-'" 'parens-transpose-sexps)
+  ("M-\""  'transpose-lines)
+
+  ("H-SPC"     'al/skip-spacing-forward)
+  ("S-SPC"     'cycle-spacing)
+  ("M-SPC"     'mark-word)
+  ("M-s-SPC"   'mark-paragraph)
+  ("C-M-s-SPC" 'mark-defun)
+  ("H-s-SPC"   'mark-whole-buffer)
+
+  ("RET"   (end-of-line) (al/newline-and-indent))
+  ("C-↰"   (save-excursion (al/newline-and-indent)))
+  ("C-M-↰" 'paredit-join-sexps)
+  ("C-↲"   'al/newline-and-indent)
+  ("M-↲"   'default-indent-new-line)
+  ("C-M-↲" (paredit-split-sexp) (al/newline-and-indent))
 
   ("C-3"   'recenter-top-bottom)
   ("C-H-3" 'al/recenter-top)
-  ("C-2"   'move-to-window-line-top-bottom))
+  ("C-2"   'move-to-window-line-top-bottom)
+
+  ("C-t"   'al/kill-region)
+  ("M-x"   'al/kill-ring-save)
+  ("C-M-x" 'append-next-kill)
+
+  ("C-y"   'al/yank-or-prev)
+  ("M-y"   'al/yank-or-next)
+  ("H-y"   'al/insert-clipboard)
+  ("C-H-y" 'browse-kill-ring)
+
+  ("S-<backspace>" 'delete-region)
+  ("H-M-a" 'align-regexp)
+  ("C-H-M-a" (align-regexp (region-beginning) (region-end)
+                           "\\(\\s-*\\)(("))
+  ("M-%"   'ispell-complete-word)
+  ("M-_"   'shift-number-down)
+  ("M-+"   'shift-number-up)
+
+  ("M-/"   'dabbrev-expand)
+  ("C-M-/" 'hippie-expand)
+  ("M-?"   'al/dabbrev-expand-word)
+
+  ("M-q"   'al/fill-paragraph)
+  ("M-;"   'al/comment-dwirm)
+
+  ("C-<kanji>"   'al/downcase-word-backward)
+  ("S-<kanji>"   'al/capitalize-word-backward)
+  ("H-<kanji>"   'al/upcase-word-backward)
+  ("C-M-<kanji>" 'al/downcase-dwim)
+  ("M-S-<kanji>" 'al/capitalize-dwim)
+  ("H-M-<kanji>" 'al/upcase-dwim)
+
+  ("C-<tab>" 'indent-relative)
+  ("C-H-<tab>" 'al/indent-relative-forward)
+  ("M-S-<iso-lefttab>" 'tab-to-tab-stop)
+  ("H-<tab>" 'indent-region)
+  ("H-M-<tab>" 'sp-indent-defun)
+
+  ("C-c u" 'al/decode-region))
 
 (al/bind-keys
   :map ctl-x-map
+  ("⇤"   'beginning-of-buffer)
+  ("⇥"   'end-of-buffer)
   ("H-↑" 'al/backward-page)
   ("H-↓" 'al/forward-page))
 
+(al/bind-keys
+  :prefix-map al/aux-editing-map
+  :prefix-key "M-w"
+  ("M-↑" 'al/move-line-up)
+  ("M-↓" 'al/move-line-down))
+
 (al/eval-after-load al-text-cmd
+  (al/bind-keys
+    :map al/move-line-map
+    ("M-↑" 'al/move-line-up-continue)
+    ("M-↓" 'al/move-line-down-continue))
   (al/bind-keys
     :map al/page-navigating-map
     ("H-↑" 'al/backward-page)
@@ -356,125 +476,6 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("C-M-s-m" 'imenu)
   ("C-M-m" 'imenus)
   ("M-s-s" 'al/imenus-search-elisp-directories))
-
-
-;;; Text editing: inserting, deleting, yanking, etc.
-
-(al/bind-keys
-  ("C-↷"   'delete-char)
-  ("M-↷"   'parens-kill-word-forward)
-  ("C-M-↷" 'parens-kill-sexp-forward)
-  ("M-S-↷" 'kill-line)
-  ("H-C-↷" 'al/delete-spacing-forward)
-  ("H-M-↷" 'al/delete-blank-lines)
-
-  ("C-↶"   'delete-backward-char)
-  ("M-↶"   'parens-kill-word-backward)
-  ("C-M-↶" 'parens-kill-sexp-backward)
-  ("M-S-↶" 'al/backward-kill-line)
-  ("H-C-↶" 'al/delete-spacing-backward)
-  ("H-M-↶" 'delete-trailing-whitespace)
-
-  ("C-H-←" 'al/insert-space-backward)
-  ("C-H-→" 'al/insert-space-forward)
-  ("C-H-↑" 'al/insert-newline-above)
-  ("C-H-↓" 'al/insert-newline-below)
-
-  ("C-M-↦" 'al/save-sexp)
-  ("M-S-↦" 'al/save-line)
-  ("C-M-↤" 'al/backward-save-sexp)
-  ("M-S-↤" 'al/backward-save-line)
-
-  ("C-k"   'kill-whole-line)
-  ("M-k"   'al/save-whole-line)
-  ("H-k"   'al/duplicate-dwim)
-
-  ("C-'"   'transpose-chars)
-  ("M-'"   (transpose-words -1))
-  ("C-M-'" 'parens-transpose-sexps)
-  ("M-\""  'transpose-lines)
-
-  ("C-t"   'al/kill-region)
-  ("M-x"   'al/kill-ring-save)
-  ("C-M-x" 'append-next-kill)
-
-  ("H-SPC"     'al/skip-spacing-forward)
-  ("S-SPC"     'cycle-spacing)
-  ("M-SPC"     'mark-word)
-  ("M-s-SPC"   'mark-paragraph)
-  ("C-M-s-SPC" 'mark-defun)
-  ("H-s-SPC"   'mark-whole-buffer)
-
-  ("C-y" 'al/yank-or-prev)
-  ("M-y" 'al/yank-or-next)
-  ("H-y" 'al/insert-clipboard)
-  ("C-H-y" 'browse-kill-ring)
-
-  ("M-S-↑" 'join-line)
-  ("M-S-↓" (join-line t))
-
-  ("RET"   (end-of-line) (al/newline-and-indent))
-  ("C-↰"   (save-excursion (al/newline-and-indent)))
-  ("C-M-↰" 'paredit-join-sexps)
-  ("C-↲"   'al/newline-and-indent)
-  ("M-↲"   'default-indent-new-line)
-  ("C-M-↲" (paredit-split-sexp) (al/newline-and-indent))
-
-  ("S-<backspace>" 'delete-region)
-  ("H-M-a" 'align-regexp)
-  ("C-H-M-a" (align-regexp (region-beginning) (region-end)
-                           "\\(\\s-*\\)(("))
-  ("M-%" 'ispell-complete-word)
-  ("M-_" 'shift-number-down)
-  ("M-+" 'shift-number-up)
-
-  ("M-/"   'dabbrev-expand)
-  ("C-M-/" 'hippie-expand)
-  ("M-?"   'al/dabbrev-expand-word)
-
-  ("M-q"   'al/fill-paragraph)
-  ("M-;"   'al/comment-dwirm)
-
-  ("C-<kanji>"   'al/downcase-word-backward)
-  ("S-<kanji>"   'al/capitalize-word-backward)
-  ("H-<kanji>"   'al/upcase-word-backward)
-  ("C-M-<kanji>" 'al/downcase-dwim)
-  ("M-S-<kanji>" 'al/capitalize-dwim)
-  ("H-M-<kanji>" 'al/upcase-dwim)
-
-  ("C-<tab>" 'indent-relative)
-  ("C-H-<tab>" 'al/indent-relative-forward)
-  ("M-S-<iso-lefttab>" 'tab-to-tab-stop)
-  ("H-<tab>" 'indent-region)
-  ("C-c u" 'al/decode-region))
-
-(al/bind-keys
-  :prefix-map al/aux-editing-map
-  :prefix-key "M-w"
-  ("M-↑" 'al/move-line-up)
-  ("M-↓" 'al/move-line-down))
-
-(al/eval-after-load al-text-cmd
-  (al/bind-keys
-    :map al/move-line-map
-    ("M-↑" 'al/move-line-up-continue)
-    ("M-↓" 'al/move-line-down-continue)))
-
-(al/bind-keys
-  ("C->"   (insert "->"))
-  ("H-,"   'insert-pair-square-brackets)
-  ("H-p"   'insert-parentheses)
-  ("H-M-4" 'insert-pair-dollars)
-  ("H-4"   'insert-pair-angle-brackets)
-  ("H-5"   'insert-pair-curly-brackets)
-  ("H-'"   'insert-pair-single-quotations)
-  ("H-;"   'insert-pair-double-quotations)
-  ("H-M-'" 'insert-pair-japanese-quotations)
-  ("H-M-;" 'insert-pair-angle-quotations)
-  ("C-H-'" 'insert-pair-left-right-single-quotations)
-  ("C-H-;" 'insert-pair-left-right-double-quotations)
-  ("H-`"   'insert-pair-grave-accent-quotation)
-  ("C-H-`" 'insert-pair-grave-accents))
 
 (al/bind-keys
   :prefix-map al/insert-map
@@ -589,17 +590,6 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
    sp-navigate-reindent-after-up nil
    sp-ignore-modes-list nil
    sp-wrap-entire-symbol 'globally))
-
-(al/bind-keys
-  ("H-M-<tab>" 'sp-indent-defun)
-  ("H-E"   'paredit-splice-sexp)
-  ("H-P"   'paredit-splice-sexp-killing-backward)
-  ("H-<"   'paredit-splice-sexp-killing-forward)
-  ("H->"   'paredit-raise-sexp)
-  ("C-)"   'sp-forward-slurp-sexp)
-  ("C-M-0" 'sp-forward-barf-sexp)
-  ("C-("   'sp-backward-slurp-sexp)
-  ("C-M-9" 'sp-backward-barf-sexp))
 
 (setq
  parens-require-spaces nil
