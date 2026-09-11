@@ -239,14 +239,12 @@
   ("C-M-←" 'parens-backward)
   ("M-S-←" 'backward-sentence)
   ("C-H-←" 'al/insert-space-backward)
-  ("C-H-M-←" (scroll-right 1))
 
   ("C-→"   'forward-char)
   ("M-→"   'al/skip-parens-or-forward-word)
   ("C-M-→" 'parens-forward)
   ("M-S-→" 'forward-sentence)
   ("C-H-→" 'al/insert-space-forward)
-  ("C-H-M-→" (scroll-left 1))
 
   ("C-↑"   'previous-line)
   ("M-↑"   'backward-paragraph)
@@ -254,7 +252,6 @@
   ("H-M-↑" 'scroll-other-window-down)
   ("M-S-↑" 'join-line)
   ("C-H-↑" 'al/insert-newline-above)
-  ("C-H-M-↑" (scroll-down 1))
   ("H-↑"   'scroll-down-command)
   ("s-↑"   'al/previous-link)
 
@@ -264,7 +261,6 @@
   ("H-M-↓" 'scroll-other-window)
   ("M-S-↓" (join-line t))
   ("C-H-↓" 'al/insert-newline-below)
-  ("C-H-M-↓" (scroll-up 1))
   ("H-↓"   'scroll-up-command)
   ("s-↓"   'al/next-link)
 
@@ -388,6 +384,10 @@
   :map ctl-x-map
   ("⇤"   'beginning-of-buffer)
   ("⇥"   'end-of-buffer)
+  ("C-←" 'al/scroll-left)
+  ("C-→" 'al/scroll-right)
+  ("C-↑" 'al/scroll-up)
+  ("C-↓" 'al/scroll-down)
   ("H-↑" 'al/backward-page)
   ("H-↓" 'al/forward-page))
 
@@ -398,6 +398,12 @@
   ("M-↓" 'al/move-line-down))
 
 (al/eval-after-load al-text-cmd
+  (al/bind-keys
+    :map al/scroll-map
+    ("C-←" 'al/scroll-left)
+    ("C-→" 'al/scroll-right)
+    ("C-↑" 'al/scroll-up)
+    ("C-↓" 'al/scroll-down))
   (al/bind-keys
     :map al/move-line-map
     ("M-↑" 'al/move-line-up-continue)

@@ -556,6 +556,36 @@ the word.  It should accept a number of modified words as argument."
 
 ;;; Moving
 
+(defvar al/scroll-map (make-sparse-keymap))
+
+;;;###autoload
+(defun al/scroll-left (&optional n)
+  "Scroll current window leftward by N columns."
+  (interactive "p")
+  (scroll-right (or n 1))
+  (set-transient-map al/scroll-map))
+
+;;;###autoload
+(defun al/scroll-right (&optional n)
+  "Scroll current window rightward by N columns."
+  (interactive "p")
+  (scroll-left (or n 1))
+  (set-transient-map al/scroll-map))
+
+;;;###autoload
+(defun al/scroll-up (&optional n)
+  "Scroll current window upward by N lines."
+  (interactive "p")
+  (scroll-down (or n 1))
+  (set-transient-map al/scroll-map))
+
+;;;###autoload
+(defun al/scroll-down (&optional n)
+  "Scroll current window downward by N lines."
+  (interactive "p")
+  (scroll-up (or n 1))
+  (set-transient-map al/scroll-map))
+
 ;;;###autoload
 (defun al/skip-spacing-forward ()
   "Skip all spaces and tabs after point."
