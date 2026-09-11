@@ -66,7 +66,7 @@
   (?j ?↲ "M-")
   (?\; ?↰))
 
-(al/translate-keys ("C-M-")
+(al/translate-keys ("C-M-" "C-H-M-")
   (?q ?↤)
   (?k ?↦))
 
@@ -290,14 +290,15 @@
   ("C-M-↦" 'al/save-sexp)
   ("M-S-↦" 'al/save-line)
 
-  ("H-E"   'paredit-splice-sexp)
-  ("H-P"   'paredit-splice-sexp-killing-backward)
-  ("H-<"   'paredit-splice-sexp-killing-forward)
-  ("H->"   'paredit-raise-sexp)
-  ("C-)"   'sp-forward-slurp-sexp)
-  ("C-M-0" 'sp-forward-barf-sexp)
-  ("C-("   'sp-backward-slurp-sexp)
-  ("C-M-9" 'sp-backward-barf-sexp)
+  ("C-H-M-↑" 'paredit-raise-sexp)
+  ("C-H-M-↓" 'paredit-splice-sexp)
+  ("C-H-M-↶" 'paredit-splice-sexp-killing-backward)
+  ("C-H-M-↷" 'paredit-splice-sexp-killing-forward)
+  ("C-H-M-←" 'sp-backward-slurp-sexp)
+  ("C-H-M-→" 'sp-forward-slurp-sexp)
+  ("C-H-M-↤" 'sp-backward-barf-sexp)
+  ("C-H-M-↦" 'sp-forward-barf-sexp)
+  ("C-H-M-'" 'paredit-convolute-sexp)
 
   ("C->"   (insert "->"))
   ("H-,"   'insert-pair-square-brackets)
