@@ -110,8 +110,9 @@ If VAL is a list, call FUNCTION on each element of the list."
 (defvar al/self-insert-commands
   '(undefined
     self-insert-command
+    isearch-printing-char
     org-self-insert-command
-    isearch-printing-char)
+    picture-self-insert)
   "List of self-inserting commands.")
 
 (defun al/key-if-bound (key &optional fallback-key)
