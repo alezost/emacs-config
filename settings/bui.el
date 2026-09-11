@@ -5,6 +5,7 @@
   (require 'al-aux-macros))
 
 (require 'bui-core)
+(require 'al-general)
 
 (al/bind-keys
   :map bui-map

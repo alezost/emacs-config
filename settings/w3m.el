@@ -6,6 +6,7 @@
 
 (require 'w3m)
 (require 'al-places)
+(require 'al-general)
 (require 'al-w3m)
 
 (al/bind-keys
