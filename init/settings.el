@@ -30,19 +30,15 @@
 
 ;;; Key translations
 
-(al/translate-keys ("" "C-" "M-" "C-M-" "C-H-" "C-H-M-")
-  (?. ?↑ "s-" "H-" "M-H-")
-  (?e ?↓ "s-" "H-" "M-H-")
-  (?o ?←)
-  (?u ?→)
-  (?, ?↶ "M-H-")
-  (?p ?↷ "M-H-"))
-
-(al/translate-keys ("" "C-" "C-M-" "H-")
-  ;; Not binding "M-" modifier because "M-i" is reserved for
-  ;; `iso-transl-ctl-x-8-map' (see below); "M-a" is currently unused.
-  (?a ?⇤)
-  (?i ?⇥))
+(al/translate-keys ("" "C-" "C-M-" "C-H-" "C-H-M-")
+  (?. ?↑ "M-" "s-" "H-" "M-H-")
+  (?e ?↓ "M-" "s-" "H-" "M-H-")
+  (?o ?← "M-")
+  (?u ?→ "M-")
+  (?a ?⇤ "H-")
+  (?i ?⇥ "H-")
+  (?, ?↶ "M-" "M-H-")
+  (?p ?↷ "M-" "M-H-"))
 
 ;; Modifiers including "S-" (Shift) should be handled separately because
 ;; when we press "M-S-e", Emacs thinks that "M-E" is pressed.  We could
@@ -56,9 +52,8 @@
   (?E ?↓)
   (?O ?←)
   (?U ?→)
-  ;; Currently not used.
-  ;; (?A ?⇤)
-  ;; (?I ?⇥)
+  (?A ?⇤)
+  (?I ?⇥)
   (?< ?↶)
   (?P ?↷))
 
@@ -352,8 +347,8 @@
   ("C-H-y" 'browse-kill-ring)
 
   ("S-<backspace>" 'delete-region)
-  ("H-M-a" 'align-regexp)
-  ("C-H-M-a" (align-regexp (region-beginning) (region-end)
+  ("H-M-⇤" 'align-regexp)
+  ("C-H-M-⇤" (align-regexp (region-beginning) (region-end)
                            "\\(\\s-*\\)(("))
   ("M-%"   'ispell-complete-word)
   ("M-_"   'shift-number-down)
