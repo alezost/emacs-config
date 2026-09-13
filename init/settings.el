@@ -1883,7 +1883,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
    mode-line-remote
    " " mode-line-buffer-identification
    " " mode-line-position
-   " %l,%c"
+   " %l," (2 "%C")
    (vc-mode vc-mode)
    " " mode-line-modes
    mode-line-misc-info
