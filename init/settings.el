@@ -1876,6 +1876,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 
  mode-line-format
  '(" "
+   (overriding-terminal-local-map (isearch-mode "🔎 " "💀 "))
    mode-line-mule-info
    mode-line-client
    mode-line-modified
@@ -2071,7 +2072,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   (dim-minor-names
    '((visual-line-mode           " ↩")
      (auto-fill-function         " ↵")
-     (isearch-mode               " 🔎")
+     (isearch-mode               "")
      (whitespace-mode            " _"           whitespace)
      (rainbow-mode               " 🖌"           rainbow-mode)
      (abbrev-mode                " Ab"          abbrev)
