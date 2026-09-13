@@ -1875,13 +1875,21 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
  font-lock-extra-managed-props '(composition)
 
  mode-line-format
- '(" "
+ `(" "
    (overriding-terminal-local-map (isearch-mode "🔎 " "💀 "))
    mode-line-mule-info
    mode-line-client
    mode-line-modified
    mode-line-remote
    " " mode-line-buffer-identification
+   (:eval
+    (if (buffer-narrowed-p)
+        ,(propertize " ↕"
+           'help-echo "mouse-1: Remove narrowing"
+           'mouse-face 'mode-line-highlight
+           'local-map (make-mode-line-mouse-map
+                       'mouse-1 #'mode-line-widen))
+      ""))
    " " mode-line-position
    " %l," (2 "%C")
    (vc-mode vc-mode)
@@ -1938,14 +1946,6 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
             mouse-face mode-line-highlight
             help-echo ,mode-help-echo
             local-map ,mode-line-minor-mode-keymap)
-         `(:eval
-           (if (buffer-narrowed-p)
-               ,(propertize " ↕"
-                  'help-echo "mouse-1: Remove narrowing"
-                  'mouse-face 'mode-line-highlight
-                  'local-map (make-mode-line-mouse-map
-                              'mouse-1 #'mode-line-widen))
-             ""))
          "│"
          (propertize "%]"
            'help-echo recursive-edit-help-echo
