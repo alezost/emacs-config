@@ -1884,7 +1884,8 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
    " " mode-line-position
    " %l," (2 "%C")
    (vc-mode vc-mode)
-   " " mode-line-modes
+   " " (:eval (al/mode-line-process-info))
+   mode-line-modes
    mode-line-misc-info
    al/mode-server)
 
@@ -1917,8 +1918,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
                                "mouse-1: Show menu\n"
                                "mouse-2: Show help\n"
                                "mouse-3: Minor modes")))
-   (list '(:eval (al/mode-line-process-info))
-         " "
+   (list " "
          (propertize "%["
            'help-echo recursive-edit-help-echo
            'face 'font-lock-warning-face)
