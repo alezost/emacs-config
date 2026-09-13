@@ -1875,8 +1875,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
  font-lock-extra-managed-props '(composition)
 
  mode-line-format
- '("%e"
-   mode-line-front-space
+ '(" "
    mode-line-mule-info
    mode-line-client
    mode-line-modified
@@ -1887,8 +1886,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
    (vc-mode vc-mode)
    " " mode-line-modes
    mode-line-misc-info
-   al/mode-server
-   mode-line-end-spaces)
+   al/mode-server)
 
  mode-line-buffer-identification
  (propertized-buffer-identification "%b")
