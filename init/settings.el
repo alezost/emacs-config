@@ -1930,7 +1930,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
    (list " "
          (propertize "%["
            'help-echo recursive-edit-help-echo
-           'face 'font-lock-warning-face)
+           'face 'error)
          "│"
          `(:propertize mode-name
             help-echo ,mode-help-echo
@@ -1949,7 +1949,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
          "│"
          (propertize "%]"
            'help-echo recursive-edit-help-echo
-           'face 'font-lock-warning-face))))
+           'face 'error))))
 
 ;; Make page breaks look fancier than the default "^L".
 ;; Idea from <http://www.jurta.org/en/emacs/dotemacs>.
