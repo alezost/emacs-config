@@ -480,6 +480,8 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("M-s-s" 'al/imenus-search-elisp-directories))
 
 (al/bind-keys
+  :map al/insert-root-map
+  :create t
   :prefix-map al/insert-map
   :prefix-doc "Map for inserting symbols and text."
   :prefix-key "M-i"
@@ -666,6 +668,8 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("q"   (al/set-input-method "dvorak-qwerty")))
 
 (al/bind-keys
+  :map al/input-method-root-map
+  :create t
   ("<kanji>" al/input-method-map)
   ("C-\\"  'al/set-input-method)
   ("s-6"   (al/set-input-method "al/utf"))
@@ -702,7 +706,8 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 (al/eval-after-load isearch
   (al/bind-keys
     :map isearch-mode-map
-    :parent al/input-method-map
+    :parent (al/input-method-root-map
+             al/insert-root-map)
     ("M-s" 'isearch-query-replace)
     ("M-d" 'isearch-edit-string)
     ("M-o" 'isearch-occur))
@@ -2130,6 +2135,12 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 
 
 ;;; Misc settings and packages
+
+(al/bind-keys
+  :map global-map
+  :parent (al/input-method-root-map
+           al/insert-root-map)
+  "M-i")
 
 (al/bind-keys
   :map mule-keymap
