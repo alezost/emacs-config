@@ -84,6 +84,13 @@ This function is intended to be used like so:
   "Read string using INITIAL-INPUT as default value."
   (al/read-string prompt nil history initial-input))
 
+
+;;; Misc
+
+(defun al/transient-line-color (&rest _)
+  "Substitution for `transient--prefix-color'."
+  (face-foreground 'default))
+
 (provide 'al-transient)
 
 ;;; al-transient.el ends here

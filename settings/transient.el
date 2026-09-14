@@ -52,9 +52,10 @@
  transient-highlight-mismatched-keys nil
  transient-enable-menu-navigation nil
  transient-read-with-initial-input nil
- transient-mode-line-format mode-line-format)
+ transient-mode-line-format 1)
 
 (advice-add 'transient-setup :before #'al/transient-fix-input-method)
+(advice-add 'transient--prefix-color :override #'al/transient-line-color)
 
 (al/call-at-hook transient-post-exit-hook
   al/transient-restore-input-method)
