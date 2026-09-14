@@ -676,6 +676,9 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("s-M-7" (ispell-change-dictionary "en"))
   ("s-M-8" (ispell-change-dictionary "ru-yeyo")))
 
+(al/eval-after-load al-input-method
+  (al/set-input-method-title "korean-hangul" "한"))
+
 (al/eval-after-load hangul
   :no-warning t
   (al/require al-quail-hangul))

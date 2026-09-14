@@ -1,6 +1,6 @@
 ;;; al-input-method.el --- Additional functionality for input methods  -*- lexical-binding: t -*-
 
-;; Copyright © 2025 Alex Kost
+;; Copyright © 2025–2026 Alex Kost
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -18,10 +18,21 @@
 ;;; Code:
 
 (eval-when-compile
-  (require 'al-aux-macros))
+  (require 'al-aux-macros)
+  (require 'let-macros))
 
 (require 'seq)
 (require 'al-general)
+
+(defun al/set-input-method-title (name title)
+  "Set mode line TITLE for input method NAME."
+  (if-let ((assoc (assoc name input-method-alist)))
+      (setcdr assoc
+              (pcase (cdr assoc)
+                (`(,lang ,fun ,_title . ,rest)
+                 (append (list lang fun title)
+                         rest))))
+    (al/warning-message "Input method `%s' not found" name)))
 
 (defvar al/default-input-methods
   '((text-mode . "al/utf"))
