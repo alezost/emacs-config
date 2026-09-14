@@ -2270,12 +2270,17 @@ config file."
 
 (al/eval-after-init
   (when-let ((name (daemonp)))
-    (setq al/server-running? t)
+    (setq al/server-running? t
+          ;; Original value of `mode-line-client' evaluates
+          ;; `frame-parameter' for every mode-line update but is it
+          ;; really needed?  If (daemonp) is non-nil, then the current
+          ;; frame is always an emacsclient frame, right?
+          mode-line-client (propertize "@" 'help-echo "emacsclient frame"))
     (when (equal name "emms")
       (setq initial-major-mode
             (lambda (&rest _) (text-mode) (al/text-scale+1)))
       (al/with-check
-        :var '(al/mail-user-name   ; defined in "net.el"
+        :var '(al/mail-user-name   ; defined above
                al/mail-user-name2) ; defined in "custom.el"
         (with-no-warnings
           (setq al/mail-user-name
