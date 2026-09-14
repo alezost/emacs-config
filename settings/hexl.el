@@ -14,9 +14,9 @@
   ("M-←" 'hexl-backward-short)
   ("M-→" 'hexl-forward-short)
   ("C-⇥" 'hexl-end-of-line)
-  ("H-." 'hexl-scroll-down)
-  ("H-e" 'hexl-scroll-up)
-  ("H-a" 'hexl-beginning-of-buffer)
-  ("H-i" 'hexl-end-of-buffer))
+  ("H-↑" 'hexl-scroll-down)
+  ("H-↓" 'hexl-scroll-up)
+  ("H-⇤" 'hexl-beginning-of-buffer)
+  ("H-⇥" 'hexl-end-of-buffer))
 
 ;;; hexl.el ends here

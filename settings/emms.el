@@ -51,7 +51,7 @@
   ("H-j"        (dired emms-directory))
   ("w"          'al/emms-playlist-wget)
   ("C-k"        (beginning-of-line) (emms-playlist-mode-kill-entire-track))
-  ("C-H-M-k"    'al/emms-playlist-kill-track-and-file)
+  ("C-H-M-↦"    'al/emms-playlist-kill-track-and-file)
   ("C-t"        'emms-playlist-mode-kill)
   ("M-↑"        'emms-playlist-mode-shift-track-up)
   ("M-↓"        'emms-playlist-mode-shift-track-down)

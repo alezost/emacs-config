@@ -35,7 +35,7 @@
 
 (al/bind-keys
   :map icomplete-vertical-mode-minibuffer-map
-  ("H-a" 'icomplete-vertical-goto-first)
-  ("H-i" 'icomplete-vertical-goto-last))
+  ("H-⇤" 'icomplete-vertical-goto-first)
+  ("H-⇥" 'icomplete-vertical-goto-last))
 
 ;;; icomplete.el ends here
