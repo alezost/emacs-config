@@ -106,7 +106,7 @@
   (add-hook 'emms-mpv-file-loaded-hook #'al/org-emms-seek))
 
 (al/eval-after-load org-src
-  (setq org-edit-src-content-indentation 0)
+  (setq org-src-content-indentation 0)
   (al/bind-keys
     :map org-src-mode-map
     ("C-c C-c" 'org-edit-src-exit))
