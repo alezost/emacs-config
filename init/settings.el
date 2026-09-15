@@ -792,7 +792,11 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ;; This breaks company completions in SLY buffers
   ;; (advice-add 'completion--styles :override #'al/completion-styles)
 
-  (advice-add 'completion-all-completions :around #'al/completion-all-completions))
+  ;; Since Emacs 31, this significantly slows down completing,
+  ;; especially `company'.
+  ;;
+  ;; (advice-add 'completion-all-completions :around #'al/completion-all-completions)
+  )
 
 (al/eval-at-hook minibuffer-setup-hook
   :once t
