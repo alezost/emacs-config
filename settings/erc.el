@@ -5,6 +5,7 @@
   (require 'al-aux-macros))
 
 (require 'erc)
+(require 'erc-sasl)
 (require 'erc-join)
 (require 'erc-log)
 (require 'al-general)
@@ -64,6 +65,10 @@
  erc-paranoid t
  erc-timestamp-format-left "\n[%d %B %Y, %A]\n"
  erc-insert-timestamp-function 'al/erc-insert-timestamp
+
+ ;; ERC does not connect with the default value of `erc-sasl-user'!
+ erc-sasl-user erc-nick
+ erc-sasl-auth-source-function #'erc-auth-source-search
 
  erc-ctcp-query-FINGER-hook  '(al/erc-ctcp-query-FINGER)
  erc-ctcp-query-ECHO-hook    '(al/erc-ctcp-query-ECHO)

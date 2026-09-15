@@ -1719,6 +1719,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
    pcomplete
    readonly
    ring
+   sasl
    stamp
    track
    truncate))
