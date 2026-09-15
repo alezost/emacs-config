@@ -48,7 +48,7 @@
 (setq
  org-file-apps
  `(("\\.mm\\'" . default)
-   ("\\.x?html?\\'" . tui/choose-browser)
+   ("\\.x?html?\\'" . al/org-browse-file)
    (,(al/file-regexp "jpg" "png" "gif") . "sxiv %s")
    (,(al/file-regexp "pdf") . "zathura %s")
    (,(al/file-regexp "djvu") . "zathura %s")

@@ -20,6 +20,7 @@
 (eval-when-compile
   (require 'cl-lib)
   (require 'al-aux-macros))
+
 (require 'al-general)
 (require 'al-text-cmd)
 (require 'org)
@@ -176,6 +177,10 @@ row."
 (org-link-set-parameters
  "pdf"
  :follow #'al/org-open-pdf)
+
+(defun al/org-browse-file (file-name &rest _args)
+  "Prepend \"file://\" to FILE-NAME and browse it."
+  (browse-url (concat "file://" file-name)))
 
 (provide 'al-org)
 
