@@ -137,6 +137,7 @@
   ("C-8" 'insert-char)
   ("o"   'al/other-window)
   ("M-o" 'other-window)
+  ("E"   'al/ediff-buffers)
   ("w"   'which-key-mode))
 
 (al/bind-keys
