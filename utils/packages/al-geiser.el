@@ -1,4 +1,4 @@
-;;; al-geiser.el --- Additional functionality for geiser  -*- lexical-binding: t -*-
+;;; al-geiser.el --- Additional functionality for `geiser' package  -*- lexical-binding: t -*-
 
 ;; Copyright © 2014–2026 Alex Kost
 
@@ -19,7 +19,11 @@
 
 (eval-when-compile
   (require 'let-macros))
+
 (require 'geiser-mode)
+
+(defvar al/geiser-sockets nil
+  "List of Guile's socket files used by `al/geiser-socket-connect'.")
 
 (defun al/geiser-repl ()
   "Return the current Geiser REPL."
@@ -37,7 +41,6 @@ Return a list of strings with result values of evaluation."
                  (geiser-eval--retort-output res))
         (cdr (assq 'result res))))))
 
-;;;###autoload
 (defun al/geiser-add-to-load-path (directory)
   "Add DIRECTORY to the Guile REPL load paths."
   (interactive "DDirectory to add: ")
@@ -48,7 +51,6 @@ Return a list of strings with result values of evaluation."
    (concat "(set! %load-compiled-path "
            "(cons \"" directory "\" %load-compiled-path))")))
 
-;;;###autoload
 (defun al/geiser-eval-dwim (arg)
   "Eval (with geiser) last sexp or region if it is active.
 ARG is passed to `geiser-eval-last-sexp'."
@@ -57,7 +59,6 @@ ARG is passed to `geiser-eval-last-sexp'."
       (geiser-eval-region (region-beginning) (region-end))
     (geiser-eval-last-sexp arg)))
 
-;;;###autoload
 (defun al/geiser-repl-enter-dwim ()
   "Send input or goto the error at point.
 Substitution for `geiser-repl--maybe-send'."
@@ -69,14 +70,12 @@ Substitution for `geiser-repl--maybe-send'."
         (t
          (geiser-repl--send-input))))
 
-;;;###autoload
 (defun al/geiser-repl-kill-whole-line (arg)
   "Similar to `kill-whole-line', but respect geiser repl prompt."
   (interactive "p")
   (kill-region (comint-line-beginning-position)
                (progn (forward-line arg) (point))))
 
-;;;###autoload
 (defun al/geiser-doc-doc-symbol-at-point ()
   "Open documentation for symbol at point.
 This function refers to `geiser-doc-symbol-at-point' as
@@ -92,31 +91,6 @@ This function refers to `geiser-doc-symbol-at-point' as
 (defun al/geiser-repl-buffer-name (impl)
   "Return buffer name of Geiser REPL for IMPL."
   (format "*%s*" (geiser-repl--repl-name impl)))
-
-;;;###autoload
-(defun al/geiser-guile-switch-current-window (arg)
-  "Switch to a running guile REPL, or start one.
-This is the same as `geiser-guile-switch' except it always use the
-current window ignoring the value of `geiser-repl-use-other-window'."
-  (interactive "P")
-  (let (geiser-repl-use-other-window)
-    (geiser-repl-switch arg 'guile)))
-
-
-;;; Connecting to pre-defined sockets
-
-(defvar al/geiser-sockets nil
-  "List of Guile's socket files used by `al/geiser-socket-connect'.")
-
-;;;###autoload
-(defun al/geiser-socket-connect (socket)
-  "Connect Geiser to Guile's SOCKET file.
-Interactively, prompt for SOCKET using completions from
-`al/geiser-sockets'."
-  (interactive
-   (list (expand-file-name
-          (completing-read "Socket: " al/geiser-sockets))))
-  (geiser-connect-local 'guile socket))
 
 (provide 'al-geiser)
 
