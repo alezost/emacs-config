@@ -78,6 +78,14 @@ Defined function has a name `al/w3m-TYPE-url'."
 
 
 
+(defun al/w3m-browse-this-url (&optional arg)
+  "Browse URL at point using `w3m'.
+With ARG, use default browser."
+  (interactive "P")
+  (if arg
+      (browse-url (w3m-anchor))
+    (w3m-view-this-url)))
+
 (defun al/w3m-wget ()
   "Download anchor, image, or current page.
 Same as `w3m-wget' but works."
