@@ -229,16 +229,14 @@ to make \"C-x 8 C-<N>\" insert subscript digits:
 
 ;;; Translating keys
 
-(defun al/translate-keys-1 (from-mod to-mod from-char to-char)
+(defun al/translate-keys-1 ( from-mod to-mod from-char to-char
+                             &optional smart)
   "Helper for `al/translate-keys'."
   (let ((from-key (key-parse (concat from-mod (string from-char))))
         (to-key   (key-parse (concat to-mod   (string to-char)))))
-    ;; Keys with non-empty modificator are translated directly.  For
-    ;; keys without modificators, make an auxiliary function to check if
-    ;; we should use the original key or the translated one.
-    (if (=0 from-mod)
-        (let ((fun-name (intern (format "al/translate-character-%d"
-                                        from-char))))
+    (if (or smart (=0 from-mod))
+        (let ((fun-name (intern (format "al/translate-character-%s%d"
+                                        from-mod from-char))))
           `((defun ,fun-name (&rest _)
               (al/key-if-bound ,to-key ,from-key))
             (define-key key-translation-map ,from-key ',fun-name)))
@@ -265,6 +263,15 @@ FROM-CHAR is a character to bind, TO-CHAR is the respecting translated
 character, and MODIFIERS is a list of additional modifiers for this
 character.
 
+BINDINGS can start with the following optional keywords:
+
+  `:smart'      If nil (default), keys with non-empty prefix are bound
+                directly to the specified translated keys so the
+                original keys will not be available for binding anymore,
+                only translated ones can be bound.  If non-nil, keys are
+                bound to an auxiliary function that translate keys only
+                if they are bound in one of the currently active maps.
+
 Examples:
 
   (al/translate-keys (\"C-\" \"M-\")
@@ -280,18 +287,22 @@ maps \"C-p\" to \"C-↑\" and \"M-p\" to \"M-↑\", so that when you press
 
 maps \"<\" to \"S-↤\" and \">\" to \"S-↦\"."
   (declare (indent 1))
-  (macroexp-progn
-   (mapcan (pcase-lambda (`(,from-char ,to-char . ,mods))
-             (mapcan (lambda (mod)
-                       (pcase mod
-                         (`(,from-mod ,to-mod)
-                          (al/translate-keys-1 from-mod to-mod
-                                               from-char to-char))
-                         (_
-                          (al/translate-keys-1 mod mod
-                                               from-char to-char))))
-                     (append modifiers mods)))
-           bindings)))
+  (al/with-keywords bindings
+      (smart)
+    (macroexp-progn
+     (mapcan (pcase-lambda (`(,from-char ,to-char . ,mods))
+               (mapcan (lambda (mod)
+                         (pcase mod
+                           (`(,from-mod ,to-mod)
+                            (al/translate-keys-1 from-mod to-mod
+                                                 from-char to-char
+                                                 smart))
+                           (_
+                            (al/translate-keys-1 mod mod
+                                                 from-char to-char
+                                                 smart))))
+                       (append modifiers mods)))
+             %body))))
 
 (provide 'al-key-macros)
 
