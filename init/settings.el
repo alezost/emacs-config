@@ -279,10 +279,10 @@
   ("H-C-↷" 'al/delete-spacing-forward)
 
   ("C-⇤"   'al/beginning-of-line)
-  ("C-M-⇤" 'beginning-of-defun)
+  ("M-S-⇤" 'beginning-of-defun)
   ("H-⇤"   'al/beginning-of-buffer)
   ("C-⇥"   'al/end-of-line)
-  ("C-M-⇥" 'end-of-defun)
+  ("M-S-⇥" 'end-of-defun)
   ("H-⇥"   'al/end-of-buffer)
 
   ("C-M-↤" 'al/backward-save-sexp)
