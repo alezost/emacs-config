@@ -26,9 +26,9 @@
   ("C-S-v" 'geiser-expand-last-sexp)
   ("C-M-v" 'geiser-eval-definition)
   ("M-s-v" 'geiser-eval-buffer)
-  ("C-d"   'geiser-doc-symbol-at-point)
-  ("M-d"   'geiser-edit-symbol-at-point)
-  ("C-M-d" al/geiser-doc-map)
+  ("C-🗋"   'geiser-doc-symbol-at-point)
+  ("M-🗋"   'geiser-edit-symbol-at-point)
+  ("C-M-🗋" al/geiser-doc-map)
   ("C-c l" 'al/geiser-add-to-load-path)
   ("C-c a" 'geiser-autodoc-mode)
   ("C-c j" 'switch-to-geiser-module)
@@ -57,8 +57,8 @@
            button-buffer-map)
   ("↶" 'geiser-doc-previous)
   ("↷" 'geiser-doc-next)
-  ("C-d" 'al/geiser-doc-doc-symbol-at-point)
-  ("M-d" 'geiser-doc-edit-symbol-at-point))
+  ("C-🗋" 'al/geiser-doc-doc-symbol-at-point)
+  ("M-🗋" 'geiser-doc-edit-symbol-at-point))
 
 (setq
  geiser-repl-skip-version-check-p t

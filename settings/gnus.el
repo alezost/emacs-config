@@ -58,7 +58,7 @@
     :map gnus-server-mode-map
     :parent al/lazy-vertical-moving-map
     ("→"   'gnus-server-read-server)
-    ("M-d" 'gnus-server-edit-server))
+    ("M-🗋" 'gnus-server-edit-server))
 
   (al/bind-keys
     :map gnus-browse-mode-map
@@ -172,12 +172,11 @@
   (al/bind-keys
     :map gnus-draft-mode-map
     "e"
-    ("M-d" 'gnus-draft-edit-message)))
+    ("M-🗋" 'gnus-draft-edit-message)))
 
 (al/eval-after-load gnus-art
   (al/bind-keys
-    :map gnus-article-mode-map
-    "C-d")
+    :map gnus-article-mode-map)
   (al/bind-keys
     :map gnus-url-button-map
     :parent button-map

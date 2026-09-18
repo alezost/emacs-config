@@ -45,21 +45,21 @@
 
   (al/bind-keys
     :map guix-package-info-mode-map
-    ("M-d" 'guix-package-info-edit)
+    ("M-🗋" 'guix-package-info-edit)
     ("I"   'guix-package-info-install)
     ("D"   'guix-package-info-delete)
     ("U"   'guix-package-info-upgrade)
     ("S"   'guix-package-info-size))
   (al/bind-keys
     :map guix-package-list-mode-map
-    ("M-d" 'guix-package-list-edit)
+    ("M-🗋" 'guix-package-list-edit)
     ("I"   'guix-package-list-mark-install)
     ("D"   'guix-package-list-mark-delete)
     ("U"   'guix-package-list-mark-upgrade)
     ("S"   'guix-package-list-size))
   (al/bind-keys
     :map guix-output-list-mode-map
-    ("M-d" 'guix-output-list-edit)
+    ("M-🗋" 'guix-output-list-edit)
     ("I"   'guix-output-list-mark-install)
     ("D"   'guix-output-list-mark-delete)
     ("U"   'guix-output-list-mark-upgrade)))
@@ -78,31 +78,31 @@
 (al/eval-after-load guix-ui-service
   (al/bind-keys
     :map guix-service-info-mode-map
-    ("M-d" 'guix-service-info-edit))
+    ("M-🗋" 'guix-service-info-edit))
   (al/bind-keys
     :map guix-service-list-mode-map
-    ("M-d" 'guix-service-list-edit)))
+    ("M-🗋" 'guix-service-list-edit)))
 
 (al/eval-after-load guix-ui-package-location
   (al/bind-keys
     :map guix-package-location-list-mode-map
-    ("M-d" 'guix-package-location-list-edit)))
+    ("M-🗋" 'guix-package-location-list-edit)))
 
 (al/eval-after-load guix-ui-service-location
   (al/bind-keys
     :map guix-service-location-list-mode-map
-    ("M-d" 'guix-service-location-list-edit)))
+    ("M-🗋" 'guix-service-location-list-edit)))
 
 (al/eval-after-load guix-ui-license
   (al/bind-keys
     :map guix-license-list-mode-map
-    ("M-d" 'guix-license-list-edit)))
+    ("M-🗋" 'guix-license-list-edit)))
 
 (al/eval-after-load guix-ui-store-item
   (al/bind-keys
     :map guix-store-item-list-mode-map
     "R"
-    ("M-d" 'guix-store-item-list-edit)
+    ("M-🗋" 'guix-store-item-list-edit)
     ("r" 'guix-store-item-list-requisites)
     ("d" 'guix-store-item-list-derivers)
     ("D" 'guix-store-item-list-mark-delete)))

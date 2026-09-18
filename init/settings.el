@@ -71,6 +71,10 @@
   (?Q ?↤)
   (?K ?↦))
 
+(al/translate-keys ("C-" "M-" "C-M-")
+  :smart t
+  (?d ?🗋))
+
 (al/eval-after-frame-init
   :name al/any-frame-key-translations
   ;; Key translation can be done only once for a graphical frame but
@@ -168,7 +172,7 @@
   ("C-<f4>"      'kmacro-start-macro-or-insert-counter)
   ("C-<XF86New>" 'kmacro-start-macro-or-insert-counter)
   ("H-m e"       'kmacro-edit-macro)
-  ("H-m C-d"     'kmacro-edit-macro)
+  ("H-m C-🗋"     'kmacro-edit-macro)
   ("M-<f4>"      'kmacro-edit-macro)
   ("M-<XF86New>" 'kmacro-edit-macro)
   ("H-m A"       (kmacro-call-macro 0))
@@ -558,7 +562,8 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("C-q"   ?↤)
   ("C-k"   ?↦)
   ("C-;"   ?↰)
-  ("C-j"   ?↲))
+  ("C-j"   ?↲)
+  ("C-d"   ?🗋))
 
 ;; "M-i <N>" to insert superscript numbers.
 ;; "M-i M-<N>" to insert subscript numbers.
@@ -648,7 +653,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   :create t
   ("<kanji>" 'al/set-input-method)
   ("RET"     'al/set-input-method)
-  ("C-d"     'describe-input-method)
+  ("C-🗋"     'describe-input-method)
   ("SPC" (al/set-input-method nil))
   ("e"   (al/set-input-method "emoji"))
   ("6"   (al/set-input-method "al/utf"))
@@ -710,7 +715,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
     :parent (al/input-method-root-map
              al/insert-root-map)
     ("M-s" 'isearch-query-replace)
-    ("M-d" 'isearch-edit-string)
+    ("M-🗋" 'isearch-edit-string)
     ("M-o" 'isearch-occur))
 
   (setq
@@ -818,8 +823,8 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
     ("DEL" 'icomplete-fido-backward-updir))
   (al/bind-keys
     :map al/minibuffer-symbol-map
-    ("C-d" 'al/minibuffer-describe-symbol)
-    ("M-d" 'al/minibuffer-find-symbol))
+    ("C-🗋" 'al/minibuffer-describe-symbol)
+    ("M-🗋" 'al/minibuffer-find-symbol))
 
   (advice-add 'read-file-name             :around #'al/read-file-add-keymap)
   ;; Advising `read-buffer-to-switch' because `read-buffer' is a C function.
@@ -1000,7 +1005,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("h"     (al/find-file "~"))
   ("d"     (al/find-file al/journal-dir))
   ("w"     (al/find-file al/download-dir))
-  ("M-d"   (find-file al/download-dir))
+  ("M-🗋"   (find-file al/download-dir))
   ("M-n"   (al/find-file al/notes-dir))
   ("t"     (al/find-file al/tmp-dir))
   ("m"     (al/find-file al/music-dir))
@@ -1168,13 +1173,13 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
   ("C-S-v" 'al/pp-macroexpand-last-sexp)
   ("C-M-v" 'eval-defun)
   ("M-s-v" 'eval-buffer)
-  ("C-d"   'elisp-slime-nav-describe-elisp-thing-at-point)
-  ("M-d"   'elisp-slime-nav-find-elisp-thing-at-point))
+  ("C-🗋"   'elisp-slime-nav-describe-elisp-thing-at-point)
+  ("M-🗋"   'elisp-slime-nav-find-elisp-thing-at-point))
 
 (al/bind-keys
   :prefix-map al/doc-map
   :prefix-doc "Map for documentation/finding definitions."
-  :prefix-key "C-M-d"
+  :prefix-key "C-M-🗋"
   ("f" 'find-function)
   ("v" 'find-variable)
   ("F" 'find-face-definition)

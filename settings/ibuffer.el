@@ -16,7 +16,7 @@
   ("M-↓" 'ibuffer-forward-filter-group)
 
   ("d"   'ibuffer-visit-buffer-other-window-noselect)
-  ("C-d" 'ibuffer-visit-buffer-other-window)
+  ("C-🗋" 'ibuffer-visit-buffer-other-window)
   ("C-l" (ibuffer-update t))
 
   ("M"   'ibuffer-mark-unsaved-buffers)

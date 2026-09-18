@@ -9,7 +9,7 @@
 (al/bind-keys
   :map al/haskell-general-map
   :create t
-  ("M-d" 'haskell-mode-jump-to-def-or-tag))
+  ("M-🗋" 'haskell-mode-jump-to-def-or-tag))
 
 (al/bind-keys
   :map haskell-mode-map

@@ -16,7 +16,6 @@
 
 (al/bind-keys
   :map comint-mode-map
-  "C-d"
   ("RET"     'al/comint-send-input-maybe)
   ("M-↑"     'comint-previous-input)
   ("M-↓"     'comint-next-input)

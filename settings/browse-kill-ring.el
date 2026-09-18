@@ -17,6 +17,6 @@
     ("↑"   'browse-kill-ring-previous)
     ("↓"   'browse-kill-ring-forward)
     ("→"   'browse-kill-ring-insert-and-quit)
-    ("M-d" 'browse-kill-ring-edit)))
+    ("M-🗋" 'browse-kill-ring-edit)))
 
 ;;; browse-kill-ring.el ends here

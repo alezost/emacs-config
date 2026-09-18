@@ -32,7 +32,7 @@
 
 (al/bind-keys
   :map sly-doc-map
-  ("C-d" 'sly-documentation-lookup))
+  ("C-🗋" 'sly-documentation-lookup))
 
 (al/bind-keys
   :map sly-mrepl-mode-map
@@ -58,9 +58,9 @@
   ("C-M-v" 'sly-eval-defun)
   ("M-s-v" 'sly-eval-buffer)
   ("C-S-v" 'sly-macroexpand-all)
-  ("C-d"   'sly-describe-symbol)
-  ("M-d"   'sly-edit-definition)
-  ("C-M-d" sly-doc-map))
+  ("C-🗋"   'sly-describe-symbol)
+  ("M-🗋"   'sly-edit-definition)
+  ("C-M-🗋" sly-doc-map))
 
 (al/bind-keys
   :map sly-mode-map
@@ -91,7 +91,6 @@
 ;; binds "C-c C-z".
 (al/bind-keys
   :map sly-prefix-map
-  "C-d"
   ("C-z" (al/sly 'other-window))
   ("C-↲" 'al/sly-switch-to-repl-and-enter))
 

@@ -8,7 +8,7 @@
 
 (al/bind-keys
   :map js-mode-map
-  ("M-d"     'js-find-symbol)
+  ("M-🗋"     'js-find-symbol)
   ("C-c M-v" 'js-eval)
   ("C-M-v"   'js-eval-defun))
 

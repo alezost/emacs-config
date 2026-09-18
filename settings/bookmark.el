@@ -17,10 +17,10 @@
   :parent al/lazy-vertical-moving-map
   ("→"   'bookmark-bmenu-relocate)
   ("d"   'bookmark-bmenu-other-window)
-  ("C-d" 'bookmark-bmenu-switch-other-window)
+  ("C-🗋" 'bookmark-bmenu-switch-other-window)
   ("R"   'bookmark-bmenu-rename)
   ("z"   'bookmark-bmenu-unmark)
   ("D"   'bookmark-bmenu-delete)
-  ("M-d" 'bookmark-bmenu-edit-annotation))
+  ("M-🗋" 'bookmark-bmenu-edit-annotation))
 
 ;;; bookmark.el ends here
