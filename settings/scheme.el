@@ -10,10 +10,12 @@
 
 (al/modify-page-break-syntax scheme-mode-syntax-table)
 
-(al/call-at-hook scheme-mode-hook
-  guix-devel-mode
-  al/scheme-fix-docstring-font-lock
-  al/scheme-fix-fill)
+(al/eval-at-hook scheme-mode-hook
+  (setq-local beginning-of-defun-function
+              'al/lisp-beginning-of-defun)
+  (al/scheme-fix-docstring-font-lock)
+  (al/scheme-fix-fill)
+  (al/funcall 'guix-devel-mode))
 
 (al/scheme-add-font-lock-keywords)
 

@@ -17,6 +17,18 @@
 
 ;;; Code:
 
+;;;###autoload
+(defun al/lisp-beginning-of-defun (&rest _)
+  "Move point to the beginning of the current top level clause.
+This function is intended to be used for `beginning-of-defun-function'
+variable for Lisp-like modes."
+  (interactive)
+  (let ((beginning-of-defun-function nil))
+    (beginning-of-defun))
+  (condition-case nil
+      (while t (backward-up-list))
+    (scan-error nil)))
+
 
 ;;; Imenu sections
 

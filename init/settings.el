@@ -1214,6 +1214,10 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 
   (al/modify-page-break-syntax lisp-mode-syntax-table)
 
+  (al/eval-at-hook lisp-data-mode-hook
+    (setq-local beginning-of-defun-function
+                'al/lisp-beginning-of-defun))
+
   ;; `lisp-mode' package is already loaded on Emacs start, and I don't
   ;; want to load additional Common Lisp functionality on start.  So
   ;; instead of requiring `al-clisp' here, it is loaded on the first run
