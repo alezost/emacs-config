@@ -30,6 +30,7 @@
   ("C-↲" 'al/org-return-indent)
   ("<tab>" 'al/org-tab)
   ("M-<return>" 'org-meta-return)
+  ("C-M-⇤" 'al/org-up-heading)
   ("M-S-⇤" 'org-previous-visible-heading)
   ("M-S-⇥" 'org-next-visible-heading)
   ("C-<kp-enter>" 'al/org-table-next-column)

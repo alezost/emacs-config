@@ -71,6 +71,13 @@ return nil; with FORCE return its time value. "
        (eval (cons 'encode-time
                    (org-parse-time-string org-time)))))
 
+(defun al/org-up-heading ()
+  "Move to the previous upper level heading."
+  (interactive)
+  (if (outline-on-heading-p)
+      (outline-up-heading 1)
+    (org-previous-visible-heading 1)))
+
 (defun al/org-return ()
   "Open link at point, goto next table row, or insert a newline.
 This is the same as `org-return' but links have a priority."
