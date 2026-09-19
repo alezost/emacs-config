@@ -1191,6 +1191,10 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
 
 (al/setq-no-warnings gud-key-prefix (key-parse "M-G"))
 
+;; `geiser-chicken-binary' searches for "chicken-csi" at first and then
+;; falls back to "csi".
+(al/setq-no-warnings geiser-chicken-binary "csi")
+
 (al/eval-after-load prog-mode
   (al/bind-keys
     :map prog-mode-map
