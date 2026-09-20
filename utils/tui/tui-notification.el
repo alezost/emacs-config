@@ -17,11 +17,13 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'al-visual))
+
 (require 'seq)
 (require 'transient)
 (require 'al-transient)
 (require 'al-notification)
-(require 'al-visual)
 
 
 ;;; Transient interface for notifications

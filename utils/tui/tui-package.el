@@ -17,11 +17,13 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'al-visual))
+
 (require 'package)
 (require 'transient)
 (require 'al-package-cmd)
 (require 'al-quelpa)
-(require 'al-visual)
 
 (transient-define-argument tui/package:main-packages ()
   :description (concat "recipes from "

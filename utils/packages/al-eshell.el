@@ -19,13 +19,14 @@
 
 (eval-when-compile
   (require 'fp-utils)
-  (require 'let-macros))
+  (require 'let-macros)
+  (require 'al-visual))
+
 (require 'em-alias)
 (require 'em-dirs)
 (require 'em-unix)
 (require 'al-shell)     ; for `al/shell-set-comment-variables'
 (require 'al-url)
-(require 'al-visual)
 
 (defun al/eshell-refresh-aliases ()
   "Refresh aliases for the current eshell buffer."

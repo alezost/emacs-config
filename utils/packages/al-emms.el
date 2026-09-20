@@ -21,7 +21,8 @@
   (require 'cl-lib)
   (require 'al-aux-macros)
   (require 'fp-utils)
-  (require 'let-macros))
+  (require 'let-macros)
+  (require 'al-visual))
 
 (require 'seq)
 (require 'emms)
@@ -30,7 +31,6 @@
 (require 'count)
 (require 'al-text)
 (require 'al-format)
-(require 'al-visual)
 (require 'al-url)
 
 (defun al/emms-seek-forward (seconds)

@@ -17,9 +17,11 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'al-visual))
+
 (require 'transient)
 (require 'web-search)
-(require 'al-visual)
 
 (defvar tui/web-search-text nil
   "Current text to search for.")

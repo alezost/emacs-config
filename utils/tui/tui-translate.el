@@ -19,14 +19,14 @@
 
 (eval-when-compile
   (require 'al-aux-macros)
-  (require 'let-macros))
+  (require 'let-macros)
+  (require 'al-visual))
 
 (require 'seq)
 (require 'transient)
 (require 'google-translate-core-ui)
 (require 'al-read)
 (require 'al-url)
-(require 'al-visual)
 
 (defvar tui/translate-top-languages
   '("en" "ru" "ko" "ja" "de" "fr" "auto")
