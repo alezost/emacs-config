@@ -2225,7 +2225,7 @@ Used by `al/text-frame-keys' and `al/graphical-frame-keys'.")
  ;; safe-local-variable-values '((lexical-binding . t))
  ;; enable-local-eval nil
 
- warning-minimum-level :warning
+ warning-minimum-level :error
  warning-suppress-types      ; do not pop up the *Warnings* buffer when:
  '(;; something long is executed in *shell*.
    (undo discard-info)))
