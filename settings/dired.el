@@ -102,6 +102,7 @@
 
 (advice-add 'dired-sort-set-mode-line
   :override 'al/dired-sort-set-mode-line)
+(advice-add 'dired-readin :after #'al/dired-ignore-error-buffer)
 
 (al/mode-line-default-buffer-identification 'dired-mode)
 

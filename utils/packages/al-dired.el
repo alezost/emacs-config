@@ -20,6 +20,26 @@
 (require 'dired)
 (require 'al-process)
 
+(defun al/dired-ignore-error-buffer (&rest _)
+  "Fix \"error-buffer\" bug in dired.
+
+When some sub-directories of \"/proc\" are opened with `dired', Emacs
+fails with the following error:
+
+  find-file-noselect: /proc/11 is a directory
+
+This problem happens in `dired-internal-noselect' function: after
+calling `dired-readin', it kills the created dired buffer because
+`dired-readin' created \"*ls error*\" buffer with lines like this:
+
+  ls: cannot read symbolic link '/proc/11/cwd': Permission denied
+
+XXX Am I the only one having this bug?  I did not find any reports.
+
+This function fixes this bug if it is added as `after' advice for
+`dired-readin'."
+  (setq dired--ls-error-buffer nil))
+
 
 ;;; Processes
 
