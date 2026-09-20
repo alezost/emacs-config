@@ -18,7 +18,8 @@ I.e., at the end of `after-init-hook'.")
  ;; Show all loading messages (by default, `require' suppresses messages).
  ;; Actually, this setting increases startup time because each additional
  ;; message forces echo area redrawing.
- force-load-messages t)
+ ;; force-load-messages t
+ )
 
 ;; Set `file-name-handler-alist' to nil until Emacs startup is finished.
 (defvar al/file-name-handler-alist file-name-handler-alist
